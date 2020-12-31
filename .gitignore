@@ -41,6 +41,7 @@ auto/
 ##########
 __pycache__/
 *.egg-info/
+*venv
 .venv
 
 # PyTorch #
@@ -96,3 +97,8 @@ build
 ########
 log_file
 datasets/
+
+# PyPI #
+###################
+build/
+dist/
