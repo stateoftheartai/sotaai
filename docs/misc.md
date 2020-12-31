@@ -1,6 +1,6 @@
 # Miscellaneous Documentation
 
-This file is for:
+Use this file to...
 - Put documentation that we are still not sure where to place it in here... but we want to keep track of that docs...
 
 # Initial set-up
