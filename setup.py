@@ -1,9 +1,5 @@
 from setuptools import setup
 
-#
-# Test comment
-#
-
 setup(
     name="sotaai",
     version="0.0.0",
