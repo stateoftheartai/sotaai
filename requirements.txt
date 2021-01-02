@@ -1,0 +1,13 @@
+# -*- coding: utf-8 -*-
+# Author: Hugo Ochoa <hugo@stateoftheart.ai>
+# Copyright: Stateoftheart AI PBC 2020.
+#
+# These are the required dependencies for contributors in contrast to
+# library dependencies themselves, the latest are defined in setup.py
+#
+pip==19.2.3
+twine==3.3.0
+wheel==0.36.2
+pre-commit==2.9.3
+autopep8==1.5.4
+flake8==3.8.4
