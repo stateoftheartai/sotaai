@@ -7,6 +7,7 @@
 import unittest
 from sotaai import hello_world
 
+
 class TestHelloWorld(unittest.TestCase):
 
     """Test sotaai.hello_world function"""
@@ -17,6 +18,7 @@ class TestHelloWorld(unittest.TestCase):
 
         self.assertEqual(type(hw), str)
         self.assertEqual(hw, 'Hello World from sota.ai')
+
 
 if __name__ == '__main__':
     unittest.main()
