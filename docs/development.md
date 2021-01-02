@@ -2,12 +2,12 @@
 
 Documentation useful to set-up the library development environment in your machine
 
-# Requirements
+## Requirements
 
 - As of now, **Python 3.8.0**. If you have a different version we recommend you to use [pyenv](https://github.com/pyenv/pyenv) and thus you can have different versions of Python installed in your machine and switch among them.
 - As of now, we recommend you to have **pip==19.2.3**.
 
-# Local Installation
+## Local Installation
 
 Create a new environment using `venv`. We recommend you to create the virutal environment directory inside the repository (it will be ignore it) and name it `.venv`:
 
@@ -48,32 +48,51 @@ cpplint..............................................(no files to check)Skipped
 
 **Done**, now you are ready to start contributing and improving the `sotaai` library.
 
-# Contribution Flow
+## Contribution Flow
 
-Step 0: Make sure your repos user email match the email you use in Jira, in the repo run:
+**Step 1:** Make sure your local repo email match the email you use in Jira, in the repo run:
 
 ```
 git config user.email = "myemailusedinjira@mail.com"
 ```
 
-Step 1: Have or create an issue in JIRA for the feature, fix, or in general "task" you're going to work on.
+**Step 2:** Have or create an issue in JIRA for the feature your going to work on. By feature we mean: a fix, feature, improve, refactor, to be added to the current code base.
 
-Step 2: Create a branch with the JIRA's issue ID:
+**Step 3:** Make sure to have `master` branch up to date, and then create a branch out of `master` and name it after the Jira issue ID. This is going to be refered as the "feature branch":
 
 ```
 git checkout -b SOTA-1338
 ```
 
-Step 3: work on that branch and constantly push changes to its respective remote. Tha branch update will be automatically shown in the JIRA's issue as long as:
+**Step 4:** work on the feature branch and constantly push changes to its respective remote. All updates are to be automatically reflected in Jira as long as:
 
-- The branch will be linked to JIRA as long as the branch names matches the Jira's issue ID e.g. SOTA-1338
-- For a commit to be linked, the commit message must follow the specs in [Jira Smart Commits](https://support.atlassian.com/jira-software-cloud/docs/process-issues-with-smart-commits/). For example:
+- The feature branch name exactly matches the Jira's issue ID e.g. SOTA-1338
+- Each of the feature branch commits meet the specs in [Jira Smart Commits](https://support.atlassian.com/jira-software-cloud/docs/process-issues-with-smart-commits/) at least in one line of the title/body of the commit. For example:
+
+To put the issue in progress:
 
 ```
-update: my commit message
+update: add some updates to development.md
 - SOTA-1338 #progress
 ```
 
-For this to work, your git user.email at repo level must match a valid Jira user.
+To put the Jira issue in progress and add a comment to the Jira issue as well:
 
-to its respective remote (as much as possible), do as many commits as you want. For the commit nami
+```
+update: add some updates to development.md
+- SOTA-1338 #progress #comment This is my comment
+```
+
+Valid transitions are: `#progress`, `#review`, `#test`, `#done`
+
+**Step 5:** once the feature is finished create a Pull Request and assign it to a Reviewer. The Pull Request will trigger testing jobs, if those succced and the Reviewer approves the code, then the feature branch is to be merged into `master` by the Reviewer. For this, all feature branch commits will be squashed into one commit, this commit is to be rename it by the reviewer to be consistent with the feature being merged, and finally merged. This way `master` branch will have only one commit per feature, which was tested, and with a consistent name.
+
+**Step 6:** when the Pull Request is accepted and thus the feature branch is merged, this feature branch is automatically deleted from the remote, however the developer must delete its local branch from its machine and also pull `master` changes that might include the new feature:
+
+```
+git branch -D SOTA-1338
+git checkout master
+git pull origin master
+```
+
+**Step 7:** the developer can now create a new branch out of `master` and start working in a new feature.
