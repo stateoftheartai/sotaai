@@ -64,7 +64,7 @@ git config user.email = "myemailusedinjira@mail.com"
 git checkout -b SOTA-1338
 ```
 
-**Step 4:** work on the feature branch and constantly push changes to its respective remote. All updates are to be automatically reflected in Jira as long as:
+**Step 4:** work on the feature branch and constantly push changes to its respective remote. For naming commits, follow [these guidelines](https://github.com/stateoftheartai/sotaai/blob/master/docs/commits.md). All updates are to be automatically reflected in Jira as long as:
 
 - The feature branch name exactly matches the Jira's issue ID e.g. SOTA-1338
 - Each of the feature branch commits meet the specs in [Jira Smart Commits](https://support.atlassian.com/jira-software-cloud/docs/process-issues-with-smart-commits/) at least in one line of the title/body of the commit. For example:
