@@ -1,6 +1,12 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   test:
@@ -12,11 +18,11 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.8
-      - name: Install dependencies
+      - name: Install sotaai Library & Dependencies
         run: |
           python -m pip install pip==19.2.3
           pip install -e .
-      - name: Run tests with pytest
+      - name: Run tests
         run: |
           cd tests
           python -m unittest

@@ -46,4 +46,4 @@ autopep8.................................................................Passed
 cpplint..............................................(no files to check)Skipped
 ```
 
-Done, you're ready to start contributing and improving the `sotaai` library.
+**Done**, now you are ready to start contributing and improving the `sotaai` library.
