@@ -2,15 +2,11 @@
 # Author: Hugo Ochoa <hugo@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2020.
 
-"""Unit testing hello_world function"""
-
 import unittest
 from sotaai import hello_world
 
 
 class TestHelloWorld(unittest.TestCase):
-
-    """Test sotaai.hello_world function"""
 
     def test_hello_world(self):
 
