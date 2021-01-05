@@ -11,19 +11,19 @@ General Notes:
 
 Function: `load_dataset`
 
-Return Type: `KerasDatasetDict`
+Return Type: `KerasDatasetDict` (see below)
 
 ## Models
 
 Function: `load_model`
 
-Return Type: `Tensorflow.Functional`
+Return Type: `Tensorflow.Functional` (see below)
 
 Notes:
 
 - Tensorflow `Functional` instances are wrapped in the Keras Functionl API [Model class or `keras.Model`](https://keras.io/api/models/model/)
 
-## Return Types:
+## Return Types
 
 ### `Tensorflow.Functional`
 

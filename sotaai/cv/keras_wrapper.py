@@ -7,8 +7,7 @@ import tensorflow.keras.datasets as datasets
 
 
 DATASETS = {'classification':
-            # ['mnist', 'cifar10', 'cifar100', 'fashion_mnist']}
-            ['mnist']}
+            ['mnist', 'cifar10', 'cifar100', 'fashion_mnist']}
 
 # Models that do not contain classifier_activation as an argument
 differ = ["ResNet50", "ResNet101", "ResNet152", "DenseNet121",
@@ -19,15 +18,14 @@ mobile_nets = ["MobileNet", "MobileNetV2"]
 
 MODELS = [
     'InceptionResNetV2',
-    # 'InceptionV3',
-    # 'ResNet101V2',
-    # 'ResNet152V2',
-    # 'ResNet50V2',
-    # 'VGG16',
-    # 'VGG19',
-    # 'Xception'
-]
-# ] + differ + mobile_nets
+    'InceptionV3',
+    'ResNet101V2',
+    'ResNet152V2',
+    'ResNet50V2',
+    'VGG16',
+    'VGG19',
+    'Xception'
+] + differ + mobile_nets
 
 
 def tasks():
