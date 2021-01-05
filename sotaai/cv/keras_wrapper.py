@@ -9,13 +9,6 @@ import tensorflow.keras.datasets as datasets
 DATASETS = {'classification':
             ['mnist', 'cifar10', 'cifar100', 'fashion_mnist']}
 
-# Models that do not contain classifier_activation as an argument
-differ = ["ResNet50", "ResNet101", "ResNet152", "DenseNet121",
-          "DenseNet169", "DenseNet201", "NASNetMobile", "NASNetLarge"]
-
-# MobileNet models
-mobile_nets = ["MobileNet", "MobileNetV2"]
-
 MODELS = [
     'InceptionResNetV2',
     'InceptionV3',
@@ -24,34 +17,18 @@ MODELS = [
     'ResNet50V2',
     'VGG16',
     'VGG19',
-    'Xception'
-] + differ + mobile_nets
-
-
-def tasks():
-    '''
-    Output: list of strings, indicating the tasks available
-    '''
-    return list(DATASETS.keys())
-
-
-def available_datasets(task: str = 'all'):
-    '''
-    Input:
-        task: str, one of the list tasks()
-    Output:
-        list of strings
-    '''
-    if task == "all":
-        def flatten(l): return [item for sublist in l for item in sublist]  # noqa: E741,E501
-        flat_ds = flatten(DATASETS.values())
-        return flat_ds
-
-    return DATASETS[task]
-
-
-def available_models(task: str = 'all'):
-    return MODELS
+    'Xception',
+    "ResNet50",
+    "ResNet101",
+    "ResNet152",
+    "DenseNet121",
+    "DenseNet169",
+    "DenseNet201",
+    "NASNetMobile",
+    "NASNetLarge",
+    "MobileNet",
+    "MobileNetV2"
+]
 
 
 def load_model(model_name,
@@ -116,7 +93,9 @@ def load_model(model_name,
     trainer = getattr(models, model_name)
 
     # Load the model and return
-    if model_name in differ:
+    if model_name in ["ResNet50", "ResNet101", "ResNet152",
+                      "DenseNet121", "DenseNet169", "DenseNet201",
+                      "NASNetMobile", "NASNetLarge"]:
         model = trainer(
             weights=weights,
             input_tensor=input_tensor,
@@ -167,25 +146,3 @@ def load_dataset(dataset_name):
     dataset_dict = {'train': dataset[0], 'test': dataset[1]}
 
     return dataset_dict
-
-
-def predict(model, image):
-    '''
-    Input:
-        model: a tensorflow.python.keras model
-        image: numpy array of shape (N,H,W,C)
-    Output:
-        result of model
-    '''
-    return model(image)
-
-
-def take(dataset, index):
-    '''
-    Input:
-        dataset: keras dataset,  that is, (x, y), with x, y - numpy arrays
-    Output:
-        Tuple (image, label)
-
-    '''
-    return dataset[0][index], dataset[1][index]
