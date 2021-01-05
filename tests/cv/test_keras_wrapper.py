@@ -3,78 +3,79 @@
 # Author: Hugo Ochoa <hugo@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2020.
 
-# import unittest
-# import numpy as np
-# from sotaai.cv import keras_wrapper
+"""Unit testing the Keras wrapper."""
 
-# # @todo
-# # Still pending to add cv/abstractions.py for the
-# # migrated datasets/models only
-# # from sotaai.cv.abstractions import AbstractCvDataset
-
-
-# class TestKerasWrapper(unittest.TestCase):
-
-#     def test_load_dataset_return_type(self):
-
-#         all_keywords = []
-#         for task in keras_wrapper.DATASETS.keys():
-#             print("Checking task: {}".format(task))
-#             for ds in keras_wrapper.DATASETS[task]:
-#                 print("*********************")
-#                 print("Testing {}".format(ds))
-#                 dso = keras_wrapper.load_dataset(ds)
-
-#                 # Make sure we are receiving a dictionary.
-#                 self.assertEqual(type(dso), dict)
-
-#                 # Make sure the dictionary has the correct keys
-#                 print(dso.keys())
-
-#                 # Make sure internal objects are tuples of type numpy array.
-#                 for key in dso.keys():
-#                     all_keywords.append(key)
-#                     # Each dataset split should be a tuple of two elements.
-#                     self.assertEqual(tuple, type(dso[key]))
-#                     self.assertEqual(len(dso[key]), 2)
-
-#                     # The tuple's elements need to be `numpy.ndarray`s.
-#                     self.assertEqual(np.ndarray, type(dso[key][0]))
-#                     self.assertEqual(np.ndarray, type(dso[key][1]))
-
-#         print(all_keywords)
-#         print(set(all_keywords))
-
-#     # def test_abstract_dataset(self):
-#     #     """
-#     #         Make sure we can create an abstract dataset
-#     #         using Keras datasets.
-#     #     """
-#     #     # All Keras datasets are for classification tasks.
-#     #     for task in keras_wrapper.DATASETS.keys():
-#     #         print("Checking task: {}".format(task))
-#     #         for ds in keras_wrapper.DATASETS[task]:
-#     #             dso = keras_wrapper.load_dataset(ds)
-
-# ads = dict()
-# for key in dso.keys():
-#     ads[key] = AbstractCvDataset(
-#         dso[key], ds, 'image', key,
-#         'classification')
-#     print(ads[key].source)
-#     print(ads[key].size)
-#     print(ads[key].shape)
-# print(ads)
-
-#     def test_model_loading(self):
-#         """Make sure that we can load every model from the Keras module."""
-#         for model_name in keras_wrapper.MODELS:
-#             print("Checking model {}".format(model_name))
-#             # All models are for classification in Keras.
-#             model = keras_wrapper.load_model(model_name)
-#             print(type(model))
-#             print("\n")
+import os
+import unittest
+import numpy as np
+from sotaai.cv import keras_wrapper
+# from sotaai.cv.abstractions import AbstractCvDataset
+from tensorflow.python.keras.engine.functional import Functional
+import inspect
 
 
-# if __name__ == '__main__':
-#     unittest.main()
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+
+class TestKerasWrapper(unittest.TestCase):
+    """Test the wrapped Keras module."""
+
+    def test_load_dataset(self):
+        """Make sure `dict`s are returned, with correct keywords for splits."""
+        all_keywords = []
+        for task in keras_wrapper.DATASETS.keys():
+            for dataset_name in keras_wrapper.DATASETS[task]:
+
+                dataset = keras_wrapper.load_dataset(dataset_name)
+
+                self.assertEqual(type(dataset), dict)
+
+                for key in dataset.keys():
+                    all_keywords.append(key)
+                    self.assertEqual(tuple, type(dataset[key]))
+                    self.assertEqual(len(dataset[key]), 2)
+
+                    self.assertEqual(np.ndarray, type(dataset[key][0]))
+                    self.assertEqual(np.ndarray, type(dataset[key][1]))
+
+    def test_load_model(self):
+        """Make sure that we can load every model from the Keras module."""
+        for model_name in keras_wrapper.MODELS:
+            model = keras_wrapper.load_model(model_name)
+
+            self.assertIsInstance(model, Functional)
+
+            self.assertEqual(inspect.ismethod(model.compile), True)
+            self.assertEqual(inspect.ismethod(model.fit), True)
+            self.assertEqual(inspect.ismethod(model.predict), True)
+            self.assertEqual(inspect.ismethod(model.summary), True)
+            self.assertEqual(inspect.ismethod(model.save), True)
+
+    #
+    # @author Hugo Ochoa
+    # @todo Finish abstraction tests
+    #
+    # def test_abstract_dataset(self):
+    #     """
+    #       Make sure we can create an abstract dataset using
+    #       Keras datasets.
+    #     """
+    #     # All Keras datasets are for classification tasks.
+    #     for task in keras_wrapper.DATASETS.keys():
+    #         print("Checking task: {}".format(task))
+    #         for ds in keras_wrapper.DATASETS[task]:
+    #             dso = keras_wrapper.load_dataset(ds)
+
+    #             # Create one standardized, abstract dataset object per split.
+    #             ads = dict()
+    #             for key in dso.keys():
+    #                 ads[key] = AbstractCvDataset(dso[key], ds, 'image', key,
+    #                                              'classification')
+    #                 print(ads[key].source)
+    #                 print(ads[key].size)
+    #                 print(ads[key].shape)
+    #             print(ads)
+
+
+if __name__ == '__main__':
+    unittest.main()

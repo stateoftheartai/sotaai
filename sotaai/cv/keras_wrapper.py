@@ -3,10 +3,12 @@
 # Copyright: Stateoftheart AI PBC 2020.
 
 import tensorflow.keras.applications as models
-import tensorflow.keras.datasets as dset
+import tensorflow.keras.datasets as datasets
+
 
 DATASETS = {'classification':
-            ['mnist', 'cifar10', 'cifar100', 'fashion_mnist']}
+            # ['mnist', 'cifar10', 'cifar100', 'fashion_mnist']}
+            ['mnist']}
 
 # Models that do not contain classifier_activation as an argument
 differ = ["ResNet50", "ResNet101", "ResNet152", "DenseNet121",
@@ -17,14 +19,15 @@ mobile_nets = ["MobileNet", "MobileNetV2"]
 
 MODELS = [
     'InceptionResNetV2',
-    'InceptionV3',
-    'ResNet101V2',
-    'ResNet152V2',
-    'ResNet50V2',
-    'VGG16',
-    'VGG19',
-    'Xception'
-] + differ + mobile_nets
+    # 'InceptionV3',
+    # 'ResNet101V2',
+    # 'ResNet152V2',
+    # 'ResNet50V2',
+    # 'VGG16',
+    # 'VGG19',
+    # 'Xception'
+]
+# ] + differ + mobile_nets
 
 
 def tasks():
@@ -116,14 +119,14 @@ def load_model(model_name,
 
     # Load the model and return
     if model_name in differ:
-        return trainer(
+        model = trainer(
             weights=weights,
             input_tensor=input_tensor,
             input_shape=input_shape,
             pooling=pooling,
             classes=classes)
     elif model_name == "MobileNet":
-        return trainer(
+        model = trainer(
             weights=weights,
             alpha=alpha,
             depth_multiplier=depth_multiplier,
@@ -133,20 +136,23 @@ def load_model(model_name,
             pooling=pooling,
             classes=classes)
     elif model_name == "MobileNetV2":
-        return trainer(
+        model = trainer(
             weights=weights,
             alpha=alpha,
             input_tensor=input_tensor,
             input_shape=input_shape,
             pooling=pooling,
             classes=classes)
-    return trainer(
-        weights=weights,
-        input_tensor=input_tensor,
-        input_shape=input_shape,
-        pooling=pooling,
-        classes=classes,
-        classifier_activation=classifier_activation)
+    else:
+        model = trainer(
+            weights=weights,
+            input_tensor=input_tensor,
+            input_shape=input_shape,
+            pooling=pooling,
+            classes=classes,
+            classifier_activation=classifier_activation)
+
+    return model
 
 
 def load_dataset(dataset_name):
@@ -157,11 +163,12 @@ def load_dataset(dataset_name):
       dic with keys {'train':(x_train, y_train), 'test':(x_test,y_test),
       Each entry is a numpy array
     """
-    # Loads the class dset.\dataset_name\
-    ds = getattr(dset, dataset_name)
-    ds = ds.load_data()
-    ds_dic = {'train': ds[0], 'test': ds[1]}
-    return ds_dic
+
+    dataset = getattr(datasets, dataset_name)
+    dataset = dataset.load_data()
+    dataset_dict = {'train': dataset[0], 'test': dataset[1]}
+
+    return dataset_dict
 
 
 def predict(model, image):
