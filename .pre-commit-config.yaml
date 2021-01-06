@@ -27,3 +27,11 @@ repos:
       - id: yapf
         entry: ./.venv/bin/yapf
         args: ["--style=.style.yapf", "--parallel", "--in-place"]
+  # Other
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.5.4
+    hooks:
+      - id: mdformat
+        additional_dependencies:
+          - mdformat-tables
+          - mdformat-black
