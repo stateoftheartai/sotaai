@@ -9,6 +9,10 @@ import tensorflow.keras as keras
 
 DATASETS = {"classification": ["mnist", "cifar10", "cifar100", "fashion_mnist"]}
 
+#
+# @author HO
+# As of now, only missing EfficientNetBX
+#
 MODELS = {
     "classification": [
         "InceptionResNetV2", "InceptionV3", "ResNet101V2", "ResNet152V2",
