@@ -29,10 +29,8 @@ update: implement Github Actions to automate ci build/test
 
 **Do** use imperative mode for commit subject and details
 
-- Do not: `Keras authenitcation flow updated` => Do: `Update keras
-  authentication flow`
-- Do not: `Fixed bug with tensorflow datasets configuration` => Do: `Fix bug on
-  tensorflow datasets configuration`
+- **Do not:** `Keras authenitcation flow updated` => **Do:** `Update keras authentication flow`
+- **Do not:** `Fixed bug with tensorflow datasets configuration` => **Do:** `Fix bug on tensorflow datasets configuration`
 
 To help writting commits in imperative mode. Notice that a properly formed
 commit subject or detail should always be able to complete the sentence: **If
@@ -84,9 +82,9 @@ merge: merge latest changes into feature and solve conflicts
 
 **Do** add a descriptive, clear and succint `<commit-subject>`
 
-**Do** not exceed up to **50 characters** in the `<commit-subject>`
+**Do not** exceed up to **50 characters** in the `<commit-subject>`
 
-**Do** not end the `<commit-subject>` with a dot: `.`
+**Do not** end the `<commit-subject>` with a dot: `.`
 
 Examples of commits with commit subjects:
 
@@ -108,13 +106,13 @@ more detail the commit's purpose.
 **Do** use commit details when you think it will be relevant for you or anyone
 in the team.
 
-**Do** not use commit details to explain which files where updated, variables
+**Do not** use commit details to explain which files where updated, variables
 renamed, etc. If this is relevant for a certain developer then it can be
 obtained using ` git diff`.
 
 **Do** add each commit detail in its own line starting with a dash: `-`
 
-**Do** try not to exceed up to **70 chars** in each `<detail-content>`. Git
+**Do not** exceed up to **70 chars** in each `<detail-content>`. Git
 automatically wrap text on 72 characters so exceeding might uglify the output
 when displaying the Git history.
 
