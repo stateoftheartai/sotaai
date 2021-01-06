@@ -4,10 +4,9 @@ Documentation useful to manage and run tests.
 
 ## Unittest
 
-Unittests will test the current version installed in your
-virtual environment of the `sotaai` library, thus,
-first make sure you have installed the right version of it
-i.e. the one you want to test:
+Unittests will test the current version of the `sotaai` library installed in your
+virtual environment. Therefore, first make sure you have installed the right
+version of it i.e. the one you want to test:
 
 - Install the version from your local code base
   `pip install -e .` in case you want to test
