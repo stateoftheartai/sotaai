@@ -10,7 +10,22 @@ machine.
   versions of Python installed in your machine and switch among them.
 - As of now, we recommend you to have **pip==19.2.3**.
 
-## Local Installation
+## Guidelines
+
+- In general, we adhere to
+  [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+- To lint code, we use [pylint](https://github.com/PyCQA/pylint)
+  following the `pylintrc` provided in [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+- To format code, we use [yapf](https://github.com/google/yapf/)
+  as stated in [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+- To format markdown (docs) we follow [mdformat Style Guide](https://github.com/executablebooks/mdformat/blob/master/STYLE.md)
+  and [Semantic Line Breaks](https://sembr.org/)
+- We use [pre-commit](https://pre-commit.com/) to enforce and automate
+  must of the formatting and linting work (before commiting any code)
+- We validate code and test it using [Github Actions](https://github.com/features/actions).
+  This will run once a Pull Request is created or push to master is made.
+
+## Local Environment Setup
 
 Create a new environment using `venv`. We recommend you to create the virutal
 environment directory inside the repository (it will be ignore it) and name it
@@ -24,7 +39,7 @@ source .venv/bin/activate
 Then, install development dependencies:
 
 ```
-pip install -r requirements
+pip install -r requirements.txt
 ```
 
 Install pre-commit hooks:
@@ -46,13 +61,40 @@ Trim Trailing Whitespace.................................................Passed
 Fix End of Files.........................................................Passed
 Check Yaml...............................................................Passed
 Check for added large files..............................................Passed
-flake8...................................................................Passed
-autopep8.................................................................Passed
-cpplint..............................................(no files to check)Skipped
+
+...
+
 ```
 
 **Done**, now you are ready to start contributing and improving the `sotaai`
 library.
+
+## Visual Studio Code
+
+In case you use Visual Studio Code as your IDE, this `.vscode/settings.json`
+might work for you:
+
+```json
+{
+  "editor.formatOnSave": true,
+  "files.exclude": {
+    "**/__pycache__": true,
+    "build": true,
+    "dist": true,
+    "**.egg-info": true
+  },
+  "python.pythonPath": ".venv/bin/python",
+  "python.formatting.provider": "yapf",
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": true,
+  "python.linting.pylintArgs": [
+    "--init-hook",
+    "import sys; sys.path.insert(0, '../sotaai')"
+  ]
+}
+```
+
+This configuration is going to apply the default formatting and linting we use.
 
 ## Contribution Flow
 
