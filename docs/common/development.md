@@ -12,11 +12,16 @@ machine.
 
 ## Guidelines
 
-- In general, we adhere to [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
-- To lint code, we use [pylint](https://github.com/PyCQA/pylint) following the `pylintrc` provided in [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
-- To format code, we use [yapf](https://github.com/google/yapf/) as stated in [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
-- We use [pre-commit](https://pre-commit.com/) to enforce and automate must of the formatting and linting work (before commiting any code)
-- We validate code and test it using [Github Actions](https://github.com/features/actions). This will run once a Pull Request is created or push to master is made.
+- In general, we adhere to
+  [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+- To lint code, we use [pylint](https://github.com/PyCQA/pylint)
+  following the `pylintrc` provided in [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+- To format code, we use [yapf](https://github.com/google/yapf/)
+  as stated in [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+- We use [pre-commit](https://pre-commit.com/) to enforce and automate
+  must of the formatting and linting work (before commiting any code)
+- We validate code and test it using [Github Actions](https://github.com/features/actions).
+  This will run once a Pull Request is created or push to master is made.
 
 ## Local Environment Setup
 
@@ -64,7 +69,8 @@ library.
 
 ## Visual Studio Code
 
-In case you use Visual Studio Code as your IDE, this `.vscode/settings.json` might work for you:
+In case you use Visual Studio Code as your IDE, this `.vscode/settings.json`
+might work for you:
 
 ```json
 {

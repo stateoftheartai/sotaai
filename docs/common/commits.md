@@ -29,8 +29,11 @@ update: implement Github Actions to automate ci build/test
 
 **Do** use imperative mode for commit subject and details
 
-- **Do not:** `Keras authenitcation flow updated` => **Do:** `Update keras authentication flow`
-- **Do not:** `Fixed bug with tensorflow datasets configuration` => **Do:** `Fix bug on tensorflow datasets configuration`
+- **Do not:** `Keras authenitcation flow updated`
+- **Do:** `Update keras authentication flow`
+
+- **Do not:** `Fixed bug with tensorflow datasets configuration`
+- **Do:** `Fix bug on tensorflow datasets configuration`
 
 To help writting commits in imperative mode. Notice that a properly formed
 commit subject or detail should always be able to complete the sentence: **If
