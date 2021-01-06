@@ -6,27 +6,24 @@
 # See https://pre-commit.com/hooks.html for more hooks
 #
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
+  # General hooks:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.1.0
     hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: check-yaml
-    -   id: check-added-large-files
-        args: ['--maxkb=3000']
--   repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.2
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ["--maxkb=3000"]
+  # Python Google Official Guideline hooks:
+  - repo: https://github.com/pycqa/pylint
+    rev: pylint-2.6.0
     hooks:
-    -   id: flake8
-        additional_dependencies: [flake8-typing-imports==1.7.0]
--   repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: v1.5.3
+      - id: pylint
+        entry: ./.venv/bin/pylint
+  - repo: git@github.com:pre-commit/mirrors-yapf.git
+    rev: v0.26.0
     hooks:
-    -   id: autopep8
--   repo: https://github.com/bmorcos/pre-commit-hooks-cpp
-    rev: 5fa6fb8e51b573604db0b71df9ea3dc7bfbca453
-    hooks:
-    # -   id: clang-format
-    # -   id: cppcheck
-    -   id: cpplint
-        args: [--repository=include]
+      - id: yapf
+        entry: ./.venv/bin/yapf
+        args: ["--style=.style.yapf", "--parallel", "--in-place"]
