@@ -24,7 +24,7 @@ source .venv/bin/activate
 Then, install development dependencies:
 
 ```
-pip install -r requirements
+pip install -r requirements.txt
 ```
 
 Install pre-commit hooks:
