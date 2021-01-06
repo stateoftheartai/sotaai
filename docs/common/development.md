@@ -18,6 +18,8 @@ machine.
   following the `pylintrc` provided in [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
 - To format code, we use [yapf](https://github.com/google/yapf/)
   as stated in [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+- To format markdown (docs) we follow [mdformat Style Guide](https://github.com/executablebooks/mdformat/blob/master/STYLE.md)
+  and [Semantic Line Breaks](https://sembr.org/)
 - We use [pre-commit](https://pre-commit.com/) to enforce and automate
   must of the formatting and linting work (before commiting any code)
 - We validate code and test it using [Github Actions](https://github.com/features/actions).
