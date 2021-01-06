@@ -28,16 +28,21 @@ Each dictionary key corresponds to a dataset split, the dictionary values will
 be `tensorflow.python.data.ops.dataset_ops._OptionsDataset` objects. The
 dictionary will contain some of the following keys:
 
-- `train`
-- `test`
-- `small1`
-- `validation`
-- `testA`
-- `trainA`
-- `trainB`
-- `testB`
-- `small`
-- `extra`
+- `train`:
+- `trainA`:
+- `trainB`:
+- `test`:
+- `testA`:
+- `testB`:
+- `test2015`:
+- `validation`:
+- `small1`:
+- `small2`:
+- `unlabelled`:
+- `MARK`:
+- `extra`:
+- `A`:
+- `B`:
 
 For more details check the [Splits and slicing
 section](https://www.tensorflow.org/datasets/splits) of their documentation.
