@@ -12,7 +12,9 @@ General Notes:
 
 Function: `load_dataset`
 
-    Return Type: `TensorFlowDatasetDict` (see below)
+```
+Return Type: `TensorFlowDatasetDict` (see below)
+```
 
 ## Models
 
