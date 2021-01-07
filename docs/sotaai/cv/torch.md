@@ -28,7 +28,8 @@ Return Type: TODO(huguito)
 A python
 [`dict`](https://docs.python.org/3/tutorial/datastructures.html#dictionaries).
 For the most part, Each dictionary key corresponds to an object of the same
-type---`torch.utils.data.dataloader.DataLoader`---with a bunch of exceptions:
+type\-\-\-`torch.utils.data.dataloader.DataLoader`\-\-\-with a bunch of exceptions:
+
 - `torchvision.datasets.celeba.CelebA`
 - `torchvision.datasets.mnist.EMNIST`
 - `torchvision.datasets.omniglot.Omniglot`

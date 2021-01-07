@@ -13,7 +13,9 @@ General Notes:
 
 Function: `load_dataset`
 
-    Return Type: `MxNetDatasetDict` (see below)
+```
+Return Type: `MxNetDatasetDict` (see below)
+```
 
 ## Models
 
