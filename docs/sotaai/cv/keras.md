@@ -4,9 +4,10 @@ Wrapper: `keras_wrapper.py`
 
 General Notes:
 
-- Wraps datasets and models of the [Keras](https://keras.io/) library
-- Provides standardized functions to load datasets and models: `load_dataset`
-  and `load_model`
+- Wraps datasets and models of the
+  [Keras](https://keras.io/) library
+- Provides standardized functions to load
+  datasets and models: `load_dataset` and `load_model`
 
 ## Datasets
 
@@ -22,8 +23,8 @@ Return Type: `Tensorflow.Functional` (see below)
 
 Notes:
 
-- Tensorflow `Functional` instances are wrapped in the Keras Functionl API
-  [Model class or `keras.Model`](https://keras.io/api/models/model/)
+- Tensorflow `Functional` instances are wrapped in the Keras Functional
+  API [Model class or `keras.Model`](https://keras.io/api/models/model/)
 
 ## Return Types
 
@@ -34,15 +35,13 @@ A tensorflow functional object as defined in
 
 ### `KerasDatasetDict`
 
-A python
-[`dict`](https://docs.python.org/3/tutorial/datastructures.html#dictionaries).
-Each dictionary key corresponds to a dataset split, the dictionary values will
-be Numpy arrays with the corresponding data. The dictionary is to contain the
-following keys i.e. splits:
+A python [`dict`](https://docs.python.org/3/tutorial/datastructures.html#dictionaries).
+Each dictionary key corresponds to a dataset split,
+the dictionary values will be Numpy arrays with the corresponding data.
+The dictionary is to contain the following keys i.e. splits:
 
 - `train`
 - `test`
 
-For more details check [Keras Datasets](https://keras.io/api/datasets/) or the
-docs of a particular dataset like [Keras
-MNIST](https://keras.io/api/datasets/mnist/)
+For more details check [Keras Datasets](https://keras.io/api/datasets/) or the docs
+of a particular dataset like [Keras MNIST](https://keras.io/api/datasets/mnist/)
