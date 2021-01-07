@@ -9,6 +9,7 @@ from torchvision.transforms import functional
 import tensorflow_datasets as tfds
 import time
 import PIL
+import mxnet
 
 import sotaai.cv.pretrainedmodels_wrapper as pretrainedmodels_wrapper
 import sotaai.cv.mxnet_wrapper as mxnet_wrapper
@@ -318,8 +319,8 @@ class AbstractCvDataset(object):
     obj_type = str(type(raw_object))
     if "class" in obj_type:
       obj_type = obj_type[8:]
-    if type(raw_object) == tuple:
-      if len(raw_object) == 2 and type(raw_object[0]) == np.ndarray:
+    if isinstance(raw_object, tuple):
+      if len(raw_object) == 2 and isinstance(raw_object[0], np.ndarray):
         # Keras dataset objects are numpy.ndarray tuples.
         return "keras"
     elif "torch" in obj_type:
@@ -349,7 +350,7 @@ class AbstractCvDataset(object):
 
     # PIL is more robust with torch.Tensor
     img2 = np.transpose(img[0], [2, 0, 1])
-    if type(img2) == np.ndarray:
+    if isinstance(img2, np.ndarray):
       img2 = torch.Tensor(img2)
 
     # Convert numpy to PIL image
@@ -403,7 +404,7 @@ class AbstractCvDataset(object):
             "motorbike", "person", "potted plant", "sheep", "sofa", "train",
             "tv/monitor"
         ]
-        classes = [i for i in range(21)]
+        classes = list(range(21))
       elif "class_to_idx" in dir(raw_object):
         classes = list(raw_object.class_to_idx.values())
         classes_names = list(raw_object.class_to_idx.keys())
@@ -473,7 +474,7 @@ class AbstractCvDataset(object):
           "motorbike", "person", "potted plant", "sheep", "sofa", "train",
           "tv/monitor"
       ]
-      indexes = [i for i in range(21)]
+      indexes = list(range(21))
     elif self.source == "fastai":
       obj = getattr(raw_object, self.split_name + "_ds")
       classes = obj.y.classes
@@ -508,11 +509,11 @@ class AbstractCvDataset(object):
     return classes, classes_names
 
 
-def find_task(dataset_name, DATASETS):
+def find_task(dataset_name, datasets):
   task_list = []
-  for j in range(len(DATASETS.values())):
-    if dataset_name in list(DATASETS.values())[j]:
-      task_list.append(list(DATASETS.keys())[j])
+  for j in range(len(datasets.values())):
+    if dataset_name in list(datasets.values())[j]:
+      task_list.append(list(datasets.keys())[j])
   return task_list
 
 
@@ -613,8 +614,7 @@ class AbstractCvModel(object):
         """
 
     if self.source == "mxnet":
-      import mxnet as mx
-      bottleneck_layer = mx.gluon.model_zoo.vision.BottleneckV1
+      bottleneck_layer = mxnet.gluon.model_zoo.vision.BottleneckV1
       list1 = dir(bottleneck_layer)
       if "features" in dir(block):
         self._flatten(block.features, k)
