@@ -68,10 +68,7 @@ def adapt_last_layer(model, classes):
 
   # Create new layer to use as last layer in the model
   if isinstance(ll, nn.Linear):
-    if ll.bias is not None:
-      bias = True
-    else:
-      bias = False
+    bias = bool(ll.bias)
 
     new_layer = nn.Linear(in_features=ll.in_features,
                           out_features=classes,
@@ -83,10 +80,9 @@ def adapt_last_layer(model, classes):
   if bool1 or bool2 or bool3:
     l_type = str(type(ll)).split('.')[-1][:6]
     conv = getattr(nn, l_type)
-    if ll.bias is not None:
-      bias = True
-    else:
-      bias = False
+
+    bias = bool(ll.bias)
+
     new_layer = conv(in_channels=ll.in_channels,
                      out_channels=classes,
                      kernel_size=ll.kernel_size,

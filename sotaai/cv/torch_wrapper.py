@@ -7,7 +7,6 @@ from torchvision import datasets as dset
 from torch import nn
 import os
 import torch
-"""Available datasets from Torch, separated by task"""
 
 DATASETS = {
     "classification": [
@@ -361,10 +360,8 @@ def adapt_last_layer(model, classes):
   for i in range(1, len(layers)):
     if isinstance(layers[-i], nn.Linear):
       cut = -i
-      if layers[-i].bias is not None:
-        bias = True
-      else:
-        bias = False
+
+      bias = bool(layers[-i].bias)
 
       new_layer = nn.Linear(out_features=classes,
                             in_features=layers[-i].in_features,
@@ -377,10 +374,9 @@ def adapt_last_layer(model, classes):
     if bool1 or bool2 or bool3:
       l_type = str(type(layers[-i][1])).split(".")[-1][:6]
       conv = getattr(nn, l_type)
-      if layers[-i].bias is not None:
-        bias = True
-      else:
-        bias = False
+
+      bias = bool(layers[-i].bias)
+
       new_layer = new_layer = conv(in_channels=layers[-i].in_channels,
                                    out_channels=classes,
                                    kernel_size=layers[-i].kernel_size,
@@ -406,7 +402,7 @@ def adapt_last_layer(model, classes):
         list_modules_head += layers[cut + 1:]
       head = nn.Sequential(*list_modules_head)
       new_model = nn.Sequential(body, head)
-  except:  # noqa E722
+  except:  # pylint: disable=W0702
     msg = "The provided model is not a classification model, "
     cont = "or it does not have a linear nor a convolutional layer"
 
