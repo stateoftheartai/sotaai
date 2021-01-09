@@ -52,6 +52,12 @@ class TestKerasWrapper(unittest.TestCase):
 
         model = keras_wrapper.load_model(model_name)
 
+        #
+        # @author HO
+        # Test the returned model against tf.Keras.Model functional as
+        # documented in
+        # https://www.tensorflow.org/api_docs/python/tf/keras/Model#top_of_page
+        #
         self.assertIsInstance(model, Functional)
 
         self.assertEqual(inspect.ismethod(model.compile), True)
