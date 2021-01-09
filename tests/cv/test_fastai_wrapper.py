@@ -13,28 +13,27 @@ import torch.nn as nn
 class TestFastaiWrapper(unittest.TestCase):
   """Test the wrapped fastai module."""
 
-  no_check_ds = [
-      "CALTECH_101",  # Not a valid directory.
-      "DOGS",  # Not a valid directory
-      "MNIST_SAMPLE",  # Not a valid directory.
-  ]
-
-  # def test_load_dataset_return_type(self):
-  #   """Make sure fastai objects are returned."""
+  #
+  # @author Hugo Ochoa
+  # Function temporary commented to avoid testexecution as Github Action
+  # Since these tests require dataset to be downloaded
+  # @todo check how to better do this in the CI server
+  #
+  # def test_load_dataset(self):
+  #   """
+  #       Make sure `dict`s are returned, with correct keywords for splits.
+  #     """
   #   for task in fastai_wrapper.DATASETS:
-  #     print("Checking task: {}".format(task))
-  #     for ds in fastai_wrapper.DATASETS[task]:
-  #       if ds in self.no_check_ds:
-  #         continue
-  #       print("Testing {}".format(ds))
-  #       dso = fastai_wrapper.load_dataset(ds)
-  #       # Make sure we are getting a dictionary.
-  #       self.assertEqual(dict, type(dso))
-  #       # Make sure the objects in the dict are fastai.
-  #       for split in dso:
-  #         print("Split name: {}".format(split))
-  #         print(type(dso[split]))
-  #         self.assertTrue("fastai" in str(type(dso[split])))
+  #     for dataset_name in fastai_wrapper.DATASETS[task]:
+
+  #       dataset = fastai_wrapper.load_dataset(dataset_name)
+
+  #       self.assertEqual(type(dataset), dict)
+
+  #       # for key in dataset:
+  #       #
+  #       # @author HO
+  #       # @todo Validate dataset dict key/value in here...
 
   def test_load_model(self):
     """Make sure that we can load every model from the fastai module."""
