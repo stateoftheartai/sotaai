@@ -25,24 +25,22 @@ class TestKerasWrapper(unittest.TestCase):
   # @todo check how to better do this in the CI server
   #
   # def test_load_dataset(self):
-  #     """
+  #   """
   #       Make sure `dict`s are returned, with correct keywords for splits.
   #     """
-  #     all_keywords = []
-  #     for task in keras_wrapper.DATASETS.keys():
-  #         for dataset_name in keras_wrapper.DATASETS[task]:
+  #   for task in keras_wrapper.DATASETS:
+  #     for dataset_name in keras_wrapper.DATASETS[task]:
 
-  #             dataset = keras_wrapper.load_dataset(dataset_name)
+  #       dataset = keras_wrapper.load_dataset(dataset_name)
 
-  #             self.assertEqual(type(dataset), dict)
+  #       self.assertEqual(type(dataset), dict)
 
-  #             for key in dataset.keys():
-  #                 all_keywords.append(key)
-  #                 self.assertEqual(tuple, type(dataset[key]))
-  #                 self.assertEqual(len(dataset[key]), 2)
+  #       for key in dataset:
+  #         self.assertEqual(tuple, type(dataset[key]))
+  #         self.assertEqual(len(dataset[key]), 2)
 
-  #                 self.assertEqual(np.ndarray, type(dataset[key][0]))
-  #                 self.assertEqual(np.ndarray, type(dataset[key][1]))
+  #         self.assertEqual(np.ndarray, type(dataset[key][0]))
+  #         self.assertEqual(np.ndarray, type(dataset[key][1]))
 
   def test_load_model(self):
     """Make sure that we can load every model from the Keras module."""
@@ -52,6 +50,12 @@ class TestKerasWrapper(unittest.TestCase):
 
         model = keras_wrapper.load_model(model_name)
 
+        #
+        # @author HO
+        # Test the returned model against tf.Keras.Model functional as
+        # documented in
+        # https://www.tensorflow.org/api_docs/python/tf/keras/Model#top_of_page
+        #
         self.assertIsInstance(model, Functional)
 
         self.assertEqual(inspect.ismethod(model.compile), True)

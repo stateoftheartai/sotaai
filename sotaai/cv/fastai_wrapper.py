@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
-# Author: Liubove Orlov Savko
+# Author: Hugo Ochoa <hugo@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2020.
-"""Module used to interface with fastai"s library."""
+"""
+fastai https://www.fast.ai/ wrapper module
+"""
+
 from fastai.vision import ImageDataBunch, ObjectItemList
 from fastai.vision import PointsItemList, SegmentationItemList
 from fastai.vision import URLs, untar_data, models
@@ -12,14 +15,16 @@ import numpy as np
 import os
 from os.path import expanduser
 
-MODELS = [
-    "alexnet", "densenet121", "densenet161", "densenet169", "densenet201",
-    "mobilenet_v2", "resnet101", "resnet152", "resnet18", "resnet34",
-    "resnet50", "squeezenet1_0", "squeezenet1_1", "vgg11_bn", "vgg13_bn",
-    "vgg16_bn", "vgg19_bn", "xresnet101", "xresnet152", "xresnet18",
-    "xresnet18_deep", "xresnet34", "xresnet34_deep", "xresnet50",
-    "xresnet50_deep"
-]
+MODELS = {
+    "classification": [
+        "alexnet", "densenet121", "densenet161", "densenet169", "densenet201",
+        "mobilenet_v2", "resnet101", "resnet152", "resnet18", "resnet34",
+        "resnet50", "squeezenet1_0", "squeezenet1_1", "vgg11_bn", "vgg13_bn",
+        "vgg16_bn", "vgg19_bn", "xresnet101", "xresnet152", "xresnet18",
+        "xresnet18_deep", "xresnet34", "xresnet34_deep", "xresnet50",
+        "xresnet50_deep"
+    ]
+}
 
 DATASETS = {
     "classification": [
@@ -33,17 +38,18 @@ DATASETS = {
     "multi-label classification": ["PLANET_SAMPLE", "PLANET_TINY"],
     "segmentation": ["CAMVID", "CAMVID_TINY"]
 }
-""" Not yet wrapped
 
- #"PASCAL_2007",         #Checksum does not match. No download
- #"PASCAL_2012",         #Checksum does not match. No download
- "FLOWERS",
- "BIWI_HEAD_POSE", #
- "CARS",#Classification
- "CUB_200_2011", #Classification, detection            #Caltech UCSD Birds
- "FOOD",#Classification
- "LSUN_BEDROOMS",#Classification
-"""
+#
+# @author HO
+# @todo not yet wrapped:
+#  "PASCAL_2007"        #Checksum does not match. No download
+#  "PASCAL_2012"        #Checksum does not match. No download
+#  "FLOWERS"
+#  "BIWI_HEAD_POSE"
+#  "CARS"
+#  "CUB_200_2011"
+#  "FOOD"
+#  "LSUN_BEDROOMS"
 
 
 def load_model(model_name: str, pretrained: bool = False):
@@ -170,34 +176,3 @@ def load_dataset(dataset_name):
             ds_dic[split.split("_")[0]] = data
 
   return ds_dic
-
-
-def take(dataset, partition, index):
-  """
-    Input:
-        dataset: `fastai.vision.data`
-        partition: str. Either "train", "test", or "valid".
-        index: the index of interest
-    Output:
-        a tuple (image, label), where
-          image is a torch.Tensor
-          label is either a torch.Tensor or int, depending on the dataset
-
-    """
-  data_point = getattr(dataset, partition + "_ds")[index]
-  x, y = data_point[0].data, data_point[1].data
-  return x, y
-
-
-def predict():
-  """
-    Input:
-        model: torch.nn.Module
-        dataset: torch.Tensor of shape (N,C,H,W)
-    Output: result of the model, which depends on the task
-    """
-  return NotImplementedError
-
-
-def model_to_dataset():
-  return Exception("Not yet implemented")

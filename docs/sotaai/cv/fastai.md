@@ -18,7 +18,7 @@ Return Type: `FastaiDatasetDict` (see below)
 
 Function: `load_model`
 
-Return Type: ... TODO(huguito)
+Return Type: `FastaiModel`
 
 ## Return Types
 
@@ -34,3 +34,20 @@ keys:
 
 For more details check [fast.ai's ImageDataBunch
 class](https://fastai1.fast.ai/vision.data.html#ImageDataBunch).
+
+### `FastaiModel`
+
+As stated [here](https://fastai1.fast.ai/vision.models.html),
+most of the Fastai models come from Torch, although they also provide their own models but those are a few).
+As of now, the returned model is to be a
+[Torchvision model](https://pytorch.org/docs/stable/torchvision/models.html) and this returned instance
+will belong to a custom class e.g. `fastai.vision.models.xresnet.XResNet` or `torchvision.models.vgg.VGG`.
+However, at the end those custom classes inherit from
+[nn.Module Class](https://pytorch.org/docs/stable/generated/torch.nn.Module.html?highlight=nn%20module#torch.nn.Module).
+
+Notes:
+
+- Available fastai models and its parameters are documented
+  [here](https://pytorch.org/docs/stable/torchvision/models.html). As of now, all of them come from Torch.
+- All of those pre-built models were coded using `nn.Module` as briefly documented
+  [here](https://pytorch.org/tutorials/beginner/nn_tutorial.html#refactor-using-nn-module)
