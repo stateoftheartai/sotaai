@@ -26,8 +26,8 @@ class TestKerasWrapper(unittest.TestCase):
   #
   # def test_load_dataset(self):
   #   """
-  #       Make sure `dict`s are returned, with correct keywords for splits.
-  #     """
+  #     Make sure `dict`s are returned, with correct keywords for splits.
+  #   """
   #   for task in keras_wrapper.DATASETS:
   #     for dataset_name in keras_wrapper.DATASETS[task]:
 
