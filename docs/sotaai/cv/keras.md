@@ -15,6 +15,8 @@ Function: `load_dataset`
 
 Return Type: `KerasDatasetDict` (see below)
 
+Data stored in: `~/.keras`
+
 ## Models
 
 Function: `load_model`

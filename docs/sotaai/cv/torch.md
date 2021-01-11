@@ -15,11 +15,15 @@ Function: `load_dataset`
 
 Return Type: `TorchDatasetDict` (see below)
 
+Data stored in: `~/.torch`
+
 ## Models
 
 Function: `load_model`
 
 Return Type: TODO(huguito)
+
+Data stored in: `~/.cache/torch` e.g. pretrained models
 
 ## Return Types
 

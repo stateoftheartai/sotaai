@@ -14,6 +14,8 @@ Function: `load_dataset`
 
 Return Type: `FastaiDatasetDict` (see below)
 
+Data stored in: `~/.fastai`
+
 ## Models
 
 Function: `load_model`
