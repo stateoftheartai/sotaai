@@ -12,8 +12,6 @@ from fastai.vision import get_image_files, imagenet_stats
 from fastai.vision import get_transforms, get_annotations
 from fastai.vision import pickle, bb_pad_collate
 import numpy as np
-import os
-from os.path import expanduser
 
 MODELS = {
     "classification": [
@@ -75,16 +73,26 @@ def load_dataset(dataset_name):
     """
   url_dataset = getattr(URLs, dataset_name)
   path = untar_data(url_dataset)
+
   if dataset_name == "MNIST":
-    data = ImageDataBunch.from_folder(path, train="training", test="testing")
+    data = ImageDataBunch.from_folder(path,
+                                      train="training",
+                                      test="testing",
+                                      no_check=True)
+
+  if dataset_name == "MNIST_SAMPLE":
+    data = ImageDataBunch.from_folder(path,
+                                      train="train",
+                                      test="valid",
+                                      no_check=True)
 
   if dataset_name in [
-      "MNIST_SAMPLE", "MNIST_TINY", "MNIST_VAR_SIZE_TINY", "CIFAR", "CIFAR_100",
-      "DOGS"
+      "MNIST_TINY", "MNIST_VAR_SIZE_TINY", "CIFAR", "CIFAR_100", "DOGS"
   ]:
     if dataset_name == "DOGS":
       data = ImageDataBunch.from_folder(path, test="test1", no_check=True)
-    data = ImageDataBunch.from_folder(path, test="test", no_check=True)
+    else:
+      data = ImageDataBunch.from_folder(path, test="test", no_check=True)
 
   if dataset_name == "SKIN_LESION":
     data = ImageDataBunch.from_folder(path, no_check=True)
@@ -107,17 +115,13 @@ def load_dataset(dataset_name):
                                    label_delim=" ")
 
   if dataset_name == "CALTECH_101":
-    home = expanduser("~")
-    original = home + "/.fastai/data/101_ObjectCategories"
-    target = home + "/.fastai/data/caltech_101"
-    os.rename(original, target)
     data = ImageDataBunch.from_folder(path, valid_pct=0.2, no_check=True)
 
   if dataset_name in [
       "IMAGENETTE", "IMAGENETTE_160", "IMAGENETTE_320", "IMAGEWOOF",
       "IMAGEWOOF_160", "IMAGEWOOF_320"
   ]:
-    data = ImageDataBunch.from_folder(path, valid="val")
+    data = ImageDataBunch.from_folder(path, valid="val", no_check=True)
 
   if dataset_name in ["COCO_SAMPLE", "COCO_TINY"]:
     if dataset_name == "COCO_SAMPLE":

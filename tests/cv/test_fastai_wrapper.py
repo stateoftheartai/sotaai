@@ -21,8 +21,8 @@ class TestFastaiWrapper(unittest.TestCase):
   #
   # def test_load_dataset(self):
   #   """
-  #       Make sure `dict`s are returned, with correct keywords for splits.
-  #     """
+  #     Make sure `dict`s are returned, with correct keywords for splits.
+  #   """
   #   for task in fastai_wrapper.DATASETS:
   #     for dataset_name in fastai_wrapper.DATASETS[task]:
 
