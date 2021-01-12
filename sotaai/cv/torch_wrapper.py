@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-# Author: Liubove Orlov Savko
+# Author: Tonio Teran <tonio@stateoftheart.ai>
+# Author: Hugo Ochoa <hugo@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2020.
 """Module used to interface with Torchvision"s models and datasets."""
+
 from torchvision import models
 from torchvision import datasets as dset
 import os
@@ -10,20 +12,20 @@ import torch
 DATASETS = {
     "classification": [
         "CIFAR10",
-        # "CIFAR100",
-        # "CelebA",
-        # "EMNIST",
-        # "FashionMNIST",
-        # "KMNIST",
-        # "LSUN",  # No download
-        # "MNIST",
-        # "Omniglot",
-        # "QMNIST",
-        # "SEMEION",
-        # "SVHN",
-        # "USPS",
-        # "STL10",  # Unsupervised learning.
-        # "ImageNet",  # No download
+        "CIFAR100",
+        "CelebA",
+        "EMNIST",
+        "FashionMNIST",
+        "KMNIST",
+        "LSUN",  # No download
+        "MNIST",
+        "Omniglot",
+        "QMNIST",
+        "SEMEION",
+        "SVHN",
+        "USPS",
+        "STL10",  # Unsupervised learning.
+        "ImageNet",  # No download
     ],
     # "object detection": [
     #     "CelebA",
