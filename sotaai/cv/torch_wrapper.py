@@ -27,49 +27,49 @@ DATASETS = {
         "STL10",  # Unsupervised learning.
         "ImageNet",  # No download
     ],
-    # "object detection": [
-    #     "CelebA",
-    #     "CocoDetection",  # No download.
-    #     "Flickr30k",  # No download.
-    #     "VOCDetection/2007",
-    #     "VOCDetection/2008",
-    #     # "VOCDetection/2009", Corrupted
-    #     "VOCDetection/2010",
-    #     "VOCDetection/2011",
-    #     "VOCDetection/2012",
-    # ],
-    # "segmentation": [
-    #     "Cityscapes",  # No download.
-    #     "VOCSegmentation/2007",
-    #     "VOCSegmentation/2008",
-    #     # "VOCSegmentation/2009", Corrupted
-    #     "VOCSegmentation/2010",
-    #     "VOCSegmentation/2011",
-    #     "VOCSegmentation/2012",
-    #     "SBD/segmentation",
-    #     "SBD/boundaries",
-    # ],
-    # "captioning": [
-    #     "CocoCaptions",  # No download.
-    #     "Flickr8k",  # No download.
-    #     "Flickr30k",  # No download.
-    #     "SBU"
-    # ],
-    # "human activity recognition": [
-    #     "HMDB51",  # No download.
-    #     "Kinetics400",  # No download.
-    #     "UCF101",  # No download.
-    # ],
-    # "one-shot-learning": ["Omniglot"],
-    # "few-shot-learning": ["Omniglot"],
-    # "local image descriptors": [
-    #     "PhotoTour/notredame",
-    #     "PhotoTour/yosemite",
-    #     "PhotoTour/liberty",
-    #     "PhotoTour/notredame_harris",
-    #     "PhotoTour/yosemite_harris",
-    #     "PhotoTour/liberty_harris",
-    # ],
+    "object detection": [
+        "CelebA",
+        "CocoDetection",  # No download.
+        "Flickr30k",  # No download.
+        "VOCDetection/2007",
+        "VOCDetection/2008",
+        # "VOCDetection/2009", Corrupted
+        "VOCDetection/2010",
+        "VOCDetection/2011",
+        "VOCDetection/2012",
+    ],
+    "segmentation": [
+        "Cityscapes",  # No download.
+        "VOCSegmentation/2007",
+        "VOCSegmentation/2008",
+        # "VOCSegmentation/2009", Corrupted
+        "VOCSegmentation/2010",
+        "VOCSegmentation/2011",
+        "VOCSegmentation/2012",
+        "SBD/segmentation",
+        "SBD/boundaries",
+    ],
+    "captioning": [
+        "CocoCaptions",  # No download.
+        "Flickr8k",  # No download.
+        "Flickr30k",  # No download.
+        "SBU"
+    ],
+    "human activity recognition": [
+        "HMDB51",  # No download.
+        "Kinetics400",  # No download.
+        "UCF101",  # No download.
+    ],
+    "one-shot-learning": ["Omniglot"],
+    "few-shot-learning": ["Omniglot"],
+    "local image descriptors": [
+        "PhotoTour/notredame",
+        "PhotoTour/yosemite",
+        "PhotoTour/liberty",
+        "PhotoTour/notredame_harris",
+        "PhotoTour/yosemite_harris",
+        "PhotoTour/liberty_harris",
+    ],
 }
 
 MODELS = {

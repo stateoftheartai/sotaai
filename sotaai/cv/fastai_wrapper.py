@@ -12,7 +12,6 @@ from fastai.vision import get_image_files, imagenet_stats
 from fastai.vision import get_transforms, get_annotations
 from fastai.vision import pickle, bb_pad_collate
 import numpy as np
-import os
 
 MODELS = {
     "classification": [
@@ -74,9 +73,7 @@ def load_dataset(dataset_name):
     """
   url_dataset = getattr(URLs, dataset_name)
 
-  path = untar_data(url_dataset,
-                    fname=os.environ["SOTAAI_DATA_DIR"] + "/fastai/archive",
-                    dest=os.environ["SOTAAI_DATA_DIR"] + "/fastai/data")
+  path = untar_data(url_dataset)
 
   if dataset_name == "MNIST":
     data = ImageDataBunch.from_folder(path,

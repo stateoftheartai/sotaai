@@ -12,6 +12,9 @@ from tensorflow.python.keras.engine.functional import Functional  # pylint: disa
 from sotaai.cv import keras_wrapper
 # from sotaai.cv.abstractions import AbstractCvDataset
 
+#
+# @author HO
+# Just to prevent Keras library to print warnings and extra logging data...
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 

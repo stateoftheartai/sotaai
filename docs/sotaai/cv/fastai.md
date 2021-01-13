@@ -15,6 +15,7 @@ Function: `load_dataset`
 Return Type: `FastaiDatasetDict` (see below)
 
 Data stored in: `~/.fastai`
+(predefined by fastaai but can be modified throug untar\_data dest parameter)
 
 ## Models
 

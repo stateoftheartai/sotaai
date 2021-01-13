@@ -15,7 +15,7 @@ Function: `load_dataset`
 
 Return Type: `TorchDatasetDict` (see below)
 
-Data stored in: `~/.torch`
+Data stored in: `~/.torch` (defined by us)
 
 ## Models
 
