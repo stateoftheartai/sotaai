@@ -11,6 +11,6 @@ setup(name="sotaai",
       description="Stateoftheart AI Official Library",
       url="https://github.com/stateoftheartai/sotaai",
       packages=["sotaai", "sotaai.cv"],
-      install_requires=["tensorflow", "fastai==1.0.61"],
+      install_requires=["tensorflow", "tensorflow-datasets", "fastai==1.0.61"],
       python_requires=">=3,<3.9",
       extras_require={})
