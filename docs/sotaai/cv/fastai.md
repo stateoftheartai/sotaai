@@ -43,9 +43,10 @@ class](https://fastai1.fast.ai/vision.data.html#ImageDataBunch).
 As stated [here](https://fastai1.fast.ai/vision.models.html),
 most of the Fastai models come from Torch, although they also provide their own models but those are a few).
 As of now, the returned model is to be a
-[Torchvision model](https://pytorch.org/docs/stable/torchvision/models.html) and this returned instance
-will belong to a custom class e.g. `fastai.vision.models.xresnet.XResNet` or `torchvision.models.vgg.VGG`.
-However, at the end those custom classes inherit from
+[Torchvision model](https://pytorch.org/docs/stable/torchvision/models.html)
+which instance is of a custom class
+e.g. `fastai.vision.models.xresnet.XResNet` or `torchvision.models.vgg.VGG`.
+However, at the end those custom classes inherit from the more generic
 [nn.Module Class](https://pytorch.org/docs/stable/generated/torch.nn.Module.html?highlight=nn%20module#torch.nn.Module).
 
 Notes:
