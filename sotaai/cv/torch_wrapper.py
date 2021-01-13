@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-# Author: Liubove Orlov Savko
+# Author: Tonio Teran <tonio@stateoftheart.ai>
+# Author: Hugo Ochoa <hugo@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2020.
 """Module used to interface with Torchvision"s models and datasets."""
+
 from torchvision import models
 from torchvision import datasets as dset
-from torch import nn
 import os
 import torch
 
@@ -71,7 +72,7 @@ DATASETS = {
     ],
 }
 
-MODELS_dic = {
+MODELS = {
     "classification": [
         "alexnet", "densenet121", "densenet161", "densenet169", "densenet201",
         "googlenet", "inception_v3", "mnasnet0_5", "mnasnet0_75", "mnasnet1_0",
@@ -94,43 +95,6 @@ MODELS_dic = {
 }
 
 
-def flatten(ll):
-  flat = []
-  for sublist in ll:
-    for item in sublist:
-      flat.append(item)
-  return flat
-
-
-MODELS = flatten(list(MODELS_dic.values()))
-
-
-def tasks():
-  return list(DATASETS.keys())
-
-
-def available_datasets(task: str = "all"):
-  """
-    Function that lists the available datasets by task
-    """
-  if task == "all":
-    flat_ds = flatten(DATASETS.values())
-    return flat_ds
-
-  return DATASETS[task]
-
-
-def available_models(task: str = "all"):
-  """
-    Function that lists the available datasets by task
-    """
-  if task == "all":
-    flat_models = flatten(models.values())
-    return flat_models
-
-  return models[task]
-
-
 def load_model(model_name, pretrained=False):
   """
     Input:
@@ -139,19 +103,24 @@ def load_model(model_name, pretrained=False):
                           randomly initialized model
     Output:
         torchvision.models
-    """
+  """
 
   # Load the corresponding model class
-  if model_name in MODELS_dic["segmentation"]:
+  if model_name in MODELS["segmentation"]:
     trainer = getattr(models.segmentation, model_name)
-  elif model_name in MODELS_dic["object detection"]:
+  elif model_name in MODELS["object detection"]:
     trainer = getattr(models.detection, model_name)
-  elif model_name in MODELS_dic["video"]:
+  elif model_name in MODELS["video"]:
     trainer = getattr(models.video, model_name)
   else:
     trainer = getattr(models, model_name)
 
-  return trainer(pretrained=pretrained)
+  if model_name in ["googlenet", "inception_v3"]:
+    model = trainer(pretrained=pretrained, init_weights=False)
+  else:
+    model = trainer(pretrained=pretrained)
+
+  return model
 
 
 def load_dataset(dataset_name,
@@ -175,10 +144,10 @@ def load_dataset(dataset_name,
     Output:
         dict, with keys indicating the partition of the dataset,
                 and the values are of type DataLoader
-    """
+  """
 
   if root == "default":
-    root = "./torch/" + dataset_name
+    root = "~/.torch/" + dataset_name
 
   if "SBD" in dataset_name:
     mode = dataset_name.split("/")[1]
@@ -318,97 +287,3 @@ def load_dataset(dataset_name,
   elif dataset_name == "Kinetics400":
     ds_dic["data"] = ds(root, frames_per_clip)
   return ds_dic
-
-
-def predict(model, dataset):
-  """
-    Input:
-        model: torch.nn.Module
-        dataset: torch.Tensor of shape (N,C,H,W)
-    Output: result of the model, which depends on the task
-    """
-  return model(dataset)
-
-
-def take(dataset, index):
-  """
-    Input:
-        dataset: Dataloader
-        index: int
-    Output: (image, label), where image: torch.Tensor and label is int.
-    """
-  return dataset.dataset.data[index], dataset.dataset.targets[index]
-
-
-# TODO: Model_to_dataset(). Below are functions necessary for that
-
-
-def adapt_last_layer(model, classes):
-  """ Change last layer of network given the number of classes in the
-    dataset. This function is for classification models only"""
-  layers = list(model.children())  # get children and their names
-  submodule = False
-
-  # if last layer is encapsulated in a block, get the layers of that block
-  if isinstance(layers[-1], torch.nn.modules.container.Sequential):
-    submodule = True
-    layers = list(layers.children())
-    body = nn.Sequential(*list(model.children())[:-1])
-
-  # Find last convolutional or linear layer, as they are the ones
-  # that determine the output size of the neural network
-  for i in range(1, len(layers)):
-    if isinstance(layers[-i], nn.Linear):
-      cut = -i
-
-      bias = bool(layers[-i].bias)
-
-      new_layer = nn.Linear(out_features=classes,
-                            in_features=layers[-i].in_features,
-                            bias=bias)
-
-      break
-    bool1 = isinstance(layers[-i], nn.Conv1d)
-    bool2 = isinstance(layers[-i], nn.Conv2d)
-    bool3 = isinstance(layers[-i], nn.Conv3d)
-    if bool1 or bool2 or bool3:
-      l_type = str(type(layers[-i][1])).split(".")[-1][:6]
-      conv = getattr(nn, l_type)
-
-      bias = bool(layers[-i].bias)
-
-      new_layer = new_layer = conv(in_channels=layers[-i].in_channels,
-                                   out_channels=classes,
-                                   kernel_size=layers[-i].kernel_size,
-                                   stride=layers[-i].stride,
-                                   padding=layers[-i].padding,
-                                   dilation=layers[-i].dilation,
-                                   groups=layers[-i].groups,
-                                   bias=bias,
-                                   padding_mode=layers[-i].padding_mode)
-      break
-  try:
-    if not submodule:
-      if cut != -1:
-        list_modules_head = [new_layer] + layers[cut + 1:]
-      else:
-        list_modules_head = [new_layer]
-      body = nn.Sequential(*layers[:cut])
-      head = nn.Sequential(*list_modules_head)
-      new_model = nn.Sequential(body, head)
-    else:
-      list_modules_head = layers[:cut] + [new_layer]
-      if cut != -1:
-        list_modules_head += layers[cut + 1:]
-      head = nn.Sequential(*list_modules_head)
-      new_model = nn.Sequential(body, head)
-  except:  # pylint: disable=W0702
-    msg = "The provided model is not a classification model, "
-    cont = "or it does not have a linear nor a convolutional layer"
-
-    print(msg, cont)
-  return new_model
-
-
-def model_to_dataset():
-  return Exception("Not yet implemented")

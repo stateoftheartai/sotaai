@@ -72,6 +72,7 @@ def load_dataset(dataset_name):
         A `fastai.image.data` class
     """
   url_dataset = getattr(URLs, dataset_name)
+
   path = untar_data(url_dataset)
 
   if dataset_name == "MNIST":
