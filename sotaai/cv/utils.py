@@ -5,6 +5,7 @@
 import importlib
 
 MODEL_SOURCES = ["fastai", "keras", "mxnet", "torch", "pretrainedmodels"]
+
 # TODO(tonioteran) Currently removed "mxnet" from DATASET_SOURCES. Need to
 # restore as soon as the wrapper is done and unit test.
 DATASET_SOURCES = ["tensorflow", "fastai", "keras", "torch"]  # "mxnet"
@@ -53,3 +54,49 @@ def map_dataset_source_tasks() -> dict:
     output_dict[original_names[dsname]] = datasets_breakdown[dsname]
 
   return output_dict
+
+
+def map_dataset_tasks() -> dict:
+  """Gathers all datasets and their supported tasks.
+
+  Builds a dictionary where each entry is of the form:
+
+      <dataset-name>: [<supported-task-1>, <supported-task-2>, ...]
+
+  Returns (dict):
+      Dictionary with an entry for all available datasets of the above form.
+
+  TODO(tonioteran) THIS SHOULD BE CACHED EVERY TIME WE USE IT.
+  """
+  dataset_sources_tasks = map_dataset_source_tasks()
+  dataset_tasks = dict()
+
+  for ds in dataset_sources_tasks:
+    ds_tasks = []
+
+    for source in dataset_sources_tasks[ds].keys():
+      for t in dataset_sources_tasks[ds][source]:
+        ds_tasks.append(t)
+    ds_tasks = list(set(ds_tasks))
+    dataset_tasks[ds] = ds_tasks
+
+  return dataset_tasks
+
+
+def map_dataset_sources() -> dict:
+  """Gathers all datasets and their source libraries.
+
+  Builds a dictionary where each entry is of the form:
+
+      <dataset-name>: [<source-library-1>, <source-library-2>, ...]
+
+  Returns (dict):
+      Dictionary with an entry for all available datasets of the above form.
+  """
+  dataset_sources_tasks = map_dataset_source_tasks()
+  dataset_sources = dict()
+
+  for ds in dataset_sources_tasks:
+    dataset_sources[ds] = list(dataset_sources_tasks[ds].keys())
+
+  return dataset_sources
