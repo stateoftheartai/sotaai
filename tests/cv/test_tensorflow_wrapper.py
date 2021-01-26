@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Author: Tonio Teran <tonio@stateoftheart.ai>
-# Copyright: Stateoftheart AI PBC 2020.
+# Copyright: Stateoftheart AI PBC 2021.
 """Unit testing the Tensorflow wrapper."""
 import unittest
 from sotaai.cv import tensorflow_wrapper  # pylint: disable=W0611
