@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 # Author: Tonio Teran <tonio@stateoftheart.ai>
 # Author: Hugo Ochoa <hugo@stateoftheart.ai>
-# Copyright: Stateoftheart AI PBC 2020.
-"""
-fastai https://pytorch.org/ wrapper module
-"""
+# Copyright: Stateoftheart AI PBC 2021.
+"""fastai https://pytorch.org/ wrapper module"""
 
 import unittest
 from sotaai.cv import torch_wrapper
@@ -44,9 +42,7 @@ class TestTorchWrapper(unittest.TestCase):
   #         self.assertEqual(DataLoader, type(dataset[key]))
 
   def test_load_model(self):
-    """
-      Make sure that we can load every model from the Torch module.
-    """
+    """Make sure that we can load every model from the Torch module."""
 
     for task in torch_wrapper.MODELS:
       for model_name in torch_wrapper.MODELS[task]:
