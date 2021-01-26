@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Author: Tonio Teran <tonio@stateoftheart.ai>
 # Author: Hugo Ochoa <hugo@stateoftheart.ai>
-# Copyright: Stateoftheart AI PBC 2020.
+# Copyright: Stateoftheart AI PBC 2021.
 """Unit testing the Keras wrapper."""
 
 import os
