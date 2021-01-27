@@ -61,6 +61,30 @@ class TestCvUtils(unittest.TestCase):
             self.assertTrue(task in ds_to_info[ds]["tasks"])
             self.assertTrue(source in ds_to_info[ds]["sources"])
 
+  def test_map_name_source_tasks(self):
+    """Test for both datasets and models."""
+    # Try first for datasets.
+    ds_to_sourcetasks = utils.map_name_source_tasks("datasets")
+
+    for source in utils.DATASET_SOURCES:
+      wrapper = importlib.import_module("sotaai.cv." + source + "_wrapper")
+      for task in wrapper.DATASETS:
+        for ds in wrapper.DATASETS[task]:
+          # Account for any spelling discrepancies.
+          if ds in ds_to_sourcetasks.keys():
+            self.assertTrue(source in ds_to_sourcetasks[ds].keys())
+
+    # Now for models.
+    model_to_sourcetasks = utils.map_name_source_tasks("models")
+
+    for source in utils.MODEL_SOURCES:
+      wrapper = importlib.import_module("sotaai.cv." + source + "_wrapper")
+      for task in wrapper.MODELS:
+        for model in wrapper.MODELS[task]:
+          # Account for any spelling discrepancies.
+          if model in model_to_sourcetasks.keys():
+            self.assertTrue(source in model_to_sourcetasks[model].keys())
+
 
 if __name__ == "__main__":
   unittest.main()
