@@ -41,7 +41,7 @@ def load_dataset(name: str) -> abstractions.CvDataset:
   # available models.
   """
   # TODO(hugo) Switch for new function to get the dataset source.
-  ds_source_map = utils.map_dataset_sources()
+  ds_source_map = utils.map_name_sources("datasets")
   source = ds_source_map[name][0]
 
   wrapper = importlib.import_module("sotaai.cv." + source + "_wrapper")
