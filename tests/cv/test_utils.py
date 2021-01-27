@@ -48,6 +48,19 @@ class TestCvUtils(unittest.TestCase):
           if ds in ds_to_sources.keys():
             self.assertTrue(source in ds_to_sources[ds])
 
+  def test_map_dataset_info(self):
+    """Ensure tasks and sources are adequately parsed."""
+    ds_to_info = utils.map_dataset_info()
+
+    for source in utils.DATASET_SOURCES:
+      wrapper = importlib.import_module("sotaai.cv." + source + "_wrapper")
+      for task in wrapper.DATASETS:
+        for ds in wrapper.DATASETS[task]:
+          # Account for any spelling discrepancies.
+          if ds in ds_to_info.keys():
+            self.assertTrue(task in ds_to_info[ds]["tasks"])
+            self.assertTrue(source in ds_to_info[ds]["sources"])
+
 
 if __name__ == "__main__":
   unittest.main()

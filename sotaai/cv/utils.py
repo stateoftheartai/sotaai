@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Author: Tonio Teran <tonio@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2021.
-"""Useful utility functions to navigate the library's available resources."""
+"""Useful utility functions to navigate the library"s available resources."""
 import importlib
 
 MODEL_SOURCES = ["fastai", "keras", "mxnet", "torch", "pretrainedmodels"]
@@ -100,3 +100,29 @@ def map_dataset_sources() -> dict:
     dataset_sources[ds] = list(dataset_sources_tasks[ds].keys())
 
   return dataset_sources
+
+
+def map_dataset_info() -> dict:
+  """Gathers all datasets, listing supported tasks and source libraries.
+
+  Builds a dictionary where each entry is of the form:
+
+      <dataset-name>: {
+          "tasks": [<supported-task-1>, <supported-task-2>, ...],
+          "sources": [<supported-task-1>, <supported-task-2>, ...]
+      }
+
+  Returns (dict):
+      Dictionary with an entry for all available datasets of the above form.
+  """
+  dataset_tasks = map_dataset_tasks()
+  dataset_sources = map_dataset_sources()
+  dataset_info = dict()
+
+  for ds in dataset_tasks:
+    dataset_info[ds] = {
+        "sources": dataset_sources[ds],
+        "tasks": dataset_tasks[ds]
+    }
+
+  return dataset_info
