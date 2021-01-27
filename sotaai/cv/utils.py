@@ -137,7 +137,7 @@ def map_name_source_tasks(nametype: str) -> dict:
 
   Crawls through all modules to arrange entries of the form:
 
-    <dataset-name>: {
+    <item-name>: {
         <name-source-1>: [<supported-task-11>, <supported-task-12>, ...],
         <name-source-2>: [<supported-task-21>, <supported-task-22>, ...],
         ...
@@ -182,3 +182,80 @@ def map_name_source_tasks(nametype: str) -> dict:
     output_dict[original_names[itemname]] = items_breakdown[itemname]
 
   return output_dict
+
+
+def map_name_tasks(nametype: str) -> dict:
+  """Gathers all models/datasets and their supported tasks.
+
+  Builds a dictionary where each entry is of the form:
+
+    <item-name>: [<supported-task-1>, <supported-task-2>, ...]
+
+  Args:
+    nametype (str):
+      Types of names to be used, i.e., either "models" or "datasets".
+
+  Returns (dict):
+    Dictionary with an entry for all available items of the above form.
+
+  TODO(tonioteran) THIS SHOULD BE CACHED EVERY TIME WE USE IT.
+  """
+  item_sources_tasks = map_name_source_tasks(nametype)
+  item_tasks = dict()
+
+  for item in item_sources_tasks:
+    it_tasks = []
+
+    for source in item_sources_tasks[item].keys():
+      for t in item_sources_tasks[item][source]:
+        it_tasks.append(t)
+    it_tasks = list(set(it_tasks))
+    item_tasks[item] = it_tasks
+
+  return item_tasks
+
+
+def map_name_sources(nametype: str) -> dict:
+  """Gathers all models/datasets and their source libraries.
+
+  Builds a dictionary where each entry is of the form:
+
+    <item-name>: [<source-library-1>, <source-library-2>, ...]
+
+  Args:
+    nametype (str):
+      Types of names to be used, i.e., either "models" or "datasets".
+
+  Returns (dict):
+    Dictionary with an entry for all available items of the above form.
+  """
+  item_sources_tasks = map_name_source_tasks(nametype)
+  item_sources = dict()
+
+  for item in item_sources_tasks:
+    item_sources[item] = list(item_sources_tasks[item].keys())
+
+  return item_sources
+
+
+def map_name_info(nametype: str) -> dict:
+  """Gathers all items, listing supported tasks and source libraries.
+
+  Builds a dictionary where each entry is of the form:
+
+      <item-name>: {
+          "tasks": [<supported-task-1>, <supported-task-2>, ...],
+          "sources": [<supported-task-1>, <supported-task-2>, ...]
+      }
+
+  Returns (dict):
+      Dictionary with an entry for all available items of the above form.
+  """
+  item_tasks = map_name_tasks(nametype)
+  item_sources = map_name_sources(nametype)
+  item_info = dict()
+
+  for item in item_tasks:
+    item_info[item] = {"sources": item_sources[item], "tasks": item_tasks[item]}
+
+  return item_info
