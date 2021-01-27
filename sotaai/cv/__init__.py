@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
+# Author: Tonio Teran <tonio@stateoftheart.ai>
 # Author: Hugo Ochoa <hugo@stateoftheart.ai>
-# Copyright: Stateoftheart AI PBC 2020.
+# Copyright: Stateoftheart AI PBC 2021.
+"""Main CV module to abstract away library specific API and standardize."""
+from sotaai.cv import utils
 
-#
-# @author HO
-# Put package content in here and remove this comments by then...
-#
+
+def load_model(name: str):
+  return name
+
+
+def load_dataset(name: str):
+  return name
