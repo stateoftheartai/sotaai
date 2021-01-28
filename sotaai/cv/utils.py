@@ -259,3 +259,32 @@ def map_name_info(nametype: str) -> dict:
     item_info[item] = {"sources": item_sources[item], "tasks": item_tasks[item]}
 
   return item_info
+
+
+def map_datasets_by_source() -> dict:
+  """Create a JSON, listing the dataset name and its final source.
+
+    <dataset-name>: <source>
+
+  Returns (dict):
+    Dictonary with an entry for all available items of the above form.
+  """
+
+  ds_to_sources = map_dataset_sources()
+  ds_by_source = {}
+
+  for ds in ds_to_sources:
+    sources = ds_to_sources[ds]
+    # Inspecting manually the data, all of the datasets that exist in multiple
+    # mini-aa exist in tensorflow.
+    source = "tensorflow"
+    if len(sources) == 1:
+      source = sources[0]
+    if source not in ds_by_source:
+      ds_by_source[source] = []
+    ds_by_source[source].append(ds)
+
+  for miniaa in ds_by_source:
+    print(miniaa)
+    for i, dataset in enumerate(ds_by_source[miniaa]):
+      print("   " + str(i) + " " + dataset)
