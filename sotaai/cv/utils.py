@@ -259,3 +259,33 @@ def map_name_info(nametype: str) -> dict:
     item_info[item] = {"sources": item_sources[item], "tasks": item_tasks[item]}
 
   return item_info
+
+
+def map_datasets_by_source() -> dict:
+  """Print the list of datasets per source (mini-aa). The list printed was added
+     to JIRA for future reference.
+  Returns (void)
+  """
+
+  ds_to_sources = map_dataset_sources()
+  ds_by_source = {}
+
+  for ds in ds_to_sources:
+    sources = ds_to_sources[ds]
+
+    # @author HO
+    # By manual inspection we saw that all datasets that exists in multiple
+    # mini-aa have "tensorflow" in common, also Tensorflow has a lot of datasets
+    # we need to wrap, thus Tensorflow was selected as the default source.
+
+    source = "tensorflow"
+    if len(sources) == 1:
+      source = sources[0]
+    if source not in ds_by_source:
+      ds_by_source[source] = []
+    ds_by_source[source].append(ds)
+
+  for miniaa in ds_by_source:
+    print(miniaa)
+    for i, dataset in enumerate(ds_by_source[miniaa]):
+      print("   " + str(i) + " " + dataset)
