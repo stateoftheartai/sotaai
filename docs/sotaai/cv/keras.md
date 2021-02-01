@@ -4,10 +4,9 @@ Wrapper: `keras_wrapper.py`
 
 General Notes:
 
-- Wraps datasets and models of the
-  [Keras](https://keras.io/) library
-- Provides standardized functions to load
-  datasets and models: `load_dataset` and `load_model`
+- Wraps datasets and models of the [Keras](https://keras.io/) library
+- Provides standardized functions to load datasets and models:
+  `load_dataset` and `load_model`
 
 ## Datasets
 
@@ -15,8 +14,7 @@ Function: `load_dataset`
 
 Return Type: `KerasDatasetDict` (see below)
 
-Data stored in: `~/.keras`
-(predefined by keras and cannot be changed)
+Data stored in: `~/.keras` (predefined by keras and cannot be changed)
 
 ## Models
 
@@ -39,9 +37,9 @@ A tensorflow functional object as defined in
 ### `KerasDatasetDict`
 
 A python [`dict`](https://docs.python.org/3/tutorial/datastructures.html#dictionaries).
-Each dictionary key corresponds to a dataset split,
-the dictionary values will be Numpy arrays with the corresponding data.
-The dictionary is to contain the following keys i.e. splits:
+Each dictionary key corresponds to a dataset split, the dictionary values will
+be Numpy arrays with the corresponding data. The dictionary is to contain the
+following keys i.e. splits:
 
 - `train`
 - `test`
