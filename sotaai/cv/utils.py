@@ -5,6 +5,8 @@
 # TODO(tonioteran) Deprecate specific dataset/model functions for the
 # generalized version.
 import importlib
+import mxnet as mx
+import numpy as np
 
 # TODO(tonioteran) Currently removed "mxnet" and "pretrainedmodels" from
 # MODEL_SOURCES. Need to restore as soon as the wrapper is done and unit test.
@@ -289,3 +291,224 @@ def map_datasets_by_source() -> dict:
     print(miniaa)
     for i, dataset in enumerate(ds_by_source[miniaa]):
       print("   " + str(i) + " " + dataset)
+
+
+def get_source_from_model(model) -> str:
+  """Returns the source library"s name from a model object.
+
+  Args:
+    model:
+      Model object directly instantiated from a source library. Type is
+      dependent on the source library.
+
+  Returns:
+    String with the name of the source library.
+  """
+  if "torchvision" in str(type(model)):
+    return "torchvision"
+  if "mxnet" in str(type(model)):
+    return "mxnet"
+  if "keras" in str(type(model)):
+    return "keras"
+  raise NotImplementedError(
+      "Need source extraction implementation for this type of model!")
+
+
+def flatten_model(model) -> list:
+  """Returns a list with the model"s layers.
+
+  Some models are built with blocks of layers. This function flattens the
+  blocks and returns a list of all layers of model. One of its uses is to find
+  the number of layers and parameters for a model in a programatic way.
+
+  Args:
+    model:
+      Model object directly instantiated from a source library. Type is
+      dependent on the source library.
+
+  Returns:
+    A list of layers, which depend on the model"s source library.
+  """
+  source = get_source_from_model(model)
+  if source in ["keras"]:
+    return list(model.submodules)
+
+  layers = []
+  flatten_model_recursively(model, source, layers)
+  return layers
+
+
+def flatten_model_recursively(block, source: str, layers: list):
+  """Recursive helper function to flatten a model"s layers onto a list.
+
+  Args:
+    block:
+      Model object directly instantiated from a source library, or a block of
+      that model. Type is dependent on the source library.
+    source: (string)
+      The name of the model"s source library.
+    layers: (list)
+      The list of layers to be recursively filled.
+
+  TODO(tonioteran,hugoochoa) Clean this up and unit test! This code seems
+  pretty messy...
+  """
+  if source == "mxnet":
+    bottleneck_layer = mx.gluon.model_zoo.vision.BottleneckV1
+    list1 = dir(bottleneck_layer)
+    if "features" in dir(block):
+      flatten_model_recursively(block.features, source, layers)
+
+    elif "HybridSequential" in str(type(block)):
+      for j in block:
+        flatten_model_recursively(j, source, layers)
+
+    elif "Bottleneck" in str(type(block)):
+      list2 = dir(block)
+      for ll in list1:
+        list2.remove(ll)
+      subblocks = [x for x in list2 if not x.startswith("_")]
+      for element in subblocks:
+        attr = getattr(block, element)
+        flatten_model_recursively(attr, source, layers)
+    else:
+      layers.append(block)
+
+  else:
+    for child in block.children():
+      obj = str(type(child))
+      if "container" in obj or "torch.nn" not in obj:
+        flatten_model_recursively(child, source, layers)
+      else:
+        layers.append(child)
+
+
+def get_input_type(model) -> str:
+  """Returns the type of the input data received by the model."""
+  source = get_source_from_model(model)
+  if source in [
+      "torchvision", "mxnet", "segmentation_models_pytorch", "pretrainedmodels",
+      "fastai", "mmf", "gans_pytorch"
+  ]:
+    return "torch.Tensor"
+  elif source in ["isr", "segmentation_models", "keras", "gans_keras"]:
+    return "numpy.ndarray"
+  elif source == "detectron2":
+    raise NotImplementedError
+
+
+def get_num_channels_from_model(model) -> int:
+  """Returns the number of channels that the model requires.
+
+  Three channels corresponds to a color data, while one channel corresponds to
+  grayscale data.
+
+  model:
+    Model object directly instantiated from a source library. Type is
+    dependent on the source library.
+
+  Returns:
+    An integer with the required data channels for the model.
+  """
+  layers = flatten_model(model)
+  original_input_type = get_input_type(model)
+
+  if original_input_type == "torch.Tensor":
+    return layers[0].weight.shape[1]
+
+  n_channels = None
+  for l in layers:  # noqa E741
+    if "conv" in str(type(l)):
+      if len(l.weights) == 0:
+        continue
+      if len(l.weights) <= 2:
+        if isinstance(l.weights[0], list):
+          n_channels = np.array(l.weights[0])[0].shape[-2]
+        else:
+          n_channels = l.weights[0][0].shape[-2]
+      else:
+        n_channels = np.array(l.weights)[0].shape[-2]
+      break
+  return n_channels
+
+
+def get_num_layers_from_model(model) -> int:
+  """Returns the number of layers from a model"""
+  n_layers = 0
+  layers = flatten_model(model)
+  for layer in layers:
+    layer_name = str(type(layer)).lower()
+    conv1_bool = "conv1d" in layer_name
+    conv2_bool = "conv2d" in layer_name
+    conv3_bool = "conv3d" in layer_name
+    linear_bool = "linear" in layer_name or "dense" in layer_name
+
+    if conv1_bool or conv2_bool or conv3_bool or linear_bool:
+      n_layers += 1
+  return n_layers
+
+
+def get_num_parameters_from_model(model) -> int:
+  """Calculate the number of parameters in model.
+
+  This depends on the number of trainable weights and biases.
+
+  TODO(tonioteran,hugoochoa) Clean this up and unit test! This code seems
+  pretty messy... We should try to remove as many indentation levels as
+  possible by simplifying the logic of the code.
+  """
+  n_params = 0
+  layers = flatten_model(model)
+  source = get_source_from_model(model)
+
+  # Tensorflow models and pytorch models have distinct attributes
+  # Tensorflow has attribute `weigths` while pytorch has `weight`
+  input_type = get_input_type(model)
+  if input_type == "torch.Tensor":
+    for layer in layers:
+      if "weight" in dir(layer):
+        if layer.weight is not None:
+          weights = np.array(layer.weight.shape)
+          # If a layer do not have a weight, then
+          # it won"t have a bias either
+
+          if "bias" in dir(layer):
+            if layer.bias is not None:
+              if source == "mxnet":
+                bias = layer.bias.shape[0]
+              else:
+                bias = len(layer.bias)
+              params_layer = np.prod(weights) + bias
+            else:
+              params_layer = np.prod(weights)
+          else:
+            params_layer = np.prod(weights)
+          n_params += params_layer
+
+  else:
+    # tf and keras based models
+    for layer in layers:
+      if "get_weights" in dir(layer):
+
+        if layer.get_weights() != []:
+          if len(layer.get_weights()) <= 2:
+            weights = np.array(layer.get_weights()[0]).shape
+          else:
+            weights = np.array(layer.get_weights()).shape
+
+        # If a layer do not have a weight, then
+        # it won"t have a bias either
+
+          if "bias" in dir(layer):
+
+            if layer.bias is not None and layer.use_bias:
+              bias = layer.bias.shape[0]
+              params_layer = np.prod(weights) + bias
+            else:
+              params_layer = np.prod(weights)
+
+          else:
+            params_layer = np.prod(weights)
+          n_params += params_layer
+
+  return n_params
