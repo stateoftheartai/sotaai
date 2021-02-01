@@ -5,6 +5,7 @@
 # TODO(tonioteran) Deprecate specific dataset/model functions for the
 # generalized version.
 import importlib
+import mxnet as mx
 
 # TODO(tonioteran) Currently removed "mxnet" and "pretrainedmodels" from
 # MODEL_SOURCES. Need to restore as soon as the wrapper is done and unit test.
@@ -289,3 +290,93 @@ def map_datasets_by_source() -> dict:
     print(miniaa)
     for i, dataset in enumerate(ds_by_source[miniaa]):
       print("   " + str(i) + " " + dataset)
+
+
+def extract_source_from_model(model) -> str:
+  """Returns the source library"s name from a model object.
+
+  Args:
+    model:
+      Model object directly instantiated from a source library. Type is
+      dependent on the source library.
+
+  Returns:
+    String with the name of the source library.
+  """
+  if "torchvision" in str(type(model)):
+    return "torchvision"
+  if "mxnet" in str(type(model)):
+    return "mxnet"
+  if "keras" in str(type(model)):
+    return "keras"
+  raise NotImplementedError(
+      "Need source extraction implementation for this type of model!")
+
+
+def flatten_model(model) -> list:
+  """Returns a list with the model"s layers.
+
+  Some models are built with blocks of layers. This function flattens the
+  blocks and returns a list of all layers of model. One of its uses is to find
+  the number of layers and parameters for a model in a programatic way.
+
+  Args:
+    model:
+      Model object directly instantiated from a source library. Type is
+      dependent on the source library.
+
+  Returns:
+    A list of layers, which depend on the model"s source library.
+  """
+  source = extract_source_from_model(model)
+  if source in ["keras"]:
+    return list(model.submodules)
+
+  layers = []
+  flatten_model_recursively(model, source, layers)
+  return layers
+
+
+def flatten_model_recursively(block, source: str, layers: list):
+  """Recursive helper function to flatten a model"s layers onto a list.
+
+  Args:
+    block:
+      Model object directly instantiated from a source library, or a block of
+      that model. Type is dependent on the source library.
+    source: (string)
+      The name of the model"s source library.
+    layers: (list)
+      The list of layers to be recursively filled.
+
+  TODO(tonioteran,hugoochoa) Clean this up and unit test! This code seems
+  pretty messy...
+  """
+  if source == "mxnet":
+    bottleneck_layer = mx.gluon.model_zoo.vision.BottleneckV1
+    list1 = dir(bottleneck_layer)
+    if "features" in dir(block):
+      flatten_model_recursively(block.features, source, layers)
+
+    elif "HybridSequential" in str(type(block)):
+      for j in block:
+        flatten_model_recursively(j, source, layers)
+
+    elif "Bottleneck" in str(type(block)):
+      list2 = dir(block)
+      for ll in list1:
+        list2.remove(ll)
+      subblocks = [x for x in list2 if not x.startswith("_")]
+      for element in subblocks:
+        attr = getattr(block, element)
+        flatten_model_recursively(attr, source, layers)
+    else:
+      layers.append(block)
+
+  else:
+    for child in block.children():
+      obj = str(type(child))
+      if "container" in obj or "torch.nn" not in obj:
+        flatten_model_recursively(child, source, layers)
+      else:
+        layers.append(child)
