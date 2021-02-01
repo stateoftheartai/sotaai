@@ -448,15 +448,23 @@ def get_num_layers_from_model(model) -> int:
   return n_layers
 
 
-def _calculate_parameters(self):
-  """ Calculate the number of parameters in model
-    This depends on the number of trainable weights and biases"""
+def get_num_parameters_from_model(model) -> int:
+  """Calculate the number of parameters in model.
+
+  This depends on the number of trainable weights and biases.
+
+  TODO(tonioteran,hugoochoa) Clean this up and unit test! This code seems
+  pretty messy... We should try to remove as many indentation levels as
+  possible by simplifying the logic of the code.
+  """
   n_params = 0
-  layers = self.flatten_model()
+  layers = flatten_model(model)
+  source = get_source_from_model(model)
 
   # Tensorflow models and pytorch models have distinct attributes
   # Tensorflow has attribute `weigths` while pytorch has `weight`
-  if self.input_type == "torch.Tensor":
+  input_type = get_input_type(model)
+  if input_type == "torch.Tensor":
     for layer in layers:
       if "weight" in dir(layer):
         if layer.weight is not None:
@@ -466,7 +474,7 @@ def _calculate_parameters(self):
 
           if "bias" in dir(layer):
             if layer.bias is not None:
-              if self.source == "mxnet":
+              if source == "mxnet":
                 bias = layer.bias.shape[0]
               else:
                 bias = len(layer.bias)
