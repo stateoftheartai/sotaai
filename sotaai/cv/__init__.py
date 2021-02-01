@@ -47,4 +47,9 @@ def load_dataset(name: str) -> abstractions.CvDataset:
   wrapper = importlib.import_module("sotaai.cv." + source + "_wrapper")
   raw_object = wrapper.load_dataset(name)
 
-  return abstractions.CvDataset(raw_object, name)
+  # Build a standardized `CvDataset` object per dataset split:
+  std_dataset = dict()
+  for split in raw_object:
+    std_dataset[split] = abstractions.CvDataset(raw_object, name)
+
+  return std_dataset
