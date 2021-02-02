@@ -240,6 +240,33 @@ class TestCvUtils(unittest.TestCase):
     m = load_model("resnet101", source="fastai")
     self.assertEqual(utils.get_input_type(m), "numpy.ndarray")  # Don't know...
 
+  def test_get_num_channels_from_model(self):
+    """Make sure we correctly determine whether a model is color or grayscale.
+
+    TODO(hugo) finish.
+    """
+    # Load a couple of torchvision examples here, e.g.,
+    m = load_model("alexnet", source="torch")
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+
+  def test_get_num_layers_from_model(self):
+    """Make sure we correctly determine number of layers in model's network.
+
+    TODO(hugo) finish.
+    """
+    # Load a couple of torchvision examples here, e.g.,
+    m = load_model("alexnet", source="torch")
+    self.assertEqual(utils.get_num_layers_from_model(m), 8)
+
+  def test_get_num_parameters_from_model(self):
+    """Make sure we correctly determine number of parameters in the model.
+
+    TODO(hugo) finish.
+    """
+    # Load a couple of torchvision examples here, e.g.,
+    m = load_model("alexnet", source="torch")
+    self.assertEqual(utils.get_num_parameters_from_model(m), 1000000)  # Fix.
+
 
 if __name__ == "__main__":
   unittest.main()
