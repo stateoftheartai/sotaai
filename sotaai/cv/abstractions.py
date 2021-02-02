@@ -11,18 +11,56 @@ class CvDataset(object):
   Each `CvDataset` represents a specific split of a full dataset.
   """
 
-  def __init__(self, raw_object, name: str):
-    """Constructor using `raw_object` from a source library.
+  def __init__(self, raw_dataset, name: str):
+    """Constructor using `raw_dataset` from a source library.
 
     Args:
-      raw_object:
+      raw_dataset:
         Dataset object directly instantiated from a source library. Type
         is dependent on the source library.
       name (str):
         Name of the dataset.
     """
-    self.raw = raw_object
+    self.raw = raw_dataset
     self.name = name
+    self.source = utils.get_source_from_dataset(raw_dataset)
+    self.data_type = None  # TODO(tonioteran) Implement me.
+    self.split_name = None  # TODO(tonioteran) Implement me.
+    self.tasks = None  # TODO(tonioteran) Implement me.
+    self.size = None  # TODO(tonioteran) Implement me.
+    self.shape = None  # TODO(tonioteran) Implement me.
+
+    # Populated for datasets supporting classification or detection tasks.
+    self.classes = None
+    self.classes_names = None
+
+    # Only populated for datasets that support segmentation tasks.
+    self.pixel_types = None
+    self.pixel_types_names = None
+
+    # Only populated for datasets that support image captioning tasks.
+    self.captions = None
+
+    # For visual question answering tasks.A
+    self.annotations = None
+    self.vocab = None
+
+  def __getitem__(self, i: int):
+    """Draw the `i`-th item from the dataset.
+    Args:
+      i (int):
+        Index for the item to be gotten.
+
+    Returns: The i-th sample as a dict. The first element of dict is a
+      numpy.ndarray with shape (N, H, W, C), where N = 1 represents the
+      number of images, H the image height, W the image width, and C the
+      number of channels. The next are labeled that depend on the task of the
+      dataset.
+
+    TODO(hugo) This is the original description we had for this method, but
+    we can chat more about it so see if it's still appropriate.
+    """
+    raise NotImplementedError("TODO: sample and translate to numpy.ndarray")
 
 
 class CvModel(object):
