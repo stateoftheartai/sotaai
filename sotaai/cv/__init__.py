@@ -8,7 +8,7 @@ from sotaai.cv import abstractions
 import importlib
 
 
-def load_model(name: str, source="") -> abstractions.CvModel:
+def load_model(name: str, source: str = "") -> abstractions.CvModel:
   """Fetch a model from a specific source, and return standardized object.
 
   Args:
@@ -37,12 +37,14 @@ def load_model(name: str, source="") -> abstractions.CvModel:
   return abstractions.CvModel(raw_object, name)
 
 
-def load_dataset(name: str) -> abstractions.CvDataset:
+def load_dataset(name: str, source: str = "") -> abstractions.CvDataset:
   """Fetch a dataset from a specific source, and return standardized object.
 
   Args:
     name (str):
       Name of the dataset.
+    source (str):
+      Optional parameter to indicate a specific source library.
 
   Returns (abstractions.CvDataset):
     The standardized dataset.
@@ -52,7 +54,15 @@ def load_dataset(name: str) -> abstractions.CvDataset:
   """
   # TODO(hugo) Switch for new function to get the dataset source.
   ds_source_map = utils.map_name_sources("datasets")
-  source = ds_source_map[name][0]
+  if source:
+    valid_sources = ds_source_map[name]
+    # Make sure the chosen source is available.
+    if source not in valid_sources:
+      raise NameError(
+          "Source {} not available for dataset {}.".format(source, name) +
+          " Available sources are: {}".format(valid_sources))
+  else:
+    source = ds_source_map[name][0]
 
   wrapper = importlib.import_module("sotaai.cv." + source + "_wrapper")
   raw_object = wrapper.load_dataset(name)
