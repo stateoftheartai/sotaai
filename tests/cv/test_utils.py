@@ -171,8 +171,6 @@ class TestCvUtils(unittest.TestCase):
     m = load_model("densenet121", source="torch")
     self.assertEqual(utils.get_source_from_model(m), "torch")
 
-    m = load_model("alexnet", source="mxnet")
-    self.assertEqual(utils.get_source_from_model(m), "mxnet")
     m = load_model("resnet152_v2", source="mxnet")
     self.assertEqual(utils.get_source_from_model(m), "mxnet")
     m = load_model("squeezenet1.1", source="mxnet")
@@ -183,10 +181,64 @@ class TestCvUtils(unittest.TestCase):
     m = load_model("NASNetMobile", source="keras")
     self.assertEqual(utils.get_source_from_model(m), "keras")
 
-    m = load_model("alexnet", source="fastai")
-    self.assertEqual(utils.get_source_from_model(m), "fastai")
     m = load_model("resnet101", source="fastai")
     self.assertEqual(utils.get_source_from_model(m), "fastai")
+
+  def test_flatten_model(self):
+    """Ensure the returned array corresponds to the actual model layers.
+
+    TODO(hugo) Fill out the tests.
+    """
+    # Need to figure out what the checks should look like (e.g., just count the
+    # number of layers?).
+    m = load_model("alexnet", source="torch")
+    layers = utils.flatten_model(m)
+    self.assertEqual(layers, ["I", "dont", "know"])  # TODO(hugo) Fix.
+    m = load_model("densenet121", source="torch")
+    layers = utils.flatten_model(m)
+    self.assertEqual(layers, ["I", "dont", "know"])  # TODO(hugo) Fix.
+
+    m = load_model("resnet152_v2", source="mxnet")
+    layers = utils.flatten_model(m)
+    self.assertEqual(layers, ["I", "dont", "know"])  # TODO(hugo) Fix.
+    m = load_model("squeezenet1.1", source="mxnet")
+    layers = utils.flatten_model(m)
+    self.assertEqual(layers, ["I", "dont", "know"])  # TODO(hugo) Fix.
+
+    m = load_model("InceptionResNetV2", source="keras")
+    layers = utils.flatten_model(m)
+    self.assertEqual(layers, ["I", "dont", "know"])  # TODO(hugo) Fix.
+    m = load_model("NASNetMobile", source="keras")
+    layers = utils.flatten_model(m)
+    self.assertEqual(layers, ["I", "dont", "know"])  # TODO(hugo) Fix.
+
+    m = load_model("resnet101", source="fastai")
+    layers = utils.flatten_model(m)
+    self.assertEqual(layers, ["I", "dont", "know"])  # TODO(hugo) Fix.
+
+  def test_get_input_type(self):
+    """Ensure the correct input type is being parsed from the model object.
+
+    TODO(hugo) Fill out the tests.
+    """
+    # Load a couple of torchvision examples here, e.g.,
+    m = load_model("alexnet", source="torch")
+    self.assertEqual(utils.get_input_type(m), "torch.Tensor")  # Don't know...
+    m = load_model("densenet121", source="torch")
+    self.assertEqual(utils.get_input_type(m), "torch.Tensor")  # Don't know...
+
+    m = load_model("resnet152_v2", source="mxnet")
+    self.assertEqual(utils.get_input_type(m), "numpy.ndarray")  # Don't know...
+    m = load_model("squeezenet1.1", source="mxnet")
+    self.assertEqual(utils.get_input_type(m), "numpy.ndarray")  # Don't know...
+
+    m = load_model("InceptionResNetV2", source="keras")
+    self.assertEqual(utils.get_input_type(m), "numpy.ndarray")  # Don't know...
+    m = load_model("NASNetMobile", source="keras")
+    self.assertEqual(utils.get_input_type(m), "numpy.ndarray")  # Don't know...
+
+    m = load_model("resnet101", source="fastai")
+    self.assertEqual(utils.get_input_type(m), "numpy.ndarray")  # Don't know...
 
 
 if __name__ == "__main__":
