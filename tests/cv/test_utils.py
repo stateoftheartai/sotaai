@@ -5,6 +5,7 @@
 import unittest
 import importlib
 from sotaai.cv import utils
+from sotaai.cv import load_model
 
 
 class TestCvUtils(unittest.TestCase):
@@ -158,6 +159,34 @@ class TestCvUtils(unittest.TestCase):
           if model in models_to_info.keys():
             self.assertTrue(task in models_to_info[model]["tasks"])
             self.assertTrue(source in models_to_info[model]["sources"])
+
+  def test_get_source_from_model(self):
+    """Ensure the source library is correctly determined from a model object.
+
+    TODO(hugo) Fill out the tests.
+    """
+    # Load a couple of torchvision examples here, e.g.,
+    m = load_model("alexnet", source="torch")
+    self.assertEqual(utils.get_source_from_model(m), "torch")
+    m = load_model("densenet121", source="torch")
+    self.assertEqual(utils.get_source_from_model(m), "torch")
+
+    m = load_model("alexnet", source="mxnet")
+    self.assertEqual(utils.get_source_from_model(m), "mxnet")
+    m = load_model("resnet152_v2", source="mxnet")
+    self.assertEqual(utils.get_source_from_model(m), "mxnet")
+    m = load_model("squeezenet1.1", source="mxnet")
+    self.assertEqual(utils.get_source_from_model(m), "mxnet")
+
+    m = load_model("InceptionResNetV2", source="keras")
+    self.assertEqual(utils.get_source_from_model(m), "keras")
+    m = load_model("NASNetMobile", source="keras")
+    self.assertEqual(utils.get_source_from_model(m), "keras")
+
+    m = load_model("alexnet", source="fastai")
+    self.assertEqual(utils.get_source_from_model(m), "fastai")
+    m = load_model("resnet101", source="fastai")
+    self.assertEqual(utils.get_source_from_model(m), "fastai")
 
 
 if __name__ == "__main__":
