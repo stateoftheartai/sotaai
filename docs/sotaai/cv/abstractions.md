@@ -1,34 +1,75 @@
 # Standardizing CV through abstractions
 
-## Datasets
+## Standardized datasets attributes and methods
+
+- `raw`: variable to hold the raw dataset object from the chosen source library.
+
+- `name`: string with the name of the dataset.
+
+- `source`: string with the name of the source library for this dataset.
+
+- `data_type`: string indicating the type of data contained in the dataset,
+  i.e., either `image` or `video`.
+
+- `split_name`: string indicating with the name of the corresponding dataset's
+  split.
+
+- `tasks`: array of strings with the name of the supported tasks.
+
+- `size`: int with the size of the split (number of elements inside the split).
+
+- `shape`: a tuple holding the shape of the split's data in the format (width,
+  height, num of channels).
+
+- For image classification or detection tasks:
+
+  - `classes`: array with the number of classes.
+
+  - `classes_names`: array with the corresponding names of classes.
+
+- For segmentation tasks:
+
+  - `pixel_types`: array with the number of pixel types
+
+  - `pixel_types_names`: array with the corresponding names of pixel types
+
+- For image captioning tasks:
+
+  - `captions`: array with captions?
+
+- For visual question answering tasks:
+
+  - `annotations`: array with annotations?
+
+  - `vocab`: array with vocabulary?
 
 ## Standardized model attributes and methods
 
 Public:
 
-- raw: variable to hold the raw model object from the chosen source library.
+- `raw`: variable to hold the raw model object from the chosen source library.
 
-- name: string with the name of the variable.
+- `name`: string with the name of the model.
 
-- source: string with the name of the source library for this model.
+- `source`: string with the name of the source library for this model.
 
-- input\_type: string indicating the type of data being handled, i.e., either
+- `data_type`: string indicating the type of data being handled, i.e., either
   `image` or `video`.
 
-- min\_size: `int` with the minimum size of image that a model accepts.
+- `min_size`: `int` with the minimum size of image that a model accepts.
 
-- num\_channels: int to indicate either a grayscale data type (`1`), or a color
+- `num_channels`: int to indicate either a grayscale data type (`1`), or a color
   data type (`3`).
 
 - Model parameters:
 
-  - num\_layers: `int` with the number of layers
-  - num\_params: `int` with the number of parameters
+  - `num_layers`: `int` with the number of layers
+  - `num_params`: `int` with the number of parameters
 
 - Data for interfacing with the front-end and producing the data packet to be sent:
 
-  - associated\_datasets: ?
-  - paper: ?
+  - `associated_datasets`: ?
+  - `paper`: ?
 
 - `__call__(self, input_data)`: a method to process a dataset sample, producing
   an output of type `???` (model/network structure dependent?). This is in order to be able to do:
