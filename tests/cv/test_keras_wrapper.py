@@ -10,6 +10,7 @@ import numpy as np
 import inspect
 from tensorflow.python.keras.engine.functional import Functional  # pylint: disable=no-name-in-module
 from sotaai.cv import load_dataset, keras_wrapper
+from sotaai.cv.abstractions import CvDataset
 
 #
 # @author HO
@@ -24,18 +25,19 @@ class TestKerasWrapper(unittest.TestCase):
     """
       Make sure `dict`s are returned, with correct keywords for splits.
     """
-    for dataset_name in keras_wrapper.UNITTEST_DATASETS:
+    for task in keras_wrapper.DATASETS:
+      datasets = keras_wrapper.DATASETS[task]
+      for dataset_name in datasets:
+        dataset = keras_wrapper.load_dataset(dataset_name)
 
-      dataset = keras_wrapper.load_dataset(dataset_name)
+        self.assertEqual(type(dataset), dict)
 
-      self.assertEqual(type(dataset), dict)
+        for key in dataset:
+          self.assertEqual(tuple, type(dataset[key]))
+          self.assertEqual(len(dataset[key]), 2)
 
-      for key in dataset:
-        self.assertEqual(tuple, type(dataset[key]))
-        self.assertEqual(len(dataset[key]), 2)
-
-        self.assertEqual(np.ndarray, type(dataset[key][0]))
-        self.assertEqual(np.ndarray, type(dataset[key][1]))
+          self.assertEqual(np.ndarray, type(dataset[key][0]))
+          self.assertEqual(np.ndarray, type(dataset[key][1]))
 
   def test_load_model(self):
     """Make sure that we can load every model from the Keras module."""
@@ -64,15 +66,19 @@ class TestKerasWrapper(unittest.TestCase):
       Make sure we can create an abstract dataset using
       Keras datasets.
     """
-    for ds in keras_wrapper.UNITTEST_DATASETS:
-      dso = load_dataset(ds)
+    for task in keras_wrapper.DATASETS:
+      datasets = keras_wrapper.DATASETS[task]
+      for dataset_name in datasets:
+        dso = load_dataset(dataset_name)
+        for split_name in dso:
+          cv_dataset = dso[split_name]
 
-      for split_name in dso:
-        cv_dataset = dso[split_name]
-        datapoint = cv_dataset[0]
+          self.assertEqual(CvDataset, type(cv_dataset))
 
-        self.assertEqual(np.ndarray, type(datapoint['image']))
-        self.assertEqual('label' in datapoint, True)
+          datapoint = cv_dataset[0]
+
+          self.assertEqual(np.ndarray, type(datapoint['image']))
+          self.assertEqual('label' in datapoint, True)
 
 
 if __name__ == '__main__':

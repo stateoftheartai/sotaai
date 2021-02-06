@@ -35,8 +35,6 @@ DATASETS = {
         "cats_vs_dogs",
         "celeb_a",
         "celeb_a_hq",  # manual download
-        "cifar10",
-        "cifar100",
         "cifar10_1",
         "cifar10_corrupted",
         # "citrus_leaves",  # Wrong checksum
@@ -51,7 +49,6 @@ DATASETS = {
         "dtd",
         "emnist",
         "eurosat",
-        "fashion_mnist",
         "food101",
         "geirhos_conflict_stimuli",
         "horses_or_humans",

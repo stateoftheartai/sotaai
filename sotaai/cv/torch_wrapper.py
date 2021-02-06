@@ -11,11 +11,8 @@ import torch
 
 DATASETS = {
     "classification": [
-        "CIFAR10",
-        "CIFAR100",
         "CelebA",
         "EMNIST",
-        "FashionMNIST",
         "KMNIST",
         "LSUN",  # No download
         "Omniglot",
@@ -163,9 +160,7 @@ def load_dataset(dataset_name,
   # with corresponding splits of dataset
   ds_dic = {}
 
-  datasets_w_train = [
-      "CIFAR10", "CIFAR100", "FashionMNIST", "KMNIST", "MNIST", "QMNIST", "USPS"
-  ]
+  datasets_w_train = ["KMNIST", "QMNIST", "USPS"]
   datasets_w_split = ["SVHN", "STL10", "CelebA"]
 
   download_train = True  # os.path.exists(root+"/train")
@@ -207,7 +202,7 @@ def load_dataset(dataset_name,
     ds_dic["val"] = ds(root + "/val", split="val")
 
   elif dataset_name == "EMNIST":
-    # split= balanced,byclass,bymerge,letters,digits,mnist
+    # split= balanced,byclass,bymerge,letters,digits
     ds_dic["train"] = ds(root + "/train",
                          split="balanced",
                          train=True,

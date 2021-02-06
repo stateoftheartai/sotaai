@@ -8,7 +8,6 @@ Keras https://keras.io/ wrapper module
 import tensorflow.keras as keras
 
 DATASETS = {"classification": ["mnist", "cifar10", "cifar100", "fashion_mnist"]}
-UNITTEST_DATASETS = ["mnist"]
 
 # @author HO
 # As of now, only missing EfficientNetBX

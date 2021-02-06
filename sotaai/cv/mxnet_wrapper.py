@@ -7,7 +7,7 @@ import mxnet as mx
 from mxnet.gluon import nn
 import copy
 
-DATASETS = {"classification": ["MNIST", "FashionMNIST", "CIFAR10", "CIFAR100"]}
+DATASETS = {"classification": []}
 
 # All models here are for classification.
 MODELS = [
