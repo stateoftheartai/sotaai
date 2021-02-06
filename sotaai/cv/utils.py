@@ -7,6 +7,7 @@
 import importlib
 import mxnet as mx
 import numpy as np
+import torch
 
 # TODO(tonioteran) Currently removed "mxnet" and "pretrainedmodels" from
 # MODEL_SOURCES. Need to restore as soon as the wrapper is done and unit test.
@@ -89,12 +90,14 @@ def map_dataset_tasks() -> dict:
   return dataset_tasks
 
 
-def map_dataset_sources() -> dict:
+def map_dataset_sources(count=False) -> dict:
   """Gathers all datasets and their source libraries.
 
   Builds a dictionary where each entry is of the form:
 
       <dataset-name>: [<source-library-1>, <source-library-2>, ...]
+
+  If count is True, return the count (length) of sources instead
 
   Returns (dict):
       Dictionary with an entry for all available datasets of the above form.
@@ -103,7 +106,9 @@ def map_dataset_sources() -> dict:
   dataset_sources = dict()
 
   for ds in dataset_sources_tasks:
-    dataset_sources[ds] = list(dataset_sources_tasks[ds].keys())
+    dataset_sources[ds] = list(
+        dataset_sources_tasks[ds].keys()) if not count else len(
+            dataset_sources_tasks[ds].keys())
 
   return dataset_sources
 
@@ -263,36 +268,6 @@ def map_name_info(nametype: str) -> dict:
   return item_info
 
 
-def map_datasets_by_source() -> dict:
-  """Print the list of datasets per source (mini-aa). The list printed was added
-     to JIRA for future reference.
-  Returns (void)
-  """
-
-  ds_to_sources = map_dataset_sources()
-  ds_by_source = {}
-
-  for ds in ds_to_sources:
-    sources = ds_to_sources[ds]
-
-    # @author HO
-    # By manual inspection we saw that all datasets that exists in multiple
-    # mini-aa have "tensorflow" in common, also Tensorflow has a lot of datasets
-    # we need to wrap, thus Tensorflow was selected as the default source.
-
-    source = "tensorflow"
-    if len(sources) == 1:
-      source = sources[0]
-    if source not in ds_by_source:
-      ds_by_source[source] = []
-    ds_by_source[source].append(ds)
-
-  for miniaa in ds_by_source:
-    print(miniaa)
-    for i, dataset in enumerate(ds_by_source[miniaa]):
-      print("   " + str(i) + " " + dataset)
-
-
 def get_source_from_model(model) -> str:
   """Returns the source library"s name from a model object.
 
@@ -312,6 +287,25 @@ def get_source_from_model(model) -> str:
     return "keras"
   raise NotImplementedError(
       "Need source extraction implementation for this type of model!")
+
+
+def get_source_from_dataset(dataset) -> str:
+  """Returns the source library"s name from a dataset object.
+
+  Args:
+    dataset:
+      Dataset object directly instantiated from a source library. Type is
+      dependent on the source library.
+
+  Returns:
+    String with the name of the source library.
+  """
+  sources = map_dataset_sources(count=False)
+  if dataset not in sources:
+    raise NotImplementedError(
+        "Need source extraction implementation for this type of dataset")
+  source = sources[dataset][0]
+  return source
 
 
 def flatten_model(model) -> list:
@@ -512,3 +506,29 @@ def get_num_parameters_from_model(model) -> int:
           n_params += params_layer
 
   return n_params
+
+
+def format_image(x):
+  '''
+  Args:
+      x:
+        numpy.ndarray or torch.Tensor that represents an image
+      Returns:
+        Processed numpy.ndarray of shape (1, h, w, c)
+  '''
+
+  tensor_shape = x.shape
+
+  if isinstance(x, torch.Tensor):
+    x = x.numpy()
+
+  if len(tensor_shape) == 2:
+    # We only have one channel.
+    x = x.reshape([1, 1, *x.shape])
+  elif len(tensor_shape) == 3:
+    # We have a dimension for the number of channels (dim [3]).
+    x = x.reshape([1, *x.shape])
+
+  if x.shape[3] != 1 and x.shape[3] != 3:
+    # Chang, shape (1, c, h, w) to (1, h, w, c)
+    x = np.transpose(x, [0, 2, 3, 1])

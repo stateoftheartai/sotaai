@@ -8,8 +8,8 @@ Keras https://keras.io/ wrapper module
 import tensorflow.keras as keras
 
 DATASETS = {"classification": ["mnist", "cifar10", "cifar100", "fashion_mnist"]}
+UNITTEST_DATASETS = ["mnist"]
 
-#
 # @author HO
 # As of now, only missing EfficientNetBX
 #
@@ -134,3 +134,16 @@ def load_dataset(dataset_name):
   dataset_dict = {"train": dataset[0], "test": dataset[1]}
 
   return dataset_dict
+
+
+def get_dataset_item(raw, index):
+  """
+    Input:
+      raw: raw keras dataset object
+      i (int): index to get item
+    Returns: a dict. The dict will contain a 'data' key which will hold the
+      datapoint as a numpy array. The dict will also contain a 'label' key which
+      will hold the label of the datapoint. The dict might contain other keys
+      depending on the nature of the dataset.
+    """
+  return {"image": raw[0][index], "label": raw[1][index]}

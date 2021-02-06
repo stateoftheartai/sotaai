@@ -3,6 +3,7 @@
 # Copyright: Stateoftheart AI PBC 2020.
 """Abstract classes for standardized models and datasets."""
 from sotaai.cv import utils
+from sotaai.cv.keras_wrapper import get_dataset_item as keras_item
 
 
 class CvDataset(object):
@@ -23,7 +24,7 @@ class CvDataset(object):
     """
     self.raw = raw_dataset
     self.name = name
-    self.source = utils.get_source_from_dataset(raw_dataset)
+    self.source = utils.get_source_from_dataset(name)
     self.data_type = None  # TODO(tonioteran) Implement me.
     self.split_name = None  # TODO(tonioteran) Implement me.
     self.tasks = None  # TODO(tonioteran) Implement me.
@@ -51,16 +52,15 @@ class CvDataset(object):
       i (int):
         Index for the item to be gotten.
 
-    Returns: The i-th sample as a dict. The first element of dict is a
-      numpy.ndarray with shape (N, H, W, C), where N = 1 represents the
-      number of images, H the image height, W the image width, and C the
-      number of channels. The next are labeled that depend on the task of the
-      dataset.
-
-    TODO(hugo) This is the original description we had for this method, but
-    we can chat more about it so see if it's still appropriate.
+    Returns: a dict. The dict will contain a 'data' key which will hold the
+      datapoint as a numpy array. The dict will also contain a 'label' key which
+      will hold the label of the datapoint. The dict might contain other keys
+      depending on the nature of the dataset.
     """
-    raise NotImplementedError("TODO: sample and translate to numpy.ndarray")
+    if self.source == "keras":
+      return keras_item(self.raw, i)
+    else:
+      raise NotImplementedError("Get item not implemented for the given source")
 
 
 class CvModel(object):

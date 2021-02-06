@@ -28,8 +28,8 @@ DATASETS = {
     "classification": [
         "CALTECH_101", "CIFAR", "CIFAR_100", "DOGS", "IMAGENETTE",
         "IMAGENETTE_160", "IMAGENETTE_320", "IMAGEWOOF", "IMAGEWOOF_160",
-        "IMAGEWOOF_320", "MNIST", "MNIST_SAMPLE", "MNIST_TINY",
-        "MNIST_VAR_SIZE_TINY", "PETS", "SKIN_LESION"
+        "IMAGEWOOF_320", "MNIST_SAMPLE", "MNIST_TINY", "MNIST_VAR_SIZE_TINY",
+        "PETS", "SKIN_LESION"
     ],
     "key-point detection": ["BIWI_SAMPLE"],
     "object detection": ["COCO_SAMPLE", "COCO_TINY"],

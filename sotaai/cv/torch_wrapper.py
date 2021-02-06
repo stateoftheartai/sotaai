@@ -18,7 +18,6 @@ DATASETS = {
         "FashionMNIST",
         "KMNIST",
         "LSUN",  # No download
-        "MNIST",
         "Omniglot",
         "QMNIST",
         "SEMEION",

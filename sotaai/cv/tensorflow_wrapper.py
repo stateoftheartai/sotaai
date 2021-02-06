@@ -65,7 +65,6 @@ DATASETS = {
         "kmnist",
         "lfw",
         "malaria",
-        "mnist",
         "mnist_corrupted",
         "omniglot",
         "oxford_flowers102",
