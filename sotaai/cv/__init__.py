@@ -20,16 +20,18 @@ def load_model(name: str, source: str = "") -> abstractions.CvModel:
   Returns (abstractions.CvModel):
     The standardized model.
   """
-  model_source_map = utils.map_name_sources("models")
+  model_source_map = utils.map_name_sources("models",
+                                            return_original_names=False)
+  lower_name = name.lower()
   if source:
-    valid_sources = model_source_map[name]
+    valid_sources = model_source_map[lower_name]
     # Make sure the chosen source is available.
     if source not in valid_sources:
       raise NameError(
           "Source {} not available for model {}.".format(source, name) +
           " Available sources are: {}".format(valid_sources))
   else:
-    source = model_source_map[name][0]
+    source = model_source_map[lower_name][0]
 
   wrapper = importlib.import_module("sotaai.cv." + source + "_wrapper")
   raw_object = wrapper.load_model(name)

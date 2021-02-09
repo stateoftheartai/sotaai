@@ -9,8 +9,8 @@ import unittest
 import numpy as np
 import inspect
 from tensorflow.python.keras.engine.functional import Functional  # pylint: disable=no-name-in-module
-from sotaai.cv import load_dataset, keras_wrapper
-from sotaai.cv.abstractions import CvDataset
+from sotaai.cv import load_dataset, load_model, keras_wrapper
+from sotaai.cv.abstractions import CvDataset, CvModel
 from sotaai.cv import utils
 
 #
@@ -88,6 +88,19 @@ class TestKerasWrapper(unittest.TestCase):
                            datapoint_metadata['label'])
           self.assertEqual(datapoint['image'].shape,
                            datapoint_metadata['image'])
+
+  def test_abstract_model(self):
+    """
+      Make sure we can create an abstract model using
+      Keras datasets.
+    """
+
+    for task in keras_wrapper.MODELS:
+      for model_name in keras_wrapper.MODELS[task]:
+
+        cv_model = load_model(model_name, 'keras')
+
+        self.assertEqual(CvModel, type(cv_model))
 
 
 if __name__ == '__main__':

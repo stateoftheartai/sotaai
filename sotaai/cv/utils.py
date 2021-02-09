@@ -139,7 +139,7 @@ def map_dataset_info() -> dict:
   return dataset_info
 
 
-def map_name_source_tasks(nametype: str) -> dict:
+def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:
   """Gathers all models/datasets and their respective sources and tasks.
 
   Crawls through all modules to arrange entries of the form:
@@ -157,7 +157,8 @@ def map_name_source_tasks(nametype: str) -> dict:
   Args:
     nametype (str):
       Types of names to be used, i.e., either "models" or "datasets".
-
+    return_original_names: if true return source original names, if false return
+      unified (lower case) names
   Returns (dict):
     Dictionary with an entry for all available items of the above form.
 
@@ -182,6 +183,15 @@ def map_name_source_tasks(nametype: str) -> dict:
             items_breakdown[item][source] = [task]
         else:
           items_breakdown[item] = {source: [task]}
+
+  # TODO When original_names are replaced, the original name replaced
+  # is the last one added to the original_names dict e.g. If vgg exists as
+  # VGG and vgg in different sources, the original_names dict will only keep
+  # one of those two. We need to fix this evenutally.
+
+  if not return_original_names:
+    return items_breakdown
+
   # Uses the entries of `original_names` as keys to store the entries from
   # the `items_breakdown` dict, which uses lowercase names as keys.
   output_dict = dict()
@@ -222,7 +232,7 @@ def map_name_tasks(nametype: str) -> dict:
   return item_tasks
 
 
-def map_name_sources(nametype: str) -> dict:
+def map_name_sources(nametype: str, return_original_names=True) -> dict:
   """Gathers all models/datasets and their source libraries.
 
   Builds a dictionary where each entry is of the form:
@@ -233,10 +243,12 @@ def map_name_sources(nametype: str) -> dict:
     nametype (str):
       Types of names to be used, i.e., either "models" or "datasets".
 
+    return_original_names: if true return source original names, if false return
+      unified (lower case) names
   Returns (dict):
     Dictionary with an entry for all available items of the above form.
   """
-  item_sources_tasks = map_name_source_tasks(nametype)
+  item_sources_tasks = map_name_source_tasks(nametype, return_original_names)
   item_sources = dict()
 
   for item in item_sources_tasks:
