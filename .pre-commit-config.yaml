@@ -21,8 +21,9 @@ repos:
     hooks:
       - id: pylint
         entry: ./.venv/bin/pylint
-        args:
-          - --load-plugins=pylint_quotes
+        # TODO Enable this once decided to change all files to single-quote
+        #args:
+          #- --load-plugins=pylint_quotes
   - repo: git@github.com:pre-commit/mirrors-yapf.git
     rev: v0.26.0
     hooks:

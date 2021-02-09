@@ -447,6 +447,7 @@ overgeneral-exceptions=StandardError,
                        BaseException
 
 # Custom Specs by Stateoftheart AI
-string-quote=single
-triple-quote=single
-docstring-quote=single
+# TODO Enable this once decided to change all files to single-quote
+#string-quote=single
+#triple-quote=single
+#docstring-quote=single
