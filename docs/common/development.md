@@ -69,33 +69,6 @@ Check for added large files..............................................Passed
 **Done**, now you are ready to start contributing and improving the `sotaai`
 library.
 
-## Visual Studio Code
-
-In case you use Visual Studio Code as your IDE, this `.vscode/settings.json`
-might work for you:
-
-```json
-{
-  "editor.formatOnSave": true,
-  "files.exclude": {
-    "**/__pycache__": true,
-    "build": true,
-    "dist": true,
-    "**.egg-info": true
-  },
-  "python.pythonPath": ".venv/bin/python",
-  "python.formatting.provider": "yapf",
-  "python.linting.pylintEnabled": true,
-  "python.linting.enabled": true,
-  "python.linting.pylintArgs": [
-    "--init-hook",
-    "import sys; sys.path.insert(0, '../sotaai')"
-  ]
-}
-```
-
-This configuration is going to apply the default formatting and linting we use.
-
 ## Contribution Flow
 
 **Step 1:** Make sure your local repo email match the email you use in Jira, in

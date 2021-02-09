@@ -2,7 +2,7 @@
 # Author: Tonio Teran <tonio@stateoftheart.ai>
 # Author: Hugo Ochoa <hugo@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2021.
-"""Unit testing the Keras wrapper."""
+'''Unit testing the Keras wrapper.'''
 
 import os
 import unittest
@@ -20,12 +20,12 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 
 class TestKerasWrapper(unittest.TestCase):
-  """Test the wrapped Keras module."""
+  '''Test the wrapped Keras module.'''
 
   def test_load_dataset(self):
-    """
+    '''
       Make sure `dict`s are returned, with correct keywords for splits.
-    """
+    '''
     for task in keras_wrapper.DATASETS:
       datasets = keras_wrapper.DATASETS[task]
       for dataset_name in datasets:
@@ -41,7 +41,7 @@ class TestKerasWrapper(unittest.TestCase):
           self.assertEqual(np.ndarray, type(dataset[split][1]))
 
   def test_load_model(self):
-    """Make sure that we can load every model from the Keras module."""
+    '''Make sure that we can load every model from the Keras module.'''
 
     for task in keras_wrapper.MODELS:
       for model_name in keras_wrapper.MODELS[task]:
@@ -63,10 +63,10 @@ class TestKerasWrapper(unittest.TestCase):
         self.assertEqual(inspect.ismethod(model.save), True)
 
   def test_abstract_dataset(self):
-    """
+    '''
       Make sure we can create an abstract dataset using
       Keras datasets.
-    """
+    '''
 
     for task in keras_wrapper.DATASETS:
       datasets = keras_wrapper.DATASETS[task]
@@ -90,10 +90,10 @@ class TestKerasWrapper(unittest.TestCase):
                            datapoint_metadata['image'])
 
   def test_abstract_model(self):
-    """
+    '''
       Make sure we can create an abstract model using
       Keras datasets.
-    """
+    '''
 
     for task in keras_wrapper.MODELS:
       for model_name in keras_wrapper.MODELS[task]:
