@@ -535,6 +535,14 @@ def format_image(x):
 
 
 def get_dataset_item_metadata(dataset_name):
+  '''
+  Args:
+    dataset_name: dataset name to obtain metadata from
+  Returns:
+    An object with the following keys:
+      image: holds the image shape as a tuple
+      label: holdes the label shape as a tuple
+  '''
   if "mnist" in dataset_name:
     return {"image": (28, 28), "label": ()}
   elif "cifar" in dataset_name:
