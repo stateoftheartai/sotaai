@@ -11,6 +11,7 @@ import inspect
 from tensorflow.python.keras.engine.functional import Functional  # pylint: disable=no-name-in-module
 from sotaai.cv import load_dataset, keras_wrapper
 from sotaai.cv.abstractions import CvDataset
+from sotaai.cv import utils
 
 #
 # @author HO
@@ -32,12 +33,12 @@ class TestKerasWrapper(unittest.TestCase):
 
         self.assertEqual(type(dataset), dict)
 
-        for key in dataset:
-          self.assertEqual(tuple, type(dataset[key]))
-          self.assertEqual(len(dataset[key]), 2)
+        for split in dataset:
+          self.assertEqual(tuple, type(dataset[split]))
+          self.assertEqual(len(dataset[split]), 2)
 
-          self.assertEqual(np.ndarray, type(dataset[key][0]))
-          self.assertEqual(np.ndarray, type(dataset[key][1]))
+          self.assertEqual(np.ndarray, type(dataset[split][0]))
+          self.assertEqual(np.ndarray, type(dataset[split][1]))
 
   def test_load_model(self):
     """Make sure that we can load every model from the Keras module."""
@@ -66,19 +67,27 @@ class TestKerasWrapper(unittest.TestCase):
       Make sure we can create an abstract dataset using
       Keras datasets.
     """
+
     for task in keras_wrapper.DATASETS:
       datasets = keras_wrapper.DATASETS[task]
+
       for dataset_name in datasets:
         dso = load_dataset(dataset_name)
-        for split_name in dso:
-          cv_dataset = dso[split_name]
 
+        for split_name in dso:
+
+          cv_dataset = dso[split_name]
           self.assertEqual(CvDataset, type(cv_dataset))
 
           datapoint = cv_dataset[0]
-
           self.assertEqual(np.ndarray, type(datapoint['image']))
           self.assertEqual('label' in datapoint, True)
+
+          datapoint_metadata = utils.get_dataset_item_metadata(dataset_name)
+          self.assertEqual(datapoint['label'].shape,
+                           datapoint_metadata['label'])
+          self.assertEqual(datapoint['image'].shape,
+                           datapoint_metadata['image'])
 
 
 if __name__ == '__main__':

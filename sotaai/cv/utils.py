@@ -532,3 +532,12 @@ def format_image(x):
   if x.shape[3] != 1 and x.shape[3] != 3:
     # Chang, shape (1, c, h, w) to (1, h, w, c)
     x = np.transpose(x, [0, 2, 3, 1])
+
+
+def get_dataset_item_metadata(dataset_name):
+  if "mnist" in dataset_name:
+    return {"image": (28, 28), "label": ()}
+  elif "cifar" in dataset_name:
+    return {"image": (32, 32, 3), "label": (1,)}
+  else:
+    raise NotImplementedError("Dataset is not implemented in this source")
