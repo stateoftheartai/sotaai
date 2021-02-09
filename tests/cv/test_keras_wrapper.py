@@ -78,6 +78,7 @@ class TestKerasWrapper(unittest.TestCase):
 
           cv_dataset = dso[split_name]
           self.assertEqual(CvDataset, type(cv_dataset))
+          self.assertEqual(cv_dataset.source, 'keras')
 
           datapoint = cv_dataset[0]
           self.assertEqual(np.ndarray, type(datapoint['image']))
@@ -101,6 +102,8 @@ class TestKerasWrapper(unittest.TestCase):
         cv_model = load_model(model_name, 'keras')
 
         self.assertEqual(CvModel, type(cv_model))
+        self.assertEqual(cv_model.source, 'keras')
+        self.assertEqual(cv_model.original_input_type, 'numpy.ndarray')
 
 
 if __name__ == '__main__':
