@@ -29,6 +29,7 @@ def load_model(model_name,
                dropout=0.001,
                input_tensor=None,
                input_shape=None,
+               include_top=None,
                pooling=None,
                classes=1000,
                classifier_activation="softmax"):
@@ -90,6 +91,7 @@ def load_model(model_name,
     model = trainer(weights=weights,
                     input_tensor=input_tensor,
                     input_shape=input_shape,
+                    include_top=include_top,
                     pooling=pooling,
                     classes=classes)
   elif model_name == "MobileNet":

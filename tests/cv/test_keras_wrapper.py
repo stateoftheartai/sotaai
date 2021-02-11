@@ -9,6 +9,8 @@ import unittest
 import numpy as np
 import inspect
 from tensorflow.python.keras.engine.functional import Functional  # pylint: disable=no-name-in-module
+from tensorflow.keras.layers import Input, Dense
+from tensorflow.keras import Sequential
 from sotaai.cv import load_dataset, load_model, keras_wrapper
 from sotaai.cv.abstractions import CvDataset, CvModel
 from sotaai.cv import utils
@@ -22,6 +24,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 class TestKerasWrapper(unittest.TestCase):
   '''Test the wrapped Keras module.'''
 
+  # @unitttest.SkipTest
   def test_load_dataset(self):
     '''
       Make sure `dict`s are returned, with correct keywords for splits.
@@ -40,6 +43,7 @@ class TestKerasWrapper(unittest.TestCase):
           self.assertEqual(np.ndarray, type(dataset[split][0]))
           self.assertEqual(np.ndarray, type(dataset[split][1]))
 
+  # @unitttest.SkipTest
   def test_load_model(self):
     '''Make sure that we can load every model from the Keras module.'''
 
@@ -62,6 +66,7 @@ class TestKerasWrapper(unittest.TestCase):
         self.assertEqual(inspect.ismethod(model.summary), True)
         self.assertEqual(inspect.ismethod(model.save), True)
 
+  # @unitttest.SkipTest
   def test_abstract_dataset(self):
     '''
       Make sure we can create an abstract dataset using
@@ -90,6 +95,7 @@ class TestKerasWrapper(unittest.TestCase):
           self.assertEqual(datapoint['image'].shape,
                            datapoint_metadata['image'])
 
+  # @unitttest.SkipTest
   def test_abstract_model(self):
     '''
       Make sure we can create an abstract model using
@@ -104,6 +110,48 @@ class TestKerasWrapper(unittest.TestCase):
         self.assertEqual(CvModel, type(cv_model))
         self.assertEqual(cv_model.source, 'keras')
         self.assertEqual(cv_model.original_input_type, 'numpy.ndarray')
+
+  # @unitttest.SkipTest
+  def test_model_call(self):
+    '''
+      Make sure we can call a model with a dataset sample to
+      get a prediction
+      As of now, we only test this function using ResNet with MNIST and
+      adjusting the dataset and model to be compatible with each other
+    '''
+
+    dataset_splits = load_dataset('mnist')
+    cv_dataset = dataset_splits['test']
+    datapoint = cv_dataset[0]
+
+    # Reshape MNIST data to be a single datapoint in RGB
+    x = datapoint['image']
+    x = x.reshape((28, 28, 1))
+    x = np.repeat(x, 3, -1)
+    x = x.reshape((1,) + x.shape)
+
+    self.assertEqual(x.shape, (1, 28, 28, 3))
+
+    # Modify ResNet model input/output so as to be compatible with MNIST
+    input_tensor = Input(shape=(28, 28, 3))
+    cv_model = load_model('ResNet101V2',
+                          'keras',
+                          input_tensor=input_tensor,
+                          include_top=False)
+    model = Sequential()
+    model.add(cv_model.raw)
+    model.add(Dense(10, activation='softmax'))
+
+    cv_model.update(model)
+
+    self.assertEqual(cv_model.raw.layers[0].input_shape, (None, 28, 28, 3))
+    self.assertEqual(cv_model.raw.layers[len(model.layers) - 1].output_shape,
+                     (None, 10))
+
+    # Test predictions
+    predictions = cv_model(x)
+
+    self.assertEqual(predictions.shape, (1, 10))
 
 
 if __name__ == '__main__':

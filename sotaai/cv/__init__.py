@@ -8,7 +8,10 @@ from sotaai.cv import abstractions
 import importlib
 
 
-def load_model(name: str, source: str = "") -> abstractions.CvModel:
+def load_model(name: str,
+               source: str = "",
+               input_tensor=None,
+               include_top=None) -> abstractions.CvModel:
   """Fetch a model from a specific source, and return standardized object.
 
   Args:
@@ -34,7 +37,9 @@ def load_model(name: str, source: str = "") -> abstractions.CvModel:
     source = model_source_map[lower_name][0]
 
   wrapper = importlib.import_module("sotaai.cv." + source + "_wrapper")
-  raw_object = wrapper.load_model(name)
+  raw_object = wrapper.load_model(name,
+                                  input_tensor=input_tensor,
+                                  include_top=include_top)
 
   return abstractions.CvModel(raw_object, name)
 
