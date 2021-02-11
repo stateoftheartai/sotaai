@@ -2,7 +2,7 @@
 # Author: Tonio Teran <tonio@stateoftheart.ai>
 # Author: Hugo Ochoa <hugo@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2021.
-"""Unit testing the fastai wrapper."""
+'''Unit testing the fastai wrapper.'''
 
 import unittest
 from sotaai.cv import fastai_wrapper
@@ -11,7 +11,7 @@ import torch.nn as nn
 
 
 class TestFastaiWrapper(unittest.TestCase):
-  """Test the wrapped fastai module."""
+  '''Test the wrapped fastai module.'''
 
   #
   # @author Hugo Ochoa
@@ -20,9 +20,9 @@ class TestFastaiWrapper(unittest.TestCase):
   # @todo check how to better do this in the CI server
   #
   # def test_load_dataset(self):
-  #   """
+  #   '''
   #     Make sure `dict`s are returned, with correct keywords for splits.
-  #   """
+  #   '''
   #   for task in fastai_wrapper.DATASETS:
   #     for dataset_name in fastai_wrapper.DATASETS[task]:
 
@@ -36,7 +36,7 @@ class TestFastaiWrapper(unittest.TestCase):
   #       # @todo Validate dataset dict key/value in here...
 
   def test_load_model(self):
-    """Make sure that we can load every model from the fastai module."""
+    '''Make sure that we can load every model from the fastai module.'''
 
     for task in fastai_wrapper.MODELS:
       for model_name in fastai_wrapper.MODELS[task]:
@@ -62,5 +62,5 @@ class TestFastaiWrapper(unittest.TestCase):
         self.assertEqual(inspect.ismethod(model.zero_grad), True)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   unittest.main()

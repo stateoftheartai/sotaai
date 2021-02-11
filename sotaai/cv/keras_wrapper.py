@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
 # Author: Hugo Ochoa <hugo@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2020.
-"""
+'''
 Keras https://keras.io/ wrapper module
-"""
+'''
 
 import tensorflow.keras as keras
 
-DATASETS = {"classification": ["mnist", "cifar10", "cifar100", "fashion_mnist"]}
+DATASETS = {'classification': ['mnist', 'cifar10', 'cifar100', 'fashion_mnist']}
 
 # @author HO
 # As of now, only missing EfficientNetBX
 #
 MODELS = {
-    "classification": [
-        "InceptionResNetV2", "InceptionV3", "ResNet101V2", "ResNet152V2",
-        "ResNet50V2", "VGG16", "VGG19", "Xception", "ResNet50", "ResNet101",
-        "ResNet152", "DenseNet121", "DenseNet169", "DenseNet201",
-        "NASNetMobile", "NASNetLarge", "MobileNet", "MobileNetV2"
+    'classification': [
+        'InceptionResNetV2', 'InceptionV3', 'ResNet101V2', 'ResNet152V2',
+        'ResNet50V2', 'VGG16', 'VGG19', 'Xception', 'ResNet50', 'ResNet101',
+        'ResNet152', 'DenseNet121', 'DenseNet169', 'DenseNet201',
+        'NASNetMobile', 'NASNetLarge', 'MobileNet', 'MobileNetV2'
     ]
 }
 
@@ -32,13 +32,13 @@ def load_model(model_name,
                include_top=None,
                pooling=None,
                classes=1000,
-               classifier_activation="softmax"):
-  """Load a model with specific configuration.
+               classifier_activation='softmax'):
+  '''Load a model with specific configuration.
     Input:
         model_name (string): name of the model/algorithm.
             include_top: whether to include the fully-connected layer at the
             top of the network.
-        weights: one of None (random initialization), "imagenet"
+        weights: one of None (random initialization), 'imagenet'
             (pre-training on ImageNet), or the path to the weights file to be
             loaded.
         input_tensor: optional Keras tensor (i.e. output of layers.Input())
@@ -70,13 +70,13 @@ def load_model(model_name,
             specified if include_top is True, and if no weights argument is
             specified.
         classifier_activation: A str or callable. The activation function to
-            use on the "top" layer. Ignored unless include_top=True. Set
-        classifier_activation=None to return the logits of the "top" layer.
+            use on the 'top' layer. Ignored unless include_top=True. Set
+        classifier_activation=None to return the logits of the 'top' layer.
     Output:
         tensorflow.python.keras model
-    """
+    '''
   if pretrained:
-    weights = "imagenet"
+    weights = 'imagenet'
   else:
     weights = None
 
@@ -85,8 +85,8 @@ def load_model(model_name,
 
   # Load the model and return
   if model_name in [
-      "ResNet50", "ResNet101", "ResNet152", "DenseNet121", "DenseNet169",
-      "DenseNet201", "NASNetMobile", "NASNetLarge"
+      'ResNet50', 'ResNet101', 'ResNet152', 'DenseNet121', 'DenseNet169',
+      'DenseNet201', 'NASNetMobile', 'NASNetLarge'
   ]:
     model = trainer(weights=weights,
                     input_tensor=input_tensor,
@@ -94,7 +94,7 @@ def load_model(model_name,
                     include_top=include_top,
                     pooling=pooling,
                     classes=classes)
-  elif model_name == "MobileNet":
+  elif model_name == 'MobileNet':
     model = trainer(weights=weights,
                     alpha=alpha,
                     depth_multiplier=depth_multiplier,
@@ -103,7 +103,7 @@ def load_model(model_name,
                     input_shape=input_shape,
                     pooling=pooling,
                     classes=classes)
-  elif model_name == "MobileNetV2":
+  elif model_name == 'MobileNetV2':
     model = trainer(weights=weights,
                     alpha=alpha,
                     input_tensor=input_tensor,
@@ -122,23 +122,23 @@ def load_model(model_name,
 
 
 def load_dataset(dataset_name):
-  """
+  '''
     Input:
       dataset_name (string): name of dataset
     Output:
-      dic with keys {"train":(x_train, y_train), "test":(x_test,y_test),
+      dic with keys {'train':(x_train, y_train), 'test':(x_test,y_test),
       Each entry is a numpy array
-    """
+    '''
 
   dataset = getattr(keras.datasets, dataset_name)
   dataset = dataset.load_data()
-  dataset_dict = {"train": dataset[0], "test": dataset[1]}
+  dataset_dict = {'train': dataset[0], 'test': dataset[1]}
 
   return dataset_dict
 
 
 def get_dataset_item(raw, index):
-  """
+  '''
     Input:
       raw: raw keras dataset object
       i (int): index to get item
@@ -146,5 +146,5 @@ def get_dataset_item(raw, index):
       datapoint as a numpy array. The dict will also contain a 'label' key which
       will hold the label of the datapoint. The dict might contain other keys
       depending on the nature of the dataset.
-    """
-  return {"image": raw[0][index], "label": raw[1][index]}
+    '''
+  return {'image': raw[0][index], 'label': raw[1][index]}

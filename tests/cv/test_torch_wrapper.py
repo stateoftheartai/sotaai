@@ -2,7 +2,7 @@
 # Author: Tonio Teran <tonio@stateoftheart.ai>
 # Author: Hugo Ochoa <hugo@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2021.
-"""fastai https://pytorch.org/ wrapper module"""
+'''fastai https://pytorch.org/ wrapper module'''
 
 import unittest
 from sotaai.cv import torch_wrapper
@@ -10,11 +10,11 @@ import inspect
 import torch.nn as nn
 # from torch.utils.data.dataloader import DataLoader
 import logging
-logging.getLogger("lightning").setLevel(0)
+logging.getLogger('lightning').setLevel(0)
 
 
 class TestTorchWrapper(unittest.TestCase):
-  """Test the wrapped torch module."""
+  '''Test the wrapped torch module.'''
 
   # @author HO (legacy comment from sotaai-dev)
   # Some datasets need to be downloaded to disk beforehand:
@@ -28,9 +28,9 @@ class TestTorchWrapper(unittest.TestCase):
   # Github Action. Since these tests require dataset to be downloaded
   # @todo check how to better do this in the CI server
   # def test_load_dataset(self):
-  #   """
+  #   '''
   #     Make sure `dict`s are returned, with correct keywords for splits.
-  #   """
+  #   '''
   #   for task in torch_wrapper.DATASETS:
   #     for dataset_name in torch_wrapper.DATASETS[task]:
 
@@ -42,7 +42,7 @@ class TestTorchWrapper(unittest.TestCase):
   #         self.assertEqual(DataLoader, type(dataset[key]))
 
   def test_load_model(self):
-    """Make sure that we can load every model from the Torch module."""
+    '''Make sure that we can load every model from the Torch module.'''
 
     for task in torch_wrapper.MODELS:
       for model_name in torch_wrapper.MODELS[task]:
@@ -65,5 +65,5 @@ class TestTorchWrapper(unittest.TestCase):
         self.assertEqual(inspect.ismethod(model.zero_grad), True)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   unittest.main()
