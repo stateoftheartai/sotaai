@@ -27,7 +27,7 @@ class CvDataset(object):
     self.data_type = None  # TODO(tonioteran) Implement me.
     self.split_name = None  # TODO(tonioteran) Implement me.
     self.tasks = None  # TODO(tonioteran) Implement me.
-    self.size = utils.get_size_from_dataset(raw_dataset)
+    self.size = utils.get_size_from_dataset(raw_dataset, self.split_name)
     self.shape = None  # TODO(tonioteran) Implement me.
 
     # Populated for datasets supporting classification or detection tasks.

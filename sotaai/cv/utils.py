@@ -540,3 +540,31 @@ def get_source_from_dataset(dataset) -> str:
     # Dataset source"s name is read from the dataset type.
     source = obj_type.split(".")[0]
     return source
+
+
+def get_size_from_dataset(dataset, split_name) -> int:
+  """Returns the total number of images or videos in the split.
+
+  Args:
+    dataset:
+      Dataset object directly instantiated from a source library. Type
+      is dependent on the source library.
+    split_name (str):
+      Corresponding name for this particular dataset"s split.
+
+  Return:
+    The size of the dataset"s split.
+  """
+  source = get_source_from_dataset(dataset)
+  if source == "keras":
+    return len(dataset[0])
+  elif source in ["mmf", "mxnet", "tensorflow"]:
+    return len(dataset)
+  elif source == "fastai":
+    images = getattr(dataset, split_name + "_ds")
+    return len(images)
+  elif source == "torchvision":
+    if "dataset" in dir(dataset):
+      return len(dataset.dataset.data)
+    else:
+      return len(dataset)
