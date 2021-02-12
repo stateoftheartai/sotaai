@@ -1,8 +1,5 @@
 # Library Development
 
-Documentation useful to set-up the library development environment in your
-machine.
-
 ## Requirements
 
 - As of now, **Python 3.8.0**. If you have a different version we recommend you
@@ -137,3 +134,84 @@ git pull origin master
 
 **Step 7:** the developer can now create a new branch out of `master` and start
 working in a new feature.
+
+## Fixing Issues
+
+When trying to commit your code you might get some errors, if you want to
+individually review these errors use the following commands.
+
+### pre-commit
+
+To independently check files against a particular pre-commit task (id) run:
+
+```
+pre-commit run <id> --files <file-1> <file-2> ...
+```
+
+For example:
+
+```
+pre-commit run pylint --files tests/cv/test_utils.py
+
+pre-commit run trailing-whitespace --files tests/cv/test_utils.py
+```
+
+Notes:
+
+- Formatters such as `yapf` or `mdformat` when run by pre-commit will
+  automatically update the files which did not meet the format, fixing them.
+  Those fixed files need to be added to the staging area again so that you can
+  proceed with the commit, if not the pre-commit tasks will fail again.
+
+### pylint
+
+To independently check files against pylint and review linting issues run:
+
+```
+pylint file-or-dir --load-plugins=pylint_quotes
+```
+
+### yapf
+
+To independently check files against yapf to verify formatting run:
+
+```
+yapf file-or-dir --recursive --diff
+```
+
+Avoid, --recursive if running against a file. This will print differences
+between the current file format and the one required by yapf. If no differences
+means the files are properly following yapf.
+
+### unittest
+
+Unittests will test the current version of the `sotaai` library installed in your
+virtual environment. Therefore, first make sure you have installed the right
+version of it i.e. the one you want to test:
+
+- Install the version from your local code base
+  `pip install -e .` in case you want to test
+  your latest local changes.
+- Install a specific version from PyPI
+  (test or real indexes as desired)
+  `pip install sotaai==x.y.z` or
+  `pip install --index-url https://test.pypi.org/simple/ --no-deps sotaai`
+  in case you want to test and already-deployed version.
+
+To execute the unittest move to the `tests` directory:
+
+```
+cd tests
+```
+
+And execute the tests:
+
+```
+python -m unittest
+```
+
+Or execute tests of a particular file:
+
+```
+python -m unittest tests/cv/test_keras_wrapper.py
+```

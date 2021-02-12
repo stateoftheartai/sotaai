@@ -26,8 +26,7 @@ class TestKerasWrapper(unittest.TestCase):
 
   # @unittest.SkipTest
   def test_load_dataset(self):
-    '''
-      Make sure `dict`s are returned, with correct keywords for splits.
+    '''Make sure `dict`s are returned, with correct keywords for splits.
     '''
     for task in keras_wrapper.DATASETS:
       datasets = keras_wrapper.DATASETS[task]
@@ -68,8 +67,7 @@ class TestKerasWrapper(unittest.TestCase):
 
   # @unittest.SkipTest
   def test_abstract_dataset(self):
-    '''
-      Make sure we can create an abstract dataset using
+    '''Make sure we can create an abstract dataset using
       Keras datasets.
     '''
 
@@ -97,8 +95,7 @@ class TestKerasWrapper(unittest.TestCase):
 
   # @unittest.SkipTest
   def test_abstract_model(self):
-    '''
-      Make sure we can create an abstract model using
+    '''Make sure we can create an abstract model using
       Keras datasets.
     '''
 
@@ -113,9 +110,7 @@ class TestKerasWrapper(unittest.TestCase):
 
   # @unittest.SkipTest
   def test_model_call(self):
-    '''
-      Make sure we can call a model with a dataset sample to
-      get a prediction
+    '''Make sure we can call a model with a dataset sample to get a prediction
       As of now, we only test this function using ResNet with MNIST and
       adjusting the dataset and model to be compatible with each other
     '''

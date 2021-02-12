@@ -7,7 +7,6 @@ Core sotaai module
 
 
 def hello_world():
+  '''Vanilla function to test sotaai library is installed properly
   '''
-    Vanilla function to test sotaai library is installed properly
-    '''
   return 'Hello World from sota.ai'

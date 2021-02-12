@@ -62,6 +62,7 @@ class CvDataset(object):
 
   def __getitem__(self, i: int):
     '''Draw the `i`-th item from the dataset.
+
     Args:
       i (int):
         Index for the item to be gotten.
@@ -78,10 +79,12 @@ class CvDataset(object):
 
   def _get_classes_from_dataset(self, raw_object):
     '''Get the IDs and the names (if available) of the classes.
+
     Args:
         raw_object:
           Dataset object directly instantiated from a source library. Type
           is dependent on the source library.
+
     Returns:
         A pair of values, `classes` and `classes_names`. If no
         `classes_names` are available, the pair becomes `classes` and
@@ -156,6 +159,7 @@ class CvDataset(object):
 
   def _extract_pixel_types(self, raw_object):
     '''Get the IDs and the names (if available) of the pixel types.
+
     Args:
       raw_object:
         Dataset object directly instantiated from a source library. Type
