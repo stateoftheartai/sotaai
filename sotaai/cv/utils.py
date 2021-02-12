@@ -512,3 +512,31 @@ def get_num_parameters_from_model(model) -> int:
           n_params += params_layer
 
   return n_params
+
+
+def get_source_from_dataset(dataset) -> str:
+  """Determines the source library from a dataset object.
+
+  Args:
+    dataset:
+      Dataset object directly instantiated from a source library. Type
+      is dependent on the source library.
+
+  Returns:
+    String with the name of the source library.
+  """
+  # Save the name of the type of the object, without the first 8th digits
+  # to remove "<class "" characters.
+  obj_type = str(type(dataset))
+  if "class" in obj_type:
+    obj_type = obj_type[8:]
+  if isinstance(dataset, tuple):
+    if len(dataset) == 2 and isinstance(dataset[0], np.ndarray):
+      # Keras dataset objects are numpy.ndarray tuples.
+      return "keras"
+  elif "torch" in obj_type:
+    return "torchvision"
+  else:
+    # Dataset source"s name is read from the dataset type.
+    source = obj_type.split(".")[0]
+    return source
