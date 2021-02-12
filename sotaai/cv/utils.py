@@ -160,6 +160,7 @@ def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:
       Types of names to be used, i.e., either 'models' or 'datasets'.
     return_original_names: if true return source original names, if false return
       unified (lower case) names
+
   Returns (dict):
     Dictionary with an entry for all available items of the above form.
 
@@ -246,6 +247,7 @@ def map_name_sources(nametype: str, return_original_names=True) -> dict:
 
     return_original_names: if true return source original names, if false return
       unified (lower case) names
+
   Returns (dict):
     Dictionary with an entry for all available items of the above form.
   '''
@@ -372,7 +374,14 @@ def flatten_model_recursively(block, source: str, layers: list):
 
 
 def get_input_type(model) -> str:
-  '''Returns the type of the input data received by the model.'''
+  '''Returns the type of the input data received by the model.
+
+    Args:
+      model: a model instance
+
+    Returns:
+      The input type as a string e.g. numpy.ndarray
+  '''
   source = get_source_from_model(model)
   if source in [
       'torchvision', 'mxnet', 'segmentation_models_pytorch', 'pretrainedmodels',
@@ -391,9 +400,10 @@ def get_num_channels_from_model(model) -> int:
   Three channels corresponds to a color data, while one channel corresponds to
   grayscale data.
 
-  model:
-    Model object directly instantiated from a source library. Type is
-    dependent on the source library.
+  Args:
+    model:
+      Model object directly instantiated from a source library. Type is
+      dependent on the source library.
 
   Returns:
     An integer with the required data channels for the model.
@@ -421,7 +431,14 @@ def get_num_channels_from_model(model) -> int:
 
 
 def get_num_layers_from_model(model) -> int:
-  '''Returns the number of layers from a model'''
+  '''Returns the number of layers from a model
+
+  Args:
+    model: a model instance
+
+  Returns:
+    An integer of the number of layers from a model
+  '''
   n_layers = 0
   layers = flatten_model(model)
   for layer in layers:
@@ -503,12 +520,14 @@ def get_num_parameters_from_model(model) -> int:
 
 
 def format_image(x):
-  '''
+  '''Format an image to the shape (1, h, w, c)
+
   Args:
-      x:
-        numpy.ndarray or torch.Tensor that represents an image
-      Returns:
-        Processed numpy.ndarray of shape (1, h, w, c)
+    x:
+      numpy.ndarray or torch.Tensor that represents an image
+
+  Returns:
+    Processed numpy.ndarray of shape (1, h, w, c)
   '''
 
   tensor_shape = x.shape
@@ -529,9 +548,11 @@ def format_image(x):
 
 
 def get_dataset_item_metadata(dataset_name):
-  '''
+  '''Return metadata of a given dataset
+
   Args:
     dataset_name: dataset name to obtain metadata from
+
   Returns:
     An object with the following keys:
       image: holds the image shape as a tuple
@@ -583,7 +604,7 @@ def get_size_from_dataset(dataset, split_name) -> int:
     split_name (str):
       Corresponding name for this particular dataset's split.
 
-  Return:
+  Returns:
     The size of the dataset's split.
   '''
   source = get_source_from_dataset(dataset)
@@ -602,7 +623,16 @@ def get_size_from_dataset(dataset, split_name) -> int:
 
 
 def get_shape_from_dataset(dataset, name, split_name):
-  '''Returns (height, width, channels) tuple.'''
+  '''Returns (height, width, channels) tuple.
+
+    Args:
+      dataset: a dataset instance
+      name: the dataset name
+      split_name: the dataset split name
+
+    Returns:
+      A tuple (height, width, channels)
+  '''
   # Sample uniformly some images. If the shapes of each image
   # are different, then a None will be in the corresponding
   # dimension of the shape
