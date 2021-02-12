@@ -24,7 +24,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 class TestKerasWrapper(unittest.TestCase):
   '''Test the wrapped Keras module.'''
 
-  # @unitttest.SkipTest
+  # @unittest.SkipTest
   def test_load_dataset(self):
     '''
       Make sure `dict`s are returned, with correct keywords for splits.
@@ -43,7 +43,7 @@ class TestKerasWrapper(unittest.TestCase):
           self.assertEqual(np.ndarray, type(dataset[split][0]))
           self.assertEqual(np.ndarray, type(dataset[split][1]))
 
-  # @unitttest.SkipTest
+  # @unittest.SkipTest
   def test_load_model(self):
     '''Make sure that we can load every model from the Keras module.'''
 
@@ -66,7 +66,7 @@ class TestKerasWrapper(unittest.TestCase):
         self.assertEqual(inspect.ismethod(model.summary), True)
         self.assertEqual(inspect.ismethod(model.save), True)
 
-  # @unitttest.SkipTest
+  # @unittest.SkipTest
   def test_abstract_dataset(self):
     '''
       Make sure we can create an abstract dataset using
@@ -95,7 +95,7 @@ class TestKerasWrapper(unittest.TestCase):
           self.assertEqual(datapoint['image'].shape,
                            datapoint_metadata['image'])
 
-  # @unitttest.SkipTest
+  # @unittest.SkipTest
   def test_abstract_model(self):
     '''
       Make sure we can create an abstract model using
@@ -111,7 +111,7 @@ class TestKerasWrapper(unittest.TestCase):
         self.assertEqual(cv_model.source, 'keras')
         self.assertEqual(cv_model.original_input_type, 'numpy.ndarray')
 
-  # @unitttest.SkipTest
+  # @unittest.SkipTest
   def test_model_call(self):
     '''
       Make sure we can call a model with a dataset sample to

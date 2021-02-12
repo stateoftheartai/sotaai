@@ -29,12 +29,15 @@ class CvDataset(object):
     '''
     self.raw = raw_dataset
     self.name = name
-    self.source = utils.get_source_from_dataset(name)
+    self.source = utils.get_source_from_dataset(raw_dataset)
     self.data_type = None  # TODO(tonioteran) Implement me.
     self.split_name = split_name
     self.tasks = utils.map_dataset_tasks()[name]
     self.size = utils.get_size_from_dataset(raw_dataset, self.split_name)
-    self.shape = utils.get_shape_from_dataset(raw_dataset, name, split_name)
+    # TODO Fix shape, utils function is not working since the first parameter
+    # passed is the raw dataset instead of the CvDataset that the function
+    # expects (which is still being created)
+    # self.shape = utils.get_shape_from_dataset(raw_dataset, name, split_name)
 
     # Populated for datasets supporting classification or detection tasks.
     self.classes = None
