@@ -6,6 +6,7 @@ import unittest
 import importlib
 from sotaai.cv import utils
 from sotaai.cv import load_model
+from sotaai.cv import load_dataset
 
 
 class TestCvUtils(unittest.TestCase):
@@ -266,6 +267,33 @@ class TestCvUtils(unittest.TestCase):
     # Load a couple of torchvision examples here, e.g.,
     m = load_model('alexnet', source='torch')
     self.assertEqual(utils.get_num_parameters_from_model(m), 1000000)  # Fix.
+
+  def test_get_source_from_dataset(self):
+    '''Make sure we correctly determine the source from a dataset object.
+
+    TODO(george) finish.
+    '''
+    d = load_dataset('mnist')
+    self.assertEqual(utils.get_source_from_dataset(d), 'tensorflow')  # Fix.
+
+  def test_get_size_from_dataset(self):
+    '''Make sure we correctly determine the size of a dataset's split.
+
+    TODO(george) finish.
+    '''
+    d = load_dataset('mnist')
+    self.assertEqual(utils.get_size_from_dataset(d['split name'], 'split name'),
+                     30000)
+
+  def test_get_shape_from_dataset(self):
+    '''Make sure we correctly determine the shape of a dataset's sample.
+
+    TODO(george) finish.
+    '''
+    d = load_dataset('mnist')
+    self.assertEqual(
+        utils.get_shape_from_dataset(d['split name'], 'mnist', 'split name'),
+        (1, 2, 3))
 
 
 if __name__ == '__main__':
