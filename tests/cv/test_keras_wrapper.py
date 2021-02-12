@@ -2,15 +2,18 @@
 # Author: Tonio Teran <tonio@stateoftheart.ai>
 # Author: Hugo Ochoa <hugo@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2021.
-"""Unit testing the Keras wrapper."""
+'''Unit testing the Keras wrapper.'''
 
 import os
 import unittest
-# import numpy as np
+import numpy as np
 import inspect
 from tensorflow.python.keras.engine.functional import Functional  # pylint: disable=no-name-in-module
-from sotaai.cv import keras_wrapper
-# from sotaai.cv.abstractions import AbstractCvDataset
+from tensorflow.keras.layers import Input, Dense
+from tensorflow.keras import Sequential
+from sotaai.cv import load_dataset, load_model, keras_wrapper
+from sotaai.cv.abstractions import CvDataset, CvModel
+from sotaai.cv import utils
 
 #
 # @author HO
@@ -19,34 +22,30 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 
 class TestKerasWrapper(unittest.TestCase):
-  """Test the wrapped Keras module."""
+  '''Test the wrapped Keras module.'''
 
-  #
-  # @author Hugo Ochoa
-  # Function temporary commented to avoid testexecution as Github Action
-  # Since these tests require dataset to be downloaded
-  # @todo check how to better do this in the CI server
-  #
-  # def test_load_dataset(self):
-  #   """
-  #     Make sure `dict`s are returned, with correct keywords for splits.
-  #   """
-  #   for task in keras_wrapper.DATASETS:
-  #     for dataset_name in keras_wrapper.DATASETS[task]:
+  # @unittest.SkipTest
+  def test_load_dataset(self):
+    '''
+      Make sure `dict`s are returned, with correct keywords for splits.
+    '''
+    for task in keras_wrapper.DATASETS:
+      datasets = keras_wrapper.DATASETS[task]
+      for dataset_name in datasets:
+        dataset = keras_wrapper.load_dataset(dataset_name)
 
-  #       dataset = keras_wrapper.load_dataset(dataset_name)
+        self.assertEqual(type(dataset), dict)
 
-  #       self.assertEqual(type(dataset), dict)
+        for split in dataset:
+          self.assertEqual(tuple, type(dataset[split]))
+          self.assertEqual(len(dataset[split]), 2)
 
-  #       for key in dataset:
-  #         self.assertEqual(tuple, type(dataset[key]))
-  #         self.assertEqual(len(dataset[key]), 2)
+          self.assertEqual(np.ndarray, type(dataset[split][0]))
+          self.assertEqual(np.ndarray, type(dataset[split][1]))
 
-  #         self.assertEqual(np.ndarray, type(dataset[key][0]))
-  #         self.assertEqual(np.ndarray, type(dataset[key][1]))
-
+  # @unittest.SkipTest
   def test_load_model(self):
-    """Make sure that we can load every model from the Keras module."""
+    '''Make sure that we can load every model from the Keras module.'''
 
     for task in keras_wrapper.MODELS:
       for model_name in keras_wrapper.MODELS[task]:
@@ -67,30 +66,92 @@ class TestKerasWrapper(unittest.TestCase):
         self.assertEqual(inspect.ismethod(model.summary), True)
         self.assertEqual(inspect.ismethod(model.save), True)
 
-  #
-  # @author Hugo Ochoa
-  # @todo Finish abstraction tests
-  #
-  # def test_abstract_dataset(self):
-  #     """
-  #       Make sure we can create an abstract dataset using
-  #       Keras datasets.
-  #     """
-  #     # All Keras datasets are for classification tasks.
-  #     for task in keras_wrapper.DATASETS.keys():
-  #         print("Checking task: {}".format(task))
-  #         for ds in keras_wrapper.DATASETS[task]:
-  #             dso = keras_wrapper.load_dataset(ds)
+  # @unittest.SkipTest
+  def test_abstract_dataset(self):
+    '''
+      Make sure we can create an abstract dataset using
+      Keras datasets.
+    '''
 
-  #             # Create one standardized, abstract dataset object per split.
-  #             ads = dict()
-  #             for key in dso.keys():
-  #                 ads[key] = AbstractCvDataset(dso[key], ds, 'image', key,
-  #                                              'classification')
-  #                 print(ads[key].source)
-  #                 print(ads[key].size)
-  #                 print(ads[key].shape)
-  #             print(ads)
+    for task in keras_wrapper.DATASETS:
+      datasets = keras_wrapper.DATASETS[task]
+
+      for dataset_name in datasets:
+        dso = load_dataset(dataset_name)
+
+        for split_name in dso:
+
+          cv_dataset = dso[split_name]
+          self.assertEqual(CvDataset, type(cv_dataset))
+          self.assertEqual(cv_dataset.source, 'keras')
+
+          datapoint = cv_dataset[0]
+          self.assertEqual(np.ndarray, type(datapoint['image']))
+          self.assertEqual('label' in datapoint, True)
+
+          datapoint_metadata = utils.get_dataset_item_metadata(dataset_name)
+          self.assertEqual(datapoint['label'].shape,
+                           datapoint_metadata['label'])
+          self.assertEqual(datapoint['image'].shape,
+                           datapoint_metadata['image'])
+
+  # @unittest.SkipTest
+  def test_abstract_model(self):
+    '''
+      Make sure we can create an abstract model using
+      Keras datasets.
+    '''
+
+    for task in keras_wrapper.MODELS:
+      for model_name in keras_wrapper.MODELS[task]:
+
+        cv_model = load_model(model_name, 'keras')
+
+        self.assertEqual(CvModel, type(cv_model))
+        self.assertEqual(cv_model.source, 'keras')
+        self.assertEqual(cv_model.original_input_type, 'numpy.ndarray')
+
+  # @unittest.SkipTest
+  def test_model_call(self):
+    '''
+      Make sure we can call a model with a dataset sample to
+      get a prediction
+      As of now, we only test this function using ResNet with MNIST and
+      adjusting the dataset and model to be compatible with each other
+    '''
+
+    dataset_splits = load_dataset('mnist')
+    cv_dataset = dataset_splits['test']
+    datapoint = cv_dataset[0]
+
+    # Reshape MNIST data to be a single datapoint in RGB
+    x = datapoint['image']
+    x = x.reshape((28, 28, 1))
+    x = np.repeat(x, 3, -1)
+    x = x.reshape((1,) + x.shape)
+
+    self.assertEqual(x.shape, (1, 28, 28, 3))
+
+    # Modify ResNet model input/output so as to be compatible with MNIST
+    input_tensor = Input(shape=(28, 28, 3))
+    cv_model = load_model('ResNet101V2',
+                          'keras',
+                          input_tensor=input_tensor,
+                          include_top=False)
+    model = Sequential()
+    model.add(cv_model.raw)
+    model.add(Dense(10, activation='softmax'))
+
+    cv_model.update(model)
+
+    self.assertEqual(cv_model.raw.layers[0].input_shape, (None, 28, 28, 3))
+    self.assertEqual(cv_model.raw.layers[len(model.layers) - 1].output_shape,
+                     (None, 10))
+
+    # Test predictions
+    predictions = cv_model(x)
+
+    self.assertEqual(predictions.shape, (1, 10))
 
 
 if __name__ == '__main__':

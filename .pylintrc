@@ -445,3 +445,8 @@ valid-metaclass-classmethod-first-arg=mcs
 overgeneral-exceptions=StandardError,
                        Exception,
                        BaseException
+
+# Custom Specs by Stateoftheart AI
+string-quote=single
+triple-quote=single
+docstring-quote=single

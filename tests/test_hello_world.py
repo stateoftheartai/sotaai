@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Author: Hugo Ochoa <hugo@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2020.
-"""Unit testing hello world debugging file"""
+'''Unit testing hello world debugging file'''
 
 import unittest
 from sotaai import hello_world
