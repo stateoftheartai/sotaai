@@ -7,6 +7,7 @@
 import importlib
 import mxnet as mx
 import numpy as np
+import tensorflow_datasets as tfds
 
 # TODO(tonioteran) Currently removed "mxnet" and "pretrainedmodels" from
 # MODEL_SOURCES. Need to restore as soon as the wrapper is done and unit test.
@@ -568,3 +569,44 @@ def get_size_from_dataset(dataset, split_name) -> int:
       return len(dataset.dataset.data)
     else:
       return len(dataset)
+
+
+def get_shape_from_dataset(dataset, name, split_name):
+  """Returns (height, width, channels) tuple."""
+  # Sample uniformly some images. If the shapes of each image
+  # are different, then a None will be in the corresponding
+  # dimension of the shape
+  source = get_source_from_dataset(dataset)
+  if source == "tensorflow":
+    _, ds_info = tfds.load(name, with_info=True)
+    if "image" in ds_info.features.keys():
+      (h, w, c) = ds_info.features["image"].shape
+    else:
+      (h, w, c) = (None, None, None)
+
+  else:
+    n = get_size_from_dataset(dataset, split_name)
+
+    # Chose 10 samples and list their shapes
+    indexes = np.random.choice(range(n), 10, replace=False)
+    shapes = []
+    for i in indexes:
+      shapes.append(dataset.__getitem__(i)["image"].shape)
+    shapes = np.array(shapes)
+
+    h, w, c = None, None, None
+
+    # Check whether shapes are different
+    if source == "mmf":
+      if len(set(shapes[:, 0])) == 1 and len(set(shapes[:, 1])) == 1:
+        h = shapes[0][0]
+        w = shapes[0][1]
+    else:
+      if len(set(shapes[:, 1])) == 1 and len(set(shapes[:, 2])) == 1:
+        h = shapes[0][1]
+        w = shapes[0][2]
+
+      if len(set(shapes[:, 3])) == 1:
+        c = shapes[0][3]
+
+  return (h, w, c)

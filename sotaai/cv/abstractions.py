@@ -11,7 +11,7 @@ class CvDataset(object):
   Each `CvDataset` represents a specific split of a full dataset.
   """
 
-  def __init__(self, raw_dataset, name: str):
+  def __init__(self, raw_dataset, name: str, split_name: str):
     """Constructor using `raw_dataset` from a source library.
 
     Args:
@@ -20,13 +20,15 @@ class CvDataset(object):
         is dependent on the source library.
       name (str):
         Name of the dataset.
+      split_name (str):
+        Name of the dataset's split.
     """
     self.raw = raw_dataset
     self.name = name
     self.source = utils.get_source_from_dataset(raw_dataset)
     self.data_type = None  # TODO(tonioteran) Implement me.
-    self.split_name = None  # TODO(tonioteran) Implement me.
-    self.tasks = None  # TODO(tonioteran) Implement me.
+    self.split_name = split_name
+    self.tasks = utils.map_dataset_tasks()[name]
     self.size = utils.get_size_from_dataset(raw_dataset, self.split_name)
     self.shape = None  # TODO(tonioteran) Implement me.
 

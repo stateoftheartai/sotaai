@@ -285,6 +285,16 @@ class TestCvUtils(unittest.TestCase):
     self.assertEqual(utils.get_size_from_dataset(d["split name"], "split name"),
                      30000)
 
+  def test_get_shape_from_dataset(self):
+    """Make sure we correctly determine the shape of a dataset's sample.
+
+    TODO(george) finish.
+    """
+    d = load_dataset("mnist")
+    self.assertEqual(
+        utils.get_shape_from_dataset(d["split name"], "mnist", "split name"),
+        (1, 2, 3))
+
 
 if __name__ == "__main__":
   unittest.main()
