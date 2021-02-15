@@ -4,6 +4,7 @@
 '''Unit testing the utility functions.'''
 import unittest
 import importlib
+import sotaai.cv.keras_wrapper as keras
 from sotaai.cv import utils
 from sotaai.cv import load_model
 from sotaai.cv import load_dataset
@@ -246,8 +247,42 @@ class TestCvUtils(unittest.TestCase):
 
     TODO(hugo) finish.
     '''
-    # Load a couple of torchvision examples here, e.g.,
-    m = load_model('alexnet', source='torch')
+    # Keras
+    m = keras.load_model('InceptionResNetV2')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('InceptionV3')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('ResNet101V2')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('ResNet152V2')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('ResNet50V2')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('VGG16')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('VGG19')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('Xception')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('ResNet50')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('ResNet101')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('ResNet152')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('DenseNet121')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('DenseNet169')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('DenseNet201')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('NASNetMobile')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('NASNetLarge')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('MobileNet')
+    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    m = keras.load_model('MobileNetV2')
     self.assertEqual(utils.get_num_channels_from_model(m), 3)
 
   def test_get_num_layers_from_model(self):
