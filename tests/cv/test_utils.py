@@ -248,9 +248,10 @@ class TestCvUtils(unittest.TestCase):
     TODO(hugo) finish.
     '''
     # Keras
-    for task in keras.MODELS['classification']:
-      m = keras.load_model(task)
-      self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    for task in keras.MODELS:
+      for model in keras.MODELS[task]:
+        m = keras.load_model(model)
+        self.assertEqual(utils.get_num_channels_from_model(m), 3)
 
   def test_get_num_layers_from_model(self):
     '''Make sure we correctly determine number of layers in model's network.
