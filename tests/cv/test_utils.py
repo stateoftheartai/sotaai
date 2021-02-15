@@ -4,6 +4,7 @@
 '''Unit testing the utility functions.'''
 import unittest
 import importlib
+import sotaai.cv.keras_wrapper as keras
 from sotaai.cv import utils
 from sotaai.cv import load_model
 from sotaai.cv import load_dataset
@@ -246,9 +247,11 @@ class TestCvUtils(unittest.TestCase):
 
     TODO(hugo) finish.
     '''
-    # Load a couple of torchvision examples here, e.g.,
-    m = load_model('alexnet', source='torch')
-    self.assertEqual(utils.get_num_channels_from_model(m), 3)
+    # Keras
+    for task in keras.MODELS:
+      for model in keras.MODELS[task]:
+        m = keras.load_model(model)
+        self.assertEqual(utils.get_num_channels_from_model(m), 3)
 
   def test_get_num_layers_from_model(self):
     '''Make sure we correctly determine number of layers in model's network.
