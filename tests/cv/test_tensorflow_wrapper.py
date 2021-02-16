@@ -3,7 +3,8 @@
 # Copyright: Stateoftheart AI PBC 2021.
 '''Unit testing the Tensorflow wrapper.'''
 import unittest
-from sotaai.cv import tensorflow_wrapper  # pylint: disable=W0611
+from sotaai.cv import tensorflow_wrapper
+from tensorflow_datasets.core.dataset_utils import _IterableDataset
 
 
 class TestTensorflowWrapper(unittest.TestCase):
@@ -32,47 +33,24 @@ class TestTensorflowWrapper(unittest.TestCase):
       'sun397',  # TODO(tonioteran) Error.
   ]
 
-  # @author Tonio Teran
-  # Function temporary commented to avoid testexecution as Github Action
-  # Since these tests require dataset to be downloaded
-  # @todo check how to better do this in the CI server
-  # def test_load_dataset_return_type(self):
-  #     '''Make sure adequate `dict`s are returned.'''
-  #     all_keywords = []
-  #     for task in tensorflow_wrapper.DATASETS.keys():
-  #         print('Checking task: {}'.format(task))
-  #         for ds in tensorflow_wrapper.DATASETS[task]:
-  #             if ds in self.no_check_ds:
-  #                 continue
-  #             print('*********************')
-  #             print('*********************')
-  #             print('Testing {}'.format(ds))
-  #             print('*********************')
-  #             print('*********************')
-  #             dso = tensorflow_wrapper.load_dataset(ds)
-  #             # Make sure we are receiving a dictionary.
-  #             self.assertEqual(type(dso), dict)
-  #             # Make sure the dictionary has the correct keys
-  #             print(dso.keys())
-  #             # Make sure the internal objects behind the keys are of
-  #             # tensorflow datasets type.
-  #             for key in dso.keys():
-  #                 all_keywords.append(key)
-  #                 self.assertTrue('tensorflow' in str(type(dso[key])))
-  #                 print(type(dso[key]))
-  #                 # Make sure we are accounting for this particular key.
-  #                 # TODO(tonioteran) Activate.
-  #                 # self.assertTrue(key in torch_wrapper.SPLIT_KEYWORDS)
-  #     print(all_keywords)
-  #     print(set(all_keywords))
+  # @unittest.SkipTest
+  def test_load_dataset(self):
+    '''Make sure `dict`s are returned, with correct keywords for splits.
+    '''
+    # for task in tensorflow_wrapper.DATASETS:
+    # datasets = tensorflow_wrapper.DATASETS[task]
+    # for dataset_name in datasets:
+    dataset_name = 'beans'
+    dataset = tensorflow_wrapper.load_dataset(dataset_name)
 
-  def test_dataset_split_keywords(self):
-    '''Make sure the correct split keywords are being used.'''
-    # TODO(tonioteran) Activate.
-    # self.assertTrue('train' in tensorflow_wrapper.SPLIT_KEYWORDS)
-    # self.assertTrue('test' in tensorflow_wrapper.SPLIT_KEYWORDS)
-    # self.assertTrue('validation' in tensorflow_wrapper.SPLIT_KEYWORDS)
-    self.assertTrue(True)  # pylint: disable=W1503
+    self.assertEqual(type(dataset), dict)
+
+    for split in dataset:
+      self.assertEqual(_IterableDataset, type(dataset[split]))
+      # self.assertEqual(len(dataset[split]), 2)
+
+      # self.assertEqual(np.ndarray, type(dataset[split][0]))
+      # self.assertEqual(np.ndarray, type(dataset[split][1]))
 
 
 if __name__ == '__main__':

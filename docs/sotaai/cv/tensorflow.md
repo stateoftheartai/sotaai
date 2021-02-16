@@ -5,16 +5,16 @@ Wrapper: [`tensorflow_wrapper.py`](../../../sotaai/cv/tensorflow_wrapper.py)
 General Notes:
 
 - Wraps **only datasets** of the [TensorFlow
-  Datasets](https://www.tensorflow.org/datasets/) library.
+  Datasets](https://www.tensorflow.org/datasets/catalog/overview) library.
 - Provides standardized functions only to load datasets: `load_dataset`.
 
 ## Datasets
 
 Function: `load_dataset`
 
-```
 Return Type: `TensorFlowDatasetDict` (see below)
-```
+
+Data stored in: `~/.tensorflow_datasets` (predefined by Tensorflow and cannot be changed)
 
 ## Models
 
@@ -25,10 +25,9 @@ Not available.
 ### `TensorFlowDatasetDict`
 
 A python
-[`dict`](https://docs.python.org/3/tutorial/datastructures.html#dictionaries).
-Each dictionary key corresponds to a dataset split, the dictionary values will
-be `tensorflow.python.data.ops.dataset_ops._OptionsDataset` objects. The
-dictionary will contain some of the following keys:
+[`dict`](https://docs.python.org/3/tutorial/datastructures.html#dictionaries)
+where each key will be a split. The value will be a tensorflow IterableDataset.
+This is the original value returned by [as\_numpy](https://www.tensorflow.org/datasets/api_docs/python/tfds/as_numpy) method of tensorflow\_datasets (tfds). Available splits are:
 
 - `train`:
 - `trainA`:
@@ -46,5 +45,4 @@ dictionary will contain some of the following keys:
 - `A`:
 - `B`:
 
-For more details check the [Splits and slicing
-section](https://www.tensorflow.org/datasets/splits) of their documentation.
+For more details see [tfds](https://www.tensorflow.org/datasets/api_docs/python/tfds)
