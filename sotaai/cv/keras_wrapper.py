@@ -21,6 +21,82 @@ MODELS = {
     ]
 }
 
+TEST_MODELS = {
+    'classification': [{
+        'name': 'InceptionResNetV2',
+        'num_layers': 245,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'InceptionV3',
+        'num_layers': 95,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'ResNet101V2',
+        'num_layers': 105,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'ResNet152V2',
+        'num_layers': 156,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'ResNet50V2',
+        'num_layers': 54,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'VGG16',
+        'num_layers': 16,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'VGG19',
+        'num_layers': 19,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'Xception',
+        'num_layers': 41,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'ResNet50',
+        'num_layers': 53,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'ResNet101',
+        'num_layers': 104,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'ResNet152',
+        'num_layers': 155,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'DenseNet121',
+        'num_layers': 120,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'DenseNet169',
+        'num_layers': 168,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'DenseNet201',
+        'num_layers': 200,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'NASNetMobile',
+        'num_layers': 196,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'NASNetLarge',
+        'num_layers': 268,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'MobileNet',
+        'num_layers': 28,
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'MobileNetV2',
+        'num_layers': 53,
+        'input_type': 'numpy.ndarray'
+    }]
+}
+
 
 def load_model(model_name,
                pretrained=False,
