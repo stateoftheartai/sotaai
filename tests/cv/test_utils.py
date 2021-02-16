@@ -10,10 +10,10 @@ from sotaai.cv import load_model
 from sotaai.cv import load_dataset
 
 
-@unittest.SkipTest
 class TestCvUtils(unittest.TestCase):
   '''The the utils sub-module for CV.'''
 
+  @unittest.SkipTest
   def test_map_dataset_source_tasks(self):
     '''Make sure the dataset map correctly encapsulates all info.'''
     ds_to_sourcetasks = utils.map_dataset_source_tasks()
@@ -228,7 +228,7 @@ class TestCvUtils(unittest.TestCase):
     layers = utils.flatten_model(m)
     self.assertEqual(layers, ['I', 'dont', 'know'])  # TODO(hugo) Fix.
 
-  # @unittest.SkipTest
+  @unittest.SkipTest
   def test_get_input_type(self):
     '''Ensure the correct input type is being parsed from the model object.
     TODO(hugo) Fill out the tests.
@@ -300,9 +300,19 @@ class TestCvUtils(unittest.TestCase):
 
     TODO(george) finish.
     '''
-    d = load_dataset('mnist')
-    self.assertEqual(utils.get_size_from_dataset(d['split name'], 'split name'),
-                     30000)
+    # d = load_dataset('mnist')
+    #self.assertEqual
+    # (utils.get_size_from_dataset(d['split name'], 'split name'),
+    # 30000)
+
+    # keras
+    for task in keras.TEST_DATASETS:
+      for ds in keras.TEST_DATASETS[task]:
+        d = keras.load_dataset(ds['name'])
+        self.assertEqual(utils.get_size_from_dataset(d['train'], 'train'),
+                         ds['train_size'])
+        self.assertEqual(utils.get_size_from_dataset(d['test'], 'test'),
+                         ds['test_size'])
 
   @unittest.SkipTest
   def test_get_shape_from_dataset(self):

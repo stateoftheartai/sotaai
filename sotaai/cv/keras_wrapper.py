@@ -21,6 +21,26 @@ MODELS = {
     ]
 }
 
+TEST_DATASETS = {
+    'classification': [{
+        'name': 'mnist',
+        'train_size': 60000,
+        'test_size': 10000
+    }, {
+        'name': 'cifar10',
+        'train_size': 50000,
+        'test_size': 10000
+    }, {
+        'name': 'cifar100',
+        'train_size': 50000,
+        'test_size': 10000
+    }, {
+        'name': 'fashion_mnist',
+        'train_size': 60000,
+        'test_size': 10000
+    }]
+}
+
 TEST_MODELS = {
     'classification': [{
         'name': 'InceptionResNetV2',
