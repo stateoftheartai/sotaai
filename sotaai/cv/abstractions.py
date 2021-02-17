@@ -4,6 +4,7 @@
 '''Abstract classes for standardized models and datasets.'''
 from sotaai.cv import utils
 from sotaai.cv.keras_wrapper import get_dataset_item as keras_item
+from sotaai.cv.tensorflow_wrapper import get_dataset_item as tensorflow_item
 import numpy as np
 import time
 import tensorflow_datasets as tfds
@@ -74,6 +75,8 @@ class CvDataset(object):
     '''
     if self.source == 'keras':
       return keras_item(self.raw, i)
+    if self.source == 'tensorflow':
+      return tensorflow_item()
     else:
       raise NotImplementedError('Get item not implemented for the given source')
 

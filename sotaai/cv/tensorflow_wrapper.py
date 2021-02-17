@@ -122,10 +122,27 @@ def load_dataset(dataset_name):
     and label respectively.
   '''
   ds = tfds.load(dataset_name)
-  return tfds.as_numpy(ds)
+  return ds
+  # return tfds.as_numpy(ds)
   # ds_dic = {}
   # for split in ds:
   # for item in ds[split]:
   # print(type(item['image']), item['image'].shape, item['label'].shape)
   # break
   # return ds_dic
+
+
+def get_dataset_item():
+  '''Return a single datapoint or item
+
+    Args:
+      raw: raw tensorflow dataset object
+      i (int): index to get item
+
+    Returns:
+      A dict. The dict will contain a 'data' key which will hold the
+      datapoint as a numpy array. The dict will also contain a 'label' key which
+      will hold the label of the datapoint. The dict might contain other keys
+      depending on the nature of the dataset.
+  '''
+  return {'image': None, 'label': None}

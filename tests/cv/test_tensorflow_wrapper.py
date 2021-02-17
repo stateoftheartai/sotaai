@@ -3,8 +3,10 @@
 # Copyright: Stateoftheart AI PBC 2021.
 '''Unit testing the Tensorflow wrapper.'''
 import unittest
-from sotaai.cv import tensorflow_wrapper
+
+from sotaai.cv import load_dataset, tensorflow_wrapper, CvDataset
 from tensorflow_datasets.core.dataset_utils import _IterableDataset
+# from sotaai.cv import utils
 
 
 class TestTensorflowWrapper(unittest.TestCase):
@@ -33,24 +35,40 @@ class TestTensorflowWrapper(unittest.TestCase):
       'sun397',  # TODO(tonioteran) Error.
   ]
 
-  # @unittest.SkipTest
+  @unittest.SkipTest
   def test_load_dataset(self):
     '''Make sure `dict`s are returned, with correct keywords for splits.
     '''
-    # for task in tensorflow_wrapper.DATASETS:
-    # datasets = tensorflow_wrapper.DATASETS[task]
-    # for dataset_name in datasets:
-    dataset_name = 'beans'
-    dataset = tensorflow_wrapper.load_dataset(dataset_name)
+    for dataset_name in ['beans']:
+      dataset = tensorflow_wrapper.load_dataset(dataset_name)
 
-    self.assertEqual(type(dataset), dict)
+      self.assertEqual(type(dataset), dict)
 
-    for split in dataset:
-      self.assertEqual(_IterableDataset, type(dataset[split]))
-      # self.assertEqual(len(dataset[split]), 2)
+      for split in dataset:
+        self.assertEqual(_IterableDataset, type(dataset[split]))
 
-      # self.assertEqual(np.ndarray, type(dataset[split][0]))
-      # self.assertEqual(np.ndarray, type(dataset[split][1]))
+  # @unittest.SkipTest
+  def test_abstract_dataset(self):
+    '''Make sure we can create an abstract dataset using Tensorflow datasets.
+    '''
+
+    for dataset_name in ['beans']:
+      dso = load_dataset(dataset_name)
+
+      for split_name in dso:
+        cv_dataset = dso[split_name]
+        self.assertEqual(CvDataset, type(cv_dataset))
+        self.assertEqual(cv_dataset.source, 'tensorflow')
+
+        # datapoint = cv_dataset[0]
+        # self.assertEqual(np.ndarray, type(datapoint['image']))
+        # self.assertEqual('label' in datapoint, True)
+
+        # datapoint_metadata = utils.get_dataset_item_metadata(dataset_name)
+        # self.assertEqual(datapoint['label'].shape,
+        # datapoint_metadata['label'])
+        # self.assertEqual(datapoint['image'].shape,
+        # datapoint_metadata['image'])
 
 
 if __name__ == '__main__':
