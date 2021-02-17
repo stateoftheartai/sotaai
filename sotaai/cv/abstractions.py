@@ -2,7 +2,7 @@
 # Author: Tonio Teran
 # Copyright: Stateoftheart AI PBC 2020.
 '''Abstract classes for standardized models and datasets.'''
-from sotaai.cv import utils, tensorflow_wrapper, keras_wrapper
+from sotaai.cv import utils
 import numpy as np
 import time
 import tensorflow_datasets as tfds
@@ -59,26 +59,6 @@ class CvDataset(object):
     # For visual question answering tasks.A
     self.annotations = None
     self.vocab = None
-
-  # TODO(Hugo) Deprecate getitem in favor of iter
-  def __getitem__(self, i: int):
-    '''Draw the `i`-th item from the dataset.
-
-    Args:
-      i (int):
-        Index for the item to be gotten.
-
-    Returns: a dict. The dict will contain a 'data' key which will hold the
-      datapoint as a numpy array. The dict will also contain a 'label' key which
-      will hold the label of the datapoint. The dict might contain other keys
-      depending on the nature of the dataset.
-    '''
-    if self.source == 'keras':
-      return keras_wrapper.get_dataset_item(self.raw, i)
-    if self.source == 'tensorflow':
-      return tensorflow_wrapper.get_dataset_item(self.raw)
-    else:
-      raise NotImplementedError('Get item not implemented for the given source')
 
   def __iter__(self):
     '''Returns the CvDataset iterator object'''

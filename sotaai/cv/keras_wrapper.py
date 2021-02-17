@@ -219,17 +219,27 @@ def load_dataset(dataset_name):
   return dataset_dict
 
 
-def get_dataset_item(raw, index):
-  '''Return a single datapoint or item
+class DatasetIterator():
+  '''Keras dataset iterator class'''
 
-    Args:
-      raw: raw keras dataset object
-      i (int): index to get item
+  def __init__(self, raw) -> None:
+    self._raw = raw
+    self._iterator = self._create_iterator()
 
-    Returns:
-      A dict. The dict will contain a 'data' key which will hold the
+  def __next__(self):
+    '''Get the next item from the dataset.
+
+    Returns: a dict. The dict will contain a 'data' key which will hold the
       datapoint as a numpy array. The dict will also contain a 'label' key which
       will hold the label of the datapoint. The dict might contain other keys
       depending on the nature of the dataset.
-  '''
-  return {'image': raw[0][index], 'label': raw[1][index]}
+    '''
+    image = next(self._iterator['image'])
+    label = next(self._iterator['label'])
+    return self._create_item(image, label)
+
+  def _create_iterator(self):
+    return {'image': iter(self._raw[0]), 'label': iter(self._raw[1])}
+
+  def _create_item(self, image, label):
+    return {'image': image, 'label': label}
