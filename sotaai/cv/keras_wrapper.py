@@ -21,6 +21,84 @@ MODELS = {
     ]
 }
 
+TEST_DATASETS = {
+    'classification': [{
+        'name': 'mnist',
+        'train_size': 60000,
+        'test_size': 10000
+    }, {
+        'name': 'cifar10',
+        'train_size': 50000,
+        'test_size': 10000
+    }, {
+        'name': 'cifar100',
+        'train_size': 50000,
+        'test_size': 10000
+    }, {
+        'name': 'fashion_mnist',
+        'train_size': 60000,
+        'test_size': 10000
+    }]
+}
+
+TEST_MODELS = {
+    'classification': [{
+        'name': 'InceptionResNetV2',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'InceptionV3',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'ResNet101V2',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'ResNet152V2',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'ResNet50V2',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'VGG16',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'VGG19',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'Xception',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'ResNet50',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'ResNet101',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'ResNet152',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'DenseNet121',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'DenseNet169',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'DenseNet201',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'NASNetMobile',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'NASNetLarge',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'MobileNet',
+        'input_type': 'numpy.ndarray'
+    }, {
+        'name': 'MobileNetV2',
+        'input_type': 'numpy.ndarray'
+    }]
+}
+
 
 def load_model(model_name,
                pretrained=False,
