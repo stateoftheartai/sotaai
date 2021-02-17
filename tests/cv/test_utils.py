@@ -275,15 +275,23 @@ class TestCvUtils(unittest.TestCase):
     m = load_model('alexnet', source='torch')
     self.assertEqual(utils.get_num_layers_from_model(m), 8)
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_get_num_parameters_from_model(self):
     '''Make sure we correctly determine number of parameters in the model.
 
     TODO(hugo) finish.
     '''
     # Load a couple of torchvision examples here, e.g.,
-    m = load_model('alexnet', source='torch')
-    self.assertEqual(utils.get_num_parameters_from_model(m), 1000000)  # Fix.
+    # m = load_model('alexnet', source='torch')
+
+    # keras
+    # m = keras.load_model('InceptionResNetV2')
+    # self.assertEqual(utils.get_num_parameters_from_model(m), 1000000)  # Fix.
+    for task in keras.TEST_MODELS:
+      for model in keras.TEST_MODELS[task]:
+        m = keras.load_model(model['name'])
+        self.assertEqual(utils.get_num_parameters_from_model(m),
+                         model['num_parameters'])
 
   @unittest.SkipTest
   def test_get_source_from_dataset(self):
