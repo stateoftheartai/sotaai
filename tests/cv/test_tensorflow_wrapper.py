@@ -4,10 +4,9 @@
 '''Unit testing the Tensorflow wrapper.'''
 import unittest
 
-from sotaai.cv import load_dataset, tensorflow_wrapper
+from sotaai.cv import load_dataset, tensorflow_wrapper, utils
 from sotaai.cv.abstractions import CvDataset
 from tensorflow_datasets.core.dataset_utils import _IterableDataset
-# from sotaai.cv import utils
 import numpy as np
 
 
@@ -37,11 +36,16 @@ class TestTensorflowWrapper(unittest.TestCase):
       'sun397',  # TODO(tonioteran) Error.
   ]
 
-  @unittest.SkipTest
+  test_datasets = ['beans']
+
+  # @unittest.SkipTest
   def test_load_dataset(self):
     '''Make sure `dict`s are returned, with correct keywords for splits.
+
+    As of now, only testing with a limited set of datasets (test_datasets) to
+    save memory while running these tests.
     '''
-    for dataset_name in ['beans']:
+    for dataset_name in self.test_datasets:
       dataset = tensorflow_wrapper.load_dataset(dataset_name)
 
       self.assertEqual(type(dataset), dict)
@@ -54,7 +58,7 @@ class TestTensorflowWrapper(unittest.TestCase):
     '''Make sure we can create an abstract dataset using Tensorflow datasets.
     '''
 
-    for dataset_name in ['beans']:
+    for dataset_name in self.test_datasets:
       dso = load_dataset(dataset_name)
 
       for split_name in dso:
@@ -68,11 +72,9 @@ class TestTensorflowWrapper(unittest.TestCase):
         self.assertEqual(np.ndarray, type(datapoint['image']))
         self.assertEqual('label' in datapoint, True)
 
-        # datapoint_metadata = utils.get_dataset_item_metadata(dataset_name)
-        # self.assertEqual(datapoint['label'].shape,
-        # datapoint_metadata['label'])
-        # self.assertEqual(datapoint['image'].shape,
-        # datapoint_metadata['image'])
+        datapoint_metadata = utils.get_dataset_item_metadata(dataset_name)
+        self.assertEqual(datapoint['label'].shape, datapoint_metadata['label'])
+        self.assertEqual(datapoint['image'].shape, datapoint_metadata['image'])
 
 
 if __name__ == '__main__':

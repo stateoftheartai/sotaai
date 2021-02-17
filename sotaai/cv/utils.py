@@ -562,6 +562,8 @@ def get_dataset_item_metadata(dataset_name):
     return {'image': (28, 28), 'label': ()}
   elif 'cifar' in dataset_name:
     return {'image': (32, 32, 3), 'label': (1,)}
+  elif 'beans' in dataset_name:
+    return {'image': (500, 500, 3), 'label': ()}
   else:
     raise NotImplementedError('Dataset is not implemented in this source')
 

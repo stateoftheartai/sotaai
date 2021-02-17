@@ -227,19 +227,22 @@ class DatasetIterator():
     self._iterator = self._create_iterator()
 
   def __next__(self):
-    '''Get the next item from the dataset.
+    '''Get the next item from the dataset in a standardized format.
 
-    Returns: a dict. The dict will contain a 'data' key which will hold the
-      datapoint as a numpy array. The dict will also contain a 'label' key which
-      will hold the label of the datapoint. The dict might contain other keys
-      depending on the nature of the dataset.
+    Returns:
+      A dict with two mandatory keys: the 'image' key which will hold the image
+      as a numpy array, and the 'label' key which will hold the label as a numpy
+      array as well. The dict might contain other keys depending on the nature
+      of the dataset.
     '''
     image = next(self._iterator['image'])
     label = next(self._iterator['label'])
-    return self._create_item(image, label)
+    return {'image': image, 'label': label}
 
   def _create_iterator(self):
-    return {'image': iter(self._raw[0]), 'label': iter(self._raw[1])}
+    '''Create an iterator out of the raw dataset split object
 
-  def _create_item(self, image, label):
-    return {'image': image, 'label': label}
+    Returns:
+      An object containing iterators for the dataset images and labels
+    '''
+    return {'image': iter(self._raw[0]), 'label': iter(self._raw[1])}

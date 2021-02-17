@@ -129,22 +129,25 @@ class DatasetIterator():
   '''Tensorflow dataset iterator class'''
 
   def __init__(self, raw) -> None:
-    self.raw = raw
-    self.iterator = self.create_iterator()
+    self._raw = raw
+    self._iterator = self.create_iterator()
 
   def __next__(self):
-    '''Get the next item from the dataset.
+    '''Get the next item from the dataset in a standardized format.
 
-    Returns: a dict. The dict will contain a 'data' key which will hold the
-      datapoint as a numpy array. The dict will also contain a 'label' key which
-      will hold the label of the datapoint. The dict might contain other keys
-      depending on the nature of the dataset.
+    Returns:
+      A dict with two mandatory keys: the 'image' key which will hold the image
+      as a numpy array, and the 'label' key which will hold the label as a numpy
+      array as well. The dict might contain other keys depending on the nature
+      of the dataset.
     '''
-    item = next(self.iterator)
-    return self.create_item(item)
+    item = next(self._iterator)
+    return {'image': item['image'], 'label': item['label']}
 
   def create_iterator(self):
-    return iter(self.raw)
+    '''Create an iterator out of the raw dataset split object
 
-  def create_item(self, raw_item):
-    return {'image': raw_item['image'], 'label': raw_item['label']}
+    Returns:
+      An object containing iterators for the dataset images and labels
+    '''
+    return iter(self._raw)

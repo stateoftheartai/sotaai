@@ -22,9 +22,13 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 
 class TestKerasWrapper(unittest.TestCase):
-  '''Test the wrapped Keras module.'''
+  '''Test the wrapped Keras module.
 
-  @unittest.SkipTest
+  For Keras, we test against all datasets and modules since they are a few and
+  can fit in memory (CI server)
+  '''
+
+  # @unittest.SkipTest
   def test_load_dataset(self):
     '''Make sure `dict`s are returned, with correct keywords for splits.
     '''
@@ -42,7 +46,7 @@ class TestKerasWrapper(unittest.TestCase):
           self.assertEqual(np.ndarray, type(dataset[split][0]))
           self.assertEqual(np.ndarray, type(dataset[split][1]))
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_load_model(self):
     '''Make sure that we can load every model from the Keras module.'''
 
@@ -95,7 +99,7 @@ class TestKerasWrapper(unittest.TestCase):
           self.assertEqual(datapoint['image'].shape,
                            datapoint_metadata['image'])
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_abstract_model(self):
     '''Make sure we can create an abstract model using
       Keras datasets.
@@ -110,7 +114,7 @@ class TestKerasWrapper(unittest.TestCase):
         self.assertEqual(cv_model.source, 'keras')
         self.assertEqual(cv_model.original_input_type, 'numpy.ndarray')
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_model_call(self):
     '''Make sure we can call a model with a dataset sample to get a prediction
       As of now, we only test this function using ResNet with MNIST and
@@ -119,7 +123,9 @@ class TestKerasWrapper(unittest.TestCase):
 
     dataset_splits = load_dataset('mnist')
     cv_dataset = dataset_splits['test']
-    datapoint = cv_dataset[0]
+    iterable_dataset = iter(cv_dataset)
+
+    datapoint = next(iterable_dataset)
 
     # Reshape MNIST data to be a single datapoint in RGB
     x = datapoint['image']
