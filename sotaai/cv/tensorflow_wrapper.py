@@ -122,27 +122,29 @@ def load_dataset(dataset_name):
     and label respectively.
   '''
   ds = tfds.load(dataset_name)
-  return ds
-  # return tfds.as_numpy(ds)
-  # ds_dic = {}
-  # for split in ds:
-  # for item in ds[split]:
-  # print(type(item['image']), item['image'].shape, item['label'].shape)
-  # break
-  # return ds_dic
+  return tfds.as_numpy(ds)
 
 
-def get_dataset_item():
-  '''Return a single datapoint or item
+class DatasetIterator():
+  '''Tensorflow dataset iterator class'''
 
-    Args:
-      raw: raw tensorflow dataset object
-      i (int): index to get item
+  def __init__(self, raw) -> None:
+    self.raw = raw
+    self.iterator = self.create_iterator()
 
-    Returns:
-      A dict. The dict will contain a 'data' key which will hold the
+  def __next__(self):
+    '''Get the next item from the dataset.
+
+    Returns: a dict. The dict will contain a 'data' key which will hold the
       datapoint as a numpy array. The dict will also contain a 'label' key which
       will hold the label of the datapoint. The dict might contain other keys
       depending on the nature of the dataset.
-  '''
-  return {'image': None, 'label': None}
+    '''
+    item = next(self.iterator)
+    return self.create_item(item)
+
+  def create_iterator(self):
+    return iter(self.raw)
+
+  def create_item(self, raw_item):
+    return {'image': raw_item['image'], 'label': raw_item['label']}

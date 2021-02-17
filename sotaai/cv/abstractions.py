@@ -2,9 +2,7 @@
 # Author: Tonio Teran
 # Copyright: Stateoftheart AI PBC 2020.
 '''Abstract classes for standardized models and datasets.'''
-from sotaai.cv import utils
-from sotaai.cv.keras_wrapper import get_dataset_item as keras_item
-from sotaai.cv.tensorflow_wrapper import get_dataset_item as tensorflow_item
+from sotaai.cv import utils, tensorflow_wrapper, keras_wrapper
 import numpy as np
 import time
 import tensorflow_datasets as tfds
@@ -16,7 +14,7 @@ class CvDataset(object):
   Each `CvDataset` represents a specific split of a full dataset.
   '''
 
-  def __init__(self, raw_dataset, name: str, split_name: str):
+  def __init__(self, raw_dataset, iterator, name: str, split_name: str):
     '''Constructor using `raw_dataset` from a source library.
 
     Args:
@@ -29,6 +27,7 @@ class CvDataset(object):
         Name of the dataset's split.
     '''
     self.raw = raw_dataset
+    self.iterator = iterator
     self.name = name
     self.source = utils.get_source_from_dataset(raw_dataset)
     self.data_type = None  # TODO(tonioteran) Implement me.
@@ -61,6 +60,7 @@ class CvDataset(object):
     self.annotations = None
     self.vocab = None
 
+  # TODO(Hugo) Deprecate getitem in favor of iter
   def __getitem__(self, i: int):
     '''Draw the `i`-th item from the dataset.
 
@@ -74,11 +74,15 @@ class CvDataset(object):
       depending on the nature of the dataset.
     '''
     if self.source == 'keras':
-      return keras_item(self.raw, i)
+      return keras_wrapper.get_dataset_item(self.raw, i)
     if self.source == 'tensorflow':
-      return tensorflow_item()
+      return tensorflow_wrapper.get_dataset_item(self.raw)
     else:
       raise NotImplementedError('Get item not implemented for the given source')
+
+  def __iter__(self):
+    '''Returns the CvDataset iterator object'''
+    return self.iterator
 
   def _get_classes_from_dataset(self, raw_object):
     '''Get the IDs and the names (if available) of the classes.

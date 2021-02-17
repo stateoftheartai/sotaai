@@ -577,6 +577,7 @@ def get_source_from_dataset(dataset) -> str:
   Returns:
     String with the name of the source library.
   '''
+  source = None
   # Save the name of the type of the object, without the first 8th digits
   # to remove '<class '' characters.
   obj_type = str(type(dataset))
@@ -585,13 +586,15 @@ def get_source_from_dataset(dataset) -> str:
   if isinstance(dataset, tuple):
     if len(dataset) == 2 and isinstance(dataset[0], np.ndarray):
       # Keras dataset objects are numpy.ndarray tuples.
-      return 'keras'
+      source = 'keras'
   elif 'torch' in obj_type:
-    return 'torchvision'
+    source = 'torchvision'
   else:
     # Dataset source's name is read from the dataset type.
     source = obj_type.split('.')[0]
-    return source
+  if 'tensorflow' in source:
+    source = 'tensorflow'
+  return source
 
 
 def get_size_from_dataset(dataset, split_name) -> int:
