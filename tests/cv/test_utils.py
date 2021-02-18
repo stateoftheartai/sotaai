@@ -307,9 +307,12 @@ class TestCvUtils(unittest.TestCase):
     # 30000)
 
     # keras
-    for dataset_name in metadata.DATASETS:
-      dataset_metadata = metadata.DATASETS[dataset_name]
-      dataset = keras.load_dataset(dataset_name)
+    dataset_metadatas = filter(lambda d: d['source'] == 'keras',
+                               metadata.DATASETS.values())
+
+    for dataset_metadata in dataset_metadatas:
+      dataset = keras.load_dataset(dataset_metadata['name'])
+
       self.assertEqual(utils.get_size_from_dataset(dataset['train'], 'train'),
                        dataset_metadata['train_size'])
       self.assertEqual(utils.get_size_from_dataset(dataset['test'], 'test'),
