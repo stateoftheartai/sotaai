@@ -36,7 +36,7 @@ class TestTensorflowWrapper(unittest.TestCase):
       'sun397',  # TODO(tonioteran) Error.
   ]
 
-  test_datasets = ['beans']
+  test_datasets = ['beans', 'omniglot']
 
   # @unittest.SkipTest
   def test_load_dataset(self):

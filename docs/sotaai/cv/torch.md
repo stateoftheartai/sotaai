@@ -36,7 +36,6 @@ type\-\-\-`torch.utils.data.dataloader.DataLoader`\-\-\-with a bunch of exceptio
 
 - `torchvision.datasets.celeba.CelebA`
 - `torchvision.datasets.mnist.EMNIST`
-- `torchvision.datasets.omniglot.Omniglot`
 - `torchvision.datasets.semeion.SEMEION`
 - `torchvision.datasets.svhn.SVHN`
 - `torchvision.datasets.stl10.STL10`
