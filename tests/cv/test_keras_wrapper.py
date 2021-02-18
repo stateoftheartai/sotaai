@@ -93,9 +93,11 @@ class TestKerasWrapper(unittest.TestCase):
           self.assertEqual(np.ndarray, type(datapoint['image']))
           self.assertEqual('label' in datapoint, True)
 
-          dataset_metadata = metadata.DATASETS[dataset_name]
-          self.assertEqual(datapoint['label'].shape, dataset_metadata['label'])
-          self.assertEqual(datapoint['image'].shape, dataset_metadata['image'])
+          dataset_metadata = metadata.get('datasets', name=dataset_name)
+          self.assertEqual(datapoint['label'].shape,
+                           dataset_metadata['metadata']['label'])
+          self.assertEqual(datapoint['image'].shape,
+                           dataset_metadata['metadata']['image'])
 
   # @unittest.SkipTest
   def test_abstract_model(self):

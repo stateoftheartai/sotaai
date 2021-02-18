@@ -197,62 +197,15 @@ class TestCvUtils(unittest.TestCase):
     self.assertEqual(utils.get_source_from_model(m), 'fastai')
 
   @unittest.SkipTest
-  def test_flatten_model(self):
-    '''Ensure the returned array corresponds to the actual model layers.
-
-    TODO(hugo) Fill out the tests.
-    '''
-    # Need to figure out what the checks should look like (e.g., just count the
-    # number of layers?).
-    m = load_model('alexnet', source='torch')
-    layers = utils.flatten_model(m)
-    self.assertEqual(layers, ['I', 'dont', 'know'])  # TODO(hugo) Fix.
-    m = load_model('densenet121', source='torch')
-    layers = utils.flatten_model(m)
-    self.assertEqual(layers, ['I', 'dont', 'know'])  # TODO(hugo) Fix.
-
-    m = load_model('resnet152_v2', source='mxnet')
-    layers = utils.flatten_model(m)
-    self.assertEqual(layers, ['I', 'dont', 'know'])  # TODO(hugo) Fix.
-    m = load_model('squeezenet1.1', source='mxnet')
-    layers = utils.flatten_model(m)
-    self.assertEqual(layers, ['I', 'dont', 'know'])  # TODO(hugo) Fix.
-
-    m = load_model('InceptionResNetV2', source='keras')
-    layers = utils.flatten_model(m)
-    self.assertEqual(layers, ['I', 'dont', 'know'])  # TODO(hugo) Fix.
-    m = load_model('NASNetMobile', source='keras')
-    layers = utils.flatten_model(m)
-    self.assertEqual(layers, ['I', 'dont', 'know'])  # TODO(hugo) Fix.
-
-    m = load_model('resnet101', source='fastai')
-    layers = utils.flatten_model(m)
-    self.assertEqual(layers, ['I', 'dont', 'know'])  # TODO(hugo) Fix.
-
-  @unittest.SkipTest
   def test_get_input_type(self):
-    '''Ensure the correct input type is being parsed from the model object.
-    TODO(hugo) Fill out the tests.
-    '''
-    # Load a couple of torchvision examples here, e.g.,
-    # m = load_model('alexnet', source='torch')
-    # self.assertEqual(utils.get_input_type(m), 'torch.Tensor')  # Don't know...
-    # m = load_model('densenet121', source='torch')
-    # self.assertEqual(utils.get_input_type(m), 'torch.Tensor')  # Don't know...
-
-    # m = load_model('resnet152_v2', source='mxnet')
-    #self.assertEqual(utils.get_input_type(m), 'numpy.ndarray')  # Don't know...
-    #m = load_model('squeezenet1.1', source='mxnet')
-    #self.assertEqual(utils.get_input_type(m), 'numpy.ndarray')  # Don't know...
+    '''Ensure the correct input type is being parsed from the model object.'''
 
     # Keras
-    for task in keras.TEST_MODELS:
-      for model in keras.TEST_MODELS[task]:
-        m = keras.load_model(model['name'])
-        self.assertEqual(utils.get_input_type(m), model['input_type'])
+    model_metadatas = metadata.get('models', source='keras')
 
-    # m = load_model('resnet101', source='fastai')
-    #self.assertEqual(utils.get_input_type(m), 'numpy.ndarray')  # Don't know...
+    for model in model_metadatas:
+      m = keras.load_model(model['name'])
+      self.assertEqual(utils.get_input_type(m), model['metadata']['input_type'])
 
   @unittest.SkipTest
   def test_get_num_channels_from_model(self):
@@ -268,38 +221,27 @@ class TestCvUtils(unittest.TestCase):
 
   @unittest.SkipTest
   def test_get_num_layers_from_model(self):
-    '''Make sure we correctly determine number of layers in model's network.
-
-    TODO(hugo) finish.
-    '''
-    # Load a couple of torchvision examples here, e.g.,
-    # m = load_model('alexnet', source='torch')
-    # self.assertEqual(utils.get_num_layers_from_model(m), 8)
+    '''Make sure we correctly determine number of layers in model's network.'''
 
     # Keras models
-    for task in keras.TEST_MODELS:
-      for model in keras.TEST_MODELS[task]:
-        m = keras.load_model(model['name'])
-        self.assertEqual(utils.get_num_layers_from_model(m),
-                         model['num_layers'])
+    model_metadatas = metadata.get('models', source='keras')
+
+    for model in model_metadatas:
+      m = keras.load_model(model['name'])
+      self.assertEqual(utils.get_num_layers_from_model(m),
+                       model['metadata']['num_layers'])
 
   @unittest.SkipTest
   def test_get_num_parameters_from_model(self):
-    '''Make sure we correctly determine number of parameters in the model.
+    '''Make sure we correctly determine number of parameters in the model.'''
 
-    TODO(hugo) finish.
-    '''
-    # Load a couple of torchvision examples here, e.g.,
-    # m = load_model('alexnet', source='torch')
+    # Keras models
+    model_metadatas = metadata.get('models', source='keras')
 
-    # keras
-    # m = keras.load_model('InceptionResNetV2')
-    # self.assertEqual(utils.get_num_parameters_from_model(m), 1000000)  # Fix.
-    for task in keras.TEST_MODELS:
-      for model in keras.TEST_MODELS[task]:
-        m = keras.load_model(model['name'])
-        self.assertEqual(utils.get_num_parameters_from_model(m),
-                         model['num_parameters'])
+    for model in model_metadatas:
+      m = keras.load_model(model['name'])
+      self.assertEqual(utils.get_num_parameters_from_model(m),
+                       model['metadata']['num_parameters'])
 
   @unittest.SkipTest
   def test_get_source_from_dataset(self):
@@ -321,16 +263,15 @@ class TestCvUtils(unittest.TestCase):
     '''Make sure we correctly determine the size of a dataset's split.'''
 
     # keras
-    dataset_metadatas = filter(lambda d: d['source'] == 'keras',
-                               metadata.DATASETS.values())
+    dataset_metadatas = metadata.get('datasets', source='keras')
 
     for dataset_metadata in dataset_metadatas:
       dataset = keras.load_dataset(dataset_metadata['name'])
 
       self.assertEqual(utils.get_size_from_dataset(dataset['train'], 'train'),
-                       dataset_metadata['train_size'])
+                       dataset_metadata['metadata']['train_size'])
       self.assertEqual(utils.get_size_from_dataset(dataset['test'], 'test'),
-                       dataset_metadata['test_size'])
+                       dataset_metadata['metadata']['test_size'])
 
   @unittest.SkipTest
   def test_get_shape_from_dataset(self):
