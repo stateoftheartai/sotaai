@@ -547,25 +547,6 @@ def format_image(x):
     x = np.transpose(x, [0, 2, 3, 1])
 
 
-def get_dataset_item_metadata(dataset_name):
-  '''Return metadata of a given dataset
-
-  Args:
-    dataset_name: dataset name to obtain metadata from
-
-  Returns:
-    An object with the following keys:
-      image: holds the image shape as a tuple
-      label: holdes the label shape as a tuple
-  '''
-  if 'mnist' in dataset_name:
-    return {'image': (28, 28), 'label': ()}
-  elif 'cifar' in dataset_name:
-    return {'image': (32, 32, 3), 'label': (1,)}
-  else:
-    raise NotImplementedError('Dataset is not implemented in this source')
-
-
 def get_source_from_dataset(dataset) -> str:
   '''Determines the source library from a dataset object.
 
@@ -577,6 +558,7 @@ def get_source_from_dataset(dataset) -> str:
   Returns:
     String with the name of the source library.
   '''
+  source = None
   # Save the name of the type of the object, without the first 8th digits
   # to remove '<class '' characters.
   obj_type = str(type(dataset))
@@ -585,13 +567,15 @@ def get_source_from_dataset(dataset) -> str:
   if isinstance(dataset, tuple):
     if len(dataset) == 2 and isinstance(dataset[0], np.ndarray):
       # Keras dataset objects are numpy.ndarray tuples.
-      return 'keras'
+      source = 'keras'
   elif 'torch' in obj_type:
-    return 'torchvision'
+    source = 'torchvision'
   else:
     # Dataset source's name is read from the dataset type.
     source = obj_type.split('.')[0]
-    return source
+  if 'tensorflow' in source:
+    source = 'tensorflow'
+  return source
 
 
 def get_size_from_dataset(dataset, split_name) -> int:

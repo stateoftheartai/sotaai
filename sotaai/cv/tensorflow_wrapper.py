@@ -4,8 +4,12 @@
 '''Module used to interface with Tensorflow's datasets.'''
 import tensorflow_datasets as tfds
 import resource
+import os
 low, high = resource.getrlimit(resource.RLIMIT_NOFILE)
 resource.setrlimit(resource.RLIMIT_NOFILE, (high, high))
+
+# Prevent Tensorflow to print warning and meta logs
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 DATASETS = {
     'video': [
@@ -105,51 +109,45 @@ DATASETS = {
 }
 
 
-def flatten(data_str):
-  flat = []
-  for sublist in data_str.values():
-    for item in sublist:
-      flat.append(item)
-  return flat
+def load_dataset(dataset_name):
+  '''Return a tensorflow dataset in its iterable version
 
+  Args:
+    dataset_name: the dataset name in string
 
-def available_datasets(task: str = 'all'):
-  if task == 'all':
-    flat_ds = flatten(DATASETS.values())
-    return flat_ds
-
-  return DATASETS[task]
-
-
-def load_dataset(name_dataset):
-  _, ds_info = tfds.load(name_dataset, with_info=True)
-
-  ls = list(ds_info.splits.keys())
-  ds = tfds.load(name_dataset, split=ls, shuffle_files=True)
-
-  ds_dic = {}
-  for i in range(len(ls)):
-    ds_dic[ls[i]] = ds[i]
-  return ds_dic
-
-
-def take(ds, index):
+  Returns:
+    A dict where each key is a dataset split and the value is a dataset
+    in its iterable numpy version (IterableDataset). Each item in the iterator
+    has the 'image' and 'label' keys which are in turn numpy arrays of the image
+    and label respectively.
   '''
-    Input:
-        ds - tensorflow dataset.
-        index - int, the number of example to extract from ds
-    Output:
-        The example of the dataset. If the example contains an image,
-        it is automatically normalized
-    '''
-  example = []
-  i = 0
-  for j in ds.as_numpy_iterator():
-    if i == index:
-      example = j
-      break
-    i += 1
-  if example == []:
-    return print('index out of range')
+  ds = tfds.load(dataset_name)
+  return tfds.as_numpy(ds)
 
-  return example
+
+class DatasetIterator():
+  '''Tensorflow dataset iterator class'''
+
+  def __init__(self, raw) -> None:
+    self._raw = raw
+    self._iterator = self.create_iterator()
+
+  def __next__(self):
+    '''Get the next item from the dataset in a standardized format.
+
+    Returns:
+      A dict with two mandatory keys: the 'image' key which will hold the image
+      as a numpy array, and the 'label' key which will hold the label as a numpy
+      array as well. The dict might contain other keys depending on the nature
+      of the dataset.
+    '''
+    item = next(self._iterator)
+    return {'image': item['image'], 'label': item['label']}
+
+  def create_iterator(self):
+    '''Create an iterator out of the raw dataset split object
+
+    Returns:
+      An object containing iterators for the dataset images and labels
+    '''
+    return iter(self._raw)
