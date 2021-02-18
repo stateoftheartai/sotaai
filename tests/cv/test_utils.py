@@ -318,14 +318,7 @@ class TestCvUtils(unittest.TestCase):
 
   @unittest.SkipTest
   def test_get_size_from_dataset(self):
-    '''Make sure we correctly determine the size of a dataset's split.
-
-    TODO(george) finish.
-    '''
-    # d = load_dataset('mnist')
-    #self.assertEqual
-    # (utils.get_size_from_dataset(d['split name'], 'split name'),
-    # 30000)
+    '''Make sure we correctly determine the size of a dataset's split.'''
 
     # keras
     dataset_metadatas = filter(lambda d: d['source'] == 'keras',
