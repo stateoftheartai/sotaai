@@ -44,58 +44,76 @@ TEST_DATASETS = {
 TEST_MODELS = {
     'classification': [{
         'name': 'InceptionResNetV2',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 55873736
     }, {
         'name': 'InceptionV3',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 23851784
     }, {
         'name': 'ResNet101V2',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 44675560
     }, {
         'name': 'ResNet152V2',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 60380648
     }, {
         'name': 'ResNet50V2',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 25613800
     }, {
         'name': 'VGG16',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 138357544
     }, {
         'name': 'VGG19',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 143667240
     }, {
         'name': 'Xception',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 3357584
     }, {
         'name': 'ResNet50',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 23587712
     }, {
         'name': 'ResNet101',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 42658176
     }, {
         'name': 'ResNet152',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 58370944
     }, {
         'name': 'DenseNet121',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 7037504
     }, {
         'name': 'DenseNet169',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 12642880
     }, {
         'name': 'DenseNet201',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 18321984
     }, {
         'name': 'NASNetMobile',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 2249533
     }, {
         'name': 'NASNetLarge',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 43614774
     }, {
         'name': 'MobileNet',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 4253864
     }, {
         'name': 'MobileNetV2',
-        'input_type': 'numpy.ndarray'
+        'input_type': 'numpy.ndarray',
+        'num_parameters': 3538984
     }]
 }
 
