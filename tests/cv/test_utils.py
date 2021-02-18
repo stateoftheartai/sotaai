@@ -272,10 +272,17 @@ class TestCvUtils(unittest.TestCase):
     TODO(hugo) finish.
     '''
     # Load a couple of torchvision examples here, e.g.,
-    m = load_model('alexnet', source='torch')
-    self.assertEqual(utils.get_num_layers_from_model(m), 8)
+    # m = load_model('alexnet', source='torch')
+    # self.assertEqual(utils.get_num_layers_from_model(m), 8)
 
-  # @unittest.SkipTest
+    # Keras models
+    for task in keras.TEST_MODELS:
+      for model in keras.TEST_MODELS[task]:
+        m = keras.load_model(model['name'])
+        self.assertEqual(utils.get_num_layers_from_model(m),
+                         model['num_layers'])
+
+  @unittest.SkipTest
   def test_get_num_parameters_from_model(self):
     '''Make sure we correctly determine number of parameters in the model.
 
@@ -299,8 +306,14 @@ class TestCvUtils(unittest.TestCase):
 
     TODO(george) finish.
     '''
-    d = load_dataset('mnist')
-    self.assertEqual(utils.get_source_from_dataset(d), 'tensorflow')  # Fix.
+    # d = load_dataset('mnist')
+    # self.assertEqual(utils.get_source_from_dataset(d), 'tensorflow')  # Fix.
+
+    #keras
+    for task in keras.DATASETS:
+      for ds in keras.DATASETS[task]:
+        d = keras.load_dataset(ds)
+        self.assertEqual(utils.get_source_from_dataset(d), 'keras')
 
   @unittest.SkipTest
   def test_get_size_from_dataset(self):
