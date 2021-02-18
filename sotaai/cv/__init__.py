@@ -77,7 +77,9 @@ def load_dataset(name: str, source: str = '') -> abstractions.CvDataset:
   # Build a standardized `CvDataset` object per dataset split:
   std_dataset = dict()
   for split_name in raw_object:
-    std_dataset[split_name] = abstractions.CvDataset(raw_object[split_name],
-                                                     name, split_name)
+    raw = raw_object[split_name]
+    iterator = wrapper.DatasetIterator(raw)
+    std_dataset[split_name] = abstractions.CvDataset(raw, iterator, name,
+                                                     split_name)
 
   return std_dataset

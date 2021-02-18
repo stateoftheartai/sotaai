@@ -13,7 +13,7 @@ from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras import Sequential
 from sotaai.cv import load_dataset, load_model, keras_wrapper
 from sotaai.cv.abstractions import CvDataset, CvModel
-from sotaai.cv import utils
+from sotaai.cv import metadata
 
 #
 # @author HO
@@ -22,7 +22,11 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 
 class TestKerasWrapper(unittest.TestCase):
-  '''Test the wrapped Keras module.'''
+  '''Test the wrapped Keras module.
+
+  For Keras, we test against all datasets and modules since they are a few and
+  can fit in memory (CI server)
+  '''
 
   # @unittest.SkipTest
   def test_load_dataset(self):
@@ -83,15 +87,17 @@ class TestKerasWrapper(unittest.TestCase):
           self.assertEqual(CvDataset, type(cv_dataset))
           self.assertEqual(cv_dataset.source, 'keras')
 
-          datapoint = cv_dataset[0]
+          iterable_dataset = iter(cv_dataset)
+
+          datapoint = next(iterable_dataset)
           self.assertEqual(np.ndarray, type(datapoint['image']))
           self.assertEqual('label' in datapoint, True)
 
-          datapoint_metadata = utils.get_dataset_item_metadata(dataset_name)
+          dataset_metadata = metadata.get('datasets', name=dataset_name)
           self.assertEqual(datapoint['label'].shape,
-                           datapoint_metadata['label'])
+                           dataset_metadata['metadata']['label'])
           self.assertEqual(datapoint['image'].shape,
-                           datapoint_metadata['image'])
+                           dataset_metadata['metadata']['image'])
 
   # @unittest.SkipTest
   def test_abstract_model(self):
@@ -117,7 +123,9 @@ class TestKerasWrapper(unittest.TestCase):
 
     dataset_splits = load_dataset('mnist')
     cv_dataset = dataset_splits['test']
-    datapoint = cv_dataset[0]
+    iterable_dataset = iter(cv_dataset)
+
+    datapoint = next(iterable_dataset)
 
     # Reshape MNIST data to be a single datapoint in RGB
     x = datapoint['image']

@@ -10,7 +10,7 @@ import numpy as np
 import torch
 import tensorflow_datasets as tfds
 import time
-from sotaai.cv.keras_wrapper import get_dataset_item as keras_item
+# from sotaai.cv.keras_wrapper import get_dataset_item as keras_item
 
 # TODO(tonioteran) Currently removed 'mxnet' and 'pretrainedmodels' from
 # MODEL_SOURCES. Need to restore as soon as the wrapper is done and unit test.
@@ -549,25 +549,6 @@ def format_image(x):
     x = np.transpose(x, [0, 2, 3, 1])
 
 
-def get_dataset_item_metadata(dataset_name):
-  '''Return metadata of a given dataset
-
-  Args:
-    dataset_name: dataset name to obtain metadata from
-
-  Returns:
-    An object with the following keys:
-      image: holds the image shape as a tuple
-      label: holdes the label shape as a tuple
-  '''
-  if 'mnist' in dataset_name:
-    return {'image': (28, 28), 'label': ()}
-  elif 'cifar' in dataset_name:
-    return {'image': (32, 32, 3), 'label': (1,)}
-  else:
-    raise NotImplementedError('Dataset is not implemented in this source')
-
-
 def get_source_from_dataset(dataset) -> str:
   '''Determines the source library from a dataset object.
 
@@ -579,6 +560,7 @@ def get_source_from_dataset(dataset) -> str:
   Returns:
     String with the name of the source library.
   '''
+  source = None
   # Save the name of the type of the object, without the first 8th digits
   # to remove '<class '' characters.
   obj_type = str(type(dataset))
@@ -587,13 +569,15 @@ def get_source_from_dataset(dataset) -> str:
   if isinstance(dataset, tuple):
     if len(dataset) == 2 and isinstance(dataset[0], np.ndarray):
       # Keras dataset objects are numpy.ndarray tuples.
-      return 'keras'
+      source = 'keras'
   elif 'torch' in obj_type:
-    return 'torchvision'
+    source = 'torchvision'
   else:
     # Dataset source's name is read from the dataset type.
     source = obj_type.split('.')[0]
-    return source
+  if 'tensorflow' in source:
+    source = 'tensorflow'
+  return source
 
 
 def get_size_from_dataset(dataset, split_name) -> int:
@@ -674,13 +658,6 @@ def get_shape_from_dataset(dataset, name, split_name):
   return (h, w, c)
 
 
-def get_item(index, raw_dataset, source):
-  if source == 'keras':
-    return keras_item(raw_dataset, index)
-  else:
-    raise NotImplementedError('Get item not implemented for the given source')
-
-
 def get_classes_from_dataset(raw_object, source, name, split_name, size):
   '''Get the IDs and the names (if available) of the classes.
 
@@ -731,8 +708,11 @@ def get_classes_from_dataset(raw_object, source, name, split_name, size):
       # Set limited time to go through dataset and obtain classes
       time_end = time.time() + 20
       for i in range(size):
+        print(i)
         # Append the label of each example
-        classes.append(get_item(i, raw_object[split_name], source)['label'])
+        # Not working (delete get_item from abstraction)
+        # classes.append(
+        #     get_item(None, i, raw_object[split_name], source)['label'])
         if time.time() > time_end:
           # Execute stopping condition
           finished = False

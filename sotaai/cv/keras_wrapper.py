@@ -21,132 +21,6 @@ MODELS = {
     ]
 }
 
-TEST_DATASETS = {
-    'classification': [{
-        'name': 'mnist',
-        'train_size': 60000,
-        'test_size': 10000,
-        'test_classes': range(0, 10),
-        'train_classes': range(0, 10),
-        'classes_names': None
-    }, {
-        'name': 'cifar10',
-        'train_size': 50000,
-        'test_size': 10000,
-        'test_classes': range(0, 10),
-        'train_classes': range(0, 10),
-        'classes_names': None
-    }, {
-        'name': 'cifar100',
-        'train_size': 50000,
-        'test_size': 10000,
-        'test_classes': range(0, 100),
-        'train_classes': range(0, 100),
-        'classes_names': None
-    }, {
-        'name': 'fashion_mnist',
-        'train_size': 60000,
-        'test_size': 10000,
-        'test_classes': range(0, 10),
-        'train_classes': range(0, 10),
-        'classes_names': None
-    }]
-}
-
-TEST_MODELS = {
-    'classification': [{
-        'name': 'InceptionResNetV2',
-        'num_layers': 245,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 55873736
-    }, {
-        'name': 'InceptionV3',
-        'num_layers': 95,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 23851784
-    }, {
-        'name': 'ResNet101V2',
-        'num_layers': 105,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 44675560
-    }, {
-        'name': 'ResNet152V2',
-        'num_layers': 156,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 60380648
-    }, {
-        'name': 'ResNet50V2',
-        'num_layers': 54,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 25613800
-    }, {
-        'name': 'VGG16',
-        'num_layers': 16,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 138357544
-    }, {
-        'name': 'VGG19',
-        'num_layers': 19,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 143667240
-    }, {
-        'name': 'Xception',
-        'num_layers': 41,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 3357584
-    }, {
-        'name': 'ResNet50',
-        'num_layers': 53,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 23587712
-    }, {
-        'name': 'ResNet101',
-        'num_layers': 104,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 42658176
-    }, {
-        'name': 'ResNet152',
-        'num_layers': 155,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 58370944
-    }, {
-        'name': 'DenseNet121',
-        'num_layers': 120,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 7037504
-    }, {
-        'name': 'DenseNet169',
-        'num_layers': 168,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 12642880
-    }, {
-        'name': 'DenseNet201',
-        'num_layers': 200,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 18321984
-    }, {
-        'name': 'NASNetMobile',
-        'num_layers': 196,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 2249533
-    }, {
-        'name': 'NASNetLarge',
-        'num_layers': 268,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 43614774
-    }, {
-        'name': 'MobileNet',
-        'num_layers': 28,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 4253864
-    }, {
-        'name': 'MobileNetV2',
-        'num_layers': 53,
-        'input_type': 'numpy.ndarray',
-        'num_parameters': 3538984
-    }]
-}
-
 
 def load_model(model_name,
                pretrained=False,
@@ -267,17 +141,30 @@ def load_dataset(dataset_name):
   return dataset_dict
 
 
-def get_dataset_item(raw, index):
-  '''Return a single datapoint or item
+class DatasetIterator():
+  '''Keras dataset iterator class'''
 
-    Args:
-      raw: raw keras dataset object
-      i (int): index to get item
+  def __init__(self, raw) -> None:
+    self._raw = raw
+    self._iterator = self._create_iterator()
+
+  def __next__(self):
+    '''Get the next item from the dataset in a standardized format.
 
     Returns:
-      A dict. The dict will contain a 'data' key which will hold the
-      datapoint as a numpy array. The dict will also contain a 'label' key which
-      will hold the label of the datapoint. The dict might contain other keys
-      depending on the nature of the dataset.
-  '''
-  return {'image': raw[0][index], 'label': raw[1][index]}
+      A dict with two mandatory keys: the 'image' key which will hold the image
+      as a numpy array, and the 'label' key which will hold the label as a numpy
+      array as well. The dict might contain other keys depending on the nature
+      of the dataset.
+    '''
+    image = next(self._iterator['image'])
+    label = next(self._iterator['label'])
+    return {'image': image, 'label': label}
+
+  def _create_iterator(self):
+    '''Create an iterator out of the raw dataset split object
+
+    Returns:
+      An object containing iterators for the dataset images and labels
+    '''
+    return {'image': iter(self._raw[0]), 'label': iter(self._raw[1])}

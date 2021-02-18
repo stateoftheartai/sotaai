@@ -15,7 +15,6 @@ DATASETS = {
         'EMNIST',
         'KMNIST',
         'LSUN',  # No download
-        'Omniglot',
         'QMNIST',
         'SEMEION',
         'SVHN',
@@ -56,8 +55,6 @@ DATASETS = {
         'Kinetics400',  # No download.
         'UCF101',  # No download.
     ],
-    'one-shot-learning': ['Omniglot'],
-    'few-shot-learning': ['Omniglot'],
     'local image descriptors': [
         'PhotoTour/notredame',
         'PhotoTour/yosemite',
@@ -222,16 +219,6 @@ def load_dataset(dataset_name,
                         name=name,
                         download=download_test,
                         train=False)
-
-  elif dataset_name == 'Omniglot':
-    download_bg = not os.path.exists(root + '/background')
-    download_eval = not os.path.exists(root + '/eval')
-    ds_dic['background'] = ds(root + '/background',
-                              background=True,
-                              download=download_bg)
-    ds_dic['evaluation'] = ds(root + 'eval',
-                              background=False,
-                              download=download_eval)
 
   elif dataset_name in ['SBU', 'SEMEION']:
     ds_dic['data'] = ds(root, download=True)
