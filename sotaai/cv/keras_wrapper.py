@@ -25,19 +25,31 @@ TEST_DATASETS = {
     'classification': [{
         'name': 'mnist',
         'train_size': 60000,
-        'test_size': 10000
+        'test_size': 10000,
+        'test_classes': range(0, 10),
+        'train_classes': range(0, 10),
+        'classes_names': None
     }, {
         'name': 'cifar10',
         'train_size': 50000,
-        'test_size': 10000
+        'test_size': 10000,
+        'test_classes': range(0, 10),
+        'train_classes': range(0, 10),
+        'classes_names': None
     }, {
         'name': 'cifar100',
         'train_size': 50000,
-        'test_size': 10000
+        'test_size': 10000,
+        'test_classes': range(0, 100),
+        'train_classes': range(0, 100),
+        'classes_names': None
     }, {
         'name': 'fashion_mnist',
         'train_size': 60000,
-        'test_size': 10000
+        'test_size': 10000,
+        'test_classes': range(0, 10),
+        'train_classes': range(0, 10),
+        'classes_names': None
     }]
 }
 
