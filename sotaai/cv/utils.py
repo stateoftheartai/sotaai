@@ -547,29 +547,6 @@ def format_image(x):
     x = np.transpose(x, [0, 2, 3, 1])
 
 
-def get_dataset_item_metadata(dataset_name):
-  '''Return metadata of a given dataset
-
-  Args:
-    dataset_name: dataset name to obtain metadata from
-
-  Returns:
-    An object with the following keys:
-      image: holds the image shape as a tuple
-      label: holdes the label shape as a tuple
-  '''
-  if 'mnist' in dataset_name:
-    return {'image': (28, 28), 'label': ()}
-  elif 'cifar' in dataset_name:
-    return {'image': (32, 32, 3), 'label': (1,)}
-  elif 'beans' in dataset_name:
-    return {'image': (500, 500, 3), 'label': ()}
-  elif 'omniglot' in dataset_name:
-    return {'image': (105, 105, 3), 'label': ()}
-  else:
-    raise NotImplementedError('Dataset is not implemented in this source')
-
-
 def get_source_from_dataset(dataset) -> str:
   '''Determines the source library from a dataset object.
 

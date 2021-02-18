@@ -4,7 +4,7 @@
 '''Unit testing the Tensorflow wrapper.'''
 import unittest
 
-from sotaai.cv import load_dataset, tensorflow_wrapper, utils
+from sotaai.cv import load_dataset, tensorflow_wrapper, metadata
 from sotaai.cv.abstractions import CvDataset
 from tensorflow_datasets.core.dataset_utils import _IterableDataset
 import numpy as np
@@ -72,9 +72,9 @@ class TestTensorflowWrapper(unittest.TestCase):
         self.assertEqual(np.ndarray, type(datapoint['image']))
         self.assertEqual('label' in datapoint, True)
 
-        datapoint_metadata = utils.get_dataset_item_metadata(dataset_name)
-        self.assertEqual(datapoint['label'].shape, datapoint_metadata['label'])
-        self.assertEqual(datapoint['image'].shape, datapoint_metadata['image'])
+        dataset_metadata = metadata.DATASETS[dataset_name]
+        self.assertEqual(datapoint['label'].shape, dataset_metadata['label'])
+        self.assertEqual(datapoint['image'].shape, dataset_metadata['image'])
 
 
 if __name__ == '__main__':

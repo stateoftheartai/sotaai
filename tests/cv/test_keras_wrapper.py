@@ -13,7 +13,7 @@ from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras import Sequential
 from sotaai.cv import load_dataset, load_model, keras_wrapper
 from sotaai.cv.abstractions import CvDataset, CvModel
-from sotaai.cv import utils
+from sotaai.cv import metadata
 
 #
 # @author HO
@@ -93,11 +93,9 @@ class TestKerasWrapper(unittest.TestCase):
           self.assertEqual(np.ndarray, type(datapoint['image']))
           self.assertEqual('label' in datapoint, True)
 
-          datapoint_metadata = utils.get_dataset_item_metadata(dataset_name)
-          self.assertEqual(datapoint['label'].shape,
-                           datapoint_metadata['label'])
-          self.assertEqual(datapoint['image'].shape,
-                           datapoint_metadata['image'])
+          dataset_metadata = metadata.DATASETS[dataset_name]
+          self.assertEqual(datapoint['label'].shape, dataset_metadata['label'])
+          self.assertEqual(datapoint['image'].shape, dataset_metadata['image'])
 
   # @unittest.SkipTest
   def test_abstract_model(self):

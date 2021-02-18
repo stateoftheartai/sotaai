@@ -8,6 +8,7 @@ import sotaai.cv.keras_wrapper as keras
 from sotaai.cv import utils
 from sotaai.cv import load_model
 from sotaai.cv import load_dataset
+from sotaai.cv import metadata
 
 
 class TestCvUtils(unittest.TestCase):
@@ -306,13 +307,13 @@ class TestCvUtils(unittest.TestCase):
     # 30000)
 
     # keras
-    for task in keras.TEST_DATASETS:
-      for ds in keras.TEST_DATASETS[task]:
-        d = keras.load_dataset(ds['name'])
-        self.assertEqual(utils.get_size_from_dataset(d['train'], 'train'),
-                         ds['train_size'])
-        self.assertEqual(utils.get_size_from_dataset(d['test'], 'test'),
-                         ds['test_size'])
+    for dataset_name in metadata.DATASETS:
+      dataset_metadata = metadata.DATASETS[dataset_name]
+      dataset = keras.load_dataset(dataset_name)
+      self.assertEqual(utils.get_size_from_dataset(dataset['train'], 'train'),
+                       dataset_metadata['train_size'])
+      self.assertEqual(utils.get_size_from_dataset(dataset['test'], 'test'),
+                       dataset_metadata['test_size'])
 
   @unittest.SkipTest
   def test_get_shape_from_dataset(self):
