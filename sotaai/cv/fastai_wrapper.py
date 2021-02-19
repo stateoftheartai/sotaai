@@ -31,7 +31,7 @@ DATASETS = {
         'MNIST_TINY', 'MNIST_VAR_SIZE_TINY', 'PETS', 'SKIN_LESION'
     ],
     'key-point detection': ['BIWI_SAMPLE'],
-    'object detection': ['COCO_SAMPLE', 'COCO_TINY'],
+    'object_detection': ['COCO_SAMPLE', 'COCO_TINY'],
     'multi-label classification': ['PLANET_SAMPLE', 'PLANET_TINY'],
     'segmentation': ['CAMVID', 'CAMVID_TINY']
 }

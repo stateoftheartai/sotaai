@@ -4,7 +4,7 @@
 '''Unit testing the Tensorflow wrapper.'''
 import unittest
 
-from sotaai.cv import load_dataset, tensorflow_wrapper, metadata
+from sotaai.cv import load_dataset, tensorflow_wrapper, metadata, utils
 from sotaai.cv.abstractions import CvDataset
 from tensorflow_datasets.core.dataset_utils import _IterableDataset
 import numpy as np
@@ -36,7 +36,7 @@ class TestTensorflowWrapper(unittest.TestCase):
       'sun397',  # TODO(tonioteran) Error.
   ]
 
-  test_datasets = ['beans', 'omniglot']
+  test_datasets = ['beans', 'omniglot', 'wider_face']
 
   # @unittest.SkipTest
   def test_load_dataset(self):
@@ -47,7 +47,6 @@ class TestTensorflowWrapper(unittest.TestCase):
     '''
     for dataset_name in self.test_datasets:
       dataset = tensorflow_wrapper.load_dataset(dataset_name)
-
       self.assertEqual(type(dataset), dict)
 
       for split in dataset:
@@ -69,14 +68,18 @@ class TestTensorflowWrapper(unittest.TestCase):
         iterable_dataset = iter(cv_dataset)
 
         datapoint = next(iterable_dataset)
-        self.assertEqual(np.ndarray, type(datapoint['image']))
-        self.assertEqual('label' in datapoint, True)
-
         dataset_metadata = metadata.get('datasets', name=dataset_name)
-        self.assertEqual(datapoint['label'].shape,
-                         dataset_metadata['metadata']['label'])
-        self.assertEqual(datapoint['image'].shape,
-                         dataset_metadata['metadata']['image'])
+
+        self.assertEqual(np.ndarray, type(datapoint['image']))
+        self.assertEqual(
+            utils.compare_shapes(dataset_metadata['metadata']['image'],
+                                 datapoint['image'].shape), True)
+
+        if 'classification' in cv_dataset.tasks:
+          self.assertEqual('label' in datapoint, True)
+          self.assertEqual(
+              utils.compare_shapes(dataset_metadata['metadata']['label'],
+                                   datapoint['label'].shape), True)
 
 
 if __name__ == '__main__':

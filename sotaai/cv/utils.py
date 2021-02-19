@@ -662,9 +662,11 @@ def get_classes_from_dataset(raw_object, source, name, split_name, size):
   '''Get the IDs and the names (if available) of the classes.
 
     Args:
-        raw_object:
-          Dataset object directly instantiated from a source library. Type
-          is dependent on the source library.
+        raw_object: dataset raw object as stored in CvDataset (split raw object)
+        source: the source of the dataset in string
+        name: the dataset name in string
+        split_name: the split name to which the raw_object belongs to in string
+        size: the size of the datset raw_object
 
     Returns:
         A pair of values, `classes` and `classes_names`. If no
@@ -677,7 +679,7 @@ def get_classes_from_dataset(raw_object, source, name, split_name, size):
     classes = set(raw_object[split_name][:][1])
     classes_names = None
   elif source == 'keras':
-    classes = np.unique(raw_object[split_name][1])
+    classes = np.unique(raw_object[1])
     classes_names = None
   elif source == 'torchvision':
     if 'VOC' in name:
@@ -725,9 +727,12 @@ def get_classes_from_dataset(raw_object, source, name, split_name, size):
 
   elif source == 'tensorflow':
     _, ds_info = tfds.load(name, with_info=True)
-    n_classes = ds_info.features['label'].num_classes
-    classes = range(n_classes)
+    classes = None
     classes_names = None
+
+    if 'label' in ds_info.features:
+      n_classes = ds_info.features['label'].num_classes
+      classes = range(n_classes)
 
   elif source == 'fastai':
     obj = getattr(raw_object[split_name], split_name + '_ds')
@@ -770,3 +775,27 @@ def extract_pixel_types(raw_object, name, source, split_name):
   else:
     indexes, classes = None, None
   return indexes, classes
+
+
+def compare_shapes(ground_truth_shape, shape):
+  '''Compare to shapes to see whether they are equivalent
+
+  Args:
+    ground_truth_shape: the ground truth shape tuple. A None value in this tuple
+    will act as a wildcard and will match any value in the compared shape.
+    shape: the shape to compare against ground_truth_shape
+
+  Returns:
+    Boolean that tells whether shapes are equivalent or not
+  '''
+  equal = False
+  if ground_truth_shape == shape:
+    equal = True
+  elif len(ground_truth_shape) == len(shape):
+    matched_items = 0
+    for truth, value in zip(ground_truth_shape, shape):
+      if truth is None or truth == value:
+        matched_items += 1
+    if matched_items == len(ground_truth_shape):
+      equal = True
+  return equal

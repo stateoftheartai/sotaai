@@ -73,6 +73,13 @@ DATASETS = {
             'image': (105, 105, 3),
             'label': ()
         }
+    },
+    'wider_face': {
+        'name': 'wider_face',
+        'sources': ['tensorflow'],
+        'metadata': {
+            'image': (None, None, 3)
+        }
     }
 }
 

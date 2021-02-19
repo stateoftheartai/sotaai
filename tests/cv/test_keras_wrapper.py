@@ -11,7 +11,7 @@ import inspect
 from tensorflow.python.keras.engine.functional import Functional  # pylint: disable=no-name-in-module
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras import Sequential
-from sotaai.cv import load_dataset, load_model, keras_wrapper
+from sotaai.cv import load_dataset, load_model, keras_wrapper, utils
 from sotaai.cv.abstractions import CvDataset, CvModel
 from sotaai.cv import metadata
 
@@ -84,20 +84,24 @@ class TestKerasWrapper(unittest.TestCase):
         for split_name in dso:
 
           cv_dataset = dso[split_name]
+
           self.assertEqual(CvDataset, type(cv_dataset))
           self.assertEqual(cv_dataset.source, 'keras')
 
           iterable_dataset = iter(cv_dataset)
 
           datapoint = next(iterable_dataset)
+          dataset_metadata = metadata.get('datasets', name=dataset_name)
+
           self.assertEqual(np.ndarray, type(datapoint['image']))
           self.assertEqual('label' in datapoint, True)
 
-          dataset_metadata = metadata.get('datasets', name=dataset_name)
-          self.assertEqual(datapoint['label'].shape,
-                           dataset_metadata['metadata']['label'])
-          self.assertEqual(datapoint['image'].shape,
-                           dataset_metadata['metadata']['image'])
+          self.assertEqual(
+              utils.compare_shapes(dataset_metadata['metadata']['image'],
+                                   datapoint['image'].shape), True)
+          self.assertEqual(
+              utils.compare_shapes(dataset_metadata['metadata']['label'],
+                                   datapoint['label'].shape), True)
 
   # @unittest.SkipTest
   def test_abstract_model(self):
