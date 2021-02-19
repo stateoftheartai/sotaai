@@ -285,7 +285,7 @@ class TestCvUtils(unittest.TestCase):
         utils.get_shape_from_dataset(d['split name'], 'mnist', 'split name'),
         (1, 2, 3))
 
-  # @unittest.SkipTest
+  @unittest.SkipTest
   def test_get_classes_from_dataset(self):
     '''Make sure we correctly determine the classes and
       classes name of a dataset's sample.
@@ -309,6 +309,20 @@ class TestCvUtils(unittest.TestCase):
                        dataset_metadata['metadata']['test_classes'])
       self.assertEqual(new_cv_dataset.classes_names,
                        dataset_metadata['metadata']['classes_names'])
+
+  # @unittest.SkipTest
+  def test_extract_pixel_types(self):
+    '''Make sure we correctly determine the pixels
+     of a dataset's sample.
+
+    TODO(george) finish.
+    '''
+
+    d = keras.load_dataset('mnist')
+
+    new_cv_dataset = abstractions.CvDataset(d, None, 'mnist', 'train')
+    print(new_cv_dataset.pixel_types)
+    print(new_cv_dataset.pixel_types_names)
 
 
 if __name__ == '__main__':
