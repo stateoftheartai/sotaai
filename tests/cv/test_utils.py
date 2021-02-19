@@ -296,6 +296,20 @@ class TestCvUtils(unittest.TestCase):
 
     # new_cv_dataset = abstractions.CvDataset(d, None, 'mnist', 'train')
 
+  def test_compare_shapes(self):
+    '''Make sure compare shapes works properly'''
+
+    self.assertEqual(utils.compare_shapes(1, 1), True)
+    self.assertEqual(utils.compare_shapes((1,), (1,)), True)
+    self.assertEqual(utils.compare_shapes((28, 28), (28, 28)), True)
+    self.assertEqual(utils.compare_shapes((512, 512, 3), (512, 512, 3)), True)
+    self.assertEqual(utils.compare_shapes((), ()), True)
+    self.assertEqual(utils.compare_shapes((None, None, 3), (100, 200, 3)), True)
+    self.assertEqual(utils.compare_shapes((None, None, 3), (200, 400, 3)), True)
+
+    self.assertEqual(utils.compare_shapes((28, 28, 3), (28, 28)), False)
+    self.assertEqual(utils.compare_shapes((28, 28, 3), (None, None, 3)), False)
+
 
 if __name__ == '__main__':
   unittest.main()
