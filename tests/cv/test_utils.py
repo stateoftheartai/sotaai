@@ -8,6 +8,7 @@ import sotaai.cv.keras_wrapper as keras
 from sotaai.cv import utils
 from sotaai.cv import load_model
 from sotaai.cv import load_dataset
+from sotaai.cv import abstractions
 from sotaai.cv import metadata
 
 
@@ -256,7 +257,7 @@ class TestCvUtils(unittest.TestCase):
     for task in keras.DATASETS:
       for ds in keras.DATASETS[task]:
         d = keras.load_dataset(ds)
-        self.assertEqual(utils.get_source_from_dataset(d), 'keras')
+        self.assertEqual(utils.get_source_from_dataset(d['test']), 'keras')
 
   @unittest.SkipTest
   def test_get_size_from_dataset(self):
@@ -283,6 +284,31 @@ class TestCvUtils(unittest.TestCase):
     self.assertEqual(
         utils.get_shape_from_dataset(d['split name'], 'mnist', 'split name'),
         (1, 2, 3))
+
+  # @unittest.SkipTest
+  def test_get_classes_from_dataset(self):
+    '''Make sure we correctly determine the classes and
+      classes name of a dataset's sample.
+
+    TODO(george) finish.
+    '''
+    # keras
+    dataset_metadatas = metadata.get('datasets', source='keras')
+
+    for dataset_metadata in dataset_metadatas:
+      d = keras.load_dataset(dataset_metadata['name'])
+      new_cv_dataset = abstractions.CvDataset(d, None, dataset_metadata['name'],
+                                              'train')
+      self.assertEqual(new_cv_dataset.classes,
+                       dataset_metadata['metadata']['train_classes'])
+      self.assertEqual(new_cv_dataset.classes_names,
+                       dataset_metadata['metadata']['classes_names'])
+      new_cv_dataset = abstractions.CvDataset(d, None, dataset_metadata['name'],
+                                              'test')
+      self.assertEqual(new_cv_dataset.classes,
+                       dataset_metadata['metadata']['test_classes'])
+      self.assertEqual(new_cv_dataset.classes_names,
+                       dataset_metadata['metadata']['classes_names'])
 
 
 if __name__ == '__main__':

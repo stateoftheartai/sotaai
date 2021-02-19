@@ -9,6 +9,8 @@ import mxnet as mx
 import numpy as np
 import torch
 import tensorflow_datasets as tfds
+import time
+# from sotaai.cv.keras_wrapper import get_dataset_item as keras_item
 
 # TODO(tonioteran) Currently removed 'mxnet' and 'pretrainedmodels' from
 # MODEL_SOURCES. Need to restore as soon as the wrapper is done and unit test.
@@ -654,3 +656,87 @@ def get_shape_from_dataset(dataset, name, split_name):
         c = shapes[0][3]
 
   return (h, w, c)
+
+
+def get_classes_from_dataset(raw_object, source, name, split_name, size):
+  '''Get the IDs and the names (if available) of the classes.
+
+    Args:
+        raw_object:
+          Dataset object directly instantiated from a source library. Type
+          is dependent on the source library.
+
+    Returns:
+        A pair of values, `classes` and `classes_names`. If no
+        `classes_names` are available, the pair becomes `classes` and
+        `None`.
+    '''
+  classes = None
+  classes_names = None
+  if source == 'mxnet':
+    classes = set(raw_object[split_name][:][1])
+    classes_names = None
+  elif source == 'keras':
+    classes = np.unique(raw_object[split_name][1])
+    classes_names = None
+  elif source == 'torchvision':
+    if 'VOC' in name:
+      # If dataset is an Object Detection Dataset
+      classes_names = [
+          'unlabeled/void', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle',
+          'bus', 'car ', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse',
+          'motorbike', 'person', 'potted plant', 'sheep', 'sofa', 'train',
+          'tv/monitor'
+      ]
+      classes = list(range(21))
+    elif 'class_to_idx' in dir(raw_object[split_name]):
+      classes = list(raw_object[split_name].class_to_idx.values())
+      classes_names = list(raw_object[split_name].class_to_idx.keys())
+    elif 'dataset' in dir(raw_object[split_name]):
+      if 'class_to_idx' in dir(raw_object[split_name]):
+        classes = list(raw_object[split_name].class_to_idx.values())
+        classes_names = list(raw_object[split_name].class_to_idx.keys())
+      else:
+        classes = list(set(raw_object[split_name].targets))
+        classes_names = None
+    elif 'labels' in dir(raw_object[split_name]):
+      classes = list(set(raw_object[split_name].labels.numpy()))
+      classes_names = None
+    else:
+      classes = []
+      finished = True
+      # Set limited time to go through dataset and obtain classes
+      time_end = time.time() + 20
+      for i in range(size):
+        print(i)
+        # Append the label of each example
+        # Not working (delete get_item from abstraction)
+        # classes.append(
+        #     get_item(None, i, raw_object[split_name], source)['label'])
+        if time.time() > time_end:
+          # Execute stopping condition
+          finished = False
+          break
+      if finished:
+        classes = list(set(classes))
+      else:
+        classes = None
+      classes_names = None
+
+  elif source == 'tensorflow':
+    _, ds_info = tfds.load(name, with_info=True)
+    n_classes = ds_info.features['label'].num_classes
+    classes = range(n_classes)
+    classes_names = None
+
+  elif source == 'fastai':
+    obj = getattr(raw_object[split_name], split_name + '_ds')
+    classes_names = obj.y.classes
+    classes = range(len(classes_names))
+
+  if classes is not None:
+    if list(range(len(classes))) == list(classes):
+      # Avoid representing classes with a long list by using range
+      classes = range(len(classes))
+
+  return classes, classes_names
