@@ -10,7 +10,10 @@ import numpy as np
 import torch
 import tensorflow_datasets as tfds
 import time
-# from sotaai.cv.keras_wrapper import get_dataset_item as keras_item
+import os
+
+# Prevent Tensorflow to print warning and meta logs
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 # TODO(tonioteran) Currently removed 'mxnet' and 'pretrainedmodels' from
 # MODEL_SOURCES. Need to restore as soon as the wrapper is done and unit test.

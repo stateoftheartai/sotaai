@@ -4,18 +4,18 @@
 '''Unit testing the utility functions.'''
 import unittest
 import importlib
+
 import sotaai.cv.keras_wrapper as keras
 from sotaai.cv import utils
 from sotaai.cv import load_model
 from sotaai.cv import load_dataset
-from sotaai.cv import abstractions
 from sotaai.cv import metadata
 
 
 class TestCvUtils(unittest.TestCase):
   '''The the utils sub-module for CV.'''
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_map_dataset_source_tasks(self):
     '''Make sure the dataset map correctly encapsulates all info.'''
     ds_to_sourcetasks = utils.map_dataset_source_tasks()
@@ -30,7 +30,7 @@ class TestCvUtils(unittest.TestCase):
           if ds in ds_to_sourcetasks.keys():
             self.assertTrue(source in ds_to_sourcetasks[ds].keys())
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_map_dataset_tasks(self):
     '''Make sure the map from dataset to tasks correctly encapsulates info.'''
     ds_to_tasks = utils.map_dataset_tasks()
@@ -43,7 +43,7 @@ class TestCvUtils(unittest.TestCase):
           if ds in ds_to_tasks.keys():
             self.assertTrue(task in ds_to_tasks[ds])
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_map_dataset_sources(self):
     '''Ensure map from dataset name to available sources is correct.'''
     ds_to_sources = utils.map_dataset_sources()
@@ -56,7 +56,7 @@ class TestCvUtils(unittest.TestCase):
           if ds in ds_to_sources.keys():
             self.assertTrue(source in ds_to_sources[ds])
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_map_dataset_info(self):
     '''Ensure tasks and sources are adequately parsed.'''
     ds_to_info = utils.map_dataset_info()
@@ -70,7 +70,7 @@ class TestCvUtils(unittest.TestCase):
             self.assertTrue(task in ds_to_info[ds]['tasks'])
             self.assertTrue(source in ds_to_info[ds]['sources'])
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_map_name_source_tasks(self):
     '''Test for both datasets and models.'''
     # Try first for datasets.
@@ -95,7 +95,7 @@ class TestCvUtils(unittest.TestCase):
           if model in model_to_sourcetasks.keys():
             self.assertTrue(source in model_to_sourcetasks[model].keys())
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_map_name_tasks(self):
     '''Make sure the map from model/dataset to tasks encapsulates info.'''
     # First for datasets.
@@ -120,7 +120,7 @@ class TestCvUtils(unittest.TestCase):
           if model in model_to_tasks.keys():
             self.assertTrue(task in model_to_tasks[model])
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_map_name_sources(self):
     '''Ensure map from model/dataset name to available sources is correct.'''
     # First for datasets.
@@ -145,7 +145,7 @@ class TestCvUtils(unittest.TestCase):
           if model in model_to_sources.keys():
             self.assertTrue(source in model_to_sources[model])
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_map_name_info(self):
     '''Ensure tasks and sources are adequately parsed.'''
     # First for datasets.
@@ -172,32 +172,17 @@ class TestCvUtils(unittest.TestCase):
             self.assertTrue(task in models_to_info[model]['tasks'])
             self.assertTrue(source in models_to_info[model]['sources'])
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_get_source_from_model(self):
-    '''Ensure the source library is correctly determined from a model object.
+    '''Ensure the source library is correctly determined from a model object.'''
 
-    TODO(hugo) Fill out the tests.
-    '''
-    # Load a couple of torchvision examples here, e.g.,
-    m = load_model('alexnet', source='torch')
-    self.assertEqual(utils.get_source_from_model(m), 'torch')
-    m = load_model('densenet121', source='torch')
-    self.assertEqual(utils.get_source_from_model(m), 'torch')
-
-    m = load_model('resnet152_v2', source='mxnet')
-    self.assertEqual(utils.get_source_from_model(m), 'mxnet')
-    m = load_model('squeezenet1.1', source='mxnet')
-    self.assertEqual(utils.get_source_from_model(m), 'mxnet')
-
+    # Keras
     m = load_model('InceptionResNetV2', source='keras')
-    self.assertEqual(utils.get_source_from_model(m), 'keras')
+    self.assertEqual(utils.get_source_from_model(m.raw), 'keras')
     m = load_model('NASNetMobile', source='keras')
-    self.assertEqual(utils.get_source_from_model(m), 'keras')
+    self.assertEqual(utils.get_source_from_model(m.raw), 'keras')
 
-    m = load_model('resnet101', source='fastai')
-    self.assertEqual(utils.get_source_from_model(m), 'fastai')
-
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_get_input_type(self):
     '''Ensure the correct input type is being parsed from the model object.'''
 
@@ -208,19 +193,17 @@ class TestCvUtils(unittest.TestCase):
       m = keras.load_model(model['name'])
       self.assertEqual(utils.get_input_type(m), model['metadata']['input_type'])
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_get_num_channels_from_model(self):
-    '''Make sure we correctly determine whether a model is color or grayscale.
-
-    TODO(hugo) finish.
-    '''
+    '''Make sure we correctly determine whether a model is color or
+    grayscale.'''
     # Keras
     for task in keras.MODELS:
       for model in keras.MODELS[task]:
         m = keras.load_model(model)
         self.assertEqual(utils.get_num_channels_from_model(m), 3)
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_get_num_layers_from_model(self):
     '''Make sure we correctly determine number of layers in model's network.'''
 
@@ -232,7 +215,7 @@ class TestCvUtils(unittest.TestCase):
       self.assertEqual(utils.get_num_layers_from_model(m),
                        model['metadata']['num_layers'])
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_get_num_parameters_from_model(self):
     '''Make sure we correctly determine number of parameters in the model.'''
 
@@ -244,12 +227,9 @@ class TestCvUtils(unittest.TestCase):
       self.assertEqual(utils.get_num_parameters_from_model(m),
                        model['metadata']['num_parameters'])
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_get_source_from_dataset(self):
-    '''Make sure we correctly determine the source from a dataset object.
-
-    TODO(george) finish.
-    '''
+    '''Make sure we correctly determine the source from a dataset object.'''
     # d = load_dataset('mnist')
     # self.assertEqual(utils.get_source_from_dataset(d), 'tensorflow')  # Fix.
 
@@ -259,7 +239,7 @@ class TestCvUtils(unittest.TestCase):
         d = keras.load_dataset(ds)
         self.assertEqual(utils.get_source_from_dataset(d['test']), 'keras')
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_get_size_from_dataset(self):
     '''Make sure we correctly determine the size of a dataset's split.'''
 
@@ -274,55 +254,47 @@ class TestCvUtils(unittest.TestCase):
       self.assertEqual(utils.get_size_from_dataset(dataset['test'], 'test'),
                        dataset_metadata['metadata']['test_size'])
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_get_shape_from_dataset(self):
     '''Make sure we correctly determine the shape of a dataset's sample.
 
     TODO(george) finish.
     '''
-    d = load_dataset('mnist')
-    self.assertEqual(
-        utils.get_shape_from_dataset(d['split name'], 'mnist', 'split name'),
-        (1, 2, 3))
+    # d = load_dataset('mnist')
+    # self.assertEqual(
+    # utils.get_shape_from_dataset(d['split name'], 'mnist', 'split name'),
+    # (1, 2, 3))
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_get_classes_from_dataset(self):
-    '''Make sure we correctly determine the classes and
-      classes name of a dataset's sample.
-
-    TODO(george) finish.
+    '''Make sure we correctly determine the classes and class names of datasets
+    sample
     '''
+
     # keras
     dataset_metadatas = metadata.get('datasets', source='keras')
 
     for dataset_metadata in dataset_metadatas:
-      d = keras.load_dataset(dataset_metadata['name'])
-      new_cv_dataset = abstractions.CvDataset(d, None, dataset_metadata['name'],
-                                              'train')
-      self.assertEqual(new_cv_dataset.classes,
-                       dataset_metadata['metadata']['train_classes'])
-      self.assertEqual(new_cv_dataset.classes_names,
-                       dataset_metadata['metadata']['classes_names'])
-      new_cv_dataset = abstractions.CvDataset(d, None, dataset_metadata['name'],
-                                              'test')
-      self.assertEqual(new_cv_dataset.classes,
-                       dataset_metadata['metadata']['test_classes'])
-      self.assertEqual(new_cv_dataset.classes_names,
-                       dataset_metadata['metadata']['classes_names'])
+      dataset = load_dataset(dataset_metadata['name'], source='keras')
+
+      for split_name in dataset:
+        cv_dataset = dataset[split_name]
+
+        self.assertEqual(cv_dataset.classes,
+                         dataset_metadata['metadata'][split_name + '_classes'])
+        self.assertEqual(cv_dataset.classes_names,
+                         dataset_metadata['metadata']['classes_names'])
 
   # @unittest.SkipTest
   def test_extract_pixel_types(self):
-    '''Make sure we correctly determine the pixels
-     of a dataset's sample.
+    '''Make sure we correctly determine the pixels of a dataset's sample.
 
     TODO(george) finish.
     '''
 
-    d = keras.load_dataset('mnist')
+    # d = keras.load_dataset('mnist')
 
-    new_cv_dataset = abstractions.CvDataset(d, None, 'mnist', 'train')
-    print(new_cv_dataset.pixel_types)
-    print(new_cv_dataset.pixel_types_names)
+    # new_cv_dataset = abstractions.CvDataset(d, None, 'mnist', 'train')
 
 
 if __name__ == '__main__':
