@@ -46,9 +46,13 @@ class CvDataset(object):
     # Only populated for datasets that support segmentation tasks.
     self.pixel_types = None
     self.pixel_types_names = None
+    print(self.tasks)
     if 'segmentation' in self.tasks:
-      self.pixel_types, self.pixel_types_names = (
-          self._extract_pixel_types(raw_dataset))
+      print('entra aqui')
+      self.pixel_types, self.pixel_types_names = (utils.extract_pixel_types(
+          raw_dataset, self.name, self.source, self.split_name))
+      # self.pixel_types, self.pixel_types_names = (
+      #     self._extract_pixel_types(raw_dataset))
 
     # Only populated for datasets that support image captioning tasks.
     self.captions = None
