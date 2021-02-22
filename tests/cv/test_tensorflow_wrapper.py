@@ -36,6 +36,12 @@ class TestTensorflowWrapper(unittest.TestCase):
       'sun397',  # TODO(tonioteran) Error.
   ]
 
+  # TODO(Hugo)
+  # We need to add test with datasets of different tasks, as of now coverage
+  # only includes Classification and Object Detection.
+  # Also, the source code might be fixed since for other task the datapoint
+  # standardization { image: ..., label: ... } might not work and other keys
+  # are to be added.
   test_datasets = ['beans', 'omniglot', 'wider_face']
 
   # @unittest.SkipTest
