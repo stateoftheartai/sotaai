@@ -19,7 +19,7 @@ DATASETS = {
 
 
 def load_model(name: str):
-    '''Gets a model directly from Fairseq library.
+  '''Gets a model directly from Fairseq library.
 
     Args:
       name: Name of the model to be gotten.
@@ -27,11 +27,11 @@ def load_model(name: str):
     Returns:
       Fairseq model.
     '''
-    raise NotImplementedError("TODO(lalito) Implement me!")
+  raise NotImplementedError("TODO(lalito) Implement me!")
 
 
 def load_dataset(name: str):
-    '''Gets a dataset directly from Fairseq library.
+  '''Gets a dataset directly from Fairseq library.
 
     Args:
       name: Name of the dataset to be gotten.
@@ -39,4 +39,4 @@ def load_dataset(name: str):
     Returns:
       Fairseq dataset.
     '''
-    raise NotImplementedError("TODO(lalito) Implement me!")
+  raise NotImplementedError("TODO(lalito) Implement me!")

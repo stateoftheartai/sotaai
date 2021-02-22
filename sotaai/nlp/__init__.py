@@ -9,9 +9,9 @@ def load_model(name: str) -> NlpModel:
   '''TODO(lalito) describe.'''
   # Get the source library for model `name`.
   source = utils.get_source_from_name(name)  # Would return something like
-                                             # "huggingface".
+  # "huggingface".
   wrapper = get_wrapper_from_source(source)  # Would have some module like
-                                             # huggingface_wrapper.
+  # huggingface_wrapper.
   raw_model = wrapper.load_model(name)
   return NlpModel(raw_model)
 
@@ -20,9 +20,9 @@ def load_dataset(name: str) -> NlpDataset:
   '''TODO(lalito) describe.'''
   # Get the source library for dataset `name`.
   source = utils.get_source_from_name(name)  # Would return something like
-                                             # "huggingface".
+  # "huggingface".
   wrapper = get_wrapper_from_source(source)  # Would have some module like
-                                             # huggingface_wrapper.
+  # huggingface_wrapper.
   raw_dataset = wrapper.load_dataset(name)
   return NlpDataset(raw_dataset)
 
@@ -32,12 +32,13 @@ def model_to_dataset(model: NlpModel,
   '''TODO(lalito) describe.'''
   # 1. Check whether to modify the model or the datset.
   # 2. Modify whatever is necessary, e.g.,
-  #  
+  #
   #  compatible_model = utils.modify_layers(model, dataset), o
   #
   #  compatible_dataset = utils.resize_samples(model, dataset)
   #
   raise NotImplementedError("TODO(lalito) implement me")
+
 
 '''
 
