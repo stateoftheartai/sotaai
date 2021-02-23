@@ -8,7 +8,6 @@ import unittest
 from sotaai.cv import torch_wrapper
 import inspect
 import torch.nn as nn
-# from torch.utils.data.dataloader import DataLoader
 import logging
 logging.getLogger('lightning').setLevel(0)
 
@@ -40,7 +39,7 @@ class TestTorchWrapper(unittest.TestCase):
 
   #       for key in dataset:
   #         self.assertEqual(DataLoader, type(dataset[key]))
-
+  @unittest.SkipTest
   def test_load_model(self):
     '''Make sure that we can load every model from the Torch module.'''
 
@@ -63,6 +62,11 @@ class TestTorchWrapper(unittest.TestCase):
         self.assertEqual(inspect.ismethod(model.parameters), True)
         self.assertEqual(inspect.ismethod(model.apply), True)
         self.assertEqual(inspect.ismethod(model.zero_grad), True)
+
+  def test_load_dataset(self):
+
+    ds = torch_wrapper.load_dataset('QMNIST')
+    print(ds)
 
 
 if __name__ == '__main__':
