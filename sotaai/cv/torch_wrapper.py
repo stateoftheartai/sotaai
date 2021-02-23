@@ -22,7 +22,7 @@ DATASETS = {
         # 'STL10',  # Unsupervised learning.
         # 'ImageNet',  # No download
     ],
-    'object detection': [
+    'object_detection': [
         'CelebA',
         'CocoDetection',  # No download.
         'Flickr30k',  # No download.
@@ -79,7 +79,7 @@ MODELS = {
         'deeplabv3_resnet101', 'deeplabv3_resnet50', 'fcn_resnet101',
         'fcn_resnet50'
     ],
-    'object detection': [
+    'object_detection': [
         'fasterrcnn_resnet50_fpn', 'keypointrcnn_resnet50_fpn',
         'maskrcnn_resnet50_fpn'
     ],
@@ -100,7 +100,7 @@ def load_model(model_name, pretrained=False):
   # Load the corresponding model class
   if model_name in MODELS['segmentation']:
     trainer = getattr(models.segmentation, model_name)
-  elif model_name in MODELS['object detection']:
+  elif model_name in MODELS['object_detection']:
     trainer = getattr(models.detection, model_name)
   elif model_name in MODELS['video']:
     trainer = getattr(models.video, model_name)

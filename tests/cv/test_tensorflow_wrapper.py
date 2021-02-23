@@ -4,7 +4,7 @@
 '''Unit testing the Tensorflow wrapper.'''
 import unittest
 
-from sotaai.cv import load_dataset, tensorflow_wrapper, metadata
+from sotaai.cv import load_dataset, tensorflow_wrapper, metadata, utils
 from sotaai.cv.abstractions import CvDataset
 from tensorflow_datasets.core.dataset_utils import _IterableDataset
 import numpy as np
@@ -36,7 +36,13 @@ class TestTensorflowWrapper(unittest.TestCase):
       'sun397',  # TODO(tonioteran) Error.
   ]
 
-  test_datasets = ['beans', 'omniglot']
+  # TODO(Hugo)
+  # We need to add test with datasets of different tasks, as of now coverage
+  # only includes Classification and Object Detection.
+  # Also, the source code might be fixed since for other task the datapoint
+  # standardization { image: ..., label: ... } might not work and other keys
+  # are to be added.
+  test_datasets = ['beans', 'omniglot', 'wider_face']
 
   # @unittest.SkipTest
   def test_load_dataset(self):
@@ -47,7 +53,6 @@ class TestTensorflowWrapper(unittest.TestCase):
     '''
     for dataset_name in self.test_datasets:
       dataset = tensorflow_wrapper.load_dataset(dataset_name)
-
       self.assertEqual(type(dataset), dict)
 
       for split in dataset:
@@ -69,14 +74,18 @@ class TestTensorflowWrapper(unittest.TestCase):
         iterable_dataset = iter(cv_dataset)
 
         datapoint = next(iterable_dataset)
-        self.assertEqual(np.ndarray, type(datapoint['image']))
-        self.assertEqual('label' in datapoint, True)
-
         dataset_metadata = metadata.get('datasets', name=dataset_name)
-        self.assertEqual(datapoint['label'].shape,
-                         dataset_metadata['metadata']['label'])
-        self.assertEqual(datapoint['image'].shape,
-                         dataset_metadata['metadata']['image'])
+
+        self.assertEqual(np.ndarray, type(datapoint['image']))
+        self.assertEqual(
+            utils.compare_shapes(dataset_metadata['metadata']['image'],
+                                 datapoint['image'].shape), True)
+
+        if 'classification' in cv_dataset.tasks:
+          self.assertEqual('label' in datapoint, True)
+          self.assertEqual(
+              utils.compare_shapes(dataset_metadata['metadata']['label'],
+                                   datapoint['label'].shape), True)
 
 
 if __name__ == '__main__':
