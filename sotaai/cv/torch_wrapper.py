@@ -11,16 +11,16 @@ import torch
 
 DATASETS = {
     'classification': [
-        'CelebA',
-        'EMNIST',
-        'KMNIST',
-        'LSUN',  # No download
+        # 'CelebA',
+        # 'EMNIST',
+        # 'KMNIST',
+        # 'LSUN',  # No download
         'QMNIST',
         'SEMEION',
         'SVHN',
         'USPS',
-        'STL10',  # Unsupervised learning.
-        'ImageNet',  # No download
+        # 'STL10',  # Unsupervised learning.
+        # 'ImageNet',  # No download
     ],
     'object detection': [
         'CelebA',
@@ -67,14 +67,13 @@ DATASETS = {
 
 MODELS = {
     'classification': [
-        'alexnet', 'densenet121', 'densenet161', 'densenet169', 'densenet201',
-        'googlenet', 'inception_v3', 'mnasnet0_5', 'mnasnet0_75', 'mnasnet1_0',
-        'mnasnet1_3', 'mobilenet_v2', 'resnet101', 'resnet152', 'resnet18',
-        'resnet34', 'resnet50', 'resnext101_32x8d', 'resnext50_32x4d',
-        'shufflenet_v2_x0_5', 'shufflenet_v2_x1_0', 'shufflenet_v2_x1_5',
-        'shufflenet_v2_x2_0', 'squeezenet1_0', 'squeezenet1_1', 'vgg11',
-        'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn', 'vgg19',
-        'vgg19_bn', 'wide_resnet101_2', 'wide_resnet50_2'
+        'alexnet', 'densenet161', 'googlenet', 'mnasnet0_5', 'mnasnet0_75',
+        'mnasnet1_0', 'mnasnet1_3', 'mobilenet_v2', 'resnet18', 'resnet34',
+        'resnext101_32x8d', 'resnext50_32x4d', 'shufflenet_v2_x0_5',
+        'shufflenet_v2_x1_0', 'shufflenet_v2_x1_5', 'shufflenet_v2_x2_0',
+        'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13',
+        'vgg13_bn', 'vgg16_bn', 'vgg19_bn', 'wide_resnet101_2',
+        'wide_resnet50_2'
     ],
     'segmentation': [
         'deeplabv3_resnet101', 'deeplabv3_resnet50', 'fcn_resnet101',
@@ -119,6 +118,9 @@ def load_model(model_name, pretrained=False):
 def load_dataset(dataset_name,
                  root='default',
                  ann_file=None,
+                 target_transform=None,
+                 transform=None,
+                 extensions=None,
                  frames_per_clip=None):
   '''
     Input:
@@ -134,6 +136,15 @@ def load_dataset(dataset_name,
                          UCF101
         frames_per_clip: Nbr of frames in a clip if dataset is a
                          video dataset
+        transform: callable/optional, A function/transform that
+                              takes in an PIL image and returns a
+                              transformed version. E.g,
+                              transforms.ToTensor
+        extensions: (tuple[string]), A list of allowed
+                extensions. both extensions
+                and is_valid_file should not be passed
+        target_transform:(callable, optional), A function/transform
+                that takes in the target and transforms it.
     Output:
         dict, with keys indicating the partition of the dataset,
                 and the values are of type DataLoader
@@ -158,21 +169,27 @@ def load_dataset(dataset_name,
   ds_dic = {}
 
   datasets_w_train = ['KMNIST', 'QMNIST', 'USPS']
-  datasets_w_split = ['SVHN', 'STL10', 'CelebA']
+  datasets_w_split = ['SVHN', 'CelebA']
 
   download_train = True  # os.path.exists(root+'/train')
   download_test = True  # os.path.exists(root+'/test')
 
   if dataset_name in datasets_w_train:
-    ds_dic['train'] = torch.utils.data.DataLoader(ds(root + '/train',
-                                                     train=True,
-                                                     download=download_train),
+    ds_dic['train'] = torch.utils.data.DataLoader(ds(
+        root + '/train',
+        train=True,
+        target_transform=target_transform,
+        transform=transform,
+        download=download_train),
                                                   batch_size=100,
                                                   shuffle=False,
                                                   num_workers=0)
-    ds_dic['test'] = torch.utils.data.DataLoader(ds(root + '/test',
-                                                    train=False,
-                                                    download=download_test),
+    ds_dic['test'] = torch.utils.data.DataLoader(ds(
+        root + '/test',
+        train=False,
+        target_transform=target_transform,
+        transform=transform,
+        download=download_test),
                                                  batch_size=100,
                                                  shuffle=False,
                                                  num_workers=0)
@@ -180,52 +197,68 @@ def load_dataset(dataset_name,
   elif dataset_name in datasets_w_split:
     ds_dic['train'] = ds(root + '/train',
                          split='train',
+                         target_transform=target_transform,
+                         transform=transform,
                          download=download_train)
-    ds_dic['test'] = ds(root + '/test', split='test', download=download_test)
+    ds_dic['test'] = ds(root + '/test',
+                        split='test',
+                        target_transform=target_transform,
+                        transform=transform,
+                        download=download_test)
     if dataset_name == 'SVHN':
       ds_dic['extra_training_set'] = ds(root + '/extra',
                                         split='extra',
+                                        target_transform=target_transform,
+                                        transform=transform,
                                         download=True)
-    elif dataset_name == 'STL10':
-      ds_dic['unlabeled'] = ds(root + '/extra',
-                               split='unlabeled',
-                               download=True)
     elif dataset_name == 'CelebA':
-      ds_dic['val'] = ds(root + '/val', split='valid', download=True)
+      ds_dic['val'] = ds(root + '/val',
+                         split='valid',
+                         target_transform=target_transform,
+                         transform=transform,
+                         download=True)
 
   elif dataset_name == 'Cityscapes':
-    ds_dic['train'] = ds(root + '/train', split='train')
-    ds_dic['test'] = ds(root + '/test', split='test')
-    ds_dic['val'] = ds(root + '/val', split='val')
-
-  elif dataset_name == 'EMNIST':
-    # split= balanced,byclass,bymerge,letters,digits
-    ds_dic['train'] = ds(root + '/train',
-                         split='balanced',
-                         train=True,
-                         download=download_train)
-    ds_dic['test'] = ds(root + '/test',
-                        split='balanced',
-                        train=False,
-                        download=download_test)
+    ds_dic['train'] = ds(
+        root + '/train',
+        split='train',
+        target_transform=target_transform,
+        transform=transform,
+    )
+    ds_dic['test'] = ds(
+        root + '/test',
+        split='test',
+        target_transform=target_transform,
+        transform=transform,
+    )
+    ds_dic['val'] = ds(
+        root + '/val',
+        split='val',
+        target_transform=target_transform,
+        transform=transform,
+    )
 
   elif 'PhotoTour' in dataset_name:
 
     ds_dic['train'] = ds(root + '/train',
                          name=name,
                          download=download_train,
+                         transform=transform,
                          train=True)
     ds_dic['test'] = ds(root + '/test',
                         name=name,
+                        transform=transform,
                         download=download_test,
                         train=False)
 
   elif dataset_name in ['SBU', 'SEMEION']:
-    ds_dic['data'] = ds(root, download=True)
+    ds_dic['data'] = ds(root, transform=transform, download=True)
 
   elif dataset_name in ['VOCSegmentation', 'VOCDetection']:
     ds_dic['train'] = ds(root + '/train',
                          year=year,
+                         transform=transform,
+                         target_transform=target_transform,
                          image_set='train',
                          download=download_train)
     download_val = not os.path.exists(root + '/val')
@@ -240,6 +273,8 @@ def load_dataset(dataset_name,
     ds_dic['train'] = ds(root + mode + '/train',
                          image_set='train',
                          mode=mode,
+                         target_transform=target_transform,
+                         transform=transform,
                          download=download_train)
 
     ds_dic['val'] = ds(root + mode + '/val',
@@ -248,13 +283,15 @@ def load_dataset(dataset_name,
                        download=download_val)
 
   elif dataset_name == 'LSUN':
-    ds_dic['train'] = dset.LSUN(root, classes='train')
+    ds_dic['train'] = dset.LSUN(root,
+                                target_transform=target_transform,
+                                transform=transform,
+                                classes='train')
     ds_dic['val'] = dset.LSUN(root, classes='val')
-    ds_dic['test'] = dset.LSUN(root, classes='test')
-
-  elif dataset_name == 'ImageNet':
-    ds_dic['train'] = ds(root + '/train', split='train')
-    ds_dic['val'] = ds(root + '/val', split='val')
+    ds_dic['test'] = dset.LSUN(root,
+                               target_transform=target_transform,
+                               transform=transform,
+                               classes='test')
 
   elif dataset_name in [
       'CocoDetection', 'CocoCaptions', 'Flickr8k', 'Flickr30k'
@@ -262,9 +299,44 @@ def load_dataset(dataset_name,
     ds_dic['data'] = ds(root, ann_file)
 
   elif dataset_name in ['HMDB51', 'UCF101']:
-    ds_dic['train'] = ds(root + 'train', ann_file, frames_per_clip, train=True)
-    ds_dic['test'] = ds(root + 'test', ann_file, frames_per_clip, train=False)
+    ds_dic['train'] = ds(root + 'train',
+                         ann_file,
+                         frames_per_clip,
+                         transform=transform,
+                         train=True)
+    ds_dic['test'] = ds(root + 'test',
+                        ann_file,
+                        frames_per_clip,
+                        transform=transform,
+                        train=False)
 
   elif dataset_name == 'Kinetics400':
-    ds_dic['data'] = ds(root, frames_per_clip)
+    ds_dic['data'] = ds(root, frames_per_clip, extensions=extensions)
+
+  # ds_dic['test'] = iter(ds_dic['test'])
+  # ds_dic['train'] = iter(ds_dic['train'])
   return ds_dic
+
+
+class DatasetIterator():
+  '''Torch dataset iterator class'''
+
+  def __init__(self, raw) -> None:
+    self._raw = raw
+    self._iterator = self.create_iterator()
+
+  def __next__(self):
+    '''Get the next item from the dataset in a standardized format.
+
+    Returns:
+    '''
+    item = next(self._iterator)
+    return {'image': item['image'], 'label': item['label']}
+
+  def create_iterator(self):
+    '''Create an iterator out of the raw dataset split object
+
+    Returns:
+      An object containing iterators for the dataset images and labels
+    '''
+    return iter(self._raw)
