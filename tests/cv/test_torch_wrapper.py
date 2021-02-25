@@ -15,6 +15,7 @@ logging.getLogger('lightning').setLevel(0)
 class TestTorchWrapper(unittest.TestCase):
   '''Test the wrapped torch module.'''
 
+  test_datasets = ['QMNIST', 'SEMEION', 'Flickr30k', 'VOCSegmentation/2007']
   # @author HO (legacy comment from sotaai-dev)
   # Some datasets need to be downloaded to disk beforehand:
   # - VOC datasets: wrong checksum, LSUN, ImageNet, CocoDetection,
@@ -47,7 +48,6 @@ class TestTorchWrapper(unittest.TestCase):
       for model_name in torch_wrapper.MODELS[task]:
 
         model = torch_wrapper.load_model(model_name)
-
         #
         # @author HO
         # Test the returned model against the final parent nn.Module class
@@ -63,10 +63,18 @@ class TestTorchWrapper(unittest.TestCase):
         self.assertEqual(inspect.ismethod(model.apply), True)
         self.assertEqual(inspect.ismethod(model.zero_grad), True)
 
+  # @unittest.SkipTest
   def test_load_dataset(self):
+    '''
+      Make sure `dict`s are returned, with correct keywords for splits.
+    '''
 
-    ds = torch_wrapper.load_dataset('QMNIST')
-    print(ds)
+    for dataset_name in self.test_datasets:
+      print(dataset_name)
+      dataset = torch_wrapper.load_dataset(
+          dataset_name, ann_file='~/.torch/annotation_file.json')
+
+      self.assertEqual(type(dataset), dict)
 
 
 if __name__ == '__main__':

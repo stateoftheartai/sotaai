@@ -24,7 +24,6 @@ DATASETS = {
     ],
     'object_detection': [
         'CelebA',
-        'CocoDetection',  # No download.
         'Flickr30k',  # No download.
         'VOCDetection/2007',
         'VOCDetection/2008',
@@ -313,8 +312,14 @@ def load_dataset(dataset_name,
   elif dataset_name == 'Kinetics400':
     ds_dic['data'] = ds(root, frames_per_clip, extensions=extensions)
 
-  # ds_dic['test'] = iter(ds_dic['test'])
-  # ds_dic['train'] = iter(ds_dic['train'])
+  # ds_dic['test'] = iter(ds_dic['test']) if ds_dic['test'] else ds_dic['test']
+  # ds_dic['train'] = iter(
+  #     ds_dic['train']) if ds_dic['train'] else ds_dic['train']
+
+  # if 'test' in ds_dic:
+  #   ds_dic['test'] = iter(ds_dic['test'])
+  # if 'train' in ds_dic:
+  #   ds_dic['train'] = iter(ds_dic['train'])
   return ds_dic
 
 

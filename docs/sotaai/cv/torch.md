@@ -34,8 +34,6 @@ A python
 For the most part, Each dictionary key corresponds to an object of the same
 type\-\-\-`torch.utils.data.dataloader.DataLoader`\-\-\-with a bunch of exceptions:
 
-- `torchvision.datasets.celeba.CelebA`
-- `torchvision.datasets.mnist.EMNIST`
 - `torchvision.datasets.semeion.SEMEION`
 - `torchvision.datasets.svhn.SVHN`
 - `torchvision.datasets.stl10.STL10`
