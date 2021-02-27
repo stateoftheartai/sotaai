@@ -6,8 +6,9 @@
 
 from torchvision import models
 from torchvision import datasets as dset
+from re import search
 import os
-import torch
+import numpy as np
 
 DATASETS = {
     'classification': [
@@ -174,24 +175,16 @@ def load_dataset(dataset_name,
   download_test = True  # os.path.exists(root+'/test')
 
   if dataset_name in datasets_w_train:
-    ds_dic['train'] = torch.utils.data.DataLoader(ds(
-        root + '/train',
-        train=True,
-        target_transform=target_transform,
-        transform=transform,
-        download=download_train),
-                                                  batch_size=100,
-                                                  shuffle=False,
-                                                  num_workers=0)
-    ds_dic['test'] = torch.utils.data.DataLoader(ds(
-        root + '/test',
-        train=False,
-        target_transform=target_transform,
-        transform=transform,
-        download=download_test),
-                                                 batch_size=100,
-                                                 shuffle=False,
-                                                 num_workers=0)
+    ds_dic['train'] = ds(root + '/train',
+                         train=True,
+                         target_transform=target_transform,
+                         transform=transform,
+                         download=download_train)
+    ds_dic['test'] = ds(root + '/test',
+                        train=False,
+                        target_transform=target_transform,
+                        transform=transform,
+                        download=download_test)
 
   elif dataset_name in datasets_w_split:
     ds_dic['train'] = ds(root + '/train',
@@ -335,8 +328,19 @@ class DatasetIterator():
 
     Returns:
     '''
-    item = next(self._iterator)
-    return {'image': item['image'], 'label': item['label']}
+    if search('DataLoader', str(type(self._raw))):
+      print(self._iterator)
+      image = np.array(next(self._iterator)[0])
+      label = next(self._iterator)[1].numpy() if search(
+          'Tensor', str(type(next(self._iterator)[1]))) else next(
+              self._iterator)[1]
+      # image, label = self._iterator.next()
+      return {'image': image[0], 'label': label[0]}
+    else:
+      image = np.array(next(self._iterator, [0, 0])[0])
+      label = next(self._iterator, [0, 0])[1]
+
+      return {'image': image, 'label': label}
 
   def create_iterator(self):
     '''Create an iterator out of the raw dataset split object
