@@ -5,9 +5,11 @@
 '''fastai https://pytorch.org/ wrapper module'''
 
 import unittest
-from sotaai.cv import torch_wrapper
+from sotaai.cv import torch_wrapper, load_dataset
+from sotaai.cv.abstractions import CvDataset
 import inspect
 import torch.nn as nn
+# import torchvision.transforms as transforms
 import logging
 logging.getLogger('lightning').setLevel(0)
 
@@ -63,7 +65,7 @@ class TestTorchWrapper(unittest.TestCase):
         self.assertEqual(inspect.ismethod(model.apply), True)
         self.assertEqual(inspect.ismethod(model.zero_grad), True)
 
-  # @unittest.SkipTest
+  @unittest.SkipTest
   def test_load_dataset(self):
     '''
       Make sure `dict`s are returned, with correct keywords for splits.
@@ -75,6 +77,22 @@ class TestTorchWrapper(unittest.TestCase):
           dataset_name, ann_file='~/.torch/annotation_file.json')
 
       self.assertEqual(type(dataset), dict)
+
+  def test_abstract_dataset(self):
+    '''
+      Make sure we can create an abstract dataset using torch datasets.
+    '''
+
+    # transform = transforms.Compose([transforms.ToTensor()])
+
+    for dataset in self.test_datasets:
+      dso = load_dataset(dataset, ann_file='~/.torch/annotation_file.json')
+      for split_name in dso:
+        cv_dataset = dso[split_name]
+        self.assertEqual(CvDataset, type(cv_dataset))
+        iterable_dataset = iter(cv_dataset)
+        datapoint = next(iterable_dataset)
+        print(datapoint)
 
 
 if __name__ == '__main__':

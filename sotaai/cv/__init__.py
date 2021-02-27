@@ -44,7 +44,10 @@ def load_model(name: str,
   return abstractions.CvModel(raw_object, name)
 
 
-def load_dataset(name: str, source: str = '') -> abstractions.CvDataset:
+def load_dataset(name: str,
+                 source: str = '',
+                 transform=None,
+                 ann_file=None) -> abstractions.CvDataset:
   '''Fetch a dataset from a specific source, and return standardized object.
 
   Args:
@@ -72,13 +75,20 @@ def load_dataset(name: str, source: str = '') -> abstractions.CvDataset:
     source = ds_source_map[name][0]
 
   wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
-  raw_object = wrapper.load_dataset(name)
+
+  if source == 'torch':
+    raw_object = wrapper.load_dataset(name,
+                                      transform=transform,
+                                      ann_file=ann_file)
+  else:
+    raw_object = wrapper.load_dataset(name)
 
   # Build a standardized `CvDataset` object per dataset split:
   std_dataset = dict()
   for split_name in raw_object:
     raw = raw_object[split_name]
     iterator = wrapper.DatasetIterator(raw)
+    # print(iterator)
     std_dataset[split_name] = abstractions.CvDataset(raw, iterator, name,
                                                      split_name)
 

@@ -40,8 +40,9 @@ class CvDataset(object):
     self.classes = None
     self.classes_names = None
     if 'classification' in self.tasks or 'object_detection' in self.tasks:
-      self.classes, self.classes_names = utils.get_classes_from_dataset(
-          raw_dataset, self.source, self.name, self.split_name, self.size)
+      if self.source != 'torchvision':
+        self.classes, self.classes_names = utils.get_classes_from_dataset(
+            raw_dataset, self.source, self.name, self.split_name, self.size)
 
     # Only populated for datasets that support segmentation tasks.
     self.pixel_types = None
@@ -49,8 +50,8 @@ class CvDataset(object):
     if 'segmentation' in self.tasks:
       self.pixel_types, self.pixel_types_names = (utils.extract_pixel_types(
           raw_dataset, self.name, self.source, self.split_name))
-      # self.pixel_types, self.pixel_types_names = (
-      #     self._extract_pixel_types(raw_dataset))
+    # self.pixel_types, self.pixel_types_names = (
+    #     self._extract_pixel_types(raw_dataset))
 
     # Only populated for datasets that support image captioning tasks.
     self.captions = None
