@@ -100,7 +100,7 @@ class TestTorchWrapper(unittest.TestCase):
         datapoint = next(iterable_dataset)
         print(datapoint)
 
-  # @unittest.SkipTest
+  @unittest.SkipTest
   def test_model_call(self):
 
     #torch model
