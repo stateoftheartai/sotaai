@@ -55,6 +55,16 @@ possible types of data splits available are:
 - `unlabeled`:
 - `background`:
 
+Some datasets need to be downloaded to disk beforehand:
+
+- `Flickr8k`:
+- `HMDB51`:
+- `Kinetics400`:
+- `UCF101`:
+- `VOCDetection/2009`:
+- `VOCSegmentation/2009`:
+- `Cityscapes`:
+
 For a single dataset, all splits are of the same object type; e.g., `CIFAR10`
 will be returned as a dictionary with two entries (`train` and `test`), with the
 objects corresponding to both keywords being of type
