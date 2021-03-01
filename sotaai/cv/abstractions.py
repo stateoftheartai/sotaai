@@ -143,5 +143,7 @@ class CvModel(object):
     '''
     if self.source == 'keras':
       return self.raw.predict(input_data)
+    if self.source == 'torchvision':
+      return self.raw(input_data)
     else:
       raise NotImplementedError('Still not implemented for the current model')

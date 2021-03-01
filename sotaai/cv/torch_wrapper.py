@@ -265,8 +265,6 @@ def load_dataset(dataset_name,
     ds_dic['train'] = ds(root + mode + '/train',
                          image_set='train',
                          mode=mode,
-                         target_transform=target_transform,
-                         transform=transform,
                          download=download_train)
 
     ds_dic['val'] = ds(root + mode + '/val',

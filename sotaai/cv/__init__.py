@@ -11,6 +11,7 @@ import importlib
 def load_model(name: str,
                source: str = '',
                input_tensor=None,
+               pretrained=None,
                include_top=None) -> abstractions.CvModel:
   '''Fetch a model from a specific source, and return standardized object.
 
@@ -37,9 +38,13 @@ def load_model(name: str,
     source = model_source_map[lower_name][0]
 
   wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
-  raw_object = wrapper.load_model(name,
-                                  input_tensor=input_tensor,
-                                  include_top=include_top)
+
+  if source == 'torch':
+    raw_object = wrapper.load_model(name, pretrained=pretrained)
+  else:
+    raw_object = wrapper.load_model(name,
+                                    input_tensor=input_tensor,
+                                    include_top=include_top)
 
   return abstractions.CvModel(raw_object, name)
 
@@ -47,6 +52,7 @@ def load_model(name: str,
 def load_dataset(name: str,
                  source: str = '',
                  transform=None,
+                 target_transform=None,
                  ann_file=None) -> abstractions.CvDataset:
   '''Fetch a dataset from a specific source, and return standardized object.
 
@@ -79,7 +85,8 @@ def load_dataset(name: str,
   if source == 'torch':
     raw_object = wrapper.load_dataset(name,
                                       transform=transform,
-                                      ann_file=ann_file)
+                                      ann_file=ann_file,
+                                      target_transform=target_transform)
   else:
     raw_object = wrapper.load_dataset(name)
 
