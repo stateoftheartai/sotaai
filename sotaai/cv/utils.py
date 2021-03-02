@@ -382,7 +382,7 @@ def get_input_type(model) -> str:
   '''Returns the type of the input data received by the model.
 
     Args:
-      model: a model instance
+      model: a raw model instance
 
     Returns:
       The input type as a string e.g. numpy.ndarray
@@ -396,6 +396,54 @@ def get_input_type(model) -> str:
   elif source in ['isr', 'segmentation_models', 'keras', 'gans_keras']:
     return 'numpy.ndarray'
   elif source == 'detectron2':
+    raise NotImplementedError
+
+
+def get_input_shape(model) -> str:
+  '''Returns the input shape of the input data received by the model.
+
+    Args:
+      model: a raw model instance
+
+    Returns:
+      The input shape as a tuple
+  '''
+  source = get_source_from_model(model)
+  if source == 'keras':
+    return model.layers[0].input_shape[0]
+  else:
+    raise NotImplementedError
+
+
+def get_output_shape(model) -> str:
+  '''Returns the output shape of the model
+
+    Args:
+      model: a raw model instance
+
+    Returns:
+      The output shape as a tuple
+  '''
+  source = get_source_from_model(model)
+  if source == 'keras':
+    return model.layers[-1].input_shape
+  else:
+    raise NotImplementedError
+
+
+def get_dataset_shape(dataset) -> str:
+  '''Returns the shape of the dataset
+
+    Args:
+      model: a raw dataset instance
+
+    Returns:
+      The dataset shape as a tuple
+  '''
+  source = get_source_from_dataset(dataset)
+  if source == 'keras':
+    return dataset[0].shape[1:]
+  else:
     raise NotImplementedError
 
 

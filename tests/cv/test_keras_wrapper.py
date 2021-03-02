@@ -165,6 +165,23 @@ class TestKerasWrapper(unittest.TestCase):
       if i == n:
         break
 
+  def test_model_to_dataset(self):
+
+    for task in keras_wrapper.MODELS:
+      for model_name in keras_wrapper.MODELS[task]:
+        cv_model = load_model(model_name, 'keras')
+        print(model_name, cv_model.original_input_shape,
+              cv_model.original_output_shape)
+
+    print('')
+
+    for task in keras_wrapper.DATASETS:
+      for dataset_name in keras_wrapper.DATASETS[task]:
+        dataset_splits = load_dataset(dataset_name, 'keras')
+        for split_name in dataset_splits:
+          cv_dataset = dataset_splits[split_name]
+          print(dataset_name, cv_dataset.original_shape)
+
 
 if __name__ == '__main__':
   unittest.main()

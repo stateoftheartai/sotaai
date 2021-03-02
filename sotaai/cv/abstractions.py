@@ -24,6 +24,7 @@ class CvDataset(object):
         Name of the dataset's split.
     '''
     self.raw = raw_dataset
+    self.original_shape = utils.get_dataset_shape(raw_dataset)
     self.iterator = iterator
     self.name = name
     self.source = utils.get_source_from_dataset(raw_dataset)
@@ -114,6 +115,8 @@ class CvModel(object):
     self.name = name
     self.source = utils.get_source_from_model(raw_model)
     self.original_input_type = utils.get_input_type(raw_model)
+    self.original_input_shape = utils.get_input_shape(raw_model)
+    self.original_output_shape = utils.get_output_shape(raw_model)
     self.data_type = None  # TODO(tonioteran) Implement me.
     self.min_size = None  # TODO(tonioteran) Implement me.
     self.num_channels = utils.get_num_channels_from_model(raw_model)
