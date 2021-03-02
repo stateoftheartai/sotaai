@@ -125,20 +125,6 @@ class TestKerasWrapper(unittest.TestCase):
       adjusting the dataset and model to be compatible with each other
     '''
 
-    dataset_splits = load_dataset('mnist')
-    cv_dataset = dataset_splits['test']
-    iterable_dataset = iter(cv_dataset)
-
-    datapoint = next(iterable_dataset)
-
-    # Reshape MNIST data to be a single datapoint in RGB
-    x = datapoint['image']
-    x = x.reshape((28, 28, 1))
-    x = np.repeat(x, 3, -1)
-    x = x.reshape((1,) + x.shape)
-
-    self.assertEqual(x.shape, (1, 28, 28, 3))
-
     # Modify ResNet model input/output so as to be compatible with MNIST
     input_tensor = Input(shape=(28, 28, 3))
     cv_model = load_model('ResNet101V2',
@@ -155,10 +141,29 @@ class TestKerasWrapper(unittest.TestCase):
     self.assertEqual(cv_model.raw.layers[len(model.layers) - 1].output_shape,
                      (None, 10))
 
-    # Test predictions
-    predictions = cv_model(x)
+    dataset_splits = load_dataset('mnist')
+    cv_dataset = dataset_splits['test']
 
-    self.assertEqual(predictions.shape, (1, 10))
+    # Only get predictions over the first n datapoints
+    n = 5
+
+    for i, datapoint in enumerate(cv_dataset):
+
+      # Reshape MNIST data to be a single datapoint in RGB
+      x = datapoint['image']
+      x = x.reshape((28, 28, 1))
+      x = np.repeat(x, 3, -1)
+      x = x.reshape((1,) + x.shape)
+
+      self.assertEqual(x.shape, (1, 28, 28, 3))
+
+      # Test predictions
+      predictions = cv_model(x)
+
+      self.assertEqual(predictions.shape, (1, 10))
+
+      if i == n:
+        break
 
 
 if __name__ == '__main__':
