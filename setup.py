@@ -12,7 +12,8 @@ setup(name='sotaai',
       url='https://github.com/stateoftheartai/sotaai',
       packages=['sotaai', 'sotaai.cv'],
       install_requires=[
-          'tensorflow', 'tensorflow-datasets', 'fastai==1.0.61', 'gym', 'mxnet'
+          'tensorflow', 'tensorflow-datasets', 'fastai==1.0.61', 'gym', 'mxnet',
+          'torch', 'torchvision', 'transformers', 'datasets'
       ],
       python_requires='>=3,<3.9',
       extras_require={})
