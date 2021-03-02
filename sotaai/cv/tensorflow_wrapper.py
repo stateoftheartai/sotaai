@@ -6,7 +6,7 @@ import tensorflow_datasets as tfds
 import resource
 import os
 low, high = resource.getrlimit(resource.RLIMIT_NOFILE)
-resource.setrlimit(resource.RLIMIT_NOFILE, (high, high))
+resource.setrlimit(resource.RLIMIT_NOFILE, (low, high))
 
 # Prevent Tensorflow to print warning and meta logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -18,7 +18,7 @@ DATASETS = {
         'starcraft_video',
         # 'ucf101'  # Bug tensorflow
     ],
-    'object detection': [
+    'object_detection': [
         'celeb_a_hq',  # manual download
         'coco',
         'flic',
@@ -26,8 +26,8 @@ DATASETS = {
         # 'open_images_challenge2019_detection', Apache beam
         # 'open_images_v4', Apache beam
         'voc',
-        'the300w_lp'
-        # 'wider_face' # Wrong checksum
+        'the300w_lp',
+        'wider_face'  # Wrong checksum
     ],
     'classification': [
         'beans',
@@ -142,7 +142,13 @@ class DatasetIterator():
       of the dataset.
     '''
     item = next(self._iterator)
-    return {'image': item['image'], 'label': item['label']}
+
+    std_item = {'image': item['image']}
+
+    if 'label' in item:
+      std_item['label'] = item['label']
+
+    return std_item
 
   def create_iterator(self):
     '''Create an iterator out of the raw dataset split object

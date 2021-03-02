@@ -34,8 +34,6 @@ A python
 For the most part, Each dictionary key corresponds to an object of the same
 type\-\-\-`torch.utils.data.dataloader.DataLoader`\-\-\-with a bunch of exceptions:
 
-- `torchvision.datasets.celeba.CelebA`
-- `torchvision.datasets.mnist.EMNIST`
 - `torchvision.datasets.semeion.SEMEION`
 - `torchvision.datasets.svhn.SVHN`
 - `torchvision.datasets.stl10.STL10`
@@ -56,6 +54,16 @@ possible types of data splits available are:
 - `data`:
 - `unlabeled`:
 - `background`:
+
+Some datasets need to be downloaded to disk beforehand:
+
+- `Flickr8k`:
+- `HMDB51`:
+- `Kinetics400`:
+- `UCF101`:
+- `VOCDetection/2009`:
+- `VOCSegmentation/2009`:
+- `Cityscapes`:
 
 For a single dataset, all splits are of the same object type; e.g., `CIFAR10`
 will be returned as a dictionary with two entries (`train` and `test`), with the

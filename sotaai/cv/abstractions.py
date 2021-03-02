@@ -26,7 +26,7 @@ class CvDataset(object):
     self.raw = raw_dataset
     self.iterator = iterator
     self.name = name
-    self.source = utils.get_source_from_dataset(raw_dataset[split_name])
+    self.source = utils.get_source_from_dataset(raw_dataset)
     self.data_type = None  # TODO(tonioteran) Implement me.
     self.split_name = split_name
     self.tasks = utils.map_dataset_tasks()[name]
@@ -39,20 +39,19 @@ class CvDataset(object):
     # Populated for datasets supporting classification or detection tasks.
     self.classes = None
     self.classes_names = None
-    if 'classification' in self.tasks or 'object detection' in self.tasks:
-      self.classes, self.classes_names = utils.get_classes_from_dataset(
-          raw_dataset, self.source, self.name, self.split_name, self.size)
+    if 'classification' in self.tasks or 'object_detection' in self.tasks:
+      if self.source != 'torchvision':
+        self.classes, self.classes_names = utils.get_classes_from_dataset(
+            raw_dataset, self.source, self.name, self.split_name, self.size)
 
     # Only populated for datasets that support segmentation tasks.
     self.pixel_types = None
     self.pixel_types_names = None
-    print(self.tasks)
     if 'segmentation' in self.tasks:
-      print('entra aqui')
       self.pixel_types, self.pixel_types_names = (utils.extract_pixel_types(
           raw_dataset, self.name, self.source, self.split_name))
-      # self.pixel_types, self.pixel_types_names = (
-      #     self._extract_pixel_types(raw_dataset))
+    # self.pixel_types, self.pixel_types_names = (
+    #     self._extract_pixel_types(raw_dataset))
 
     # Only populated for datasets that support image captioning tasks.
     self.captions = None
@@ -144,5 +143,7 @@ class CvModel(object):
     '''
     if self.source == 'keras':
       return self.raw.predict(input_data)
+    if self.source == 'torchvision':
+      return self.raw(input_data)
     else:
       raise NotImplementedError('Still not implemented for the current model')

@@ -198,20 +198,22 @@ version of it i.e. the one you want to test:
   `pip install --index-url https://test.pypi.org/simple/ --no-deps sotaai`
   in case you want to test and already-deployed version.
 
-To execute the unittest move to the `tests` directory:
+There are different ways to execute tests:
+
+Execute all of them:
 
 ```
-cd tests
+python -m unittest discover tests
 ```
 
-And execute the tests:
+Execute tests of a file:
 
 ```
-python -m unittest
+python -m unittest tests/cv/test_utils.py
 ```
 
-Or execute tests of a particular file:
+Execute a particular test:
 
 ```
-python -m unittest tests/cv/test_keras_wrapper.py
+python tests/cv/test_utils.py TestCvUtils.test_map_dataset_tasks
 ```
