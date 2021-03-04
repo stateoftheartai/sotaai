@@ -11,7 +11,7 @@ import inspect
 from tensorflow.python.keras.engine.functional import Functional  # pylint: disable=no-name-in-module
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras import Sequential
-from sotaai.cv import load_dataset, load_model, keras_wrapper, utils
+from sotaai.cv import load_dataset, load_model, keras_wrapper, utils, model_to_dataset
 from sotaai.cv.abstractions import CvDataset, CvModel
 from sotaai.cv import metadata
 
@@ -125,20 +125,6 @@ class TestKerasWrapper(unittest.TestCase):
       adjusting the dataset and model to be compatible with each other
     '''
 
-    dataset_splits = load_dataset('mnist')
-    cv_dataset = dataset_splits['test']
-    iterable_dataset = iter(cv_dataset)
-
-    datapoint = next(iterable_dataset)
-
-    # Reshape MNIST data to be a single datapoint in RGB
-    x = datapoint['image']
-    x = x.reshape((28, 28, 1))
-    x = np.repeat(x, 3, -1)
-    x = x.reshape((1,) + x.shape)
-
-    self.assertEqual(x.shape, (1, 28, 28, 3))
-
     # Modify ResNet model input/output so as to be compatible with MNIST
     input_tensor = Input(shape=(28, 28, 3))
     cv_model = load_model('ResNet101V2',
@@ -155,10 +141,66 @@ class TestKerasWrapper(unittest.TestCase):
     self.assertEqual(cv_model.raw.layers[len(model.layers) - 1].output_shape,
                      (None, 10))
 
-    # Test predictions
-    predictions = cv_model(x)
+    dataset_splits = load_dataset('mnist')
+    cv_dataset = dataset_splits['test']
 
-    self.assertEqual(predictions.shape, (1, 10))
+    # Only get predictions over the first n datapoints
+    n = 5
+
+    for i, datapoint in enumerate(cv_dataset):
+
+      # Reshape MNIST data to be a single datapoint in RGB
+      x = datapoint['image']
+      x = x.reshape((28, 28, 1))
+      x = np.repeat(x, 3, -1)
+      x = x.reshape((1,) + x.shape)
+
+      self.assertEqual(x.shape, (1, 28, 28, 3))
+
+      # Test predictions
+      predictions = cv_model(x)
+
+      self.assertEqual(predictions.shape, (1, 10))
+
+      if i == n:
+        break
+
+  def test_print(self):
+
+    for task in keras_wrapper.MODELS:
+      for model_name in keras_wrapper.MODELS[task]:
+        cv_model = load_model(model_name, 'keras', include_top=True)
+        print(model_name, cv_model.original_input_shape,
+              cv_model.original_output_shape)
+
+    print('')
+
+    for task in keras_wrapper.DATASETS:
+      for dataset_name in keras_wrapper.DATASETS[task]:
+        dataset_splits = load_dataset(dataset_name, 'keras')
+        for split_name in dataset_splits:
+          cv_dataset = dataset_splits[split_name]
+          print(dataset_name, cv_dataset.shape, cv_dataset.classes_count)
+
+  def test_model_to_dataset(self):
+
+    model_name = 'ResNet101V2'
+    dataset_name = 'mnist'
+    split_name = 'test'
+
+    cv_model = load_model(model_name, 'keras', include_top=True)
+    dataset_splits = load_dataset(dataset_name, 'keras')
+    cv_dataset = dataset_splits[split_name]
+
+    for item in cv_dataset:
+      print('before', item['image'].shape)
+      break
+
+    cv_model, cv_dataset = model_to_dataset(cv_model, cv_dataset)
+
+    for item in cv_dataset:
+      print('after', item['image'].shape)
+      break
 
 
 if __name__ == '__main__':

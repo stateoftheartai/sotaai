@@ -5,7 +5,9 @@
 Keras https://keras.io/ wrapper module
 '''
 
+from sotaai.cv import utils
 import tensorflow.keras as keras
+import numpy as np
 
 DATASETS = {'classification': ['mnist', 'cifar10', 'cifar100', 'fashion_mnist']}
 
@@ -141,12 +143,85 @@ def load_dataset(dataset_name):
   return dataset_dict
 
 
+def model_to_dataset(cv_model, cv_dataset):
+  '''If compatible, adjust model and dataset so that they can be executed
+  against each other
+
+  Args:
+    cv_model: an abstracted cv model whose source is Keras
+    cv_dataset: an abstracted cv dataset
+
+  Returns:
+    cv_model: the abstracted cv model adjusted to be executed against
+      cv_dataset
+    cv_dataset: the abstracted cv dataset adjust to be executed against
+      cv_model
+  '''
+
+  # Case 1:
+  # All Keras models require 3 channels, thus we have to reshape the dataset
+  # if less than 3 channels
+
+  are_channels_compatible = len(cv_dataset.shape) == len(
+      cv_model.original_input_shape)
+
+  if not are_channels_compatible:
+
+    def image_preprocessing_callback(image):
+      image = image.reshape(image.shape + (1,))
+      image = np.repeat(image, 3, -1)
+      return image
+
+    cv_dataset.set_image_preprocessing(image_preprocessing_callback)
+    cv_dataset.shape = cv_model.original_input_shape
+
+  # Case 2:
+  # If dataset and model input are not compatible, we have to (1) reshape
+  # the dataset shape a bit more or (2) change the model input layer
+
+  is_input_compatible = utils.compare_shapes(cv_model.original_input_shape,
+                                             cv_dataset.shape)
+
+  if not is_input_compatible:
+    print(cv_model.original_input_shape, cv_dataset.shape)
+
+    # TODO(Hugo)
+    # Add the logic to adjust model input so as to be compatible with dataset,
+    # or adjust dataset shape, something like:
+    #
+    # input_tensor = Input(shape=(28, 28, 3))
+    # cv_model = load_model('ResNet101V2',
+    # 'keras',
+    # input_tensor=input_tensor,
+    # include_top=False)
+
+  # Case 3:
+  # If output is not compatible with dataset classes, we have to change the
+  # model output layer
+  is_output_compatible = utils.compare_shapes(cv_model.original_output_shape,
+                                              cv_dataset.classes_shape)
+
+  if not is_output_compatible:
+    print(cv_model.original_output_shape, cv_dataset.classes_shape)
+
+    # TODO(Hugo)
+    # Add the logic to adjust model output so as to be compatible with dataset
+    # classes, something like:
+    #
+    # model = Sequential()
+    # model.add(cv_model.raw)
+    # model.add(Dense(10, activation='softmax'))
+
+  return cv_model, cv_dataset
+
+
 class DatasetIterator():
   '''Keras dataset iterator class'''
 
   def __init__(self, raw) -> None:
     self._raw = raw
     self._iterator = self._create_iterator()
+    self._image_preprocessing_callback = None
 
   def __next__(self):
     '''Get the next item from the dataset in a standardized format.
@@ -159,6 +234,10 @@ class DatasetIterator():
     '''
     image = next(self._iterator['image'])
     label = next(self._iterator['label'])
+
+    if self._image_preprocessing_callback:
+      image = self._image_preprocessing_callback(image)
+
     return {'image': image, 'label': label}
 
   def _create_iterator(self):
@@ -168,3 +247,6 @@ class DatasetIterator():
       An object containing iterators for the dataset images and labels
     '''
     return {'image': iter(self._raw[0]), 'label': iter(self._raw[1])}
+
+  def set_image_preprocessing(self, image_preprocessing_callback):
+    self._image_preprocessing_callback = image_preprocessing_callback
