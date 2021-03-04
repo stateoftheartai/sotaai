@@ -326,17 +326,16 @@ class DatasetIterator():
 
     Returns:
     '''
+    datapoint = next(self._iterator)
     if search('DataLoader', str(type(self._raw))):
-      print(self._iterator)
-      image = np.array(next(self._iterator)[0])
-      label = next(self._iterator)[1].numpy() if search(
-          'Tensor', str(type(next(self._iterator)[1]))) else next(
-              self._iterator)[1]
+      image = np.array(datapoint[0])
+      label = datapoint[1].numpy() if search('Tensor', str(type(
+          datapoint[1]))) else datapoint[1]
       # image, label = self._iterator.next()
       return {'image': image[0], 'label': label[0]}
     else:
-      image = np.array(next(self._iterator, [0, 0])[0])
-      label = next(self._iterator, [0, 0])[1]
+      image = np.array(datapoint[0])
+      label = datapoint[1]
 
       return {'image': image, 'label': label}
 

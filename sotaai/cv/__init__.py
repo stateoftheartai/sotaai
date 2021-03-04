@@ -95,8 +95,32 @@ def load_dataset(name: str,
   for split_name in raw_object:
     raw = raw_object[split_name]
     iterator = wrapper.DatasetIterator(raw)
+
     # print(iterator)
     std_dataset[split_name] = abstractions.CvDataset(raw, iterator, name,
                                                      split_name)
 
   return std_dataset
+
+
+def model_to_dataset(cv_dataset, cv_model):
+
+  source = cv_model.source
+  if source == 'torchvision':
+
+    # valores importantes
+    model_input_type = cv_model.original_input_type
+
+    model_input_shape = list(cv_model.raw.parameters())[0].shape
+    model_output_shape = list(cv_model.raw.parameters())[-1].shape
+
+    classes = cv_dataset.classes
+    print(cv_dataset.name + 'with model ' + cv_model.name)
+
+    print('Model input type', model_input_type)
+    print('Model input shape', model_input_shape)
+    print('Model output shape', model_output_shape)
+    print('Datasets classes', classes)
+
+    iter_dataset = iter(cv_dataset)
+    print(next(iter_dataset)['image'].shape)

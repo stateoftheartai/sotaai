@@ -5,8 +5,9 @@
 '''fastai https://pytorch.org/ wrapper module'''
 
 import unittest
-from sotaai.cv import torch_wrapper, load_dataset, load_model
+from sotaai.cv import torch_wrapper, load_dataset, load_model, model_to_dataset
 from sotaai.cv.abstractions import CvDataset, CvModel
+# from sotaai.cv.model_to_dataset.torch_to_torch import qmnist_to_alexnet
 import inspect
 import torch
 import torch.nn as nn
@@ -20,8 +21,18 @@ logging.getLogger('lightning').setLevel(0)
 class TestTorchWrapper(unittest.TestCase):
   '''Test the wrapped torch module.'''
 
-  test_datasets = [
-      'QMNIST', 'SEMEION', 'Flickr30k', 'VOCSegmentation/2007', 'SBU'
+  # test_datasets = [
+  #     'QMNIST', 'SEMEION', 'Flickr30k', 'VOCSegmentation/2007', 'SBU'
+  # ]
+
+  test_datasets = ['QMNIST', 'SEMEION', 'SVHN', 'USPS']
+  test_models = [
+      'alexnet', 'densenet161', 'googlenet', 'mnasnet0_5', 'mnasnet0_75',
+      'mnasnet1_0', 'mnasnet1_3', 'mobilenet_v2', 'resnet18', 'resnet34',
+      'resnext101_32x8d', 'resnext50_32x4d', 'shufflenet_v2_x0_5',
+      'shufflenet_v2_x1_0', 'shufflenet_v2_x1_5', 'shufflenet_v2_x2_0',
+      'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13',
+      'vgg13_bn', 'vgg16_bn', 'vgg19_bn', 'wide_resnet101_2', 'wide_resnet50_2'
   ]
 
   # @author HO (legacy comment from sotaai-dev)
@@ -148,6 +159,26 @@ class TestTorchWrapper(unittest.TestCase):
     probabilities = torch.nn.functional.softmax(output[0], dim=0)
 
     print(probabilities)
+
+  def test_model_to_dataset(self):
+
+    # cv_model = load_model('alexnet', source='torch')
+
+    for dataset in self.test_datasets:
+      cv_dataset = load_dataset(dataset)
+
+      for model in self.test_models:
+        cv_model = load_model(model, source='torch')
+        if 'test' in cv_dataset:
+          model_to_dataset(cv_dataset['test'], cv_model)
+
+    # standarized_dataset, standarized_model = qmnist_to_alexnet(
+    #     cv_dataset['test'], cv_model)
+
+    # datapoint = next(standarized_dataset)
+    # output = standarized_model(datapoint['image'])
+
+    # print(output)
 
 
 if __name__ == '__main__':
