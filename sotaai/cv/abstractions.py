@@ -118,25 +118,29 @@ class CvModel(object):
     '''
     self.raw = raw_model
     self.name = name
-    self.source = utils.get_source_from_model(raw_model)
-    self.original_input_type = utils.get_input_type(raw_model)
-    self.original_input_shape = utils.get_input_shape(raw_model)
-    self.original_output_shape = utils.get_output_shape(raw_model)
+    self._populate_attributes()
+
+  def _populate_attributes(self):
+    self.source = utils.get_source_from_model(self.raw)
+    self.original_input_type = utils.get_input_type(self.raw)
+    self.original_input_shape = utils.get_input_shape(self.raw)
+    self.original_output_shape = utils.get_output_shape(self.raw)
     self.data_type = None  # TODO(tonioteran) Implement me.
     self.min_size = None  # TODO(tonioteran) Implement me.
-    self.num_channels = utils.get_num_channels_from_model(raw_model)
-    self.num_layers = utils.get_num_layers_from_model(raw_model)
-    self.num_params = utils.get_num_parameters_from_model(raw_model)
+    self.num_channels = utils.get_num_channels_from_model(self.raw)
+    self.num_layers = utils.get_num_layers_from_model(self.raw)
+    self.num_params = utils.get_num_parameters_from_model(self.raw)
     self.associated_datasets = None  # TODO(tonioteran) Implement me.
     self.paper = None  # TODO(tonioteran) Implement me.
 
-  def update(self, model) -> None:
+  def update_raw_model(self, model) -> None:
     '''Update raw model with a new one modified using Keras API directly.
 
     Args:
       model: the new Keras model that will replace the original raw model
     '''
     self.raw = model
+    self._populate_attributes()
 
   def __call__(self, input_data):
     '''Return model predictions for the input_data

@@ -135,7 +135,7 @@ class TestKerasWrapper(unittest.TestCase):
     model.add(cv_model.raw)
     model.add(Dense(10, activation='softmax'))
 
-    cv_model.update(model)
+    cv_model.update_raw_model(model)
 
     self.assertEqual(cv_model.raw.layers[0].input_shape, (None, 28, 28, 3))
     self.assertEqual(cv_model.raw.layers[len(model.layers) - 1].output_shape,

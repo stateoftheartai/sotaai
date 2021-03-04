@@ -409,7 +409,11 @@ def get_input_shape(model) -> str:
   '''
   source = get_source_from_model(model)
   if source == 'keras':
-    return model.layers[0].input_shape[0][1:]
+    input_shape = model.layers[0].input_shape
+    if isinstance(input_shape, list):
+      return input_shape[0][1:]
+    else:
+      return input_shape[1:]
   else:
     raise NotImplementedError
 

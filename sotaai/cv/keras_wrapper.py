@@ -7,6 +7,8 @@ Keras https://keras.io/ wrapper module
 
 from sotaai.cv import utils
 import tensorflow.keras as keras
+from tensorflow.keras.layers import Input, Dense
+from tensorflow.keras import Sequential
 import numpy as np
 
 DATASETS = {'classification': ['mnist', 'cifar10', 'cifar100', 'fashion_mnist']}
@@ -158,6 +160,8 @@ def model_to_dataset(cv_model, cv_dataset):
       cv_model
   '''
 
+  print('\nAdjusting model and dataset...')
+
   # Case 1:
   # All Keras models require 3 channels, thus we have to reshape the dataset
   # if less than 3 channels
@@ -167,13 +171,16 @@ def model_to_dataset(cv_model, cv_dataset):
 
   if not are_channels_compatible:
 
+    print(' => Dataset channels...', cv_dataset.shape,
+          cv_model.original_input_shape)
+
     def image_preprocessing_callback(image):
       image = image.reshape(image.shape + (1,))
       image = np.repeat(image, 3, -1)
       return image
 
     cv_dataset.set_image_preprocessing(image_preprocessing_callback)
-    cv_dataset.shape = cv_model.original_input_shape
+    cv_dataset.shape = cv_dataset.shape + (3,)
 
   # Case 2:
   # If dataset and model input are not compatible, we have to (1) reshape
@@ -183,17 +190,15 @@ def model_to_dataset(cv_model, cv_dataset):
                                              cv_dataset.shape)
 
   if not is_input_compatible:
-    print(cv_model.original_input_shape, cv_dataset.shape)
 
-    # TODO(Hugo)
-    # Add the logic to adjust model input so as to be compatible with dataset,
-    # or adjust dataset shape, something like:
-    #
-    # input_tensor = Input(shape=(28, 28, 3))
-    # cv_model = load_model('ResNet101V2',
-    # 'keras',
-    # input_tensor=input_tensor,
-    # include_top=False)
+    print(' => Model input...', cv_dataset.shape, cv_model.original_input_shape)
+
+    input_tensor = Input(shape=cv_dataset.shape)
+    raw_model = load_model(cv_model.name,
+                           input_tensor=input_tensor,
+                           include_top=False)
+
+    cv_model.update_raw_model(raw_model)
 
   # Case 3:
   # If output is not compatible with dataset classes, we have to change the
@@ -202,15 +207,14 @@ def model_to_dataset(cv_model, cv_dataset):
                                               cv_dataset.classes_shape)
 
   if not is_output_compatible:
-    print(cv_model.original_output_shape, cv_dataset.classes_shape)
+    print(' => Model output...', cv_dataset.classes_shape,
+          cv_model.original_output_shape)
 
-    # TODO(Hugo)
-    # Add the logic to adjust model output so as to be compatible with dataset
-    # classes, something like:
-    #
-    # model = Sequential()
-    # model.add(cv_model.raw)
-    # model.add(Dense(10, activation='softmax'))
+    raw_model = Sequential()
+    raw_model.add(cv_model.raw)
+    raw_model.add(Dense(cv_dataset.classes_shape[0], activation='softmax'))
+
+    cv_model.update_raw_model(raw_model)
 
   return cv_model, cv_dataset
 
