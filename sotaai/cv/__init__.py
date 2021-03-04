@@ -5,6 +5,7 @@
 '''Main CV module to abstract away library specific API and standardize.'''
 from sotaai.cv import utils
 from sotaai.cv import abstractions
+from sotaai.cv import keras_wrapper
 import importlib
 
 
@@ -100,3 +101,31 @@ def load_dataset(name: str,
                                                      split_name)
 
   return std_dataset
+
+
+def model_to_dataset(cv_model, cv_dataset):
+  '''If compatible, adjust model and dataset so that they can be executed
+  against each other
+
+  Args:
+    cv_model: an abstracted cv model
+    cv_dataset: an abstracted cv dataset
+
+  Returns:
+    cv_model: the abstracted cv model adjusted to be executed against
+      cv_dataset
+    cv_dataset: the abstracted cv dataset adjust to be executed against
+      cv_model
+  '''
+
+  print('\nModel ', cv_model.name)
+  print(' Input: ', cv_model.original_input_shape)
+  print(' Output: ', cv_model.original_output_shape)
+  print('\nDataset: ', cv_dataset.name)
+  print(' Shape:   ', cv_dataset.shape)
+  print(' Classes: ', cv_dataset.classes_shape)
+
+  if cv_model.source == 'keras':
+    cv_model, cv_dataset = keras_wrapper.model_to_dataset(cv_model, cv_dataset)
+
+  return cv_model, cv_dataset

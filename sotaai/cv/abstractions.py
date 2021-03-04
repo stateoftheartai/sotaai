@@ -24,7 +24,6 @@ class CvDataset(object):
         Name of the dataset's split.
     '''
     self.raw = raw_dataset
-    self.original_shape = utils.get_dataset_shape(raw_dataset)
     self.iterator = iterator
     self.name = name
     self.source = utils.get_source_from_dataset(raw_dataset)
@@ -32,18 +31,21 @@ class CvDataset(object):
     self.split_name = split_name
     self.tasks = utils.map_dataset_tasks()[name]
     self.size = utils.get_size_from_dataset(raw_dataset, self.split_name)
-    # TODO Fix shape, utils function is not working since the first parameter
-    # passed is the raw dataset instead of the CvDataset that the function
-    # expects (which is still being created)
-    # self.shape = utils.get_shape_from_dataset(raw_dataset, name, split_name)
+    self.shape = utils.get_shape_from_dataset(raw_dataset, name, split_name)
 
     # Populated for datasets supporting classification or detection tasks.
     self.classes = None
     self.classes_names = None
+    self.classes_shape = None
+
     if 'classification' in self.tasks or 'object_detection' in self.tasks:
       if self.source != 'torchvision':
-        self.classes, self.classes_names = utils.get_classes_from_dataset(
+        classes, classes_names, classes_shape = utils.get_classes_from_dataset(
             raw_dataset, self.source, self.name, self.split_name, self.size)
+
+        self.classes = classes
+        self.classes_names = classes_names
+        self.classes_shape = classes_shape
 
     # Only populated for datasets that support segmentation tasks.
     self.pixel_types = None
@@ -64,6 +66,9 @@ class CvDataset(object):
   def __iter__(self):
     '''Returns the CvDataset iterator object'''
     return self.iterator
+
+  def set_image_preprocessing(self, image_preprocessing_callback):
+    self.iterator.set_image_preprocessing(image_preprocessing_callback)
 
   def _extract_pixel_types(self, raw_object):
     '''Get the IDs and the names (if available) of the pixel types.

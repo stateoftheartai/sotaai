@@ -11,7 +11,7 @@ import inspect
 from tensorflow.python.keras.engine.functional import Functional  # pylint: disable=no-name-in-module
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras import Sequential
-from sotaai.cv import load_dataset, load_model, keras_wrapper, utils
+from sotaai.cv import load_dataset, load_model, keras_wrapper, utils, model_to_dataset
 from sotaai.cv.abstractions import CvDataset, CvModel
 from sotaai.cv import metadata
 
@@ -165,11 +165,11 @@ class TestKerasWrapper(unittest.TestCase):
       if i == n:
         break
 
-  def test_model_to_dataset(self):
+  def test_print(self):
 
     for task in keras_wrapper.MODELS:
       for model_name in keras_wrapper.MODELS[task]:
-        cv_model = load_model(model_name, 'keras')
+        cv_model = load_model(model_name, 'keras', include_top=True)
         print(model_name, cv_model.original_input_shape,
               cv_model.original_output_shape)
 
@@ -180,7 +180,27 @@ class TestKerasWrapper(unittest.TestCase):
         dataset_splits = load_dataset(dataset_name, 'keras')
         for split_name in dataset_splits:
           cv_dataset = dataset_splits[split_name]
-          print(dataset_name, cv_dataset.original_shape)
+          print(dataset_name, cv_dataset.shape, cv_dataset.classes_count)
+
+  def test_model_to_dataset(self):
+
+    model_name = 'ResNet101V2'
+    dataset_name = 'mnist'
+    split_name = 'test'
+
+    cv_model = load_model(model_name, 'keras', include_top=True)
+    dataset_splits = load_dataset(dataset_name, 'keras')
+    cv_dataset = dataset_splits[split_name]
+
+    for item in cv_dataset:
+      print('before', item['image'].shape)
+      break
+
+    cv_model, cv_dataset = model_to_dataset(cv_model, cv_dataset)
+
+    for item in cv_dataset:
+      print('after', item['image'].shape)
+      break
 
 
 if __name__ == '__main__':

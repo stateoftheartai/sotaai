@@ -7,7 +7,6 @@
 import importlib
 import mxnet as mx
 import numpy as np
-import torch
 import tensorflow_datasets as tfds
 import time
 import os
@@ -400,49 +399,34 @@ def get_input_type(model) -> str:
 
 
 def get_input_shape(model) -> str:
-  '''Returns the input shape of the input data received by the model.
+  '''Returns the input shape of the data received by the model (image shape)
 
     Args:
       model: a raw model instance
 
     Returns:
-      The input shape as a tuple
+      The input shape as a tuple e.g. (224,224,3)
   '''
   source = get_source_from_model(model)
   if source == 'keras':
-    return model.layers[0].input_shape[0]
+    return model.layers[0].input_shape[0][1:]
   else:
     raise NotImplementedError
 
 
 def get_output_shape(model) -> str:
-  '''Returns the output shape of the model
+  '''Returns the output shape of the predicted data of the model (vector of the
+    predicted classes/labels)
 
     Args:
       model: a raw model instance
 
     Returns:
-      The output shape as a tuple
+      The output shape as a tuple e.g (1000,)
   '''
   source = get_source_from_model(model)
   if source == 'keras':
-    return model.layers[-1].input_shape
-  else:
-    raise NotImplementedError
-
-
-def get_dataset_shape(dataset) -> str:
-  '''Returns the shape of the dataset
-
-    Args:
-      model: a raw dataset instance
-
-    Returns:
-      The dataset shape as a tuple
-  '''
-  source = get_source_from_dataset(dataset)
-  if source == 'keras':
-    return dataset[0].shape[1:]
+    return model.layers[-1].output_shape[1:]
   else:
     raise NotImplementedError
 
@@ -572,34 +556,6 @@ def get_num_parameters_from_model(model) -> int:
   return n_params
 
 
-def format_image(x):
-  '''Format an image to the shape (1, h, w, c)
-
-  Args:
-    x:
-      numpy.ndarray or torch.Tensor that represents an image
-
-  Returns:
-    Processed numpy.ndarray of shape (1, h, w, c)
-  '''
-
-  tensor_shape = x.shape
-
-  if isinstance(x, torch.Tensor):
-    x = x.numpy()
-
-  if len(tensor_shape) == 2:
-    # We only have one channel.
-    x = x.reshape([1, 1, *x.shape])
-  elif len(tensor_shape) == 3:
-    # We have a dimension for the number of channels (dim [3]).
-    x = x.reshape([1, *x.shape])
-
-  if x.shape[3] != 1 and x.shape[3] != 3:
-    # Chang, shape (1, c, h, w) to (1, h, w, c)
-    x = np.transpose(x, [0, 2, 3, 1])
-
-
 def get_source_from_dataset(dataset) -> str:
   '''Determines the source library from a dataset object.
 
@@ -674,6 +630,8 @@ def get_shape_from_dataset(dataset, name, split_name):
   # are different, then a None will be in the corresponding
   # dimension of the shape
   source = get_source_from_dataset(dataset)
+  if source == 'keras':
+    return dataset[0].shape[1:]
   if source == 'tensorflow':
     _, ds_info = tfds.load(name, with_info=True)
     if 'image' in ds_info.features.keys():
@@ -720,18 +678,21 @@ def get_classes_from_dataset(raw_object, source, name, split_name, size):
         size: the size of the datset raw_object
 
     Returns:
-        A pair of values, `classes` and `classes_names`. If no
-        `classes_names` are available, the pair becomes `classes` and
-        `None`.
+        classes: the collection of classes values e.g. range(0,10)
+        classes_names: the set of class names, if available else None
+        classes_shape: the shape of a vector class e.g. (10,), if available else
+          None
     '''
   classes = None
   classes_names = None
+  classes_shape = None
   if source == 'mxnet':
     classes = set(raw_object[split_name][:][1])
     classes_names = None
   elif source == 'keras':
     classes = np.unique(raw_object[1])
     classes_names = None
+    classes_shape = (len(classes),)
   elif source == 'torchvision':
     if 'VOC' in name:
       # If dataset is an Object Detection Dataset
@@ -795,7 +756,7 @@ def get_classes_from_dataset(raw_object, source, name, split_name, size):
       # Avoid representing classes with a long list by using range
       classes = range(len(classes))
 
-  return classes, classes_names
+  return classes, classes_names, classes_shape
 
 
 def extract_pixel_types(raw_object, name, source, split_name):
