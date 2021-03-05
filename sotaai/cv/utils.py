@@ -431,7 +431,19 @@ def get_output_shape(model) -> str:
   '''
   source = get_source_from_model(model)
   if source == 'keras':
-    return model.layers[-1].output_shape[1:]
+    # TODO(Hugo)
+    # We need to further review this, output shape depends on whether the model
+    # is pretrained or not, if pretrained the output_shape match the dataset
+    # classes, but if not pretrained the output_shape can be anything in the
+    # last layer. We need to check how to better use this or whether to define
+    # new variables (this is important since model_to_dataset depends on it)
+    # As of now, we just take the last item of the last layer shape e.g. with
+    # a model pretrained in cifar10 the last layer is (None,10) but we return
+    # (10,) which means the output_shape is a vector with 10 entries.
+    last_layer_shape = model.layers[-1].output_shape
+    last_item = last_layer_shape[-1]
+    output_shape = (last_item,)
+    return output_shape
   else:
     raise NotImplementedError
 

@@ -231,7 +231,7 @@ class TestKerasWrapper(unittest.TestCase):
         for dataset_name in keras_wrapper.DATASETS[task]:
           single_test(model_name, dataset_name, 'test')
 
-    # single_test('InceptionResNetV2', 'cifar10', 'test')
+    # single_test('ResNet50', 'mnist', 'test')
 
 
 if __name__ == '__main__':
