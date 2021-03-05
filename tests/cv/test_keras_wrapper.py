@@ -145,8 +145,9 @@ class TestKerasWrapper(unittest.TestCase):
           True)
       self.assertEqual(cv_model.original_output_shape, cv_dataset.classes_shape)
 
-      # For some image samples, assert predictions shape (model output) matches
-      # the expected classes
+      # For some image samples, assert dataset sample shapes matched the
+      # cv_dataset.shape, and then assert predictions shape (model output)
+      # matches the expected classes
 
       n = 3
       for i, item in enumerate(cv_dataset):
