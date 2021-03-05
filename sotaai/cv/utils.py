@@ -10,6 +10,7 @@ import numpy as np
 import tensorflow_datasets as tfds
 import time
 import os
+import skimage.transform as st
 
 # Prevent Tensorflow to print warning and meta logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -815,3 +816,19 @@ def compare_shapes(ground_truth_shape, shape):
     if matched_items == len(ground_truth_shape):
       equal = True
   return equal
+
+
+def resize_image(im, shape):
+  '''Resize an image
+
+  As of now this function uses scikit-image but implementation can be changed in
+  the future to use another library or our own implementation
+
+  Args:
+    image: numpy array of the image to be resized
+    shape: the new size (shape) as a tuple
+
+  Returns:
+    The numpy array of the image resized
+  '''
+  return st.resize(im, shape)

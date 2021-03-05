@@ -141,7 +141,7 @@ class TestKerasWrapper(unittest.TestCase):
     self.assertEqual(cv_model.raw.layers[len(model.layers) - 1].output_shape,
                      (None, 10))
 
-    dataset_splits = load_dataset('mnist')
+    dataset_splits = load_dataset('cifar10')
     cv_dataset = dataset_splits['test']
 
     # Only get predictions over the first n datapoints
@@ -150,17 +150,27 @@ class TestKerasWrapper(unittest.TestCase):
     for i, datapoint in enumerate(cv_dataset):
 
       # Reshape MNIST data to be a single datapoint in RGB
-      x = datapoint['image']
-      x = x.reshape((28, 28, 1))
-      x = np.repeat(x, 3, -1)
-      x = x.reshape((1,) + x.shape)
+      # x = datapoint['image']
+      # x = x.reshape((28, 28, 1))
+      # x = np.repeat(x, 3, -1)
+      # x = x.reshape((1,) + x.shape)
 
-      self.assertEqual(x.shape, (1, 28, 28, 3))
+      # self.assertEqual(x.shape, (1, 28, 28, 3))
+
+      xr = utils.scale(datapoint['image'], (400, 400))
+
+      print(xr.shape, datapoint['image'].shape)
+
+      # from matplotlib import pyplot as plt
+      # plt.imshow(xr, interpolation='nearest')
+      # plt.show()
+      # plt.imshow(datapoint['image'], interpolation='nearest')
+      # plt.show()
 
       # Test predictions
-      predictions = cv_model(x)
+      # predictions = cv_model(x)
 
-      self.assertEqual(predictions.shape, (1, 10))
+      # self.assertEqual(predictions.shape, (1, 10))
 
       if i == n:
         break
@@ -184,7 +194,25 @@ class TestKerasWrapper(unittest.TestCase):
 
   def test_model_to_dataset(self):
 
-    model_name = 'ResNet101V2'
+    for task in keras_wrapper.MODELS:
+      for model_name in keras_wrapper.MODELS[task]:
+        for dataset_name in keras_wrapper.DATASETS[task]:
+
+          print(model_name, dataset_name)
+          cv_model = load_model(model_name, 'keras', include_top=True)
+
+          dataset_splits = load_dataset(dataset_name, 'keras')
+          cv_dataset = dataset_splits['train']
+
+          cv_model, cv_dataset = model_to_dataset(cv_model, cv_dataset)
+
+          # self.assertEqual(cv_dataset.shape[-1], 3)
+          # self.assertEqual(cv_model.original_input_shape, cv_dataset.shape)
+          # self.assertEqual(cv_model.original_output_shape,
+          # cv_dataset.classes_shape)
+
+    # return
+    model_name = 'VGG19'
     dataset_name = 'mnist'
     split_name = 'test'
 

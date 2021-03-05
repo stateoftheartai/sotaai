@@ -162,6 +162,16 @@ def model_to_dataset(cv_model, cv_dataset):
 
   print('\nAdjusting model and dataset...')
 
+  # As per Keras documentation, some models require a minimum width and height
+  # for the input shape, those cases are managed (forced) here if model is
+  # defined here:
+  image_mins = {
+      'InceptionResNetV2': 75,
+      'Xception': 71,
+      'VGG16': 32,
+      'VGG19': 71
+  }
+
   # Case 1:
   # All Keras models require 3 channels, thus we have to reshape the dataset
   # if less than 3 channels
@@ -175,6 +185,12 @@ def model_to_dataset(cv_model, cv_dataset):
           cv_model.original_input_shape)
 
     def image_preprocessing_callback(image):
+
+      if cv_model.name in image_mins and image.shape[:2] < (
+          image_mins[cv_model.name], image_mins[cv_model.name]):
+        image = utils.resize_image(
+            image, (image_mins[cv_model.name], image_mins[cv_model.name]))
+
       image = image.reshape(image.shape + (1,))
       image = np.repeat(image, 3, -1)
       return image
@@ -190,6 +206,11 @@ def model_to_dataset(cv_model, cv_dataset):
                                              cv_dataset.shape)
 
   if not is_input_compatible:
+
+    if cv_model.name in image_mins and cv_dataset.shape[:2] < (
+        image_mins[cv_model.name], image_mins[cv_model.name]):
+      cv_dataset.shape = (image_mins[cv_model.name], image_mins[cv_model.name],
+                          3)
 
     print(' => Model input...', cv_dataset.shape, cv_model.original_input_shape)
 
@@ -245,7 +266,8 @@ class DatasetIterator():
     return {'image': image, 'label': label}
 
   def _create_iterator(self):
-    '''Create an iterator out of the raw dataset split object
+    '''Create an iterator out of the raw dataset split object. This is the
+    Keras iterator being wrapped in our own iterator.
 
     Returns:
       An object containing iterators for the dataset images and labels
