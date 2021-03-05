@@ -130,7 +130,7 @@ class TestKerasWrapper(unittest.TestCase):
 
       cv_model = load_model(model_name, 'keras')
 
-      dataset_splits = load_dataset(dataset_name, 'keras')
+      dataset_splits = load_dataset(dataset_name)
       cv_dataset = dataset_splits[split_name]
 
       cv_model, cv_dataset = model_to_dataset(cv_model, cv_dataset)
@@ -175,12 +175,28 @@ class TestKerasWrapper(unittest.TestCase):
         if i == n:
           break
 
+    # Test all Keras models against all Keras datasets and a set of
+    # Tensorflow datasets (beans and omniglot as of now)
+    dataset_names = []
+    for task in keras_wrapper.DATASETS:
+      for dataset_name in keras_wrapper.DATASETS[task]:
+        dataset_names.append(dataset_name)
+
+    # TODO(Hugo)
+    # Manually test all Tensorflow datasets (the issue here is that TF datasets
+    # need to fit in memory). Test dataset by dataset and delete them as they
+    # pass tests... or think on how to better test all Tensorflow datasets
+
+    tensorflow_datasets_names = ['beans', 'omniglot']
+    dataset_names = dataset_names + tensorflow_datasets_names
+
     for task in keras_wrapper.MODELS:
       for model_name in keras_wrapper.MODELS[task]:
-        for dataset_name in keras_wrapper.DATASETS[task]:
+        for dataset_name in dataset_names:
           single_test(model_name, dataset_name, 'test')
 
-    # single_test('ResNet101V2', 'mnist', 'test')
+    # Uncomment the next line to test a particular case of model_to_dataset:
+    # single_test('ResNet101V2', 'beans', 'test')
 
 
 if __name__ == '__main__':

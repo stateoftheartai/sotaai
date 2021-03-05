@@ -758,10 +758,10 @@ def get_classes_from_dataset(raw_object, source, name, split_name, size):
     _, ds_info = tfds.load(name, with_info=True)
     classes = None
     classes_names = None
-
     if 'label' in ds_info.features:
       n_classes = ds_info.features['label'].num_classes
       classes = range(n_classes)
+      classes_shape = (len(classes),)
 
   elif source == 'fastai':
     obj = getattr(raw_object[split_name], split_name + '_ds')

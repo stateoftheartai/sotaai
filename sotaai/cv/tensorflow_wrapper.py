@@ -158,3 +158,6 @@ class DatasetIterator():
       An object containing iterators for the dataset images and labels
     '''
     return iter(self._raw)
+
+  def set_image_preprocessing(self, image_preprocessing_callback):
+    self._image_preprocessing_callback = image_preprocessing_callback
