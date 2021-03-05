@@ -160,17 +160,7 @@ def model_to_dataset(cv_model, cv_dataset):
       cv_model
   '''
 
-  print('\nAdjusting model and dataset...')
-
-  # As per Keras documentation, some models require a minimum width and height
-  # for the input shape, those cases are managed (forced) here if model is
-  # defined here:
-  image_mins = {
-      'InceptionResNetV2': 75,
-      'Xception': 71,
-      'VGG16': 32,
-      'VGG19': 71
-  }
+  print('\nAdjusting...')
 
   # Case 1:
   # All Keras models require 3 channels, thus we have to reshape the dataset
@@ -180,25 +170,48 @@ def model_to_dataset(cv_model, cv_dataset):
       cv_model.original_input_shape)
 
   if not are_channels_compatible:
-
-    print(' => Dataset channels...', cv_dataset.shape,
-          cv_model.original_input_shape)
-
-    def image_preprocessing_callback(image):
-
-      if cv_model.name in image_mins and image.shape[:2] < (
-          image_mins[cv_model.name], image_mins[cv_model.name]):
-        image = utils.resize_image(
-            image, (image_mins[cv_model.name], image_mins[cv_model.name]))
-
-      image = image.reshape(image.shape + (1,))
-      image = np.repeat(image, 3, -1)
-      return image
-
-    cv_dataset.set_image_preprocessing(image_preprocessing_callback)
+    print(' => Dataset Channels from {} to {}'.format(cv_dataset.shape,
+                                                      cv_dataset.shape + (3,)))
     cv_dataset.shape = cv_dataset.shape + (3,)
 
   # Case 2:
+  # As per Keras documentation, some models require a minimum width and height
+  # for the input shape. For those models, we make sure the dataset meet those
+  # minimums
+  image_mins = {
+      'InceptionV3': 75,
+      'InceptionResNetV2': 75,
+      'Xception': 71,
+      'VGG16': 32,
+      'VGG19': 71,
+      'ResNet50': 32,
+      'ResNet101': 32,
+      'ResNet152': 32,
+      'ResNet50V2': 32,
+      'ResNet101V2': 32,
+      'ResNet152V2': 32,
+      'MobileNet': 32,
+      'DenseNet121': 32,
+      'DenseNet169': 32,
+      'DenseNet201': 32,
+      'NASNetLarge': 32,
+      'NASNetMobile': 32
+  }
+
+  min_input_shape = None
+
+  if cv_model.name in image_mins:
+    min_input_shape = (image_mins[cv_model.name], image_mins[cv_model.name])
+
+  has_min_shape = min_input_shape and cv_dataset.shape[:2] < min_input_shape
+
+  if has_min_shape:
+    original_dataset_shape = cv_dataset.shape
+    cv_dataset.shape = min_input_shape + (3,)
+    print(' => Dataset minimum shape from {} to {}'.format(
+        original_dataset_shape, cv_dataset.shape))
+
+  # Case 3:
   # If dataset and model input are not compatible, we have to (1) reshape
   # the dataset shape a bit more or (2) change the model input layer
 
@@ -207,12 +220,8 @@ def model_to_dataset(cv_model, cv_dataset):
 
   if not is_input_compatible:
 
-    if cv_model.name in image_mins and cv_dataset.shape[:2] < (
-        image_mins[cv_model.name], image_mins[cv_model.name]):
-      cv_dataset.shape = (image_mins[cv_model.name], image_mins[cv_model.name],
-                          3)
-
-    print(' => Model input...', cv_dataset.shape, cv_model.original_input_shape)
+    print(' => Model Input from {} to {}'.format(cv_model.original_input_shape,
+                                                 cv_dataset.shape))
 
     input_tensor = Input(shape=cv_dataset.shape)
     raw_model = load_model(cv_model.name,
@@ -228,14 +237,34 @@ def model_to_dataset(cv_model, cv_dataset):
                                               cv_dataset.classes_shape)
 
   if not is_output_compatible:
-    print(' => Model output...', cv_dataset.classes_shape,
-          cv_model.original_output_shape)
+    print(' => Model Output from {} to {}'.format(
+        cv_model.original_output_shape, cv_dataset.classes_shape))
 
     raw_model = Sequential()
     raw_model.add(cv_model.raw)
     raw_model.add(Dense(cv_dataset.classes_shape[0], activation='softmax'))
 
     cv_model.update_raw_model(raw_model)
+
+  # Some of the cases above are  managed at dataset iterator level, that
+  # is why a callback is passed in. The iterator will reshape the dataset items
+  # using this callback and thus taking into account the cases above as
+  # required by the model.
+
+  def image_preprocessing_callback(image):
+
+    if has_min_shape:
+      image = utils.resize_image(image, min_input_shape)
+
+    if not are_channels_compatible:
+      image = image.reshape(image.shape + (1,))
+      image = np.repeat(image, 3, -1)
+
+    return image
+
+  cv_dataset.set_image_preprocessing(image_preprocessing_callback)
+
+  # Finally, the compatibilized models and dataset are returned
 
   return cv_model, cv_dataset
 

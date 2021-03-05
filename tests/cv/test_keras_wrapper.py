@@ -193,42 +193,45 @@ class TestKerasWrapper(unittest.TestCase):
           print(dataset_name, cv_dataset.shape, cv_dataset.classes_count)
 
   def test_model_to_dataset(self):
+    '''Make sure model_to_dataset is working properly for those models whose
+    source is Keras.
+    '''
+
+    def single_test(model_name, dataset_name, split_name):
+      '''This is an inner function that test model_to_dataset for a single case
+      i.e. a single model against a single dataset
+      '''
+
+      print('\n--- \nModel: {}\nDataset: {}'.format(model_name, dataset_name))
+
+      cv_model = load_model(model_name, 'keras', include_top=True)
+
+      dataset_splits = load_dataset(dataset_name, 'keras')
+      cv_dataset = dataset_splits[split_name]
+
+      cv_model, cv_dataset = model_to_dataset(cv_model, cv_dataset)
+
+      self.assertEqual(cv_dataset.shape[-1], 3)
+      self.assertEqual(
+          utils.compare_shapes(cv_model.original_input_shape, cv_dataset.shape),
+          True)
+      self.assertEqual(cv_model.original_output_shape, cv_dataset.classes_shape)
+
+      n = 5
+      for i, item in enumerate(cv_dataset):
+        self.assertEqual(
+            utils.compare_shapes(cv_dataset.shape, item['image'].shape), True,
+            'Dataset shape {} is not equal to item shape {}'.format(
+                cv_dataset.shape, item['image'].shape))
+        if i == n:
+          break
 
     for task in keras_wrapper.MODELS:
       for model_name in keras_wrapper.MODELS[task]:
         for dataset_name in keras_wrapper.DATASETS[task]:
+          single_test(model_name, dataset_name, 'test')
 
-          print(model_name, dataset_name)
-          cv_model = load_model(model_name, 'keras', include_top=True)
-
-          dataset_splits = load_dataset(dataset_name, 'keras')
-          cv_dataset = dataset_splits['train']
-
-          cv_model, cv_dataset = model_to_dataset(cv_model, cv_dataset)
-
-          # self.assertEqual(cv_dataset.shape[-1], 3)
-          # self.assertEqual(cv_model.original_input_shape, cv_dataset.shape)
-          # self.assertEqual(cv_model.original_output_shape,
-          # cv_dataset.classes_shape)
-
-    # return
-    model_name = 'VGG19'
-    dataset_name = 'mnist'
-    split_name = 'test'
-
-    cv_model = load_model(model_name, 'keras', include_top=True)
-    dataset_splits = load_dataset(dataset_name, 'keras')
-    cv_dataset = dataset_splits[split_name]
-
-    for item in cv_dataset:
-      print('before', item['image'].shape)
-      break
-
-    cv_model, cv_dataset = model_to_dataset(cv_model, cv_dataset)
-
-    for item in cv_dataset:
-      print('after', item['image'].shape)
-      break
+    # single_test('InceptionResNetV2', 'cifar10', 'test')
 
 
 if __name__ == '__main__':
