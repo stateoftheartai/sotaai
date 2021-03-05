@@ -151,9 +151,13 @@ class DatasetIterator():
     return std_item
 
   def create_iterator(self):
-    '''Create an iterator out of the raw dataset split object
+    '''Create an iterator out of the raw dataset split object. This is the
+    Tensorflow iterator being wrapped in our own iterator.
 
     Returns:
       An object containing iterators for the dataset images and labels
     '''
     return iter(self._raw)
+
+  def set_image_preprocessing(self, image_preprocessing_callback):
+    self._image_preprocessing_callback = image_preprocessing_callback
