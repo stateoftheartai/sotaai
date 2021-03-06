@@ -770,3 +770,21 @@ def extract_pixel_types(raw_object, name, source, split_name):
   else:
     indexes, classes = None, None
   return indexes, classes
+
+
+""""
+
+import json
+from sotaai import cv
+
+json_info = {}
+
+# iterar sobre todos los modelos
+for model in cv.MODELS:
+  m = cv.load_model(model)  # CvModel
+  json_entry = utils.generate_json_entry_from_model(m)
+  json_info[model] = json_entry
+
+json.write_to_disk("CvJsonInfo.json", json_info)
+
+"""
