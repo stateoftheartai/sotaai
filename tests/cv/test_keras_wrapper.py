@@ -121,7 +121,7 @@ class TestKerasWrapper(unittest.TestCase):
     source is Keras.
     '''
 
-    def single_test(model_name, dataset_name, split_name):
+    def single_test(model_name, dataset_name):
       '''This is an inner function that test model_to_dataset for a single case
       i.e. a single model against a single dataset
       '''
@@ -131,6 +131,7 @@ class TestKerasWrapper(unittest.TestCase):
       cv_model = load_model(model_name, 'keras')
 
       dataset_splits = load_dataset(dataset_name)
+      split_name = next(iter(dataset_splits.keys()))
       cv_dataset = dataset_splits[split_name]
 
       cv_model, cv_dataset = model_to_dataset(cv_model, cv_dataset)
@@ -187,16 +188,17 @@ class TestKerasWrapper(unittest.TestCase):
     # need to fit in memory). Test dataset by dataset and delete them as they
     # pass tests... or think on how to better test all Tensorflow datasets
 
-    tensorflow_datasets_names = ['beans', 'omniglot']
+    tensorflow_datasets_names = ['beans', 'omniglot', 'binary_alpha_digits']
+    # tensorflow_datasets_names = ['binary_alpha_digits']
     dataset_names = dataset_names + tensorflow_datasets_names
 
     for task in keras_wrapper.MODELS:
       for model_name in keras_wrapper.MODELS[task]:
         for dataset_name in dataset_names:
-          single_test(model_name, dataset_name, 'test')
+          single_test(model_name, dataset_name)
 
     # Uncomment the next line to test a particular case of model_to_dataset:
-    # single_test('ResNet101V2', 'beans', 'test')
+    # single_test('MobileNetV2', 'binary_alpha_digits')
 
 
 if __name__ == '__main__':

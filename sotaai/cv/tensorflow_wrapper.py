@@ -131,6 +131,7 @@ class DatasetIterator():
   def __init__(self, raw) -> None:
     self._raw = raw
     self._iterator = self.create_iterator()
+    self._image_preprocessing_callback = None
 
   def __next__(self):
     '''Get the next item from the dataset in a standardized format.
@@ -143,7 +144,11 @@ class DatasetIterator():
     '''
     item = next(self._iterator)
 
-    std_item = {'image': item['image']}
+    image = item['image']
+    if self._image_preprocessing_callback:
+      image = self._image_preprocessing_callback(image)
+
+    std_item = {'image': image}
 
     if 'label' in item:
       std_item['label'] = item['label']

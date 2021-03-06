@@ -166,12 +166,17 @@ def model_to_dataset(cv_model, cv_dataset):
   # if less than 3 channels
 
   are_channels_compatible = len(cv_dataset.shape) == len(
-      cv_model.original_input_shape)
+      cv_model.original_input_shape
+  ) and cv_dataset.shape[-1] == cv_model.original_input_shape[-1]
 
   if not are_channels_compatible:
+    if len(cv_dataset.shape) == 2:
+      fixed_channels_shape = cv_dataset.shape + (3,)
+    else:
+      fixed_channels_shape = cv_dataset.shape[:2] + (3,)
     print(' => Dataset Channels from {} to {}'.format(cv_dataset.shape,
-                                                      cv_dataset.shape + (3,)))
-    cv_dataset.shape = cv_dataset.shape + (3,)
+                                                      fixed_channels_shape))
+    cv_dataset.shape = fixed_channels_shape
 
   # Case 2:
   # As per Keras documentation, some models require a minimum width and height
@@ -266,7 +271,8 @@ def model_to_dataset(cv_model, cv_dataset):
       image = utils.resize_image(image, min_input_shape)
 
     if not are_channels_compatible:
-      image = image.reshape(image.shape + (1,))
+      if len(image.shape) == 2:
+        image = image.reshape(image.shape + (1,))
       image = np.repeat(image, 3, -1)
 
     return image
