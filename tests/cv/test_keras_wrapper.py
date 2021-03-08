@@ -160,6 +160,7 @@ class TestKerasWrapper(unittest.TestCase):
 
         image_sample = item['image']
         image_sample = image_sample.reshape((1,) + image_sample.shape)
+        print('sample', image_sample.shape)
 
         predictions = cv_model(image_sample)
 
@@ -188,8 +189,8 @@ class TestKerasWrapper(unittest.TestCase):
     # need to fit in memory). Test dataset by dataset and delete them as they
     # pass tests... or think on how to better test all Tensorflow datasets
 
-    tensorflow_datasets_names = ['beans', 'omniglot', 'binary_alpha_digits']
-    # tensorflow_datasets_names = ['binary_alpha_digits']
+    # tensorflow_datasets_names = ['beans', 'omniglot', 'binary_alpha_digits']
+    tensorflow_datasets_names = ['caltech_birds2010']
     dataset_names = dataset_names + tensorflow_datasets_names
 
     for task in keras_wrapper.MODELS:
@@ -198,7 +199,30 @@ class TestKerasWrapper(unittest.TestCase):
           single_test(model_name, dataset_name)
 
     # Uncomment the next line to test a particular case of model_to_dataset:
-    # single_test('MobileNetV2', 'binary_alpha_digits')
+    single_test('VGG16', 'caltech_birds2010')
+
+  # TODO(Hugo)
+  # We still need to finish this example
+  # This is a temporal method to work on a Segmentation example and being able
+  # to estimate for the AA of this task
+  # def test_segmentation(self):
+  # cv_model = load_model('deeplabv3_resnet101', 'torch')
+
+  # dataset_splits = load_dataset('lost_and_found')
+  # # dataset_splits = load_dataset('beans')
+  # split_name = next(iter(dataset_splits.keys()))
+  # cv_dataset = dataset_splits[split_name]
+
+  # # from matplotlib import pyplot as plt
+  # # fig = plt.figure()
+  # n = 5
+  # for i, item in enumerate(cv_dataset):
+  # if i == n:
+  # break
+  # print(i, np.unique(item['label']))
+  # # fig.add_subplot(n, 2, 2 * i + 1).imshow(item['image'])
+  # # fig.add_subplot(n, 2, 2 * i + 2).imshow(item['label'])
+  # # plt.show()
 
 
 if __name__ == '__main__':

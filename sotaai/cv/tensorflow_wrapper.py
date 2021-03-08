@@ -5,8 +5,13 @@
 import tensorflow_datasets as tfds
 import resource
 import os
+
+# As per reported in https://github.com/tensorflow/datasets/issues/1441 the
+# minimum number of open files required by the TF shuffler to work is 1000, this
+# has to be manually set for some environments. Using (high, high) might work
+# for some environments, but not for all of them.
 low, high = resource.getrlimit(resource.RLIMIT_NOFILE)
-resource.setrlimit(resource.RLIMIT_NOFILE, (low, high))
+resource.setrlimit(resource.RLIMIT_NOFILE, (1000, high))
 
 # Prevent Tensorflow to print warning and meta logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -144,7 +149,14 @@ class DatasetIterator():
     '''
     item = next(self._iterator)
 
-    image = item['image']
+    image = None
+    # For Classification
+    if 'image' in item:
+      image = item['image']
+    # For Segmentation
+    elif 'image_left' in item:
+      image = item['image_left']
+
     if self._image_preprocessing_callback:
       image = self._image_preprocessing_callback(image)
 
@@ -152,6 +164,8 @@ class DatasetIterator():
 
     if 'label' in item:
       std_item['label'] = item['label']
+    elif 'segmentation_label' in item:
+      std_item['label'] = item['segmentation_label']
 
     return std_item
 
