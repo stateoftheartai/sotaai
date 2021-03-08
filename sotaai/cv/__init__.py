@@ -6,6 +6,7 @@
 from sotaai.cv import utils
 from sotaai.cv import abstractions
 from sotaai.cv import keras_wrapper
+from sotaai.cv import torch_wrapper
 import importlib
 
 
@@ -119,32 +120,26 @@ def model_to_dataset(cv_model, cv_dataset):
       cv_model
   '''
 
-  print('\nModel ', cv_model.name)
-  print(' Input: ', cv_model.original_input_shape)
-  print(' Output: ', cv_model.original_output_shape)
-  print('\nDataset: ', cv_dataset.name)
-  print(' Shape:   ', cv_dataset.shape)
-  print(' Classes: ', cv_dataset.classes_shape)
+  # print('\nModel ', cv_model.name)
+  # print(' Input: ', cv_model.original_input_shape)
+  # print(' Output: ', cv_model.original_output_shape)
+  # print('\nDataset: ', cv_dataset.name)
+  # print(' Shape:   ', cv_dataset.shape)
+  # print(' Classes: ', cv_dataset.classes)
+  # print(' Classes names', cv_dataset.classes_names)
 
   if cv_model.source == 'keras':
     cv_model, cv_dataset = keras_wrapper.model_to_dataset(cv_model, cv_dataset)
 
   elif cv_model.source == 'torchvision':
-    # valores importantes
-    model_input_type = cv_model.original_input_type
+    torch_wrapper.model_to_dataset(cv_model, cv_dataset)
 
-    model_input_shape = list(cv_model.raw.parameters())[0].shape
-    model_output_shape = list(cv_model.raw.parameters())[-1].shape
-
-    classes = cv_dataset.classes
-    print(cv_dataset.name + 'with model ' + cv_model.name)
-
-    print('Model input type', model_input_type)
-    print('Model input shape', model_input_shape)
-    print('Model output shape', model_output_shape)
-    print('Datasets classes', classes)
-
-    iter_dataset = iter(cv_dataset)
-    print(next(iter_dataset)['image'].shape)
+  # print('\nModel ', cv_model.name)
+  # print(' Input: ', cv_model.original_input_shape)
+  # print(' Output: ', cv_model.original_output_shape)
+  # print('\nDataset: ', cv_dataset.name)
+  # print(' Shape:   ', cv_dataset.shape)
+  # print(' Classes: ', cv_dataset.classes)
+  # print(' Classes names', cv_dataset.classes_names)
 
   return cv_model, cv_dataset

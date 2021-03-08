@@ -4,11 +4,15 @@
 # Copyright: Stateoftheart AI PBC 2020.
 '''Module used to interface with Torchvision's models and datasets.'''
 
+from sotaai.cv import utils
 from torchvision import models
 from torchvision import datasets as dset
 from re import search
+from PIL import Image
 import os
+# import torch.nn as nn
 import numpy as np
+import torchvision.transforms as transforms
 
 DATASETS = {
     'classification': [
@@ -320,6 +324,7 @@ class DatasetIterator():
   def __init__(self, raw) -> None:
     self._raw = raw
     self._iterator = self.create_iterator()
+    self._image_preprocessing_callback = None
 
   def __next__(self):
     '''Get the next item from the dataset in a standardized format.
@@ -331,11 +336,17 @@ class DatasetIterator():
       image = np.array(datapoint[0])
       label = datapoint[1].numpy() if search('Tensor', str(type(
           datapoint[1]))) else datapoint[1]
+      img = image[0]
+      if self._image_preprocessing_callback:
+        img = self._image_preprocessing_callback(image[0])
       # image, label = self._iterator.next()
-      return {'image': image[0], 'label': label[0]}
+      return {'image': img, 'label': label[0]}
     else:
       image = np.array(datapoint[0])
       label = datapoint[1]
+
+      if self._image_preprocessing_callback:
+        image = self._image_preprocessing_callback(image)
 
       return {'image': image, 'label': label}
 
@@ -346,3 +357,76 @@ class DatasetIterator():
       An object containing iterators for the dataset images and labels
     '''
     return iter(self._raw)
+
+  def set_image_preprocessing(self, image_preprocessing_callback):
+    self._image_preprocessing_callback = image_preprocessing_callback
+
+
+def model_to_dataset(cv_model, cv_dataset):
+
+  are_channels_compatible = len(cv_dataset.shape) == len(
+      cv_model.original_input_shape)
+
+  w, h, c = cv_dataset.shape
+  print(c)
+
+  model_input = cv_model.original_input_shape
+
+  model_input_channels = model_input[1]
+
+  is_input_compatible = utils.compare_shapes(cv_model.original_input_shape,
+                                             cv_dataset.shape)
+
+  if not are_channels_compatible:
+
+    def preprocess_image(image):
+      preprocess = transforms.Compose([transforms.ToTensor()])
+      # tensor = torch.from_numpy(image)
+      # print('tensor')
+      # print(tensor.shape)
+
+      img = Image.fromarray(image)
+      input_tensor = preprocess(img)
+      standarized_element = input_tensor.unsqueeze(0)
+      standarized_element = standarized_element.expand(1, model_input_channels,
+                                                       w, h)
+      return standarized_element
+
+    cv_dataset.set_image_preprocessing(preprocess_image)
+    cv_dataset.shape = cv_model.original_input_shape
+
+  is_output_compatible = utils.compare_shapes(cv_model.original_output_shape,
+                                              cv_dataset.classes_shape)
+
+  # Case 2:
+  # If output is not compatible with dataset classes, we have to change the
+  # model output layer
+  if not is_output_compatible:
+    classes = cv_dataset.classes_shape
+    num_classes = classes[0]
+    if hasattr(list(cv_model.raw.children())[-1], '__getitem__'):
+      list(cv_model.raw.children())[-1][-1].out_features = num_classes
+    else:
+      list(cv_model.raw.children())[-1].out_features = num_classes
+
+  # Case 3:
+  # If dataset and model input are not compatible, we have to (1) reshape
+  # the dataset shape a bit more or (2) change the model input layer
+
+  # is_input_compatible = utils.compare_shapes(cv_model.original_input_shape,
+  #                                            cv_dataset.shape)
+
+  if not is_input_compatible:
+    classes = cv_dataset.classes_shape
+    num_classes = classes[0]
+    if hasattr(list(cv_model.raw.children())[0], '__getitem__'):
+      list(cv_model.raw.children())[0][0].in_channels = model_input_channels
+      # cv_model.raw.features[0].kernel_size = (28, 28)
+      list(cv_model.raw.children())[0][0].stride = (1, 1)
+      # cv_model.raw.features[0].padding = (1, 1)
+    else:
+      list(cv_model.raw.children())[0].in_channels = model_input_channels
+      # cv_model.raw.features[0].kernel_size = (28, 28)
+      list(cv_model.raw.children())[0].stride = (1, 1)
+      # cv_model.raw.features[0].padding = (1, 1)
+  return cv_model, cv_dataset
