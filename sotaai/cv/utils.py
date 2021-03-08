@@ -668,7 +668,6 @@ def get_shape_from_dataset(dataset, name, split_name):
     shapes = np.array(shapes)
 
     h, w, c = None, None, None
-
     # Check whether shapes are different
     if source == 'mmf':
       if len(set(shapes[:, 0])) == 1 and len(set(shapes[:, 1])) == 1:
@@ -676,6 +675,9 @@ def get_shape_from_dataset(dataset, name, split_name):
         w = shapes[0][1]
 
     if source == 'torchvision':
+      c = shapes[0][0]
+      h = shapes[0][1]
+      w = shapes[0][2]
       if len(set(shapes[:, 1])) == 1 and len(set(shapes[:, 2])) == 1:
         c = shapes[0][0]
         h = shapes[0][1]

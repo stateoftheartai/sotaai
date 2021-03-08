@@ -420,13 +420,15 @@ def model_to_dataset(cv_model, cv_dataset):
     classes = cv_dataset.classes_shape
     num_classes = classes[0]
     if hasattr(list(cv_model.raw.children())[0], '__getitem__'):
-      list(cv_model.raw.children())[0][0].in_channels = model_input_channels
-      # cv_model.raw.features[0].kernel_size = (28, 28)
+      # list(cv_model.raw.children())[0][0].in_channels = model_input_channels
+      # list(cv_model.raw.children())[0][0].kernel_size = (1, 1)
       list(cv_model.raw.children())[0][0].stride = (1, 1)
-      # cv_model.raw.features[0].padding = (1, 1)
+      # list(cv_model.raw.children())[0][0].padding = (1, 1)
     else:
-      list(cv_model.raw.children())[0].in_channels = model_input_channels
-      # cv_model.raw.features[0].kernel_size = (28, 28)
+      # list(cv_model.raw.children())[0].in_channels = model_input_channels
+      # list(cv_model.raw.children())[0].kernel_size = (1, 1)
       list(cv_model.raw.children())[0].stride = (1, 1)
-      # cv_model.raw.features[0].padding = (1, 1)
+      # list(cv_model.raw.children())[0].padding = (1, 1)
+
+  # print(cv_model.raw.eval())
   return cv_model, cv_dataset

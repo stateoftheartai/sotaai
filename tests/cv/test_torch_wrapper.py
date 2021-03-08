@@ -24,7 +24,7 @@ class TestTorchWrapper(unittest.TestCase):
   #     'QMNIST', 'SEMEION', 'Flickr30k', 'VOCSegmentation/2007', 'SBU'
   # ]
 
-  test_datasets = ['QMNIST', 'SEMEION', 'SVHN', 'USPS']
+  test_datasets = ['QMNIST', 'SEMEION', 'SVHN']
   test_models = [
       'alexnet', 'densenet161', 'mnasnet0_5', 'mnasnet0_75', 'mnasnet1_0',
       'mnasnet1_3', 'mobilenet_v2', 'resnet18', 'resnet34', 'resnext101_32x8d',
@@ -162,15 +162,17 @@ class TestTorchWrapper(unittest.TestCase):
     print(probabilities)
 
   def test_model_to_dataset(self):
-    # transform = transforms.Compose([transforms.ToTensor()])
-    # cv_model = load_model('mnasnet0_75', source='torch')
-    # cv_dataset = load_dataset('QMNIST')
+    cv_model = load_model('alexnet', source='torch')
+    cv_dataset = load_dataset('VOCSegmentation/2007')
+    print(cv_dataset['train'].shape)
 
-    # model, dataset = model_to_dataset(cv_model, cv_dataset['test'])
+    model, dataset = model_to_dataset(cv_model, cv_dataset['test'])
 
-    # iter_dataset = iter(dataset)
-    # datapoint = next(iter_dataset)
-    # output = model(datapoint['image'])
+    iter_dataset = iter(dataset)
+    datapoint = next(iter_dataset)
+    print(datapoint['image'].shape)
+    output = model(datapoint['image'])
+    print(output)
     # qmnist_to_alexnet(cv_model, cv_dataset['test'])
 
     # for task in torch_wrapper.MODELS:
@@ -184,19 +186,18 @@ class TestTorchWrapper(unittest.TestCase):
 
     #     print('=' * 100)
 
-    for model in self.test_models:
-      cv_model = load_model(model, source='torch')
-      for dataset in self.test_datasets:
-        cv_dataset = load_dataset(dataset)
-        print(dataset + ' with model ' + model)
-        for split_name in cv_dataset:
-          model, dataset = model_to_dataset(cv_model, cv_dataset[split_name])
-          iter_dataset = iter(dataset)
-          datapoint = next(iter_dataset)
-          if split_name == 'test':
-            output = model(datapoint['image'])
-            print(output)
-        print('=' * 100)
+    # for model in self.test_models:
+    #   cv_model = load_model(model, source='torch')
+    #   for dataset in self.test_datasets:
+    #     cv_dataset = load_dataset(dataset)
+    #     for split_name in cv_dataset:
+    #       model, dataset = model_to_dataset(cv_model, cv_dataset[split_name])
+    #       iter_dataset = iter(dataset)
+    #       datapoint = next(iter_dataset)
+    #       if split_name == 'test':
+    #         print(model.raw.eval())
+    #         output = model(datapoint['image'])
+    #     print('=' * 100)
 
 
 if __name__ == '__main__':
