@@ -33,10 +33,16 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-Then, install development dependencies:
+Install development dependencies:
 
 ```
 pip install -r requirements.txt
+```
+
+Install the library alongside its dependencies:
+
+```
+pip install -e .
 ```
 
 Install pre-commit hooks:

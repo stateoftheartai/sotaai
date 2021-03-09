@@ -121,16 +121,19 @@ class TestKerasWrapper(unittest.TestCase):
     source is Keras.
     '''
 
-    def single_test(model_name, dataset_name, split_name):
+    def single_test(model_name, dataset_name):
       '''This is an inner function that test model_to_dataset for a single case
       i.e. a single model against a single dataset
       '''
 
-      print('\n--- \nModel: {}\nDataset: {}'.format(model_name, dataset_name))
+      print('\n---')
 
-      cv_model = load_model(model_name, 'keras')
+      # As per Keras docs, it is important to set include_top to
+      # false to be able to modify model input/output
+      cv_model = load_model(model_name, 'keras', include_top=False)
 
       dataset_splits = load_dataset(dataset_name)
+      split_name = next(iter(dataset_splits.keys()))
       cv_dataset = dataset_splits[split_name]
 
       cv_model, cv_dataset = model_to_dataset(cv_model, cv_dataset)
@@ -149,8 +152,14 @@ class TestKerasWrapper(unittest.TestCase):
       # cv_dataset.shape, and then assert predictions shape (model output)
       # matches the expected classes
 
+      print('Testing model_to_dataset predictions...')
+
       n = 3
+      sample = []
       for i, item in enumerate(cv_dataset):
+
+        if i == n:
+          break
 
         self.assertEqual(
             utils.compare_shapes(cv_dataset.shape, item['image'].shape), True,
@@ -158,22 +167,19 @@ class TestKerasWrapper(unittest.TestCase):
                 cv_dataset.shape, item['image'].shape))
 
         image_sample = item['image']
-        image_sample = image_sample.reshape((1,) + image_sample.shape)
+        sample.append(image_sample)
 
-        predictions = cv_model(image_sample)
+      sample = np.array(sample)
+      predictions = cv_model(sample)
 
-        predictions_shape = (1,) + cv_dataset.classes_shape
-        self.assertEqual(
-            utils.compare_shapes(predictions_shape, predictions.shape), True,
-            'Prediction shape {} is not equal to prediction shape {}'.format(
-                predictions_shape, predictions.shape))
+      expected_predictions_shape = (n,) + cv_dataset.classes_shape
+      self.assertEqual(
+          utils.compare_shapes(expected_predictions_shape, predictions.shape),
+          True, 'Expected shape {} is not equal to prediction shape {}'.format(
+              expected_predictions_shape, predictions.shape))
 
-        if i == 0:
-          print(' => Prediction matched dimension: {}'.format(
-              predictions.shape))
-
-        if i == n:
-          break
+      print(' => Sample shape {}, Prediction shape {}'.format(
+          sample.shape, predictions.shape))
 
     # Test all Keras models against all Keras datasets and a set of
     # Tensorflow datasets (beans and omniglot as of now)
@@ -187,16 +193,39 @@ class TestKerasWrapper(unittest.TestCase):
     # need to fit in memory). Test dataset by dataset and delete them as they
     # pass tests... or think on how to better test all Tensorflow datasets
 
-    tensorflow_datasets_names = ['beans', 'omniglot']
+    tensorflow_datasets_names = ['beans', 'omniglot', 'binary_alpha_digits']
     dataset_names = dataset_names + tensorflow_datasets_names
 
     for task in keras_wrapper.MODELS:
       for model_name in keras_wrapper.MODELS[task]:
         for dataset_name in dataset_names:
-          single_test(model_name, dataset_name, 'test')
+          single_test(model_name, dataset_name)
 
     # Uncomment the next line to test a particular case of model_to_dataset:
-    # single_test('ResNet101V2', 'beans', 'test')
+    # single_test('model-name', 'dataset-name')
+
+  # TODO(Hugo)
+  # We still need to finish this example
+  # This is a temporal method to work on a Segmentation example and being able
+  # to estimate for the AA of this task
+  # def test_segmentation(self):
+  # cv_model = load_model('deeplabv3_resnet101', 'torch')
+
+  # dataset_splits = load_dataset('lost_and_found')
+  # # dataset_splits = load_dataset('beans')
+  # split_name = next(iter(dataset_splits.keys()))
+  # cv_dataset = dataset_splits[split_name]
+
+  # # from matplotlib import pyplot as plt
+  # # fig = plt.figure()
+  # n = 5
+  # for i, item in enumerate(cv_dataset):
+  # if i == n:
+  # break
+  # print(i, np.unique(item['label']))
+  # # fig.add_subplot(n, 2, 2 * i + 1).imshow(item['image'])
+  # # fig.add_subplot(n, 2, 2 * i + 2).imshow(item['label'])
+  # # plt.show()
 
 
 if __name__ == '__main__':

@@ -797,6 +797,12 @@ def extract_pixel_types(raw_object, name, source, split_name):
         'tv/monitor'
     ]
     indexes = list(range(21))
+  elif source == 'tensorflow':
+    # TODO(Hugo)
+    # Figure out how to obtain these to be able to code model_to_dataset for
+    # segmentation task
+    indexes = None
+    classes = None
   elif source == 'fastai':
     obj = getattr(raw_object, split_name + '_ds')
     classes = obj.y.classes
