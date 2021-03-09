@@ -367,9 +367,6 @@ def model_to_dataset(cv_model, cv_dataset):
   are_channels_compatible = len(cv_dataset.shape) == len(
       cv_model.original_input_shape)
 
-  w, h, c = cv_dataset.shape
-  print(c)
-
   model_input = cv_model.original_input_shape
 
   model_input_channels = model_input[1]
@@ -380,15 +377,14 @@ def model_to_dataset(cv_model, cv_dataset):
   if not are_channels_compatible:
 
     def preprocess_image(image):
-      preprocess = transforms.Compose([transforms.ToTensor()])
-      # tensor = torch.from_numpy(image)
-      # print('tensor')
-      # print(tensor.shape)
-
+      preprocess = transforms.Compose(
+          [transforms.ToTensor(), transforms.Resize(32)])
       img = Image.fromarray(image)
       input_tensor = preprocess(img)
       standarized_element = input_tensor.unsqueeze(0)
-      standarized_element = standarized_element.expand(1, model_input_channels,
+      b, c, w, h = standarized_element.shape
+      print(f'b {b} c {c}')
+      standarized_element = standarized_element.expand(2, model_input_channels,
                                                        w, h)
       return standarized_element
 
@@ -421,12 +417,12 @@ def model_to_dataset(cv_model, cv_dataset):
     num_classes = classes[0]
     if hasattr(list(cv_model.raw.children())[0], '__getitem__'):
       # list(cv_model.raw.children())[0][0].in_channels = model_input_channels
-      # list(cv_model.raw.children())[0][0].kernel_size = (1, 1)
+      # list(cv_model.raw.children())[0][0].kernel_size = (28, 28)
       list(cv_model.raw.children())[0][0].stride = (1, 1)
       # list(cv_model.raw.children())[0][0].padding = (1, 1)
     else:
       # list(cv_model.raw.children())[0].in_channels = model_input_channels
-      # list(cv_model.raw.children())[0].kernel_size = (1, 1)
+      # list(cv_model.raw.children())[0].kernel_size = (28, 28)
       list(cv_model.raw.children())[0].stride = (1, 1)
       # list(cv_model.raw.children())[0].padding = (1, 1)
 

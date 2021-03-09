@@ -37,7 +37,7 @@ DATASETS = {
         'caltech_birds2011',
         'cars196',
         'cats_vs_dogs',
-        'celeb_a',
+        'celeb_a',  #hasta aqui por ahora
         'celeb_a_hq',  # manual download
         'cifar10_1',
         'cifar10_corrupted',
