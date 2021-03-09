@@ -7,7 +7,8 @@ Keras https://keras.io/ wrapper module
 
 from sotaai.cv import utils
 import tensorflow.keras as keras
-from tensorflow.keras.layers import Input
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Input, Dense, GlobalAveragePooling2D
 import numpy as np
 
 DATASETS = {'classification': ['mnist', 'cifar10', 'cifar100', 'fashion_mnist']}
@@ -106,6 +107,7 @@ def load_model(model_name,
                     dropout=dropout,
                     input_tensor=input_tensor,
                     input_shape=input_shape,
+                    include_top=include_top,
                     pooling=pooling,
                     classes=classes)
   elif model_name == 'MobileNetV2':
@@ -113,12 +115,14 @@ def load_model(model_name,
                     alpha=alpha,
                     input_tensor=input_tensor,
                     input_shape=input_shape,
+                    include_top=include_top,
                     pooling=pooling,
                     classes=classes)
   else:
     model = trainer(weights=weights,
                     input_tensor=input_tensor,
                     input_shape=input_shape,
+                    include_top=include_top,
                     pooling=pooling,
                     classes=classes,
                     classifier_activation=classifier_activation)
@@ -159,7 +163,8 @@ def model_to_dataset(cv_model, cv_dataset):
       cv_model
   '''
 
-  print('Adjusting...')
+  print('Making compatible {} with {}...'.format(cv_model.name,
+                                                 cv_dataset.name))
 
   # Case 1:
   # All Keras models require 3 channels, thus we have to reshape the dataset
@@ -195,6 +200,7 @@ def model_to_dataset(cv_model, cv_dataset):
       'ResNet101V2': 32,
       'ResNet152V2': 32,
       'MobileNet': 32,
+      'MobileNetV2': 32,
       'DenseNet121': 32,
       'DenseNet169': 32,
       'DenseNet201': 32,
@@ -207,7 +213,13 @@ def model_to_dataset(cv_model, cv_dataset):
   if cv_model.name in image_mins:
     min_input_shape = (image_mins[cv_model.name], image_mins[cv_model.name])
 
-  has_min_shape = min_input_shape and cv_dataset.shape[:2] < min_input_shape
+  # TODO(Hugo)
+  # When datasets have a None width/height is not possible to globally know
+  # whether it matches the min_input_shape since this has to be done per
+  # image. We have to take this into account in the image_preprocessing_callback
+  has_min_shape = False
+  if cv_dataset.shape[:2] != (None, None):
+    has_min_shape = min_input_shape and cv_dataset.shape[:2] < min_input_shape
 
   if has_min_shape:
     original_dataset_shape = cv_dataset.shape
@@ -228,11 +240,16 @@ def model_to_dataset(cv_model, cv_dataset):
                                                  cv_dataset.shape))
 
     input_tensor = Input(shape=cv_dataset.shape)
-    raw_model = load_model(cv_model.name, input_tensor=input_tensor)
+    raw_model = load_model(
+        cv_model.name,
+        input_tensor=input_tensor,
+        # As per Keras docs, it is important to set include_top to
+        # false to be able to modify model input/output
+        include_top=False)
 
     cv_model.update_raw_model(raw_model)
 
-  # Case 3:
+  # Case 4:
   # If output is not compatible with dataset classes, we have to change the
   # model output layer
   is_output_compatible = utils.compare_shapes(cv_model.original_output_shape,
@@ -242,21 +259,29 @@ def model_to_dataset(cv_model, cv_dataset):
     print(' => Model Output from {} to {}'.format(
         cv_model.original_output_shape, cv_dataset.classes_shape))
 
-    # Some models were able to be modified by adding a new layer at the end,
-    # however it does not work for all of them e.g. ResNet50. Thus it is better
-    # to use the classes parameter to modify the output.
-
-    # Apprach 1: Adding a new layer at the end
-    # raw_model = Sequential()
-    # raw_model.add(cv_model.raw)
-    # raw_model.add(Dense(cv_dataset.classes_shape[0], activation='softmax'))
-
-    # Approach 2: Using classes parameter
-    input_tensor = Input(shape=cv_dataset.shape)
-    raw_model = load_model(cv_model.name,
-                           input_tensor=input_tensor,
-                           include_top=True,
-                           classes=cv_dataset.classes_shape[0])
+    # TODO(Hugo)
+    # Further review this.
+    # As read in some Keras blogs for Transfer Learning, there are 3 possible
+    # ways to change Keras output model to a different number of classes:
+    # - Use classes parameter, however this only work when include_top=true
+    #  which requires a fixed input shape which is not usually the case.
+    #  Therefore, this way was discarded.
+    # - Use Keras function API to add a new Flatten layer after the
+    # last pooling layer in the raw model, then define a new classifier model
+    # with a Dense fully connected layer and an output layer that will predict
+    # the probability for dataset classes. This one did not work, it has issues
+    # when model input shape is dynamic e.g. (None,None,3)
+    # - Add an Average Pooling Layer at the end, then define a classifier with
+    # a Dense fully connected layer and an output layer that will predict the
+    # probability for the dataset classes. This is the one Keras uses in
+    # their models when include_top=true and classes are given. This is the one
+    # that worked well and the method used as of now to change model output,
+    # however still not sure if it is the best way.
+    avg_pooling_layer = GlobalAveragePooling2D(name='avg_pool')(
+        cv_model.raw.layers[-1].output)
+    output = Dense(cv_dataset.classes_shape[0],
+                   activation='softmax')(avg_pooling_layer)
+    raw_model = Model(inputs=cv_model.raw.inputs, outputs=output)
 
     cv_model.update_raw_model(raw_model)
 
