@@ -8,9 +8,7 @@ import os
 import unittest
 import numpy as np
 import inspect
-from tensorflow.python.keras.engine.functional import Functional  # pylint: disable=no-name-in-module
-from tensorflow.keras.layers import Input, Dense
-from tensorflow.keras import Sequential
+from tensorflow.python.keras.engine.functional import Functional
 from sotaai.cv import load_dataset, load_model, keras_wrapper, utils, model_to_dataset
 from sotaai.cv.abstractions import CvDataset, CvModel
 from sotaai.cv import metadata
@@ -118,89 +116,116 @@ class TestKerasWrapper(unittest.TestCase):
         self.assertEqual(cv_model.source, 'keras')
         self.assertEqual(cv_model.original_input_type, 'numpy.ndarray')
 
-  # @unittest.SkipTest
-  def test_model_call(self):
-    '''Make sure we can call a model with a dataset sample to get a prediction
-      As of now, we only test this function using ResNet with MNIST and
-      adjusting the dataset and model to be compatible with each other
+  def test_model_to_dataset(self):
+    '''Make sure model_to_dataset is working properly for those models whose
+    source is Keras.
     '''
 
-    # Modify ResNet model input/output so as to be compatible with MNIST
-    input_tensor = Input(shape=(28, 28, 3))
-    cv_model = load_model('ResNet101V2',
-                          'keras',
-                          input_tensor=input_tensor,
-                          include_top=False)
-    model = Sequential()
-    model.add(cv_model.raw)
-    model.add(Dense(10, activation='softmax'))
+    def single_test(model_name, dataset_name):
+      '''This is an inner function that test model_to_dataset for a single case
+      i.e. a single model against a single dataset
+      '''
 
-    cv_model.update(model)
+      print('\n---')
 
-    self.assertEqual(cv_model.raw.layers[0].input_shape, (None, 28, 28, 3))
-    self.assertEqual(cv_model.raw.layers[len(model.layers) - 1].output_shape,
-                     (None, 10))
+      # As per Keras docs, it is important to set include_top to
+      # false to be able to modify model input/output
+      cv_model = load_model(model_name, 'keras', include_top=False)
 
-    dataset_splits = load_dataset('mnist')
-    cv_dataset = dataset_splits['test']
+      dataset_splits = load_dataset(dataset_name)
+      split_name = next(iter(dataset_splits.keys()))
+      cv_dataset = dataset_splits[split_name]
 
-    # Only get predictions over the first n datapoints
-    n = 5
+      cv_model, cv_dataset = model_to_dataset(cv_model, cv_dataset)
 
-    for i, datapoint in enumerate(cv_dataset):
+      # Assert model channels (for all Keras models are to be 3), assert model
+      # input shape and dataset shape are now compatible, and assert model
+      # output shape is now compatible with the dataset classes
 
-      # Reshape MNIST data to be a single datapoint in RGB
-      x = datapoint['image']
-      x = x.reshape((28, 28, 1))
-      x = np.repeat(x, 3, -1)
-      x = x.reshape((1,) + x.shape)
+      self.assertEqual(cv_dataset.shape[-1], 3)
+      self.assertEqual(
+          utils.compare_shapes(cv_model.original_input_shape, cv_dataset.shape),
+          True)
+      self.assertEqual(cv_model.original_output_shape, cv_dataset.classes_shape)
 
-      self.assertEqual(x.shape, (1, 28, 28, 3))
+      # For some image samples, assert dataset sample shapes matched the
+      # cv_dataset.shape, and then assert predictions shape (model output)
+      # matches the expected classes
 
-      # Test predictions
-      predictions = cv_model(x)
+      print('Testing model_to_dataset predictions...')
 
-      self.assertEqual(predictions.shape, (1, 10))
+      n = 3
+      sample = []
+      for i, item in enumerate(cv_dataset):
 
-      if i == n:
-        break
+        if i == n:
+          break
 
-  def test_print(self):
+        self.assertEqual(
+            utils.compare_shapes(cv_dataset.shape, item['image'].shape), True,
+            'Dataset shape {} is not equal to item shape {}'.format(
+                cv_dataset.shape, item['image'].shape))
+
+        image_sample = item['image']
+        sample.append(image_sample)
+
+      sample = np.array(sample)
+      predictions = cv_model(sample)
+
+      expected_predictions_shape = (n,) + cv_dataset.classes_shape
+      self.assertEqual(
+          utils.compare_shapes(expected_predictions_shape, predictions.shape),
+          True, 'Expected shape {} is not equal to prediction shape {}'.format(
+              expected_predictions_shape, predictions.shape))
+
+      print(' => Sample shape {}, Prediction shape {}'.format(
+          sample.shape, predictions.shape))
+
+    # Test all Keras models against all Keras datasets and a set of
+    # Tensorflow datasets (beans and omniglot as of now)
+    dataset_names = []
+    for task in keras_wrapper.DATASETS:
+      for dataset_name in keras_wrapper.DATASETS[task]:
+        dataset_names.append(dataset_name)
+
+    # TODO(Hugo)
+    # Manually test all Tensorflow datasets (the issue here is that TF datasets
+    # need to fit in memory). Test dataset by dataset and delete them as they
+    # pass tests... or think on how to better test all Tensorflow datasets
+
+    tensorflow_datasets_names = ['beans', 'omniglot', 'binary_alpha_digits']
+    dataset_names = dataset_names + tensorflow_datasets_names
 
     for task in keras_wrapper.MODELS:
       for model_name in keras_wrapper.MODELS[task]:
-        cv_model = load_model(model_name, 'keras', include_top=True)
-        print(model_name, cv_model.original_input_shape,
-              cv_model.original_output_shape)
+        for dataset_name in dataset_names:
+          single_test(model_name, dataset_name)
 
-    print('')
+    # Uncomment the next line to test a particular case of model_to_dataset:
+    # single_test('model-name', 'dataset-name')
 
-    for task in keras_wrapper.DATASETS:
-      for dataset_name in keras_wrapper.DATASETS[task]:
-        dataset_splits = load_dataset(dataset_name, 'keras')
-        for split_name in dataset_splits:
-          cv_dataset = dataset_splits[split_name]
-          print(dataset_name, cv_dataset.shape, cv_dataset.classes_count)
+  # TODO(Hugo)
+  # We still need to finish this example
+  # This is a temporal method to work on a Segmentation example and being able
+  # to estimate for the AA of this task
+  # def test_segmentation(self):
+  # cv_model = load_model('deeplabv3_resnet101', 'torch')
 
-  def test_model_to_dataset(self):
+  # dataset_splits = load_dataset('lost_and_found')
+  # # dataset_splits = load_dataset('beans')
+  # split_name = next(iter(dataset_splits.keys()))
+  # cv_dataset = dataset_splits[split_name]
 
-    model_name = 'ResNet101V2'
-    dataset_name = 'mnist'
-    split_name = 'test'
-
-    cv_model = load_model(model_name, 'keras', include_top=True)
-    dataset_splits = load_dataset(dataset_name, 'keras')
-    cv_dataset = dataset_splits[split_name]
-
-    for item in cv_dataset:
-      print('before', item['image'].shape)
-      break
-
-    cv_model, cv_dataset = model_to_dataset(cv_model, cv_dataset)
-
-    for item in cv_dataset:
-      print('after', item['image'].shape)
-      break
+  # # from matplotlib import pyplot as plt
+  # # fig = plt.figure()
+  # n = 5
+  # for i, item in enumerate(cv_dataset):
+  # if i == n:
+  # break
+  # print(i, np.unique(item['label']))
+  # # fig.add_subplot(n, 2, 2 * i + 1).imshow(item['image'])
+  # # fig.add_subplot(n, 2, 2 * i + 2).imshow(item['label'])
+  # # plt.show()
 
 
 if __name__ == '__main__':

@@ -120,13 +120,13 @@ def model_to_dataset(cv_model, cv_dataset):
       cv_model
   '''
 
-  print('\nModel ', cv_model.name)
-  print(' Input: ', cv_model.original_input_shape)
-  print(' Output: ', cv_model.original_output_shape)
-  print('\nDataset: ', cv_dataset.name)
-  print(' Shape:   ', cv_dataset.shape)
-  print(' Classes: ', cv_dataset.classes)
-  print(' Classes names', cv_dataset.classes_names)
+  # Uncomment following prints to test model_to_dataset input and outputs...
+  # print('\nModel ', cv_model.name)
+  # print(' Input: ', cv_model.original_input_shape)
+  # print(' Output: ', cv_model.original_output_shape)
+  # print('Dataset: ', cv_dataset.name)
+  # print(' Shape:   ', cv_dataset.shape)
+  # print(' Classes: ', cv_dataset.classes_shape)
 
   if cv_model.source == 'keras':
     cv_model, cv_dataset = keras_wrapper.model_to_dataset(cv_model, cv_dataset)
@@ -141,5 +141,11 @@ def model_to_dataset(cv_model, cv_dataset):
   # print(' Shape:   ', cv_dataset.shape)
   # print(' Classes: ', cv_dataset.classes)
   # print(' Classes names', cv_dataset.classes_names)
+  # print('\nModel ', cv_model.name)
+  # print(' Input: ', cv_model.original_input_shape)
+  # print(' Output: ', cv_model.original_output_shape)
+  # print('Dataset: ', cv_dataset.name)
+  # print(' Shape:   ', cv_dataset.shape)
+  # print(' Classes: ', cv_dataset.classes_shape)
 
   return cv_model, cv_dataset

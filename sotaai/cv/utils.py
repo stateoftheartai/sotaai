@@ -11,6 +11,7 @@ import tensorflow_datasets as tfds
 import time
 import os
 from re import search
+import skimage.transform as st
 
 # Prevent Tensorflow to print warning and meta logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -410,7 +411,11 @@ def get_input_shape(model) -> str:
   '''
   source = get_source_from_model(model)
   if source == 'keras':
-    return model.layers[0].input_shape[0][1:]
+    input_shape = model.layers[0].input_shape
+    if isinstance(input_shape, list):
+      return input_shape[0][1:]
+    else:
+      return input_shape[1:]
   if source == 'torchvision':
     return list(model.parameters())[0].shape
   else:
@@ -429,8 +434,20 @@ def get_output_shape(model) -> str:
   '''
   source = get_source_from_model(model)
   if source == 'keras':
-    return model.layers[-1].output_shape[1:]
-  if source == 'torchvision':
+    # TODO(Hugo)
+    # We need to further review this, output shape depends on whether the model
+    # is pretrained or not, if pretrained the output_shape match the dataset
+    # classes, but if not pretrained the output_shape can be anything in the
+    # last layer. We need to check how to better use this or whether to define
+    # new variables (this is important since model_to_dataset depends on it)
+    # As of now, we just take the last item of the last layer shape e.g. with
+    # a model pretrained in cifar10 the last layer is (None,10) but we return
+    # (10,) which means the output_shape is a vector with 10 entries.
+    last_layer_shape = model.layers[-1].output_shape
+    last_item = last_layer_shape[-1]
+    output_shape = (last_item,)
+    return output_shape
+  elif source == 'torchvision':
     return list(model.parameters())[-1].shape
   else:
     raise NotImplementedError
@@ -771,10 +788,10 @@ def get_classes_from_dataset(raw_object, source, name, split_name):
     _, ds_info = tfds.load(name, with_info=True)
     classes = None
     classes_names = None
-
     if 'label' in ds_info.features:
       n_classes = ds_info.features['label'].num_classes
       classes = range(n_classes)
+      classes_shape = (len(classes),)
 
   elif source == 'fastai':
     obj = getattr(raw_object[split_name], split_name + '_ds')
@@ -810,6 +827,12 @@ def extract_pixel_types(raw_object, name, source, split_name):
         'tv/monitor'
     ]
     indexes = list(range(21))
+  elif source == 'tensorflow':
+    # TODO(Hugo)
+    # Figure out how to obtain these to be able to code model_to_dataset for
+    # segmentation task
+    indexes = None
+    classes = None
   elif source == 'fastai':
     obj = getattr(raw_object, split_name + '_ds')
     classes = obj.y.classes
@@ -841,3 +864,19 @@ def compare_shapes(ground_truth_shape, shape):
     if matched_items == len(ground_truth_shape):
       equal = True
   return equal
+
+
+def resize_image(im, shape):
+  '''Resize an image
+
+  As of now this function uses scikit-image but implementation can be changed in
+  the future to use another library or our own implementation
+
+  Args:
+    image: numpy array of the image to be resized
+    shape: the new size (shape) as a tuple
+
+  Returns:
+    The numpy array of the image resized
+  '''
+  return st.resize(im, shape)
