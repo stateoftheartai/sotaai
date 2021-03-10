@@ -14,7 +14,6 @@ from sotaai.cv.abstractions import CvDataset, CvModel
 from sotaai.cv import metadata
 
 from torchvision import models
-from PIL import Image
 import matplotlib.pyplot as plt
 import torch
 import torchvision.transforms as T
@@ -238,14 +237,27 @@ class TestKerasWrapper(unittest.TestCase):
   # This is a temporal method to work on a Segmentation example and being able
   # to estimate for the AA of this task
   def test_segmentation(self):
+
+    dataset_splits = load_dataset('cifar100')
+    split_name = next(iter(dataset_splits.keys()))
+    cv_dataset = dataset_splits[split_name]
+
+    img = None
+    for item in cv_dataset:
+      # plt.imshow(item['image'])
+      # plt.show()
+      img = item['image']
+      break
+
     fcn = models.segmentation.fcn_resnet101(pretrained=True).eval()
 
-    img = Image.open('/Users/hugo/Desktop/bird.png')
+    # img = Image.open('/Users/hugo/Desktop/bird.png')
     # plt.imshow(img)
     # plt.show()
 
     # Apply the transformations needed
     trf = T.Compose([
+        T.ToPILImage(),
         T.Resize(256),
         T.CenterCrop(224),
         T.ToTensor(),
@@ -253,11 +265,13 @@ class TestKerasWrapper(unittest.TestCase):
     ])
     inp = trf(img).unsqueeze(0)
 
+    print(inp.shape, type(inp))
+
     # Pass the input through the net
     out = fcn(inp)['out']
     print(out.shape)
 
-    om = torch.argmax(out.squeeze(), dim=0).detach().cpu().numpy()
+    om = torch.argmax(out.squeeze(), dim=0).detach().numpy()
     print(om.shape)
 
     print(np.unique(om))
