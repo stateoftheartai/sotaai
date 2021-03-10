@@ -415,6 +415,8 @@ def get_input_shape(model) -> str:
       return input_shape[0][1:]
     else:
       return input_shape[1:]
+  elif source == 'torchvision':
+    return list(model.parameters())[0].shape
   else:
     raise NotImplementedError
 
@@ -444,6 +446,8 @@ def get_output_shape(model) -> str:
     last_item = last_layer_shape[-1]
     output_shape = (last_item,)
     return output_shape
+  elif source == 'torchvision':
+    return list(model.parameters())[-1].shape
   else:
     raise NotImplementedError
 

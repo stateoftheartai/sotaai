@@ -13,6 +13,12 @@ from sotaai.cv import load_dataset, load_model, keras_wrapper, utils, model_to_d
 from sotaai.cv.abstractions import CvDataset, CvModel
 from sotaai.cv import metadata
 
+from torchvision import models
+from PIL import Image
+import matplotlib.pyplot as plt
+import torch
+import torchvision.transforms as T
+
 #
 # @author HO
 # Just to prevent Keras library to print warnings and extra logging data...
@@ -231,24 +237,95 @@ class TestKerasWrapper(unittest.TestCase):
   # We still need to finish this example
   # This is a temporal method to work on a Segmentation example and being able
   # to estimate for the AA of this task
-  # def test_segmentation(self):
-  # cv_model = load_model('deeplabv3_resnet101', 'torch')
+  def test_segmentation(self):
+    fcn = models.segmentation.fcn_resnet101(pretrained=True).eval()
 
-  # dataset_splits = load_dataset('lost_and_found')
-  # # dataset_splits = load_dataset('beans')
-  # split_name = next(iter(dataset_splits.keys()))
-  # cv_dataset = dataset_splits[split_name]
+    img = Image.open('/Users/hugo/Desktop/bird.png')
+    # plt.imshow(img)
+    # plt.show()
 
-  # # from matplotlib import pyplot as plt
-  # # fig = plt.figure()
-  # n = 5
-  # for i, item in enumerate(cv_dataset):
-  # if i == n:
-  # break
-  # print(i, np.unique(item['label']))
-  # # fig.add_subplot(n, 2, 2 * i + 1).imshow(item['image'])
-  # # fig.add_subplot(n, 2, 2 * i + 2).imshow(item['label'])
-  # # plt.show()
+    # Apply the transformations needed
+    trf = T.Compose([
+        T.Resize(256),
+        T.CenterCrop(224),
+        T.ToTensor(),
+        T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    ])
+    inp = trf(img).unsqueeze(0)
+
+    # Pass the input through the net
+    out = fcn(inp)['out']
+    print(out.shape)
+
+    om = torch.argmax(out.squeeze(), dim=0).detach().cpu().numpy()
+    print(om.shape)
+
+    print(np.unique(om))
+
+    def decode_segmap(image, nc=21):
+
+      label_colors = np.array([
+          (0, 0, 0),  # 0=background
+          # 1=aeroplane, 2=bicycle, 3=bird, 4=boat, 5=bottle
+          (128, 0, 0),
+          (0, 128, 0),
+          (128, 128, 0),
+          (0, 0, 128),
+          (128, 0, 128),
+          # 6=bus, 7=car, 8=cat, 9=chair, 10=cow
+          (0, 128, 128),
+          (128, 128, 128),
+          (64, 0, 0),
+          (192, 0, 0),
+          (64, 128, 0),
+          # 11=dining table, 12=dog, 13=horse, 14=motorbike, 15=person
+          (192, 128, 0),
+          (64, 0, 128),
+          (192, 0, 128),
+          (64, 128, 128),
+          (192, 128, 128),
+          # 16=potted plant, 17=sheep, 18=sofa, 19=train, 20=tv/monitor
+          (0, 64, 0),
+          (128, 64, 0),
+          (0, 192, 0),
+          (128, 192, 0),
+          (0, 64, 128)
+      ])
+
+      r = np.zeros_like(image).astype(np.uint8)
+      g = np.zeros_like(image).astype(np.uint8)
+      b = np.zeros_like(image).astype(np.uint8)
+
+      for l in range(0, nc):
+        idx = image == l
+        r[idx] = label_colors[l, 0]
+        g[idx] = label_colors[l, 1]
+        b[idx] = label_colors[l, 2]
+
+      rgb = np.stack([r, g, b], axis=2)
+      return rgb
+
+    rgb = decode_segmap(om)
+    plt.imshow(rgb)
+    plt.show()
+
+    # cv_model = load_model('deeplabv3_resnet101', 'torch')
+
+    # dataset_splits = load_dataset('lost_and_found')
+    # # dataset_splits = load_dataset('beans')
+    # split_name = next(iter(dataset_splits.keys()))
+    # cv_dataset = dataset_splits[split_name]
+
+    # # from matplotlib import pyplot as plt
+    # # fig = plt.figure()
+    # n = 5
+    # for i, item in enumerate(cv_dataset):
+    # if i == n:
+    # break
+    # print(i, np.unique(item['label']))
+    # # fig.add_subplot(n, 2, 2 * i + 1).imshow(item['image'])
+    # # fig.add_subplot(n, 2, 2 * i + 2).imshow(item['label'])
+    # # plt.show()
 
 
 if __name__ == '__main__':
