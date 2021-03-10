@@ -238,6 +238,13 @@ class TestKerasWrapper(unittest.TestCase):
   # to estimate for the AA of this task
   def test_segmentation(self):
 
+    # All pytorch pre-trained models expect:
+    # - (N, 3, H, W), where N is the batch size
+    # - N is the batch size
+    # - H and W are expected to be at least 224
+    # - Pixel values must be in range [0,1] and normilized with mean [0.485,
+    # 0.456, 0.406] and std [0.229, 0.224, 0.225]
+
     dataset_splits = load_dataset('cifar100')
     split_name = next(iter(dataset_splits.keys()))
     cv_dataset = dataset_splits[split_name]
