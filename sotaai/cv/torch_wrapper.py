@@ -4,11 +4,15 @@
 # Copyright: Stateoftheart AI PBC 2020.
 '''Module used to interface with Torchvision's models and datasets.'''
 
+from sotaai.cv import utils
 from torchvision import models
 from torchvision import datasets as dset
 from re import search
+# from PIL import Image
 import os
+import torch.nn as nn
 import numpy as np
+import torchvision.transforms as transforms
 
 DATASETS = {
     'classification': [
@@ -320,23 +324,29 @@ class DatasetIterator():
   def __init__(self, raw) -> None:
     self._raw = raw
     self._iterator = self.create_iterator()
+    self._image_preprocessing_callback = None
 
   def __next__(self):
     '''Get the next item from the dataset in a standardized format.
 
     Returns:
     '''
+    datapoint = next(self._iterator)
     if search('DataLoader', str(type(self._raw))):
-      print(self._iterator)
-      image = np.array(next(self._iterator)[0])
-      label = next(self._iterator)[1].numpy() if search(
-          'Tensor', str(type(next(self._iterator)[1]))) else next(
-              self._iterator)[1]
+      image = np.array(datapoint[0])
+      label = datapoint[1].numpy() if search('Tensor', str(type(
+          datapoint[1]))) else datapoint[1]
+      img = image[0]
+      if self._image_preprocessing_callback:
+        img = self._image_preprocessing_callback(image[0])
       # image, label = self._iterator.next()
-      return {'image': image[0], 'label': label[0]}
+      return {'image': img, 'label': label[0]}
     else:
-      image = np.array(next(self._iterator, [0, 0])[0])
-      label = next(self._iterator, [0, 0])[1]
+      image = np.array(datapoint[0])
+      label = datapoint[1]
+
+      if self._image_preprocessing_callback:
+        image = self._image_preprocessing_callback(image)
 
       return {'image': image, 'label': label}
 
@@ -347,3 +357,83 @@ class DatasetIterator():
       An object containing iterators for the dataset images and labels
     '''
     return iter(self._raw)
+
+  def set_image_preprocessing(self, image_preprocessing_callback):
+    self._image_preprocessing_callback = image_preprocessing_callback
+
+
+def model_to_dataset(cv_model, cv_dataset):
+
+  raw_model = cv_model.raw
+  are_channels_compatible = len(cv_dataset.shape) == len(
+      cv_model.original_input_shape)
+
+  model_input = cv_model.original_input_shape
+
+  model_input_channels = model_input[1]
+
+  batch = model_input[0]
+
+  size = cv_dataset.shape[1]
+
+  if not isinstance(size, int):
+    size = size.item()
+  if size < 32:  #minimum image size for torch models (32x32)
+    size = 32
+
+  # Case 1:
+  # Reshape dataset channels according with models input channels
+
+  if not are_channels_compatible:
+
+    def preprocess_image(image):
+      preprocess = transforms.Compose(
+          [transforms.ToTensor(),
+           transforms.Resize(size)])
+      input_tensor = preprocess(image)
+      standarized_element = input_tensor.unsqueeze(0)
+      w = standarized_element.shape[2]
+      h = standarized_element.shape[3]
+      standarized_element = standarized_element.expand(batch,
+                                                       model_input_channels, w,
+                                                       h)
+      return standarized_element
+
+    cv_dataset.set_image_preprocessing(preprocess_image)
+    cv_dataset.shape = cv_model.original_input_shape
+
+  is_output_compatible = utils.compare_shapes(cv_model.original_output_shape,
+                                              cv_dataset.classes_shape)
+
+  # Case 2:
+  # If output is not compatible with dataset classes, we have to change the
+  # model output layer
+  if not is_output_compatible:
+    classes = cv_dataset.classes_shape
+    num_classes = classes[0]
+    modules = cv_model.raw.__dict__
+    attributes = list(modules['_modules'])
+    last_layer = getattr(cv_model.raw, attributes[-1])
+    if hasattr(last_layer, '__getitem__'):
+      group_layer = last_layer
+
+      if hasattr(group_layer[-1], 'out_features'):
+        in_features = group_layer[-1].in_features
+        group_layer[-1] = nn.Linear(in_features, num_classes, True)
+      else:
+        in_channels = group_layer[1].in_channels
+        kernel_size = group_layer[1].kernel_size
+        stride = group_layer[1].stride
+
+        group_layer[1] = nn.Conv2d(in_channels, num_classes, kernel_size,
+                                   stride)
+
+      setattr(raw_model, attributes[-1], group_layer)
+    else:
+      in_features = last_layer.in_features
+      last_layer = nn.Linear(in_features, num_classes, True)
+
+      setattr(raw_model, attributes[-1], last_layer)
+
+  cv_model.update_raw_model(raw_model)
+  return cv_model, cv_dataset

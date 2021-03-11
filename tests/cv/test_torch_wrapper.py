@@ -5,7 +5,7 @@
 '''fastai https://pytorch.org/ wrapper module'''
 
 import unittest
-from sotaai.cv import torch_wrapper, load_dataset, load_model
+from sotaai.cv import torch_wrapper, load_dataset, load_model, model_to_dataset, utils, keras_wrapper
 from sotaai.cv.abstractions import CvDataset, CvModel
 import inspect
 import torch
@@ -20,9 +20,35 @@ logging.getLogger('lightning').setLevel(0)
 class TestTorchWrapper(unittest.TestCase):
   '''Test the wrapped torch module.'''
 
-  test_datasets = [
-      'QMNIST', 'SEMEION', 'Flickr30k', 'VOCSegmentation/2007', 'SBU'
+  # test_datasets = [
+  #     'QMNIST', 'SEMEION', 'Flickr30k', 'VOCSegmentation/2007', 'SBU'
+  # ]
+
+  test_datasets = ['QMNIST', 'SEMEION', 'SVHN']
+  test_models = [
+      'alexnet', 'densenet161', 'mnasnet0_5', 'mnasnet0_75', 'mnasnet1_0',
+      'mnasnet1_3', 'mobilenet_v2', 'resnet18', 'resnet34', 'resnext101_32x8d',
+      'resnext50_32x4d', 'shufflenet_v2_x0_5', 'shufflenet_v2_x1_0',
+      'shufflenet_v2_x1_5', 'shufflenet_v2_x2_0', 'squeezenet1_0',
+      'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16_bn',
+      'vgg19_bn', 'wide_resnet101_2', 'wide_resnet50_2'
   ]
+
+  # test_datasets = [
+  #     'beans',
+  #     'binary_alpha_digits',
+  #     'caltech_birds2010',
+  #     # 'caltech_birds2011',
+  #     # 'cars196',
+  #     # 'cats_vs_dogs', ERROR
+  #     # 'celeb_a', ERROR
+  #     'cifar10_1',
+  #     # 'cifar10_corrupted',
+  #     # 'cmaterdb',
+  #     # 'colorectal_histology',
+  # ]
+
+  #'googlenet' is not working
 
   # @author HO (legacy comment from sotaai-dev)
   # Some datasets need to be downloaded to disk beforehand:
@@ -115,8 +141,6 @@ class TestTorchWrapper(unittest.TestCase):
     # are going to get 10 class labels through our model.
     cv_model.raw.classifier[6] = nn.Linear(1024, 10)
 
-    print(cv_model.raw.eval())
-
     #keras dataset
     cv_dataset = load_dataset('cifar10')
     split_test = cv_dataset['test']
@@ -148,6 +172,51 @@ class TestTorchWrapper(unittest.TestCase):
     probabilities = torch.nn.functional.softmax(output[0], dim=0)
 
     print(probabilities)
+
+  def test_model_to_dataset(self):
+
+    def single_test(model_name, dataset_name):
+      '''This is an inner function that test model_to_dataset for a single case
+      i.e. a single model against a single dataset
+      '''
+
+      print('\n---')
+
+      cv_model = load_model(model_name, source='torch')
+
+      dataset_splits = load_dataset(dataset_name)
+      split_name = next(iter(dataset_splits.keys()))
+      cv_dataset = dataset_splits[split_name]
+
+      cv_model, cv_dataset = model_to_dataset(cv_model, cv_dataset)
+
+      self.assertEqual(
+          utils.compare_shapes(cv_model.original_input_shape, cv_dataset.shape),
+          True)
+      ds_classes = cv_dataset.classes_shape[0]
+      model_classes = cv_model.original_output_shape[0]
+      self.assertEqual(model_classes, ds_classes)
+
+      n = 3
+      for i, item in enumerate(cv_dataset):
+        if i == n:
+          break
+
+        image = item['image']
+        output = cv_model.raw(image)
+        _, predicted = torch.max(output.data, 0)
+        output_shape = predicted.shape[0]
+        self.assertEqual(output_shape, ds_classes)
+
+    #test models torch with datasets torch
+    for model in self.test_models:
+      for dataset in self.test_datasets:
+        single_test(model, dataset)
+
+    #test models torch with dataset keras
+    for model in self.test_models:
+      for dataset in keras_wrapper.DATASETS['classification']:
+        single_test(model, dataset)
 
 
 if __name__ == '__main__':

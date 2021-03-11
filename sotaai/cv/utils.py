@@ -10,6 +10,7 @@ import numpy as np
 import tensorflow_datasets as tfds
 import time
 import os
+from re import search
 import skimage.transform as st
 
 # Prevent Tensorflow to print warning and meta logs
@@ -415,6 +416,8 @@ def get_input_shape(model) -> str:
       return input_shape[0][1:]
     else:
       return input_shape[1:]
+  if source == 'torchvision':
+    return list(model.parameters())[0].shape
   else:
     raise NotImplementedError
 
@@ -444,6 +447,18 @@ def get_output_shape(model) -> str:
     last_item = last_layer_shape[-1]
     output_shape = (last_item,)
     return output_shape
+  elif source == 'torchvision':
+    if hasattr(list(model.children())[-1], '__getitem__'):
+      last_output = list(model.children())[-1][-1]
+    else:
+      last_output = list(model.children())[-1]
+
+    if hasattr(last_output, 'out_features'):
+      return (last_output.out_features,)
+    else:
+      last_output = list(model.children())[-1][1].out_channels
+      return (last_output,)
+
   else:
     raise NotImplementedError
 
@@ -662,17 +677,39 @@ def get_shape_from_dataset(dataset, name, split_name):
     # Chose 10 samples and list their shapes
     indexes = np.random.choice(range(n), 10, replace=False)
     shapes = []
-    for i in indexes:
-      shapes.append(dataset.__getitem__(i)['image'].shape)
+    if source == 'torchvision':
+      for i in indexes:
+        item = dataset[i][0]
+        if search('Image', str(type(item))):
+          width, height = item.size
+          channels = len(item.mode)
+          shape = [channels, height, width]
+          shapes.append(shape)
+        else:
+          shapes.append(item.shape)
+
+    else:
+      for i in indexes:
+        shapes.append(dataset.__getitem__(i)['image'].shape)
+
     shapes = np.array(shapes)
 
     h, w, c = None, None, None
-
     # Check whether shapes are different
     if source == 'mmf':
       if len(set(shapes[:, 0])) == 1 and len(set(shapes[:, 1])) == 1:
         h = shapes[0][0]
         w = shapes[0][1]
+
+    if source == 'torchvision':
+      c = shapes[0][0]
+      h = shapes[0][1]
+      w = shapes[0][2]
+      if len(set(shapes[:, 1])) == 1 and len(set(shapes[:, 2])) == 1:
+        c = shapes[0][0]
+        h = shapes[0][1]
+        w = shapes[0][2]
+
     else:
       if len(set(shapes[:, 1])) == 1 and len(set(shapes[:, 2])) == 1:
         h = shapes[0][1]
@@ -684,7 +721,7 @@ def get_shape_from_dataset(dataset, name, split_name):
   return (h, w, c)
 
 
-def get_classes_from_dataset(raw_object, source, name, split_name, size):
+def get_classes_from_dataset(raw_object, source, name, split_name):
   '''Get the IDs and the names (if available) of the classes.
 
     Args:
@@ -704,7 +741,7 @@ def get_classes_from_dataset(raw_object, source, name, split_name, size):
   classes_names = None
   classes_shape = None
   if source == 'mxnet':
-    classes = set(raw_object[split_name][:][1])
+    classes = set(raw_object[:][1])
     classes_names = None
   elif source == 'keras':
     classes = np.unique(raw_object[1])
@@ -720,36 +757,39 @@ def get_classes_from_dataset(raw_object, source, name, split_name, size):
           'tv/monitor'
       ]
       classes = list(range(21))
-    elif 'class_to_idx' in dir(raw_object[split_name]):
-      classes = list(raw_object[split_name].class_to_idx.values())
-      classes_names = list(raw_object[split_name].class_to_idx.keys())
-    elif 'dataset' in dir(raw_object[split_name]):
-      if 'class_to_idx' in dir(raw_object[split_name]):
-        classes = list(raw_object[split_name].class_to_idx.values())
-        classes_names = list(raw_object[split_name].class_to_idx.keys())
+      classes_shape = (len(classes),)
+    elif 'class_to_idx' in dir(raw_object):
+      classes = list(raw_object.class_to_idx.values())
+      classes_names = list(raw_object.class_to_idx.keys())
+      classes_shape = (len(classes),)
+    elif 'dataset' in dir(raw_object):
+      if 'class_to_idx' in dir(raw_object):
+        classes = list(raw_object.class_to_idx.values())
+        classes_names = list(raw_object.class_to_idx.keys())
+        classes_shape = (len(classes),)
       else:
-        classes = list(set(raw_object[split_name].targets))
+        classes = list(set(raw_object.targets))
         classes_names = None
-    elif 'labels' in dir(raw_object[split_name]):
-      classes = list(set(raw_object[split_name].labels.numpy()))
+        classes_shape = (len(classes),)
+    elif 'labels' in dir(raw_object):
+      classes = list(set(raw_object.labels))
       classes_names = None
+      classes_shape = (len(classes),)
     else:
       classes = []
       finished = True
       # Set limited time to go through dataset and obtain classes
       time_end = time.time() + 20
-      for i in range(size):
-        print(i)
+      for element in raw_object:
         # Append the label of each example
-        # Not working (delete get_item from abstraction)
-        # classes.append(
-        #     get_item(None, i, raw_object[split_name], source)['label'])
+        classes.append(element[1])
         if time.time() > time_end:
           # Execute stopping condition
           finished = False
           break
       if finished:
         classes = list(set(classes))
+        classes_shape = (len(classes),)
       else:
         classes = None
       classes_names = None
