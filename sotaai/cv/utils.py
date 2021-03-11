@@ -24,6 +24,34 @@ MODEL_SOURCES = ['fastai', 'keras', 'torch']  # 'mxnet', 'pretrainedmodels'
 # restore as soon as the wrapper is done and unit test.
 DATASET_SOURCES = ['tensorflow', 'fastai', 'keras', 'torch']  # 'mxnet'
 
+IMAGE_MINS = {
+    'InceptionV3': 75,
+    'InceptionResNetV2': 75,
+    'Xception': 71,
+    'VGG16': 32,
+    'VGG19': 71,
+    'vgg16_bn': 32,
+    'ResNet50': 32,
+    'ResNet101': 32,
+    'ResNet152': 32,
+    'ResNet50V2': 32,
+    'ResNet101V2': 32,
+    'ResNet152V2': 32,
+    'resnet18': 32,
+    'resnet34': 32,
+    'resnext101_32x8d': 32,
+    'resnext50_32x4d': 32,
+    'MobileNet': 32,
+    'MobileNetV2': 32,
+    'mobilenet_v2': 32,
+    'DenseNet121': 32,
+    'DenseNet169': 32,
+    'DenseNet201': 32,
+    'densenet161': 32,
+    'NASNetLarge': 32,
+    'NASNetMobile': 32
+}
+
 
 def map_dataset_source_tasks() -> dict:
   '''Gathers all datasets and their respective sources and available tasks.

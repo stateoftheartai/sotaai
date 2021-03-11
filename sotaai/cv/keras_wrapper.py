@@ -187,31 +187,12 @@ def model_to_dataset(cv_model, cv_dataset):
   # As per Keras documentation, some models require a minimum width and height
   # for the input shape. For those models, we make sure the dataset meet those
   # minimums
-  image_mins = {
-      'InceptionV3': 75,
-      'InceptionResNetV2': 75,
-      'Xception': 71,
-      'VGG16': 32,
-      'VGG19': 71,
-      'ResNet50': 32,
-      'ResNet101': 32,
-      'ResNet152': 32,
-      'ResNet50V2': 32,
-      'ResNet101V2': 32,
-      'ResNet152V2': 32,
-      'MobileNet': 32,
-      'MobileNetV2': 32,
-      'DenseNet121': 32,
-      'DenseNet169': 32,
-      'DenseNet201': 32,
-      'NASNetLarge': 32,
-      'NASNetMobile': 32
-  }
 
   min_input_shape = None
 
-  if cv_model.name in image_mins:
-    min_input_shape = (image_mins[cv_model.name], image_mins[cv_model.name])
+  if cv_model.name in utils.IMAGE_MINS:
+    min_input_shape = (utils.IMAGE_MINS[cv_model.name],
+                       utils.IMAGE_MINS[cv_model.name])
 
   # TODO(Hugo)
   # When datasets have a None width/height is not possible to globally know

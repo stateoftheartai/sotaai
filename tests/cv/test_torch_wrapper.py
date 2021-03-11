@@ -34,19 +34,19 @@ class TestTorchWrapper(unittest.TestCase):
       'vgg19_bn', 'wide_resnet101_2', 'wide_resnet50_2'
   ]
 
-  # test_datasets = [
-  #     'beans',
-  #     'binary_alpha_digits',
-  #     'caltech_birds2010',
-  #     # 'caltech_birds2011',
-  #     # 'cars196',
-  #     # 'cats_vs_dogs', ERROR
-  #     # 'celeb_a', ERROR
-  #     'cifar10_1',
-  #     # 'cifar10_corrupted',
-  #     # 'cmaterdb',
-  #     # 'colorectal_histology',
-  # ]
+  test_datasets_tensorflow = [
+      'beans',
+      'binary_alpha_digits',
+      'caltech_birds2010',
+      # 'caltech_birds2011',
+      # 'cars196',
+      # 'cats_vs_dogs', ERROR
+      # 'celeb_a', ERROR
+      'cifar10_1',
+      # 'cifar10_corrupted',
+      # 'cmaterdb',
+      # 'colorectal_histology',
+  ]
 
   #'googlenet' is not working
 
@@ -203,17 +203,22 @@ class TestTorchWrapper(unittest.TestCase):
           break
 
         image = item['image']
-        output = cv_model.raw(image)
-        _, predicted = torch.max(output.data, 0)
-        output_shape = predicted.shape[0]
+        print(image.shape)
+        output = cv_model(image)
+        output_shape = output.shape[1]
         self.assertEqual(output_shape, ds_classes)
 
-    #test models torch with datasets torch
+    #test models torch with datasets tensorflow
+    for model in self.test_models:
+      for dataset in self.test_datasets_tensorflow:
+        single_test(model, dataset)
+
+    # #test models torch with datasets torch
     for model in self.test_models:
       for dataset in self.test_datasets:
         single_test(model, dataset)
 
-    #test models torch with dataset keras
+    # #test models torch with dataset keras
     for model in self.test_models:
       for dataset in keras_wrapper.DATASETS['classification']:
         single_test(model, dataset)
