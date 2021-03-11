@@ -448,7 +448,17 @@ def get_output_shape(model) -> str:
     output_shape = (last_item,)
     return output_shape
   elif source == 'torchvision':
-    return list(model.parameters())[-1].shape
+    if hasattr(list(model.children())[-1], '__getitem__'):
+      last_output = list(model.children())[-1][-1]
+    else:
+      last_output = list(model.children())[-1]
+
+    if hasattr(last_output, 'out_features'):
+      return (last_output.out_features,)
+    else:
+      last_output = list(model.children())[-1][1].out_channels
+      return (last_output,)
+
   else:
     raise NotImplementedError
 

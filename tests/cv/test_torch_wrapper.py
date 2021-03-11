@@ -5,7 +5,7 @@
 '''fastai https://pytorch.org/ wrapper module'''
 
 import unittest
-from sotaai.cv import torch_wrapper, load_dataset, load_model, model_to_dataset
+from sotaai.cv import torch_wrapper, load_dataset, load_model, model_to_dataset, utils, keras_wrapper
 from sotaai.cv.abstractions import CvDataset, CvModel
 import inspect
 import torch
@@ -24,7 +24,7 @@ class TestTorchWrapper(unittest.TestCase):
   #     'QMNIST', 'SEMEION', 'Flickr30k', 'VOCSegmentation/2007', 'SBU'
   # ]
 
-  # test_datasets = ['QMNIST', 'SEMEION', 'SVHN']
+  test_datasets = ['QMNIST', 'SEMEION', 'SVHN']
   test_models = [
       'alexnet', 'densenet161', 'mnasnet0_5', 'mnasnet0_75', 'mnasnet1_0',
       'mnasnet1_3', 'mobilenet_v2', 'resnet18', 'resnet34', 'resnext101_32x8d',
@@ -34,17 +34,19 @@ class TestTorchWrapper(unittest.TestCase):
       'vgg19_bn', 'wide_resnet101_2', 'wide_resnet50_2'
   ]
 
-  test_datasets = [
-      'beans',
-      'binary_alpha_digits',
-      'caltech_birds2010',
-      # 'caltech_birds2011',
-      'cars196',
-      # 'cats_vs_dogs',
-      # 'celeb_a',
-      # 'cifar10_1',
-      # 'cifar10_corrupted',
-  ]
+  # test_datasets = [
+  #     'beans',
+  #     'binary_alpha_digits',
+  #     'caltech_birds2010',
+  #     # 'caltech_birds2011',
+  #     # 'cars196',
+  #     # 'cats_vs_dogs', ERROR
+  #     # 'celeb_a', ERROR
+  #     'cifar10_1',
+  #     # 'cifar10_corrupted',
+  #     # 'cmaterdb',
+  #     # 'colorectal_histology',
+  # ]
 
   #'googlenet' is not working
 
@@ -172,44 +174,49 @@ class TestTorchWrapper(unittest.TestCase):
     print(probabilities)
 
   def test_model_to_dataset(self):
-    # cv_model = load_model('vgg11', source='torch')
-    # cv_dataset = load_dataset('QMNIST')
-    # # print(cv_dataset['train'].shape)
 
-    # model, dataset = model_to_dataset(cv_model, cv_dataset['test'])
+    def single_test(model_name, dataset_name):
+      '''This is an inner function that test model_to_dataset for a single case
+      i.e. a single model against a single dataset
+      '''
 
-    # iter_dataset = iter(dataset)
-    # datapoint = next(iter_dataset)
-    # print(datapoint['image'].shape)
-    # output = model(datapoint['image'])
-    # print(output)
-    # qmnist_to_alexnet(cv_model, cv_dataset['test'])
+      print('\n---')
 
-    # for task in torch_wrapper.MODELS:
-    #   for model in torch_wrapper.MODELS[task]:
-    #     cv_model = load_model(model, source='torch')
-    #     print(f'Model : {model} Task: {task}')
+      cv_model = load_model(model_name, source='torch')
 
-    #     print(cv_model.original_input_shape)
-    #     print(cv_model.original_output_shape)
-    #     print(cv_model.original_input_type)
+      dataset_splits = load_dataset(dataset_name)
+      split_name = next(iter(dataset_splits.keys()))
+      cv_dataset = dataset_splits[split_name]
 
-    #     print('=' * 100)
+      cv_model, cv_dataset = model_to_dataset(cv_model, cv_dataset)
 
+      self.assertEqual(
+          utils.compare_shapes(cv_model.original_input_shape, cv_dataset.shape),
+          True)
+      ds_classes = cv_dataset.classes_shape[0]
+      model_classes = cv_model.original_output_shape[0]
+      self.assertEqual(model_classes, ds_classes)
+
+      n = 3
+      for i, item in enumerate(cv_dataset):
+        if i == n:
+          break
+
+        image = item['image']
+        output = cv_model.raw(image)
+        _, predicted = torch.max(output.data, 0)
+        output_shape = predicted.shape[0]
+        self.assertEqual(output_shape, ds_classes)
+
+    #test models torch with datasets torch
     for model in self.test_models:
-      cv_model = load_model(model, source='torch')
       for dataset in self.test_datasets:
-        cv_dataset = load_dataset(dataset)
-        # print(cv_dataset)
-        for split_name in cv_dataset:
-          model, dataset = model_to_dataset(cv_model, cv_dataset[split_name])
-          iter_dataset = iter(dataset)
-          datapoint = next(iter_dataset)
-          print(datapoint['image'].shape)
-          if split_name == 'test':
-            output = model(datapoint['image'])
-            print(output)
-      # print('=' * 100)
+        single_test(model, dataset)
+
+    #test models torch with dataset keras
+    for model in self.test_models:
+      for dataset in keras_wrapper.DATASETS['classification']:
+        single_test(model, dataset)
 
 
 if __name__ == '__main__':

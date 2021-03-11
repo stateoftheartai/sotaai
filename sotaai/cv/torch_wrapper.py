@@ -8,9 +8,9 @@ from sotaai.cv import utils
 from torchvision import models
 from torchvision import datasets as dset
 from re import search
-from PIL import Image
+# from PIL import Image
 import os
-# import torch.nn as nn
+import torch.nn as nn
 import numpy as np
 import torchvision.transforms as transforms
 
@@ -364,12 +364,22 @@ class DatasetIterator():
 
 def model_to_dataset(cv_model, cv_dataset):
 
+  raw_model = cv_model.raw
   are_channels_compatible = len(cv_dataset.shape) == len(
       cv_model.original_input_shape)
 
   model_input = cv_model.original_input_shape
 
   model_input_channels = model_input[1]
+
+  batch = model_input[0]
+
+  size = cv_dataset.shape[1]
+
+  if not isinstance(size, int):
+    size = size.item()
+  if size < 32:  #minimum image size for torch models (32x32)
+    size = 32
 
   is_input_compatible = utils.compare_shapes(cv_model.original_input_shape,
                                              cv_dataset.shape)
@@ -378,14 +388,16 @@ def model_to_dataset(cv_model, cv_dataset):
 
     def preprocess_image(image):
       preprocess = transforms.Compose(
-          [transforms.ToTensor(), transforms.Resize(32)])
-      img = Image.fromarray(image)
-      input_tensor = preprocess(img)
+          [transforms.ToTensor(),
+           transforms.Resize(size)])
+      # img = Image.fromarray(image)
+      input_tensor = preprocess(image)
       standarized_element = input_tensor.unsqueeze(0)
-      b, c, w, h = standarized_element.shape
-      print(f'b {b} c {c}')
-      standarized_element = standarized_element.expand(2, model_input_channels,
-                                                       w, h)
+      w = standarized_element.shape[2]
+      h = standarized_element.shape[3]
+      standarized_element = standarized_element.expand(batch,
+                                                       model_input_channels, w,
+                                                       h)
       return standarized_element
 
     cv_dataset.set_image_preprocessing(preprocess_image)
@@ -400,10 +412,29 @@ def model_to_dataset(cv_model, cv_dataset):
   if not is_output_compatible:
     classes = cv_dataset.classes_shape
     num_classes = classes[0]
-    if hasattr(list(cv_model.raw.children())[-1], '__getitem__'):
-      list(cv_model.raw.children())[-1][-1].out_features = num_classes
+    modules = cv_model.raw.__dict__
+    attributes = list(modules['_modules'])
+    last_layer = getattr(cv_model.raw, attributes[-1])
+    if hasattr(last_layer, '__getitem__'):
+      group_layer = last_layer
+
+      if hasattr(group_layer[-1], 'out_features'):
+        in_features = group_layer[-1].in_features
+        group_layer[-1] = nn.Linear(in_features, num_classes, True)
+      else:
+        in_channels = group_layer[1].in_channels
+        kernel_size = group_layer[1].kernel_size
+        stride = group_layer[1].stride
+
+        group_layer[1] = nn.Conv2d(in_channels, num_classes, kernel_size,
+                                   stride)
+
+      setattr(raw_model, attributes[-1], group_layer)
     else:
-      list(cv_model.raw.children())[-1].out_features = num_classes
+      in_features = last_layer.in_features
+      last_layer = nn.Linear(in_features, num_classes, True)
+
+      setattr(raw_model, attributes[-1], last_layer)
 
   # Case 3:
   # If dataset and model input are not compatible, we have to (1) reshape
@@ -415,16 +446,17 @@ def model_to_dataset(cv_model, cv_dataset):
   if not is_input_compatible:
     classes = cv_dataset.classes_shape
     num_classes = classes[0]
-    if hasattr(list(cv_model.raw.children())[0], '__getitem__'):
+    if hasattr(list(raw_model.children())[0], '__getitem__'):
       # list(cv_model.raw.children())[0][0].in_channels = model_input_channels
       # list(cv_model.raw.children())[0][0].kernel_size = (28, 28)
-      list(cv_model.raw.children())[0][0].stride = (1, 1)
+      list(raw_model.children())[0][0].stride = (1, 1)
       # list(cv_model.raw.children())[0][0].padding = (1, 1)
     else:
       # list(cv_model.raw.children())[0].in_channels = model_input_channels
       # list(cv_model.raw.children())[0].kernel_size = (28, 28)
-      list(cv_model.raw.children())[0].stride = (1, 1)
+      list(raw_model.children())[0].stride = (1, 1)
       # list(cv_model.raw.children())[0].padding = (1, 1)
 
+  cv_model.update_raw_model(raw_model)
   # print(cv_model.raw.eval())
   return cv_model, cv_dataset
