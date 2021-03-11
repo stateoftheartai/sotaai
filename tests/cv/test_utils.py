@@ -286,7 +286,7 @@ class TestCvUtils(unittest.TestCase):
                          dataset_metadata['metadata']['classes_names'])
 
   # @unittest.SkipTest
-  def test_extract_pixel_types(self):
+  def test_extract_pixel_classes(self):
     '''Make sure we correctly determine the pixels of a dataset's sample.
 
     TODO(george) finish.

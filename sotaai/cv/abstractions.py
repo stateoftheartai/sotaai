@@ -47,13 +47,12 @@ class CvDataset(object):
       self.classes_shape = classes_shape
 
     # Only populated for datasets that support segmentation tasks.
-    self.pixel_types = None
-    self.pixel_types_names = None
+    self.pixel_classes = None
+    self.pixel_classes_names = None
     if 'segmentation' in self.tasks:
-      self.pixel_types, self.pixel_types_names = (utils.extract_pixel_types(
-          raw_dataset, self.name, self.source, self.split_name))
-    # self.pixel_types, self.pixel_types_names = (
-    #     self._extract_pixel_types(raw_dataset))
+      self.pixel_classes, self.pixel_classes_names = (
+          utils.extract_pixel_classes(raw_dataset, self.name, self.source,
+                                      self.split_name))
 
     # Only populated for datasets that support image captioning tasks.
     self.captions = None
@@ -68,35 +67,6 @@ class CvDataset(object):
 
   def set_image_preprocessing(self, image_preprocessing_callback):
     self.iterator.set_image_preprocessing(image_preprocessing_callback)
-
-  def _extract_pixel_types(self, raw_object):
-    '''Get the IDs and the names (if available) of the pixel types.
-
-    Args:
-      raw_object:
-        Dataset object directly instantiated from a source library. Type
-        is dependent on the source library.
-
-    Returns:
-      A pair of values, `pixel_types` and `pixel_types_names`. If no
-      `pixel_types_names` are available, the pair becomes `pixel_types`
-      and `None`.
-    '''
-    if 'VOC' in self.name or 'SBD' in self.name:
-      classes = [
-          'unlabeled/void', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle',
-          'bus', 'car ', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse',
-          'motorbike', 'person', 'potted plant', 'sheep', 'sofa', 'train',
-          'tv/monitor'
-      ]
-      indexes = list(range(21))
-    elif self.source == 'fastai':
-      obj = getattr(raw_object, self.split_name + '_ds')
-      classes = obj.y.classes
-      indexes = None
-    else:
-      indexes, classes = None, None
-    return indexes, classes
 
 
 class CvModel(object):
@@ -117,15 +87,24 @@ class CvModel(object):
     '''
     self.raw = raw_model
     self.name = name
+    self.tasks = utils.map_name_tasks('models')[name]
     self._populate_attributes()
 
   def _populate_attributes(self):
     self.source = utils.get_source_from_model(self.raw)
     self.original_input_type = utils.get_input_type(self.raw)
     self.original_input_shape = utils.get_input_shape(self.raw)
+
+    self.original_output_shape = None
     self.original_output_shape = utils.get_output_shape(self.raw)
+
     self.data_type = None  # TODO(tonioteran) Implement me.
-    self.min_size = None  # TODO(tonioteran) Implement me.
+
+    # TODO(Hugo) Implement me.
+    # The min size already exists in a dictionary used in the model_to_dataset
+    # implementation in wrappers. Perhaps it has to be moved here.
+    self.min_size = None
+
     self.num_channels = utils.get_num_channels_from_model(self.raw)
     self.num_layers = utils.get_num_layers_from_model(self.raw)
     self.num_params = utils.get_num_parameters_from_model(self.raw)

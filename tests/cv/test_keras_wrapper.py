@@ -227,29 +227,6 @@ class TestKerasWrapper(unittest.TestCase):
     # Uncomment the next line to test a particular case of model_to_dataset:
     # single_test('model-name', 'dataset-name')
 
-  # TODO(Hugo)
-  # We still need to finish this example
-  # This is a temporal method to work on a Segmentation example and being able
-  # to estimate for the AA of this task
-  # def test_segmentation(self):
-  # cv_model = load_model('deeplabv3_resnet101', 'torch')
-
-  # dataset_splits = load_dataset('lost_and_found')
-  # # dataset_splits = load_dataset('beans')
-  # split_name = next(iter(dataset_splits.keys()))
-  # cv_dataset = dataset_splits[split_name]
-
-  # # from matplotlib import pyplot as plt
-  # # fig = plt.figure()
-  # n = 5
-  # for i, item in enumerate(cv_dataset):
-  # if i == n:
-  # break
-  # print(i, np.unique(item['label']))
-  # # fig.add_subplot(n, 2, 2 * i + 1).imshow(item['image'])
-  # # fig.add_subplot(n, 2, 2 * i + 2).imshow(item['label'])
-  # # plt.show()
-
 
 if __name__ == '__main__':
   unittest.main()

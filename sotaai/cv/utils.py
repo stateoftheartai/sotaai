@@ -11,7 +11,8 @@ import tensorflow_datasets as tfds
 import time
 import os
 from re import search
-import skimage.transform as st
+import skimage.transform as ski_transform
+from random import randrange
 
 # Prevent Tensorflow to print warning and meta logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -444,7 +445,7 @@ def get_input_shape(model) -> str:
       return input_shape[0][1:]
     else:
       return input_shape[1:]
-  if source == 'torchvision':
+  elif source == 'torchvision':
     return list(model.parameters())[0].shape
   else:
     raise NotImplementedError
@@ -483,10 +484,15 @@ def get_output_shape(model) -> str:
 
     if hasattr(last_output, 'out_features'):
       return (last_output.out_features,)
+    if hasattr(last_output, 'out_channels'):
+      # This case was added for Segmentation models, and as per Torch docs,
+      # all its segmentition models require and input image size of (224,224)
+      # which entails the output shape (the pixel mask) must be the same size as
+      # well but containing one layer or extra dimension per pixel class:
+      return (last_output.out_channels, 224, 224)
     else:
       last_output = list(model.children())[-1][1].out_channels
       return (last_output,)
-
   else:
     raise NotImplementedError
 
@@ -694,8 +700,12 @@ def get_shape_from_dataset(dataset, name, split_name):
     return dataset[0].shape[1:]
   if source == 'tensorflow':
     _, ds_info = tfds.load(name, with_info=True)
+    # For Classification
     if 'image' in ds_info.features.keys():
       (h, w, c) = ds_info.features['image'].shape
+    # For Segmentation
+    elif 'image_left' in ds_info.features.keys():
+      (h, w, c) = ds_info.features['image_left'].shape
     else:
       (h, w, c) = (None, None, None)
 
@@ -844,8 +854,8 @@ def get_classes_from_dataset(raw_object, source, name, split_name):
   return classes, classes_names, classes_shape
 
 
-def extract_pixel_types(raw_object, name, source, split_name):
-  '''Get the IDs and the names (if available) of the pixel types.
+def extract_pixel_classes(raw_object, name, source, split_name):
+  '''Return the IDs and the names (if available) of the pixel classes.
 
     Args:
       raw_object:
@@ -853,31 +863,31 @@ def extract_pixel_types(raw_object, name, source, split_name):
         is dependent on the source library.
 
     Returns:
-      A pair of values, `pixel_types` and `pixel_types_names`. If no
-      `pixel_types_names` are available, the pair becomes `pixel_types`
-      and `None`.
+      classes: an array of numbers belonging to the pixel classes (IDs) of
+        the dataset
+      clasases_names: an optional array of strings belonging to the pixel
+        classes names of the dataset. If not available, then None.
     '''
   if 'VOC' in name or 'SBD' in name:
-    classes = [
+    classes = list(range(21))
+    classes_names = [
         'unlabeled/void', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle',
         'bus', 'car ', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse',
         'motorbike', 'person', 'potted plant', 'sheep', 'sofa', 'train',
         'tv/monitor'
     ]
-    indexes = list(range(21))
   elif source == 'tensorflow':
-    # TODO(Hugo)
-    # Figure out how to obtain these to be able to code model_to_dataset for
-    # segmentation task
-    indexes = None
-    classes = None
+    # For TF datasets, this information cannot be obtained programatically, it
+    # has to be collected manually:
+    classes = list(range(44))
+    classes_names = None
   elif source == 'fastai':
     obj = getattr(raw_object, split_name + '_ds')
-    classes = obj.y.classes
-    indexes = None
+    classes = None
+    classes_names = obj.y.classes
   else:
-    indexes, classes = None, None
-  return indexes, classes
+    classes, classes_names = None, None
+  return classes, classes_names
 
 
 def compare_shapes(ground_truth_shape, shape):
@@ -917,4 +927,37 @@ def resize_image(im, shape):
   Returns:
     The numpy array of the image resized
   '''
-  return st.resize(im, shape)
+  return ski_transform.resize(im, shape)
+
+
+def create_segmentation_image(mask, pixel_classes):
+  '''Returns an RGB image of the given mask.
+
+  It assigns a random RGB color to each class, and creates an image where each
+  pixel is set to the RGB color of its respective class.
+
+  Args:
+    mask: the predicted mask of an image (a single item of the output of
+      a segmentation model)
+    pixel_classes: the number of pixel classes available. This is the number
+      of total classes the mask might contain (the pixel classes of the
+      dataset the original image belongs to)
+  '''
+
+  classes_colors = []
+  for _ in range(0, pixel_classes):
+    classes_colors.append((randrange(256), randrange(256), randrange(256)))
+  classes_colors = np.array(classes_colors)
+
+  r = np.zeros_like(mask).astype(np.uint8)
+  g = np.zeros_like(mask).astype(np.uint8)
+  b = np.zeros_like(mask).astype(np.uint8)
+
+  for l in range(0, pixel_classes):
+    idx = mask == l
+    r[idx] = classes_colors[l, 0]
+    g[idx] = classes_colors[l, 1]
+    b[idx] = classes_colors[l, 2]
+
+  rgb = np.stack([r, g, b], axis=2)
+  return rgb
