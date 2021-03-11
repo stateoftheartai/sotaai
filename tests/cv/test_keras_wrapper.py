@@ -232,7 +232,9 @@ class TestKerasWrapper(unittest.TestCase):
     # single_test('model-name', 'dataset-name')
 
   # TODO(Hugo)
-  # We still need to finish this example
+  # This method must be moved to torch wrapper. It was temporary placed here
+  # to avoid conflics since torch wrapper is still being worked for
+  # Classification.
   # This is a temporal method to work on a Segmentation example and being able
   # to estimate for the AA of this task
   def test_segmentation(self):
