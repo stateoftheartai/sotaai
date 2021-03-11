@@ -95,6 +95,13 @@ class TestTorchWrapperTmp(unittest.TestCase):
     print(' Shape:   ', tuple(batch.shape))
     print(' Pixel Classes: ', len(cv_dataset.pixel_classes))
 
+    # Assert dataset channels, width and height is 3, 224, 224 as required by
+    # all Torchvision segmentation models, and that model output shape matches
+    # the expected classes and image dimensions:
+    self.assertEqual(tuple(batch.shape), (n, 3, 224, 224))
+    self.assertEqual(cv_model.original_output_shape,
+                     (len(cv_dataset.pixel_classes), 224, 224))
+
     figure = plt.figure()
 
     print('\nTesting predictions...')
@@ -106,6 +113,10 @@ class TestTorchWrapperTmp(unittest.TestCase):
     for i, prediction in enumerate(output):
 
       mask = torch.argmax(prediction.squeeze(), dim=0).detach().numpy()
+
+      self.assertEqual(tuple(prediction.shape),
+                       (len(cv_dataset.pixel_classes), 224, 224))
+      self.assertEqual(mask.shape, (224, 224))
 
       print('Prediction {} {} {}'.format(i, prediction.shape, mask.shape))
 

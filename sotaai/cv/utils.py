@@ -457,7 +457,11 @@ def get_output_shape(model) -> str:
     if hasattr(last_output, 'out_features'):
       return (last_output.out_features,)
     if hasattr(last_output, 'out_channels'):
-      return (last_output.out_channels,)
+      # This case was added for Segmentation models, and as per Torch docs,
+      # all its segmentition models require and input image size of (224,224)
+      # which entails the output shape (the pixel mask) must be the same size as
+      # well but containing one layer or extra dimension per pixel class:
+      return (last_output.out_channels, 224, 224)
     else:
       last_output = list(model.children())[-1][1].out_channels
       return (last_output,)
@@ -672,7 +676,7 @@ def get_shape_from_dataset(dataset, name, split_name):
     if 'image' in ds_info.features.keys():
       (h, w, c) = ds_info.features['image'].shape
     # For Segmentation
-    if 'image_left' in ds_info.features.keys():
+    elif 'image_left' in ds_info.features.keys():
       (h, w, c) = ds_info.features['image_left'].shape
     else:
       (h, w, c) = (None, None, None)
