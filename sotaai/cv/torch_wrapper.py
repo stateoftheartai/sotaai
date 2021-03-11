@@ -381,8 +381,8 @@ def model_to_dataset(cv_model, cv_dataset):
   if size < 32:  #minimum image size for torch models (32x32)
     size = 32
 
-  is_input_compatible = utils.compare_shapes(cv_model.original_input_shape,
-                                             cv_dataset.shape)
+  # Case 1:
+  # Reshape dataset channels according with models input channels
 
   if not are_channels_compatible:
 
@@ -390,7 +390,6 @@ def model_to_dataset(cv_model, cv_dataset):
       preprocess = transforms.Compose(
           [transforms.ToTensor(),
            transforms.Resize(size)])
-      # img = Image.fromarray(image)
       input_tensor = preprocess(image)
       standarized_element = input_tensor.unsqueeze(0)
       w = standarized_element.shape[2]
@@ -436,27 +435,5 @@ def model_to_dataset(cv_model, cv_dataset):
 
       setattr(raw_model, attributes[-1], last_layer)
 
-  # Case 3:
-  # If dataset and model input are not compatible, we have to (1) reshape
-  # the dataset shape a bit more or (2) change the model input layer
-
-  # is_input_compatible = utils.compare_shapes(cv_model.original_input_shape,
-  #                                            cv_dataset.shape)
-
-  if not is_input_compatible:
-    classes = cv_dataset.classes_shape
-    num_classes = classes[0]
-    if hasattr(list(raw_model.children())[0], '__getitem__'):
-      # list(cv_model.raw.children())[0][0].in_channels = model_input_channels
-      # list(cv_model.raw.children())[0][0].kernel_size = (28, 28)
-      list(raw_model.children())[0][0].stride = (1, 1)
-      # list(cv_model.raw.children())[0][0].padding = (1, 1)
-    else:
-      # list(cv_model.raw.children())[0].in_channels = model_input_channels
-      # list(cv_model.raw.children())[0].kernel_size = (28, 28)
-      list(raw_model.children())[0].stride = (1, 1)
-      # list(cv_model.raw.children())[0].padding = (1, 1)
-
   cv_model.update_raw_model(raw_model)
-  # print(cv_model.raw.eval())
   return cv_model, cv_dataset
