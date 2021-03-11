@@ -780,8 +780,8 @@ def get_classes_from_dataset(raw_object, source, name, split_name, size):
   return classes, classes_names, classes_shape
 
 
-def extract_pixel_types(raw_object, name, source, split_name):
-  '''Get the IDs and the names (if available) of the pixel types.
+def extract_pixel_classes(raw_object, name, source, split_name):
+  '''Return the IDs and the names (if available) of the pixel classes.
 
     Args:
       raw_object:
@@ -789,31 +789,31 @@ def extract_pixel_types(raw_object, name, source, split_name):
         is dependent on the source library.
 
     Returns:
-      A pair of values, `pixel_types` and `pixel_types_names`. If no
-      `pixel_types_names` are available, the pair becomes `pixel_types`
-      and `None`.
+      classes: an array of numbers belonging to the pixel classes (IDs) of
+        the dataset
+      clasases_names: an optional array of strings belonging to the pixel
+        classes names of the dataset. If not available, then None.
     '''
   if 'VOC' in name or 'SBD' in name:
-    classes = [
+    classes = list(range(21))
+    classes_names = [
         'unlabeled/void', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle',
         'bus', 'car ', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse',
         'motorbike', 'person', 'potted plant', 'sheep', 'sofa', 'train',
         'tv/monitor'
     ]
-    indexes = list(range(21))
   elif source == 'tensorflow':
-    # TODO(Hugo)
-    # Figure out how to obtain these to be able to code model_to_dataset for
-    # segmentation task
-    indexes = None
-    classes = None
+    # For TF datasets, this information cannot be obtained programatically, it
+    # has to be collected manually:
+    classes = list(range(44))
+    classes_names = None
   elif source == 'fastai':
     obj = getattr(raw_object, split_name + '_ds')
-    classes = obj.y.classes
-    indexes = None
+    classes = None
+    classes_names = obj.y.classes
   else:
-    indexes, classes = None, None
-  return indexes, classes
+    classes, classes_names = None, None
+  return classes, classes_names
 
 
 def compare_shapes(ground_truth_shape, shape):

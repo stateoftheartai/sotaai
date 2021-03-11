@@ -238,51 +238,6 @@ class TestKerasWrapper(unittest.TestCase):
   # to estimate for the AA of this task
   def test_segmentation(self):
 
-    # All pytorch pre-trained models expect:
-    # - (N, 3, H, W), where N is the batch size
-    # - N is the batch size
-    # - H and W are expected to be at least 224
-    # - Pixel values must be in range [0,1] and normilized with mean [0.485,
-    # 0.456, 0.406] and std [0.229, 0.224, 0.225]
-
-    dataset_splits = load_dataset('cifar100')
-    split_name = next(iter(dataset_splits.keys()))
-    cv_dataset = dataset_splits[split_name]
-
-    img = None
-    for item in cv_dataset:
-      # plt.imshow(item['image'])
-      # plt.show()
-      img = item['image']
-      break
-
-    fcn = models.segmentation.fcn_resnet101(pretrained=True).eval()
-
-    # img = Image.open('/Users/hugo/Desktop/bird.png')
-    # plt.imshow(img)
-    # plt.show()
-
-    # Apply the transformations needed
-    trf = T.Compose([
-        T.ToPILImage(),
-        T.Resize(256),
-        T.CenterCrop(224),
-        T.ToTensor(),
-        T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-    ])
-    inp = trf(img).unsqueeze(0)
-
-    print(inp.shape, type(inp))
-
-    # Pass the input through the net
-    out = fcn(inp)['out']
-    print(out.shape)
-
-    om = torch.argmax(out.squeeze(), dim=0).detach().numpy()
-    print(om.shape)
-
-    print(np.unique(om))
-
     def decode_segmap(image, nc=21):
 
       label_colors = np.array([
@@ -326,27 +281,53 @@ class TestKerasWrapper(unittest.TestCase):
       rgb = np.stack([r, g, b], axis=2)
       return rgb
 
-    rgb = decode_segmap(om)
-    plt.imshow(rgb)
+    # All pytorch pre-trained models expect:
+    # - (N, 3, H, W), where N is the batch size
+    # - N is the batch size
+    # - H and W are expected to be at least 224
+    # - Pixel values must be in range [0,1] and normilized with mean [0.485,
+    # 0.456, 0.406] and std [0.229, 0.224, 0.225]
+
+    dataset_splits = load_dataset('lost_and_found')
+    split_name = next(iter(dataset_splits.keys()))
+    cv_dataset = dataset_splits[split_name]
+    print(cv_dataset.pixel_classes)
+
+    fcn = models.segmentation.fcn_resnet101(pretrained=True).eval()
+    fcn.classifier[-1] = torch.nn.Conv2d(512, len(cv_dataset.pixel_classes), 1)
+
+    transform = T.Compose([
+        T.ToPILImage(),
+        T.Resize(256),
+        T.CenterCrop(224),
+        T.ToTensor(),
+        T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    ])
+
+    n = 5
+    images = []
+    numpy_images = []
+    for i, item in enumerate(cv_dataset):
+      numpy_images.append(item['image'])
+      images.append(transform(item['image']))
+
+      if i == n - 1:
+        break
+
+    batch = torch.stack(images, dim=0)
+    print('input', batch.shape)
+
+    output = fcn(batch)['out']
+    print('output', output.shape)
+
+    figure = plt.figure()
+    for i, prediction in enumerate(output):
+      mask = torch.argmax(prediction.squeeze(), dim=0).detach().numpy()
+      print('prediction', prediction.shape, mask.shape, np.unique(mask))
+      rgb = decode_segmap(mask)
+      figure.add_subplot(n, 2, 2 * i + 1).imshow(numpy_images[i])
+      figure.add_subplot(n, 2, 2 * i + 2).imshow(rgb)
     plt.show()
-
-    # cv_model = load_model('deeplabv3_resnet101', 'torch')
-
-    # dataset_splits = load_dataset('lost_and_found')
-    # # dataset_splits = load_dataset('beans')
-    # split_name = next(iter(dataset_splits.keys()))
-    # cv_dataset = dataset_splits[split_name]
-
-    # # from matplotlib import pyplot as plt
-    # # fig = plt.figure()
-    # n = 5
-    # for i, item in enumerate(cv_dataset):
-    # if i == n:
-    # break
-    # print(i, np.unique(item['label']))
-    # # fig.add_subplot(n, 2, 2 * i + 1).imshow(item['image'])
-    # # fig.add_subplot(n, 2, 2 * i + 2).imshow(item['label'])
-    # # plt.show()
 
 
 if __name__ == '__main__':

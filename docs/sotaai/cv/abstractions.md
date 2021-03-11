@@ -29,9 +29,10 @@
 
 - For segmentation tasks:
 
-  - `pixel_types`: array with the number of pixel types
+  - `pixel_classes`: array containing each of the pixel classes (number)
 
-  - `pixel_types_names`: array with the corresponding names of pixel types
+  - `pixel_classes_names`: array containing each of the pixel classes names
+    (strings)
 
 - For image captioning tasks:
 
