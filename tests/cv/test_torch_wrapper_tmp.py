@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# Author: Tonio Teran <tonio@stateoftheart.ai>
 # Author: Hugo Ochoa <hugo@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2021.
 '''Unit testing the Torch wrapper.
@@ -30,13 +29,6 @@ class TestTorchWrapperTmp(unittest.TestCase):
   # to estimate for the AA of this task
   def test_segmentation_example(self):
 
-    # All pytorch pre-trained models expect:
-    # - (N, 3, H, W), where N is the batch size
-    # - N is the batch size
-    # - H and W are expected to be at least 224
-    # - Pixel values must be in range [0,1] and normilized with mean [0.485,
-    # 0.456, 0.406] and std [0.229, 0.224, 0.225]
-
     dataset_name = 'lost_and_found'
     model_name = 'fcn_resnet101'
 
@@ -54,6 +46,13 @@ class TestTorchWrapperTmp(unittest.TestCase):
     print(' Pixel Classes: ', len(cv_dataset.pixel_classes))
 
     # BEGIN model_to_dataset example logic
+
+    # All pytorch pre-trained models expect:
+    # - (N, 3, H, W), where N is the batch size
+    # - N is the batch size
+    # - H and W are expected to be at least 224
+    # - Pixel values must be in range [0,1] and normilized with mean [0.485,
+    # 0.456, 0.406] and std [0.229, 0.224, 0.225]
 
     print('\nAdjusting...')
 
