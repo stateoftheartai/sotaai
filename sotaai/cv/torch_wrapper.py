@@ -372,14 +372,22 @@ def model_to_dataset(cv_model, cv_dataset):
 
   model_input_channels = model_input[1]
 
-  batch = model_input[0]
+  # batch = model_input[0]
+  batch = 2
 
   size = cv_dataset.shape[1]
 
+  min_size = 64
+  if cv_model.name in utils.IMAGE_MINS:
+    min_size = utils.IMAGE_MINS[cv_model.name]
+
   if not isinstance(size, int):
-    size = size.item()
-  if size < 32:  #minimum image size for torch models (32x32)
-    size = 32
+    if size is None:
+      size = min_size
+    else:
+      size = size.item()
+  if size < min_size:  #minimum image size for torch models (64x64)
+    size = min_size
 
   # Case 1:
   # Reshape dataset channels according with models input channels
@@ -389,7 +397,7 @@ def model_to_dataset(cv_model, cv_dataset):
     def preprocess_image(image):
       preprocess = transforms.Compose(
           [transforms.ToTensor(),
-           transforms.Resize(size)])
+           transforms.Resize((size, size))])
       input_tensor = preprocess(image)
       standarized_element = input_tensor.unsqueeze(0)
       w = standarized_element.shape[2]
