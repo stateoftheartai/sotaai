@@ -6,6 +6,7 @@
 from sotaai.cv import utils
 from sotaai.cv import abstractions
 from sotaai.cv import keras_wrapper
+from sotaai.cv import torch_wrapper
 import importlib
 
 
@@ -96,6 +97,7 @@ def load_dataset(name: str,
   for split_name in raw_object:
     raw = raw_object[split_name]
     iterator = wrapper.DatasetIterator(raw)
+
     # print(iterator)
     std_dataset[split_name] = abstractions.CvDataset(raw, iterator, name,
                                                      split_name)
@@ -128,6 +130,9 @@ def model_to_dataset(cv_model, cv_dataset):
 
   if cv_model.source == 'keras':
     cv_model, cv_dataset = keras_wrapper.model_to_dataset(cv_model, cv_dataset)
+
+  elif cv_model.source == 'torchvision':
+    torch_wrapper.model_to_dataset(cv_model, cv_dataset)
 
   # print('\nModel ', cv_model.name)
   # print(' Input: ', cv_model.original_input_shape)
