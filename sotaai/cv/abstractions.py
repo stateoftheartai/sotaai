@@ -96,8 +96,7 @@ class CvModel(object):
     self.original_input_shape = utils.get_input_shape(self.raw)
 
     self.original_output_shape = None
-    if 'classification' in self.tasks:
-      self.original_output_shape = utils.get_output_shape(self.raw)
+    self.original_output_shape = utils.get_output_shape(self.raw)
 
     self.data_type = None  # TODO(tonioteran) Implement me.
 

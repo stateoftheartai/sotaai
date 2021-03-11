@@ -456,6 +456,8 @@ def get_output_shape(model) -> str:
 
     if hasattr(last_output, 'out_features'):
       return (last_output.out_features,)
+    if hasattr(last_output, 'out_channels'):
+      return (last_output.out_channels,)
     else:
       last_output = list(model.children())[-1][1].out_channels
       return (last_output,)
@@ -666,8 +668,12 @@ def get_shape_from_dataset(dataset, name, split_name):
     return dataset[0].shape[1:]
   if source == 'tensorflow':
     _, ds_info = tfds.load(name, with_info=True)
+    # For Classification
     if 'image' in ds_info.features.keys():
       (h, w, c) = ds_info.features['image'].shape
+    # For Segmentation
+    if 'image_left' in ds_info.features.keys():
+      (h, w, c) = ds_info.features['image_left'].shape
     else:
       (h, w, c) = (None, None, None)
 
