@@ -13,10 +13,9 @@ from sotaai.cv import load_dataset, load_model, keras_wrapper, utils, model_to_d
 from sotaai.cv.abstractions import CvDataset, CvModel
 from sotaai.cv import metadata
 
-from torchvision import models
 import matplotlib.pyplot as plt
 import torch
-import torchvision.transforms as T
+import torchvision.transforms as Transforms
 
 #
 # @author HO
@@ -238,49 +237,6 @@ class TestKerasWrapper(unittest.TestCase):
   # to estimate for the AA of this task
   def test_segmentation(self):
 
-    def decode_segmap(image, nc=21):
-
-      label_colors = np.array([
-          (0, 0, 0),  # 0=background
-          # 1=aeroplane, 2=bicycle, 3=bird, 4=boat, 5=bottle
-          (128, 0, 0),
-          (0, 128, 0),
-          (128, 128, 0),
-          (0, 0, 128),
-          (128, 0, 128),
-          # 6=bus, 7=car, 8=cat, 9=chair, 10=cow
-          (0, 128, 128),
-          (128, 128, 128),
-          (64, 0, 0),
-          (192, 0, 0),
-          (64, 128, 0),
-          # 11=dining table, 12=dog, 13=horse, 14=motorbike, 15=person
-          (192, 128, 0),
-          (64, 0, 128),
-          (192, 0, 128),
-          (64, 128, 128),
-          (192, 128, 128),
-          # 16=potted plant, 17=sheep, 18=sofa, 19=train, 20=tv/monitor
-          (0, 64, 0),
-          (128, 64, 0),
-          (0, 192, 0),
-          (128, 192, 0),
-          (0, 64, 128)
-      ])
-
-      r = np.zeros_like(image).astype(np.uint8)
-      g = np.zeros_like(image).astype(np.uint8)
-      b = np.zeros_like(image).astype(np.uint8)
-
-      for l in range(0, nc):
-        idx = image == l
-        r[idx] = label_colors[l, 0]
-        g[idx] = label_colors[l, 1]
-        b[idx] = label_colors[l, 2]
-
-      rgb = np.stack([r, g, b], axis=2)
-      return rgb
-
     # All pytorch pre-trained models expect:
     # - (N, 3, H, W), where N is the batch size
     # - N is the batch size
@@ -288,20 +244,28 @@ class TestKerasWrapper(unittest.TestCase):
     # - Pixel values must be in range [0,1] and normilized with mean [0.485,
     # 0.456, 0.406] and std [0.229, 0.224, 0.225]
 
-    dataset_splits = load_dataset('lost_and_found')
+    dataset_name = 'lost_and_found'
+    model_name = 'fcn_resnet101'
+
+    dataset_splits = load_dataset(dataset_name)
     split_name = next(iter(dataset_splits.keys()))
     cv_dataset = dataset_splits[split_name]
-    print(cv_dataset.pixel_classes)
 
-    fcn = models.segmentation.fcn_resnet101(pretrained=True).eval()
-    fcn.classifier[-1] = torch.nn.Conv2d(512, len(cv_dataset.pixel_classes), 1)
+    print('Pixel classes', cv_dataset.pixel_classes)
 
-    transform = T.Compose([
-        T.ToPILImage(),
-        T.Resize(256),
-        T.CenterCrop(224),
-        T.ToTensor(),
-        T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    cv_model = load_model(model_name)
+    raw_model = cv_model.raw
+
+    raw_model.classifier[-1] = torch.nn.Conv2d(512,
+                                               len(cv_dataset.pixel_classes), 1)
+
+    transform = Transforms.Compose([
+        Transforms.ToPILImage(),
+        Transforms.Resize(256),
+        Transforms.CenterCrop(224),
+        Transforms.ToTensor(),
+        Transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225])
     ])
 
     n = 5
@@ -317,16 +281,21 @@ class TestKerasWrapper(unittest.TestCase):
     batch = torch.stack(images, dim=0)
     print('input', batch.shape)
 
-    output = fcn(batch)['out']
+    output = raw_model(batch)['out']
     print('output', output.shape)
 
     figure = plt.figure()
+
     for i, prediction in enumerate(output):
+
       mask = torch.argmax(prediction.squeeze(), dim=0).detach().numpy()
       print('prediction', prediction.shape, mask.shape, np.unique(mask))
-      rgb = decode_segmap(mask)
+      segmentation_image = utils.create_segmentation_image(
+          mask, len(cv_dataset.pixel_classes))
+
       figure.add_subplot(n, 2, 2 * i + 1).imshow(numpy_images[i])
-      figure.add_subplot(n, 2, 2 * i + 2).imshow(rgb)
+      figure.add_subplot(n, 2, 2 * i + 2).imshow(segmentation_image)
+
     plt.show()
 
 

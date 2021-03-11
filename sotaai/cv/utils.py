@@ -11,7 +11,8 @@ import tensorflow_datasets as tfds
 import time
 import os
 from re import search
-import skimage.transform as st
+import skimage.transform as ski_transform
+from random import randrange
 
 # Prevent Tensorflow to print warning and meta logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -888,4 +889,37 @@ def resize_image(im, shape):
   Returns:
     The numpy array of the image resized
   '''
-  return st.resize(im, shape)
+  return ski_transform.resize(im, shape)
+
+
+def create_segmentation_image(mask, pixel_classes):
+  '''Returns an RGB image of the given mask.
+
+  It assigns a random RGB color to each class, and creates an image where each
+  pixel is set to the RGB color of its respective class.
+
+  Args:
+    mask: the predicted mask of an image (a single item of the output of
+      a segmentation model)
+    pixel_classes: the number of pixel classes available. This is the number
+      of total classes the mask might contain (the pixel classes of the
+      dataset the original image belongs to)
+  '''
+
+  classes_colors = []
+  for _ in range(0, pixel_classes):
+    classes_colors.append((randrange(256), randrange(256), randrange(256)))
+  classes_colors = np.array(classes_colors)
+
+  r = np.zeros_like(mask).astype(np.uint8)
+  g = np.zeros_like(mask).astype(np.uint8)
+  b = np.zeros_like(mask).astype(np.uint8)
+
+  for l in range(0, pixel_classes):
+    idx = mask == l
+    r[idx] = classes_colors[l, 0]
+    g[idx] = classes_colors[l, 1]
+    b[idx] = classes_colors[l, 2]
+
+  rgb = np.stack([r, g, b], axis=2)
+  return rgb
