@@ -446,7 +446,9 @@ def get_input_shape(model) -> str:
     else:
       return input_shape[1:]
   elif source == 'torchvision':
-    return list(model.parameters())[0].shape
+    ci, co, w, h = list(model.parameters())[0].shape
+    input_shape = (ci, co, w, h)
+    return input_shape
   else:
     raise NotImplementedError
 

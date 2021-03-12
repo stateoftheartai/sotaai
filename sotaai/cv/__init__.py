@@ -124,6 +124,7 @@ def model_to_dataset(cv_model, cv_dataset):
   # print('\nModel ', cv_model.name)
   # print(' Input: ', cv_model.original_input_shape)
   # print(' Output: ', cv_model.original_output_shape)
+  # print(' Input Type', cv_model.original_input_type)
   # print('Dataset: ', cv_dataset.name)
   # print(' Shape:   ', cv_dataset.shape)
   # print(' Classes: ', cv_dataset.classes_shape)
