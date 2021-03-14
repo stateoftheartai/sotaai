@@ -6,6 +6,7 @@
 Model information taken from:
 - https://github.com/dmlc/dgl/tree/master/examples/pytorch
 Dataset information taken from:
+https://docs.dgl.ai/en/latest/api/python/dgl.data.html
 '''
 
 MODELS = {
