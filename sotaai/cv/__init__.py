@@ -133,7 +133,11 @@ def model_to_dataset(cv_model, cv_dataset):
     cv_model, cv_dataset = keras_wrapper.model_to_dataset(cv_model, cv_dataset)
 
   elif cv_model.source == 'torchvision':
-    torch_wrapper.model_to_dataset(cv_model, cv_dataset)
+    task = cv_dataset.tasks[0]
+    if task == 'classification':
+      torch_wrapper.model_to_dataset_classification(cv_model, cv_dataset)
+    elif task == 'segmentation':
+      torch_wrapper.model_to_dataset_segmentation(cv_model, cv_dataset)
 
   # print('\nModel ', cv_model.name)
   # print(' Input: ', cv_model.original_input_shape)

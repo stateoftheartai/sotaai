@@ -76,9 +76,9 @@ DATASETS = {
         'visual_domain_decathlon'
     ],
     'segmentation': [
-        'cityscapes',  # manual download
+        # 'cityscapes',  # manual download
         'lost_and_found',
-        'scene_parse150'
+        # 'scene_parse150' #error torch soruce download
     ],
     'object_detection': [
         # TODO(Jorge)

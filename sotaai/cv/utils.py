@@ -53,6 +53,8 @@ IMAGE_MINS = {
     'NASNetMobile': 32
 }
 
+PIXELS_CLASSES = {'lost_and_found': 44, 'cityscapes': 35, 'scene_parse150': 150}
+
 
 def map_dataset_source_tasks() -> dict:
   '''Gathers all datasets and their respective sources and available tasks.
@@ -881,8 +883,9 @@ def extract_pixel_classes(raw_object, name, source, split_name):
   elif source == 'tensorflow':
     # For TF datasets, this information cannot be obtained programatically, it
     # has to be collected manually:
-    classes = list(range(44))
-    classes_names = None
+    if name in PIXELS_CLASSES:
+      classes = list(range(PIXELS_CLASSES[name]))
+      classes_names = None
   elif source == 'fastai':
     obj = getattr(raw_object, split_name + '_ds')
     classes = None

@@ -5,7 +5,7 @@
 '''fastai https://pytorch.org/ wrapper module'''
 
 import unittest
-from sotaai.cv import torch_wrapper, load_dataset, load_model, model_to_dataset, utils, keras_wrapper
+from sotaai.cv import torch_wrapper, load_dataset, load_model, model_to_dataset, utils, keras_wrapper, tensorflow_wrapper
 from sotaai.cv.abstractions import CvDataset, CvModel
 import inspect
 import torch
@@ -173,7 +173,8 @@ class TestTorchWrapper(unittest.TestCase):
 
     print(probabilities)
 
-  def test_model_to_dataset(self):
+  @unittest.SkipTest
+  def test_model_to_dataset_classification(self):
 
     def single_test(model_name, dataset_name):
       '''This is an inner function that test model_to_dataset for a single case
@@ -221,6 +222,59 @@ class TestTorchWrapper(unittest.TestCase):
     # #test models torch with dataset keras
     for model in self.test_models:
       for dataset in keras_wrapper.DATASETS['classification']:
+        single_test(model, dataset)
+
+  def test_model_to_dataset_segmentation(self):
+
+    # cv_model = load_model('deeplabv3_resnet101', source='torch')
+    # cv_dataset = load_dataset('VOCSegmentation/2007')
+
+    def single_test(model_name, dataset_name):
+      '''This is an inner function that test model_to_dataset for a single case
+      i.e. a single model against a single dataset
+      '''
+
+      print('\n---')
+
+      cv_model = load_model(model_name, source='torch')
+
+      dataset_splits = load_dataset(dataset_name)
+      split_name = next(iter(dataset_splits.keys()))
+      cv_dataset = dataset_splits[split_name]
+
+      cv_model, cv_dataset = model_to_dataset(cv_model, cv_dataset)
+
+      n = 3
+      images = []
+      for i, item in enumerate(cv_dataset):
+        images.append(item['image'])
+
+        if i == n - 1:
+          break
+
+      batch = torch.stack(images, dim=0)
+      self.assertEqual(tuple(batch.shape), (n, 3, 224, 224))
+      self.assertEqual(cv_model.original_output_shape,
+                       (len(cv_dataset.pixel_classes), 224, 224))
+
+      output = cv_model(batch)['out']
+
+      print('\nTesting predictions...')
+
+      for i, prediction in enumerate(output):
+
+        mask = torch.argmax(prediction.squeeze(), dim=0).detach().numpy()
+
+        self.assertEqual(tuple(prediction.shape),
+                         (len(cv_dataset.pixel_classes), 224, 224))
+        self.assertEqual(mask.shape, (224, 224))
+
+    for model in torch_wrapper.MODELS['segmentation']:
+      for dataset in torch_wrapper.DATASETS['segmentation']:
+        single_test(model, dataset)
+
+    for model in torch_wrapper.MODELS['segmentation']:
+      for dataset in tensorflow_wrapper.DATASETS['segmentation']:
         single_test(model, dataset)
 
 
