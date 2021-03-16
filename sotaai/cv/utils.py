@@ -17,13 +17,13 @@ from random import randrange
 # Prevent Tensorflow to print warning and meta logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-# TODO(tonioteran) Currently removed 'mxnet' and 'pretrainedmodels' from
+# TODO(tonioteran) Removed 'fastai', 'mxnet' and 'pretrainedmodels' from
 # MODEL_SOURCES. Need to restore as soon as the wrapper is done and unit test.
-MODEL_SOURCES = ['fastai', 'keras', 'torch']  # 'mxnet', 'pretrainedmodels'
+MODEL_SOURCES = ['keras', 'torch']  # 'fastai', 'mxnet', 'pretrainedmodels'
 
-# TODO(tonioteran) Currently removed 'mxnet' from DATASET_SOURCES. Need to
+# TODO(tonioteran) Removed 'fastai' and 'mxnet' from DATASET_SOURCES. Need to
 # restore as soon as the wrapper is done and unit test.
-DATASET_SOURCES = ['tensorflow', 'fastai', 'keras', 'torch']  # 'mxnet'
+DATASET_SOURCES = ['tensorflow', 'keras', 'torch']  # 'mxnet', 'fastai'
 
 IMAGE_MINS = {
     'InceptionV3': 75,
@@ -621,7 +621,7 @@ def get_num_parameters_from_model(model) -> int:
             params_layer = np.prod(weights)
           n_params += params_layer
 
-  return n_params
+  return int(n_params)
 
 
 def get_source_from_dataset(dataset) -> str:
@@ -963,3 +963,19 @@ def create_segmentation_image(mask, pixel_classes):
 
   rgb = np.stack([r, g, b], axis=2)
   return rgb
+
+
+def get_input_shape_min(model_name: str) -> tuple:
+  '''Returns the model minimum allowed input shape for height and width
+
+  Args:
+    model_name: the model name as string
+
+  Returns:
+    A tuple with (min_height, min_width) which represents the model minimum
+    input shape. If model does not have a minimum it returns None entries
+  '''
+  if model_name in IMAGE_MINS:
+    return (IMAGE_MINS[model_name], IMAGE_MINS[model_name])
+  else:
+    return (None, None)
