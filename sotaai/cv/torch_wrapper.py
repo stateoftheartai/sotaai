@@ -28,14 +28,16 @@ DATASETS = {
         # 'ImageNet',  # No download
     ],
     'object_detection': [
-        'CelebA',
-        'Flickr30k',  # No download.
-        'VOCDetection/2007',
-        'VOCDetection/2008',
+        # TODO(Jorge)
+        # Finish object_detection implementation
+        # 'CelebA',
+        # 'Flickr30k',  # No download.
+        # 'VOCDetection/2007',
+        # 'VOCDetection/2008',
         # 'VOCDetection/2009', Corrupted
-        'VOCDetection/2010',
-        'VOCDetection/2011',
-        'VOCDetection/2012',
+        # 'VOCDetection/2010',
+        # 'VOCDetection/2011',
+        # 'VOCDetection/2012',
     ],
     'segmentation': [
         'Cityscapes',  # No download.
@@ -48,24 +50,26 @@ DATASETS = {
         'SBD/segmentation',
         'SBD/boundaries',
     ],
+    # TODO(team)
+    # Eventually implement the remaining tasks...
     'captioning': [
-        'CocoCaptions',  # No download.
-        'Flickr8k',  # No download.
-        'Flickr30k',  # No download.
-        'SBU'
+        # 'CocoCaptions',  # No download.
+        # 'Flickr8k',  # No download.
+        # 'Flickr30k',  # No download.
+        # 'SBU'
     ],
     'human activity recognition': [
-        'HMDB51',  # No download.
-        'Kinetics400',  # No download.
-        'UCF101',  # No download.
+        # 'HMDB51',  # No download.
+        # 'Kinetics400',  # No download.
+        # 'UCF101',  # No download.
     ],
     'local image descriptors': [
-        'PhotoTour/notredame',
-        'PhotoTour/yosemite',
-        'PhotoTour/liberty',
-        'PhotoTour/notredame_harris',
-        'PhotoTour/yosemite_harris',
-        'PhotoTour/liberty_harris',
+        # 'PhotoTour/notredame',
+        # 'PhotoTour/yosemite',
+        # 'PhotoTour/liberty',
+        # 'PhotoTour/notredame_harris',
+        # 'PhotoTour/yosemite_harris',
+        # 'PhotoTour/liberty_harris',
     ],
 }
 
@@ -84,10 +88,16 @@ MODELS = {
         'fcn_resnet50'
     ],
     'object_detection': [
-        'fasterrcnn_resnet50_fpn', 'keypointrcnn_resnet50_fpn',
-        'maskrcnn_resnet50_fpn'
+        # TODO(Jorge)
+        # Finish object_detection implementation
+        # 'fasterrcnn_resnet50_fpn', 'keypointrcnn_resnet50_fpn',
+        # 'maskrcnn_resnet50_fpn'
     ],
-    'video': ['mc3_18', 'r2plus1d_18', 'r3d_18']
+    'video': [
+        # 'mc3_18',
+        # 'r2plus1d_18',
+        # 'r3d_18'
+    ]
 }
 
 

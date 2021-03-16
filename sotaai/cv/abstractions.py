@@ -88,28 +88,42 @@ class CvModel(object):
     self.raw = raw_model
     self.name = name
     self.tasks = utils.map_name_tasks('models')[name]
+    self.source = utils.get_source_from_model(self.raw)
     self._populate_attributes()
 
   def _populate_attributes(self):
-    self.source = utils.get_source_from_model(self.raw)
     self.original_input_type = utils.get_input_type(self.raw)
     self.original_input_shape = utils.get_input_shape(self.raw)
 
-    self.original_output_shape = None
     self.original_output_shape = utils.get_output_shape(self.raw)
 
-    self.data_type = None  # TODO(tonioteran) Implement me.
-
     # TODO(Hugo) Implement me.
-    # The min size already exists in a dictionary used in the model_to_dataset
-    # implementation in wrappers. Perhaps it has to be moved here.
-    self.min_size = None
+    # Still pending to use input_min_shape in model_to_dataset logic instead of
+    # the IMAGE_MINS dict
+    self.input_shape_min = utils.get_input_shape_min(self.name)
 
     self.num_channels = utils.get_num_channels_from_model(self.raw)
     self.num_layers = utils.get_num_layers_from_model(self.raw)
     self.num_params = utils.get_num_parameters_from_model(self.raw)
-    self.associated_datasets = None  # TODO(tonioteran) Implement me.
     self.paper = None  # TODO(tonioteran) Implement me.
+
+  def to_dict(self) -> dict:
+    return {
+        '_name': self.name,
+        '_type': 'model',
+        '_source': self.source,
+        '_tasks': self.tasks,
+        '_paper': self.paper,
+        'input_type': self.original_input_type,
+        'input_shape_height': self.original_input_shape[0],
+        'input_shape_width': self.original_input_shape[1],
+        'input_shape_channels': self.original_input_shape[2],
+        'input_shape_min_height': self.input_shape_min[0],
+        'input_shape_min_width': self.input_shape_min[1],
+        'output_shape': self.original_output_shape,
+        'num_layers': self.num_layers,
+        'num_params': self.num_params,
+    }
 
   def update_raw_model(self, model) -> None:
     '''Update raw model with a new one modified using Keras API directly.
