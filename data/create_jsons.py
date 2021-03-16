@@ -29,8 +29,12 @@ def main(area: str, output_dir='./data/output/'):
   print('Datasets: {}'.format(len(dataset_names)))
   print('JSON output: {}'.format(output_file_path))
 
-  models = sotaai_module.create_models_dict(model_names)
-  datasets = sotaai_module.create_datasets_dict(dataset_names)
+  try:
+    models = sotaai_module.create_models_dict(model_names)
+    datasets = sotaai_module.create_datasets_dict(dataset_names)
+  except Exception as e:
+    raise NotImplementedError(
+        'JSON creation for {} is still not implemented'.format(area)) from e
 
   save_json(models + datasets, output_file_path)
 
@@ -48,24 +52,31 @@ def get_model_and_dataset_names(area: str):
     dataset_names (list): the list of dataset names available for the given area
   '''
 
-  sotaai_utils = importlib.import_module('sotaai.{}.utils'.format(area))
-  sources = list(set(sotaai_utils.MODEL_SOURCES + sotaai_utils.DATASET_SOURCES))
+  try:
+    sotaai_utils = importlib.import_module('sotaai.{}.utils'.format(area))
 
-  model_names = []
-  dataset_names = []
+    sources = list(
+        set(sotaai_utils.MODEL_SOURCES + sotaai_utils.DATASET_SOURCES))
 
-  for source in sources:
+    model_names = []
+    dataset_names = []
 
-    wrapper_file_name = 'sotaai.{}.{}_wrapper'.format(area, source)
-    wrapper = importlib.import_module(wrapper_file_name)
+    for source in sources:
 
-    if hasattr(wrapper, 'MODELS'):
-      for task in wrapper.MODELS:
-        model_names = model_names + wrapper.MODELS[task]
+      wrapper_file_name = 'sotaai.{}.{}_wrapper'.format(area, source)
+      wrapper = importlib.import_module(wrapper_file_name)
 
-    if hasattr(wrapper, 'DATASETS'):
-      for task in wrapper.DATASETS:
-        dataset_names = dataset_names + wrapper.DATASETS[task]
+      if hasattr(wrapper, 'MODELS'):
+        for task in wrapper.MODELS:
+          model_names = model_names + wrapper.MODELS[task]
+
+      if hasattr(wrapper, 'DATASETS'):
+        for task in wrapper.DATASETS:
+          dataset_names = dataset_names + wrapper.DATASETS[task]
+
+  except Exception as e:
+    raise NotImplementedError(
+        'JSON creation for {} is still not implemented'.format(area)) from e
 
   return model_names, dataset_names
 
