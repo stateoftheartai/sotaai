@@ -621,7 +621,7 @@ def get_num_parameters_from_model(model) -> int:
             params_layer = np.prod(weights)
           n_params += params_layer
 
-  return n_params
+  return int(n_params)
 
 
 def get_source_from_dataset(dataset) -> str:

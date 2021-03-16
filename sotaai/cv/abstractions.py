@@ -27,7 +27,6 @@ class CvDataset(object):
     self.iterator = iterator
     self.name = name
     self.source = utils.get_source_from_dataset(raw_dataset)
-    self.data_type = None  # TODO(tonioteran) Implement me.
     self.split_name = split_name
     self.tasks = utils.map_dataset_tasks()[name]
     self.size = utils.get_size_from_dataset(raw_dataset, self.split_name)
@@ -60,6 +59,30 @@ class CvDataset(object):
     # For visual question answering tasks.A
     self.annotations = None
     self.vocab = None
+
+  def to_dict(self) -> dict:
+    return {
+        '_name':
+            self.name,
+        '_type':
+            'dataset',
+        '_source':
+            self.source,
+        '_tasks':
+            self.tasks,
+        'num_items':
+            self.size,
+        'item_width':
+            self.shape[0],
+        'item_height':
+            self.shape[1],
+        'item_channels':
+            self.shape[2] if len(self.shape) == 3 else None,
+        'num_classes':
+            self.classes_shape[0] if self.classes_shape else None,
+        'num_pixel_classes':
+            len(self.pixel_classes) if self.pixel_classes else None,
+    }
 
   def __iter__(self):
     '''Returns the CvDataset iterator object'''
