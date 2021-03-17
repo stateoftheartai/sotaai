@@ -19,22 +19,23 @@ def main(area: str, output_dir='./data/output/'):
 
   print('\nAbout to create JSONs...')
 
-  sotaai_module = importlib.import_module('sotaai.{}'.format(area))
-  sotaai_utils_module = importlib.import_module('sotaai.{}.utils'.format(area))
-
-  models_sources_map = sotaai_utils_module.map_name_sources('models')
-  datasets_sources_map = sotaai_utils_module.map_name_sources('datasets')
-
-  output_file_path = '{}{}.json'.format(output_dir, area)
-  model_names = models_sources_map.keys()
-  dataset_names = datasets_sources_map.keys()
-
-  print('Area: {}'.format(area.upper()))
-  print('Models: {}'.format(len(model_names)))
-  print('Datasets: {}'.format(len(dataset_names)))
-  print('JSON output: {}'.format(output_file_path))
-
   try:
+    sotaai_module = importlib.import_module('sotaai.{}'.format(area))
+    sotaai_utils_module = importlib.import_module(
+        'sotaai.{}.utils'.format(area))
+
+    models_sources_map = sotaai_utils_module.map_name_sources('models')
+    datasets_sources_map = sotaai_utils_module.map_name_sources('datasets')
+
+    output_file_path = '{}{}.json'.format(output_dir, area)
+    model_names = models_sources_map.keys()
+    dataset_names = datasets_sources_map.keys()
+
+    print('Area: {}'.format(area.upper()))
+    print('Models: {}'.format(len(model_names)))
+    print('Datasets: {}'.format(len(dataset_names)))
+    print('JSON output: {}'.format(output_file_path))
+
     models = sotaai_module.create_models_dict(model_names, models_sources_map)
     datasets = sotaai_module.create_datasets_dict(dataset_names,
                                                   datasets_sources_map)
