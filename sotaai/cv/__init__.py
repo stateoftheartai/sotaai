@@ -149,12 +149,14 @@ def model_to_dataset(cv_model, cv_dataset):
   return cv_model, cv_dataset
 
 
-def create_models_dict(model_names):
+def create_models_dict(model_names, models_sources_map):
   '''Given a list of model names, return a list with the JSON representation
   of each model as an standardized dict
 
   Args:
     model_names (list): list of model names to return the standardized dict
+    models_sources_map: a dict map between model names and sources as returned
+      by the utils function map_name_sources('models')
 
   Returns:
     A list of dictionaries with the JSON representation of each CV model
@@ -168,18 +170,25 @@ def create_models_dict(model_names):
     print(' - ({}/{}) {}'.format(i + 1, len(model_names),
                                  'models.' + model_name))
     model = load_model(model_name)
-    models.append(model.to_dict())
+    model_dict = model.to_dict()
+
+    model_dict['_sources'] = models_sources_map[model_dict['_name']]
+    del model_dict['_source']
+
+    models.append(model_dict)
 
   return models
 
 
-def create_datasets_dict(dataset_names):
+def create_datasets_dict(dataset_names, dataset_sources_map):
   '''Given a list of dataset names, return a list with the JSON representation
   of each dataset as an standardized dict
 
   Args:
     dataset_names (list): list of dataset names to return the standardized dict
       dataset
+    dataset_sources_map: a dict map between dataset names and sources as
+      returned by the utils function map_name_sources('datasets')
 
   Returns:
     A list of dictionaries with the JSON representation of each CV model
@@ -229,7 +238,11 @@ def create_datasets_dict(dataset_names):
           'num_items': dataset_dict['num_items']
       })
       total_items += dataset_dict['num_items']
+
+      del dataset_dict['_source']
       del dataset_dict['num_items']
+
+    dataset_dict['_sources'] = dataset_sources_map[dataset_dict['_name']]
 
     dataset_dict['splits'] = splits_data
     dataset_dict['total_items'] = total_items

@@ -14,6 +14,12 @@ import torch.nn as nn
 import numpy as np
 import torchvision.transforms as transforms
 
+SOURCE_METADATA = {
+    'source_name': 'torch',
+    'source_original_name': 'PyTorch',
+    'source_url': 'https://pytorch.org/'
+}
+
 DATASETS = {
     'classification': [
         # 'CelebA',
