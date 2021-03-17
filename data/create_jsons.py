@@ -26,6 +26,7 @@ def main(area: str, output_dir='./data/output/'):
 
     models_sources_map = sotaai_utils_module.map_name_sources('models')
     datasets_sources_map = sotaai_utils_module.map_name_sources('datasets')
+    sources_metadata_map = sotaai_utils_module.map_source_metadata()
 
     output_file_path = '{}{}.json'.format(output_dir, area)
     model_names = models_sources_map.keys()
@@ -36,9 +37,11 @@ def main(area: str, output_dir='./data/output/'):
     print('Datasets: {}'.format(len(dataset_names)))
     print('JSON output: {}'.format(output_file_path))
 
-    models = sotaai_module.create_models_dict(model_names, models_sources_map)
+    models = sotaai_module.create_models_dict(model_names, models_sources_map,
+                                              sources_metadata_map)
     datasets = sotaai_module.create_datasets_dict(dataset_names,
-                                                  datasets_sources_map)
+                                                  datasets_sources_map,
+                                                  sources_metadata_map)
   except Exception as e:
     raise NotImplementedError(
         'JSON creation for {} is still not implemented'.format(area)) from e

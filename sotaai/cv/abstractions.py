@@ -4,6 +4,8 @@
 '''Abstract classes for standardized models and datasets.'''
 from sotaai.cv import utils
 
+datasets_tasks_map = utils.map_name_tasks('datasets')
+
 
 class CvDataset(object):
   '''Our attempt at a standardized, task-agnostic dataset wrapper.
@@ -28,7 +30,7 @@ class CvDataset(object):
     self.name = name
     self.source = utils.get_source_from_dataset(raw_dataset)
     self.split_name = split_name
-    self.tasks = utils.map_name_tasks('datasets')[name]
+    self.tasks = datasets_tasks_map[name]
     self.size = utils.get_size_from_dataset(raw_dataset, self.split_name)
     self.shape = utils.get_shape_from_dataset(raw_dataset, name, split_name)
 

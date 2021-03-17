@@ -149,7 +149,7 @@ def model_to_dataset(cv_model, cv_dataset):
   return cv_model, cv_dataset
 
 
-def create_models_dict(model_names, models_sources_map):
+def create_models_dict(model_names, models_sources_map, sources_metadata_map):
   '''Given a list of model names, return a list with the JSON representation
   of each model as an standardized dict
 
@@ -157,6 +157,8 @@ def create_models_dict(model_names, models_sources_map):
     model_names (list): list of model names to return the standardized dict
     models_sources_map: a dict map between model names and sources as returned
       by the utils function map_name_sources('models')
+    sources_original_name_map: a dict map between source names and source
+      metadata
 
   Returns:
     A list of dictionaries with the JSON representation of each CV model
@@ -172,7 +174,10 @@ def create_models_dict(model_names, models_sources_map):
     model = load_model(model_name)
     model_dict = model.to_dict()
 
-    model_dict['_sources'] = models_sources_map[model_dict['_name']]
+    model_dict['_sources'] = list(
+        map(lambda source_name: sources_metadata_map[source_name],
+            models_sources_map[model_dict['_name']]))
+
     del model_dict['_source']
 
     models.append(model_dict)
@@ -180,7 +185,8 @@ def create_models_dict(model_names, models_sources_map):
   return models
 
 
-def create_datasets_dict(dataset_names, dataset_sources_map):
+def create_datasets_dict(dataset_names, dataset_sources_map,
+                         sources_metadata_map):
   '''Given a list of dataset names, return a list with the JSON representation
   of each dataset as an standardized dict
 
@@ -189,6 +195,8 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
       dataset
     dataset_sources_map: a dict map between dataset names and sources as
       returned by the utils function map_name_sources('datasets')
+    sources_original_name_map: a dict map between source names and source
+      metadata
 
   Returns:
     A list of dictionaries with the JSON representation of each CV model
@@ -243,6 +251,10 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
       del dataset_dict['num_items']
 
     dataset_dict['_sources'] = dataset_sources_map[dataset_dict['_name']]
+    dataset_dict['_sources'] = list(
+        map(lambda source_name: sources_metadata_map[source_name],
+            dataset_sources_map[dataset_dict['_name']]))
+
     dataset_dict['splits'] = splits_data
     dataset_dict['total_items'] = total_items
     datasets.append(dataset_dict)

@@ -123,6 +123,27 @@ def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:
   return output_dict
 
 
+def map_source_metadata() -> dict:
+  '''Return a map between the source name and its original name
+
+  Crawls through all modules to arrange entries of the form:
+
+    <source-name>: <source-original-name>
+
+  Returns (dict):
+    Dictionary with an entry for all available items of the above form.
+  '''
+  items_breakdown = dict()
+
+  sources = set(DATASET_SOURCES + MODEL_SOURCES)
+
+  for source in sources:
+    wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
+    items_breakdown[source] = wrapper.SOURCE_METADATA
+
+  return items_breakdown
+
+
 def map_name_tasks(nametype: str) -> dict:
   '''Gathers all models/datasets and their supported tasks.
 

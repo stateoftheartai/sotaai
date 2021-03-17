@@ -16,6 +16,12 @@ resource.setrlimit(resource.RLIMIT_NOFILE, (1000, high))
 # Prevent Tensorflow to print warning and meta logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
+SOURCE_METADATA = {
+    'source_name': 'tensorflow',
+    'source_original_name': 'TensorFlow',
+    'source_url': 'https://www.tensorflow.org/'
+}
+
 DATASETS = {
     'classification': [
         'beans',
