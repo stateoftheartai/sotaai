@@ -20,9 +20,14 @@ def main(area: str, output_dir='./data/output/'):
   print('\nAbout to create JSONs...')
 
   sotaai_module = importlib.import_module('sotaai.{}'.format(area))
+  sotaai_utils_module = importlib.import_module('sotaai.{}.utils'.format(area))
+
+  models_sources_map = sotaai_utils_module.map_name_sources('models')
+  datasets_sources_map = sotaai_utils_module.map_name_sources('datasets')
 
   output_file_path = '{}{}.json'.format(output_dir, area)
-  model_names, dataset_names = get_model_and_dataset_names(area)
+  model_names = models_sources_map.keys()
+  dataset_names = datasets_sources_map.keys()
 
   print('Area: {}'.format(area.upper()))
   print('Models: {}'.format(len(model_names)))
@@ -30,8 +35,9 @@ def main(area: str, output_dir='./data/output/'):
   print('JSON output: {}'.format(output_file_path))
 
   try:
-    models = sotaai_module.create_models_dict(model_names)
-    datasets = sotaai_module.create_datasets_dict(dataset_names)
+    models = sotaai_module.create_models_dict(model_names, models_sources_map)
+    datasets = sotaai_module.create_datasets_dict(dataset_names,
+                                                  datasets_sources_map)
   except Exception as e:
     raise NotImplementedError(
         'JSON creation for {} is still not implemented'.format(area)) from e
@@ -39,46 +45,6 @@ def main(area: str, output_dir='./data/output/'):
   save_json(models + datasets, output_file_path)
 
   print('\nJSONs files created successfully.\n')
-
-
-def get_model_and_dataset_names(area: str):
-  '''Return the set of model and datasets name available for a given area
-
-  Args:
-    area (str): a valid area e.g. cv, nlp, rl, or neuro
-
-  Returns:
-    model_names (list): the list of model names available for the given area
-    dataset_names (list): the list of dataset names available for the given area
-  '''
-
-  try:
-    sotaai_utils = importlib.import_module('sotaai.{}.utils'.format(area))
-
-    sources = list(
-        set(sotaai_utils.MODEL_SOURCES + sotaai_utils.DATASET_SOURCES))
-
-    model_names = []
-    dataset_names = []
-
-    for source in sources:
-
-      wrapper_file_name = 'sotaai.{}.{}_wrapper'.format(area, source)
-      wrapper = importlib.import_module(wrapper_file_name)
-
-      if hasattr(wrapper, 'MODELS'):
-        for task in wrapper.MODELS:
-          model_names = model_names + wrapper.MODELS[task]
-
-      if hasattr(wrapper, 'DATASETS'):
-        for task in wrapper.DATASETS:
-          dataset_names = dataset_names + wrapper.DATASETS[task]
-
-  except Exception as e:
-    raise NotImplementedError(
-        'JSON creation for {} is still not implemented'.format(area)) from e
-
-  return model_names, dataset_names
 
 
 def save_json(data, file_path):
