@@ -24,7 +24,7 @@ This will create a JSON file in `data/output/<area>.json` e.g.
 - `models`: a list of models of the given area with its metadata
 - `sources`: a list of sources (libraries) of the given area with its metadata
 
-For each dataset or model in the lists, the following structure must be met:
+For each Dataset or Model of the lists, the following structure must be met:
 
 ```json
 {
@@ -37,13 +37,17 @@ For each dataset or model in the lists, the following structure must be met:
     "source-n"
   ]
   "_paper": "The paper name, only for models when data is available",
+
   ...
+
     Any other values that depend on the area must be added here (without _)
+
   ...
+
 }
 ```
 
-Take this one of CV as an example:
+This is an example taken from CV:
 
 ```
 {
@@ -80,7 +84,7 @@ For the sources the following structure must be met:
 }
 ```
 
-Take this CV source as an example:
+This is an example taken from CV:
 
 ```
 {
@@ -92,17 +96,17 @@ Take this CV source as an example:
 
 ## Development
 
-To create these JSONs for a given area, each sotaai area subdir must have:
+To create these JSONs of a given area, **each sotaai area directory must have**:
 
 - Model and Dataset abstraction classes must have a `to_dict` instance method.
 - The init file of the area e.g. `sotaai/cv/__init__.py` must have the
   `create_models_dict` and `create_datasets_dict` functions.
-- The utils file of the area e.g. `sotaai/cv/utils.py` which must have the
+- The utils file of the area e.g. `sotaai/cv/utils.py` must have the
   following functions:
-  - `map_name_sources`: returns a map of all models or datasets and its sources
-  - `map_source_metadata`: returns a map of all sources names and its metadata
+  - `map_name_sources`: returns a map of all models or datasets and their sources
+  - `map_source_metadata`: returns a map of all sources names and their metadata
 - Each wrapper file must have the following variables defined:
   `SOURCE_METADATA`, `MODELS`, and `DATASETS`
 
 If any of the above does not exists or fail, the JSON creation will fail with a
-NotImplementedError.
+**NotImplementedError**.
