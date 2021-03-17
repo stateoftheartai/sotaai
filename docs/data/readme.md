@@ -78,8 +78,8 @@ For the sources the following structure must be met:
 
 ```
 {
-  "name": "source name as it is identified internally",
-  "original_name": "source original name",
+  "id": "source identifier",
+  "name": "source name",
   "url": "source website url"
 }
 ```
@@ -88,8 +88,8 @@ This is an example taken from CV:
 
 ```
 {
-  "name": "torch",
-  "original_name": "PyTorch",
+  "id": "torch",
+  "name": "PyTorch",
   "url": "https://pytorch.org/"
 }
 ```

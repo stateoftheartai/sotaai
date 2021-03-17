@@ -17,9 +17,9 @@ resource.setrlimit(resource.RLIMIT_NOFILE, (1000, high))
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 SOURCE_METADATA = {
-    'source_name': 'tensorflow',
-    'source_original_name': 'TensorFlow',
-    'source_url': 'https://www.tensorflow.org/'
+    'id': 'tensorflow',
+    'name': 'TensorFlow',
+    'url': 'https://www.tensorflow.org/'
 }
 
 DATASETS = {
