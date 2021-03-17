@@ -3,7 +3,6 @@
 # Copyright: Stateoftheart AI PBC 2021.
 '''Fairseq wrapper module.
 
-
 Model information taken from:
 http://github.com/pytorch/fairseq/blob/master/examples/language_model/README.md
 http://github.com/pytorch/fairseq/blob/master/examples/translation/README.md
