@@ -16,24 +16,13 @@ resource.setrlimit(resource.RLIMIT_NOFILE, (1000, high))
 # Prevent Tensorflow to print warning and meta logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
+SOURCE_METADATA = {
+    'id': 'tensorflow',
+    'name': 'TensorFlow',
+    'url': 'https://www.tensorflow.org/'
+}
+
 DATASETS = {
-    'video': [
-        'bair_robot_pushing_small',
-        'moving_mnist',
-        'starcraft_video',
-        # 'ucf101'  # Bug tensorflow
-    ],
-    'object_detection': [
-        'celeb_a_hq',  # manual download
-        'coco',
-        'flic',
-        'kitti',
-        # 'open_images_challenge2019_detection', Apache beam
-        # 'open_images_v4', Apache beam
-        'voc',
-        'the300w_lp',
-        'wider_face'  # Wrong checksum
-    ],
     'classification': [
         'beans',
         'binary_alpha_digits',
@@ -93,9 +82,30 @@ DATASETS = {
         'visual_domain_decathlon'
     ],
     'segmentation': [
-        'cityscapes',  # manual download
+        # 'cityscapes',  # manual download
         'lost_and_found',
-        'scene_parse150'
+        # 'scene_parse150' #error torch soruce download
+    ],
+    'object_detection': [
+        # TODO(Jorge)
+        # Finish object_detection implementation
+        # 'celeb_a_hq',  # manual download
+        # 'coco',
+        # 'flic',
+        # 'kitti',
+        # 'open_images_challenge2019_detection', Apache beam
+        # 'open_images_v4', Apache beam
+        # 'voc',
+        # 'the300w_lp',
+        # 'wider_face'  # Wrong checksum
+    ],
+    # TODO(team)
+    # Eventually implement the remaining tasks...
+    'video': [
+        # 'bair_robot_pushing_small',
+        # 'moving_mnist',
+        # 'starcraft_video',
+        # 'ucf101'  # Bug tensorflow
     ],
     'image super resolution': ['div2k',],
     'key point detection': ['aflw2k3d', 'celeb_a', 'the300w_lp'],
@@ -106,10 +116,10 @@ DATASETS = {
     'image generation': ['dsprites', 'shapes3d'],
     '3d image generation': ['shapes3d',],
     'other': [
-        'binarized_mnist',
-        'chexpert',  # manual download
-        'coil100',
-        'lsun'
+        # 'binarized_mnist',
+        # 'chexpert',  # manual download
+        # 'coil100',
+        # 'lsun'
     ]
 }
 

@@ -221,5 +221,5 @@ python -m unittest tests/cv/test_utils.py
 Execute a particular test:
 
 ```
-python tests/cv/test_utils.py TestCvUtils.test_map_dataset_tasks
+python tests/cv/test_utils.py TestCvUtils.test_map_name_tasks
 ```

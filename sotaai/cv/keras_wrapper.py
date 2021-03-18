@@ -11,6 +11,8 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense, GlobalAveragePooling2D
 import numpy as np
 
+SOURCE_METADATA = {'id': 'keras', 'name': 'Keras', 'url': 'https://keras.io/'}
+
 DATASETS = {'classification': ['mnist', 'cifar10', 'cifar100', 'fashion_mnist']}
 
 # @author HO

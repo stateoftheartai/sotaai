@@ -14,6 +14,12 @@ import torch.nn as nn
 import numpy as np
 import torchvision.transforms as transforms
 
+SOURCE_METADATA = {
+    'id': 'torch',
+    'name': 'PyTorch',
+    'url': 'https://pytorch.org/'
+}
+
 DATASETS = {
     'classification': [
         # 'CelebA',
@@ -28,17 +34,19 @@ DATASETS = {
         # 'ImageNet',  # No download
     ],
     'object_detection': [
-        'CelebA',
-        'Flickr30k',  # No download.
-        'VOCDetection/2007',
-        'VOCDetection/2008',
+        # TODO(Jorge)
+        # Finish object_detection implementation
+        # 'CelebA',
+        # 'Flickr30k',  # No download.
+        # 'VOCDetection/2007',
+        # 'VOCDetection/2008',
         # 'VOCDetection/2009', Corrupted
-        'VOCDetection/2010',
-        'VOCDetection/2011',
-        'VOCDetection/2012',
+        # 'VOCDetection/2010',
+        # 'VOCDetection/2011',
+        # 'VOCDetection/2012',
     ],
     'segmentation': [
-        'Cityscapes',  # No download.
+        # 'Cityscapes',  # No download.
         'VOCSegmentation/2007',
         'VOCSegmentation/2008',
         # 'VOCSegmentation/2009', Corrupted
@@ -48,24 +56,26 @@ DATASETS = {
         'SBD/segmentation',
         'SBD/boundaries',
     ],
+    # TODO(team)
+    # Eventually implement the remaining tasks...
     'captioning': [
-        'CocoCaptions',  # No download.
-        'Flickr8k',  # No download.
-        'Flickr30k',  # No download.
-        'SBU'
+        # 'CocoCaptions',  # No download.
+        # 'Flickr8k',  # No download.
+        # 'Flickr30k',  # No download.
+        # 'SBU'
     ],
     'human activity recognition': [
-        'HMDB51',  # No download.
-        'Kinetics400',  # No download.
-        'UCF101',  # No download.
+        # 'HMDB51',  # No download.
+        # 'Kinetics400',  # No download.
+        # 'UCF101',  # No download.
     ],
     'local image descriptors': [
-        'PhotoTour/notredame',
-        'PhotoTour/yosemite',
-        'PhotoTour/liberty',
-        'PhotoTour/notredame_harris',
-        'PhotoTour/yosemite_harris',
-        'PhotoTour/liberty_harris',
+        # 'PhotoTour/notredame',
+        # 'PhotoTour/yosemite',
+        # 'PhotoTour/liberty',
+        # 'PhotoTour/notredame_harris',
+        # 'PhotoTour/yosemite_harris',
+        # 'PhotoTour/liberty_harris',
     ],
 }
 
@@ -84,10 +94,16 @@ MODELS = {
         'fcn_resnet50'
     ],
     'object_detection': [
-        'fasterrcnn_resnet50_fpn', 'keypointrcnn_resnet50_fpn',
-        'maskrcnn_resnet50_fpn'
+        # TODO(Jorge)
+        # Finish object_detection implementation
+        # 'fasterrcnn_resnet50_fpn', 'keypointrcnn_resnet50_fpn',
+        # 'maskrcnn_resnet50_fpn'
     ],
-    'video': ['mc3_18', 'r2plus1d_18', 'r3d_18']
+    'video': [
+        # 'mc3_18',
+        # 'r2plus1d_18',
+        # 'r3d_18'
+    ]
 }
 
 
@@ -362,7 +378,20 @@ class DatasetIterator():
     self._image_preprocessing_callback = image_preprocessing_callback
 
 
-def model_to_dataset(cv_model, cv_dataset):
+def model_to_dataset_classification(cv_model, cv_dataset):
+  '''If compatible, adjust model and dataset so that they can be executed
+  against each other
+
+  Args:
+    cv_model: an abstracted cv model whose source is Torch of classification
+    cv_dataset: an abstracted cv dataset of classification
+
+  Returns:
+    cv_model: the abstracted cv model adjusted to be executed against
+      cv_dataset
+    cv_dataset: the abstracted cv dataset adjust to be executed against
+      cv_model
+  '''
 
   raw_model = cv_model.raw
   are_channels_compatible = len(cv_dataset.shape) == len(
@@ -444,4 +473,59 @@ def model_to_dataset(cv_model, cv_dataset):
       setattr(raw_model, attributes[-1], last_layer)
 
   cv_model.update_raw_model(raw_model)
+  return cv_model, cv_dataset
+
+
+def model_to_dataset_segmentation(cv_model, cv_dataset):
+  '''If compatible, adjust model and dataset so that they can be executed
+  against each other
+
+  Args:
+    cv_model: an abstracted cv model whose source is Segmentation Torch
+    cv_dataset: an abstracted segmentation cv dataset
+
+  Returns:
+    cv_model: the abstracted cv model adjusted to be executed against
+      cv_dataset
+    cv_dataset: the abstracted cv dataset adjust to be executed against
+      cv_model
+  '''
+
+  print('\nModel ', cv_model.name)
+  print(' Input: ', cv_model.original_input_shape)
+  print(' Output: ', cv_model.original_output_shape)
+  print('Dataset: ', cv_dataset.name)
+  print(' Shape:   ', cv_dataset.shape)
+  print(' Pixel Classes: ', len(cv_dataset.pixel_classes))
+
+  print('\nAdjusting...')
+
+  raw_model = cv_model.raw
+
+  def preprocess_image(image):
+    preprocess = transforms.Compose([
+        transforms.ToPILImage(),
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225])
+    ])
+
+    standarized_element = preprocess(image)
+    return standarized_element
+
+  cv_dataset.set_image_preprocessing(preprocess_image)
+
+  # Adjust the model output
+  num_pixels = len(cv_dataset.pixel_classes)
+
+  in_channels = raw_model.classifier[-1].in_channels
+  kernel = raw_model.classifier[-1].kernel_size
+  stride = raw_model.classifier[-1].stride
+
+  raw_model.classifier[-1] = nn.Conv2d(in_channels, num_pixels, kernel, stride)
+
+  cv_model.update_raw_model(raw_model)
+
   return cv_model, cv_dataset
