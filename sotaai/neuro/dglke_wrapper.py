@@ -8,6 +8,12 @@ Model information taken from:
 Dataset information taken from:
 '''
 
+SOURCE_METADATA = {
+    'id': 'dglke',
+    'name': 'DGL-KE',
+    'url': 'https://dglke.dgl.ai/doc/'
+}
+
 MODELS = {
     'unknown': [
         'TransE', 'TransE_l1', 'TransE_l2', 'TransR', 'RESCAL', 'DistMult',
