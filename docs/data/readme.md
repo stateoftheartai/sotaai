@@ -31,12 +31,12 @@ For each Dataset or Model of the lists, the following structure must be met:
   "name": "Dataset or model name",
   "area": "Area name e.g. cv"
   "type": "model or dataset",
-  "tasks": [
-    "task-n"
-  ],
   "sources": [
     "source-n"
   ]
+  "tasks": [
+    "task-n"
+  ],
   "paper": "The paper name, only for models when data is available",
 
   ...
@@ -56,6 +56,9 @@ This is an example taken from CV:
   "name": "InceptionResNetV2",
   "area": "cv",
   "type": "model",
+  "sources": [
+    "keras"
+  ]
   "tasks": [
     "classification"
   ],
@@ -71,9 +74,6 @@ This is an example taken from CV:
   ],
   "cv_num_layers": 244,
   "cv_num_params": 54336736,
-  "sources": [
-    "keras"
-  ]
 }
 ```
 
