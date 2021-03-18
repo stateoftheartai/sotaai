@@ -3,6 +3,15 @@
 # Copyright: Stateoftheart AI PBC 2021.
 '''Causal Discovery Toolbox's library wrapper.'''
 
+SOURCE_METADATA = {
+    'id':
+        'cdt',
+    'name':
+        'Causal Discovery Toolbox',
+    'url':
+        'https://fentechsolutions.github.io/CausalDiscoveryToolbox/html/index.html'  # pylint: disable=line-too-long
+}
+
 MODELS = {
     'causal pairwise inference': [
         'ANM', 'IGCI', 'RCC', 'NCC', 'GNN', 'BivariateFit', 'Jarfo', 'CDS',
