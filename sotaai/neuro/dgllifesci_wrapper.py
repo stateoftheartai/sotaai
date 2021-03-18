@@ -7,6 +7,12 @@ Model information taken from: https://lifesci.dgl.ai/api/model.zoo.html
 Dataset information taken from: https://lifesci.dgl.ai/api/data.html
 '''
 
+SOURCE_METADATA = {
+    'id': 'dgllifesci',
+    'name': 'DGL-LifeSci',
+    'url': 'https://lifesci.dgl.ai/'
+}
+
 MODELS = {
     'molecular property prediction': [
         'AttentiveFP', 'GAT', 'GCN', 'MGCN', 'MPNN', 'SchNet', 'Weave', 'GIN',
