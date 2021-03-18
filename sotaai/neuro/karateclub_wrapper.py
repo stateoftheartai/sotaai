@@ -9,6 +9,12 @@ Dataset information taken from:
 https://karateclub.readthedocs.io/en/latest/notes/introduction.html
 '''
 
+SOURCE_METADATA = {
+    'id': 'karateclub',
+    'name': 'Karate Club',
+    'url': 'https://karateclub.readthedocs.io/en/latest/'
+}
+
 MODELS = {
     # ---
     'community detection': [
