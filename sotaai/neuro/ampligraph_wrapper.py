@@ -3,6 +3,12 @@
 # Copyright: Stateoftheart AI PBC 2021.
 '''Ampligraph's library wrapper.'''
 
+SOURCE_METADATA = {
+    'id': 'ampligraph',
+    'name': 'AmpliGraph',
+    'url': 'ampligraph.org'
+}
+
 MODELS = {
     'unknown': [
         'RandomBaseline', 'TransE', 'DistMult', 'ComplEx', 'HolE', 'ConvE',
