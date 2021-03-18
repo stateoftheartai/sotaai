@@ -15,8 +15,8 @@ import numpy as np
 import torchvision.transforms as transforms
 
 SOURCE_METADATA = {
-    'id': 'torch',
-    'name': 'PyTorch',
+    'name': 'torch',
+    'original_name': 'PyTorch',
     'url': 'https://pytorch.org/'
 }
 
