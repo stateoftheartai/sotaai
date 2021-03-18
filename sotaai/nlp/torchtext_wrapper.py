@@ -3,18 +3,14 @@
 # Copyright: Stateoftheart AI PBC 2021.
 '''Torchtext wrapper module.'''
 
-MODELS = {
-    'task1': ['model1', 'model2', 'model3'],
-    'task2': ['model1', 'model2', 'model3'],
-    'task3': ['model1', 'model2', 'model3'],
-    'task4': ['model1', 'model2', 'model3'],
-}
-
 DATASETS = {
-    'task1': ['dataset1', 'dataset2'],
-    'task2': ['dataset1', 'dataset2'],
-    'task3': ['dataset1', 'dataset2'],
-    'task4': ['dataset1', 'dataset2'],
+    'Sentiment Analysis': ['SST', 'IMDb'],
+    'Question Classification': ['TREC'],
+    'Entailment': ['SNLI', 'MultiNLI'],
+    'Language Modeling': ['WikiText-2', 'WikiText103', 'PennTreebank'],
+    'Machine Translation': ['Multi30k', 'IWSLT', 'WMT14'],
+    'Sequence Tagging': ['UDPOS', 'CoNLL2000Chunking'],
+    'Question Answering': ['BABI20']
 }
 
 
@@ -27,7 +23,7 @@ def load_model(name: str):
     Returns:
       Torchtext model.
     '''
-  raise NotImplementedError("TODO(lalito) Implement me!")
+  raise NotImplementedError('TODO(lalito) Implement me!')
 
 
 def load_dataset(name: str):
@@ -39,4 +35,4 @@ def load_dataset(name: str):
     Returns:
       Torchtext dataset.
     '''
-  raise NotImplementedError("TODO(lalito) Implement me!")
+  raise NotImplementedError('TODO(lalito) Implement me!')
