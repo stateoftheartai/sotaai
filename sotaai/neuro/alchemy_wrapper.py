@@ -5,6 +5,7 @@
 
 Dataset information taken from: https://alchemy.cs.washington.edu/data/
 '''
+from sotaai.neuro.abstractions import NeuroDataset
 
 SOURCE_METADATA = {
     'id': 'alchemy',
@@ -19,3 +20,7 @@ DATASETS = {
         'UMLS', 'UW-CSE', 'WebKB'
     ]
 }
+
+
+def load_dataset(name: str) -> NeuroDataset:
+  return NeuroDataset(name, 'alchemy')
