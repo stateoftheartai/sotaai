@@ -6,4 +6,10 @@
 Dataset information taken from:
 '''
 
+SOURCE_METADATA = {
+    'id': 'nearai',
+    'name': 'NEAR Program Synthesis',
+    'url': 'https://github.com/nearai/program_synthesis'
+}
+
 DATASETS = {'program synthesis': ['AlgoLisp', 'Karel', 'NAPS']}
