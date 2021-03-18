@@ -9,6 +9,12 @@ Dataset information taken from:
 https://docs.dgl.ai/en/latest/api/python/dgl.data.html
 '''
 
+SOURCE_METADATA = {
+    'id': 'dgl',
+    'name': 'Deep Graph Library (DGL)',
+    'url': 'https://www.dgl.ai/'
+}
+
 MODELS = {
     'unknown': [
         'GATNE-T', 'GNN-FiLM', 'NGCF', 'APPNP', 'ARMA', 'CapsuleNetwork',
