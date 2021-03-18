@@ -64,25 +64,27 @@ class CvDataset(object):
 
   def to_dict(self) -> dict:
     return {
-        '_name':
+        'name':
             self.name,
-        '_type':
+        'area':
+            'cv',
+        'type':
             'dataset',
-        '_source':
+        'source':
             self.source,
-        '_tasks':
+        'tasks':
             self.tasks,
-        'num_items':
+        'cv_num_items':
             self.size,
-        'item_width':
+        'cv_item_width':
             self.shape[0],
-        'item_height':
+        'cv_item_height':
             self.shape[1],
-        'item_channels':
+        'cv_item_channels':
             self.shape[2] if len(self.shape) == 3 else None,
-        'num_classes':
+        'cv_num_classes':
             self.classes_shape[0] if self.classes_shape else None,
-        'num_pixel_classes':
+        'cv_num_pixel_classes':
             len(self.pixel_classes) if self.pixel_classes else None,
     }
 
@@ -134,20 +136,21 @@ class CvModel(object):
 
   def to_dict(self) -> dict:
     return {
-        '_name': self.name,
-        '_type': 'model',
-        '_source': self.source,
-        '_tasks': self.tasks,
-        '_paper': self.paper,
-        'input_type': self.original_input_type,
-        'input_shape_height': self.original_input_shape[0],
-        'input_shape_width': self.original_input_shape[1],
-        'input_shape_channels': self.original_input_shape[2],
-        'input_shape_min_height': self.input_shape_min[0],
-        'input_shape_min_width': self.input_shape_min[1],
-        'output_shape': self.original_output_shape,
-        'num_layers': self.num_layers,
-        'num_params': self.num_params,
+        'name': self.name,
+        'area': 'cv',
+        'type': 'model',
+        'source': self.source,
+        'tasks': self.tasks,
+        'paper': self.paper,
+        'cv_input_type': self.original_input_type,
+        'cv_input_shape_height': self.original_input_shape[0],
+        'cv_input_shape_width': self.original_input_shape[1],
+        'cv_input_shape_channels': self.original_input_shape[2],
+        'cv_input_shape_min_height': self.input_shape_min[0],
+        'cv_input_shape_min_width': self.input_shape_min[1],
+        'cv_output_shape': self.original_output_shape,
+        'cv_num_layers': self.num_layers,
+        'cv_num_params': self.num_params,
     }
 
   def update_raw_model(self, model) -> None:

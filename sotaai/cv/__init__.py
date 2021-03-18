@@ -172,8 +172,8 @@ def create_models_dict(model_names, models_sources_map):
     model = load_model(model_name)
     model_dict = model.to_dict()
 
-    model_dict['_sources'] = models_sources_map[model_dict['_name']]
-    del model_dict['_source']
+    model_dict['sources'] = models_sources_map[model_dict['name']]
+    del model_dict['source']
 
     models.append(model_dict)
 
@@ -224,28 +224,27 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
     # the splits information and then extend the dataset dict with this split
     # data
     dataset_splits = load_dataset(dataset_name)
-    split_names = dataset_splits.keys()
 
     dataset_dict = None
-    splits_data = []
+    split_names = []
+    split_num_items = []
     total_items = 0
 
-    for split_name in split_names:
+    for split_name in dataset_splits:
       dataset = dataset_splits[split_name]
       dataset_dict = dataset.to_dict()
-      splits_data.append({
-          'name': split_name,
-          'num_items': dataset_dict['num_items']
-      })
-      total_items += dataset_dict['num_items']
+      split_names.append(split_name)
+      split_num_items.append(dataset_dict['cv_num_items'])
+      total_items += dataset_dict['cv_num_items']
 
-      del dataset_dict['_source']
-      del dataset_dict['num_items']
+      del dataset_dict['source']
+      del dataset_dict['cv_num_items']
 
-    dataset_dict['_sources'] = dataset_sources_map[dataset_dict['_name']]
+    dataset_dict['sources'] = dataset_sources_map[dataset_dict['name']]
 
-    dataset_dict['splits'] = splits_data
-    dataset_dict['total_items'] = total_items
+    dataset_dict['cv_split_names'] = split_names
+    dataset_dict['cv_split_num_items'] = split_num_items
+    dataset_dict['cv_total_items'] = total_items
     datasets.append(dataset_dict)
 
   return datasets
