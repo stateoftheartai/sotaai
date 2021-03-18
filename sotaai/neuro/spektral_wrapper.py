@@ -7,6 +7,12 @@ Model information taken from: https://graphneural.network/models/
 Dataset information taken from: https://graphneural.network/datasets/
 '''
 
+SOURCE_METADATA = {
+    'id': 'spektral',
+    'name': 'Spektral',
+    'url': 'https://graphneural.network/'
+}
+
 MODELS = {
     'classification': ['GCN'],
     'unknown': ['GeneralGNN'],
