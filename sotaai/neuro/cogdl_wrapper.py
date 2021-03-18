@@ -9,6 +9,12 @@ Dataset information taken from:
 http://keg.cs.tsinghua.edu.cn/cogdl/datasets.html
 '''
 
+SOURCE_METADATA = {
+    'id': 'codgl',
+    'name': 'CogDL: Deep Learning on Graphs',
+    'url': 'http://keg.cs.tsinghua.edu.cn/cogdl/'
+}
+
 MODELS = {
     'unsupervised node classification': [
         'ProNE', 'NetMF', 'Node2Vec', 'NetSMF', 'DeepWalk', 'LINE', 'Hope',
