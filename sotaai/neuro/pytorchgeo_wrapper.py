@@ -8,6 +8,12 @@ https://pytorch-geometric.readthedocs.io/en/latest/modules/nn.html#models
 Dataset information taken from:
 '''
 
+SOURCE_METADATA = {
+    'id': 'pytorchgeo',
+    'name': 'PyTorch geometric',
+    'url': 'https://pytorch-geometric.readthedocs.io/en/latest/'
+}
+
 MODELS = {
     'unknown': [
         'ARGA', 'ARGVA', 'CorrectAndSmooth', 'DeepGCNLayer', 'DeepGraphInfomax',
