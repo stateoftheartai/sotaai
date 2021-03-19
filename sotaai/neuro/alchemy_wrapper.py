@@ -6,6 +6,12 @@
 Dataset information taken from: https://alchemy.cs.washington.edu/data/
 '''
 
+SOURCE_METADATA = {
+    'name': 'alchemy',
+    'original_name': 'Alchemy: Open Source AI',
+    'url': 'https://alchemy.cs.washington.edu/'
+}
+
 DATASETS = {
     'unknown': [
         'Animals', 'Citeseer', 'Cora', 'Epinions', 'IMDB', 'Kinships',
@@ -13,3 +19,7 @@ DATASETS = {
         'UMLS', 'UW-CSE', 'WebKB'
     ]
 }
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'alchemy'}

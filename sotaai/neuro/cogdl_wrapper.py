@@ -9,6 +9,12 @@ Dataset information taken from:
 http://keg.cs.tsinghua.edu.cn/cogdl/datasets.html
 '''
 
+SOURCE_METADATA = {
+    'name': 'codgl',
+    'original_name': 'CogDL: Deep Learning on Graphs',
+    'url': 'http://keg.cs.tsinghua.edu.cn/cogdl/'
+}
+
 MODELS = {
     'unsupervised node classification': [
         'ProNE', 'NetMF', 'Node2Vec', 'NetSMF', 'DeepWalk', 'LINE', 'Hope',
@@ -43,3 +49,11 @@ DATASETS = {
     'graph classification': ['MUTAG', 'IMDB-B', 'IMDB-M', 'PROEINS', 'COLLAB'],
     'multiplex node classification': ['DBLP', 'ACM', 'IMDB']
 }
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'codgl'}
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'codgl'}

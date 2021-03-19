@@ -3,6 +3,12 @@
 # Copyright: Stateoftheart AI PBC 2021.
 '''Ampligraph's library wrapper.'''
 
+SOURCE_METADATA = {
+    'name': 'ampligraph',
+    'original_name': 'AmpliGraph',
+    'url': 'ampligraph.org'
+}
+
 MODELS = {
     'unknown': [
         'RandomBaseline', 'TransE', 'DistMult', 'ComplEx', 'HolE', 'ConvE',
@@ -16,3 +22,11 @@ DATASETS = {
         'WordNet11', 'Freebase13'
     ],
 }
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'ampligraph'}
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'ampligraph'}

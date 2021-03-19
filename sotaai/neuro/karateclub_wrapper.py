@@ -9,6 +9,12 @@ Dataset information taken from:
 https://karateclub.readthedocs.io/en/latest/notes/introduction.html
 '''
 
+SOURCE_METADATA = {
+    'name': 'karateclub',
+    'original_name': 'Karate Club',
+    'url': 'https://karateclub.readthedocs.io/en/latest/'
+}
+
 MODELS = {
     # ---
     'community detection': [
@@ -68,3 +74,11 @@ DATASETS = {
         'reddit10k'
     ]
 }
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'karateclub'}
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'karateclub'}

@@ -7,6 +7,12 @@ Model information taken from: https://graphneural.network/models/
 Dataset information taken from: https://graphneural.network/datasets/
 '''
 
+SOURCE_METADATA = {
+    'name': 'spektral',
+    'original_name': 'Spektral',
+    'url': 'https://graphneural.network/'
+}
+
 MODELS = {
     'classification': ['GCN'],
     'unknown': ['GeneralGNN'],
@@ -38,3 +44,11 @@ ADDITIONAL_FEATURES = {
     ],
     'base layers': ['InnerProduct', 'Disjoint2Batch', 'MinkowskiProduct']
 }
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'spektral'}
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'spektral'}
