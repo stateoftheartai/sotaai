@@ -81,6 +81,6 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
     dataset_dict['sources'] = dataset_sources_map[dataset_dict['name']]
     del dataset_dict['source']
 
-    dataset.append(dataset_dict)
+    datasets.append(dataset_dict)
 
   return datasets
