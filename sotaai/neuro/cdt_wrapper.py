@@ -2,6 +2,7 @@
 # Author: Tonio Teran <tonio@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2021.
 '''Causal Discovery Toolbox's library wrapper.'''
+from sotaai.neuro.abstractions import NeuroDataset, NeuroModel
 
 SOURCE_METADATA = {
     'name':
@@ -32,3 +33,11 @@ MODELS = {
 }
 
 DATASETS = {'unknown': ['tuebingen', 'sachs', 'dream4']}
+
+
+def load_dataset(name: str) -> NeuroDataset:
+  return NeuroDataset(name, 'cdt')
+
+
+def load_model(name: str) -> NeuroModel:
+  return NeuroModel(name, 'cdt')

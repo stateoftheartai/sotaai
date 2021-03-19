@@ -7,6 +7,7 @@ Model information taken from:
 - https://dglke.dgl.ai/doc/eval.html?highlight=models
 Dataset information taken from:
 '''
+from sotaai.neuro.abstractions import NeuroDataset, NeuroModel
 
 SOURCE_METADATA = {
     'name': 'dglke',
@@ -22,3 +23,11 @@ MODELS = {
 }
 
 DATASETS = {'unknown': ['FB15k', 'FB15k237', 'WN18', 'WN18RR', 'Freebase']}
+
+
+def load_dataset(name: str) -> NeuroDataset:
+  return NeuroDataset(name, 'dglke')
+
+
+def load_model(name: str) -> NeuroModel:
+  return NeuroModel(name, 'dglke')

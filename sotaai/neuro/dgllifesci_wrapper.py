@@ -6,6 +6,7 @@
 Model information taken from: https://lifesci.dgl.ai/api/model.zoo.html
 Dataset information taken from: https://lifesci.dgl.ai/api/data.html
 '''
+from sotaai.neuro.abstractions import NeuroDataset, NeuroModel
 
 SOURCE_METADATA = {
     'name': 'dgllifesci',
@@ -31,3 +32,11 @@ DATASETS = {
     'generative models': ['JTVAE'],
     'protein-ligand binding affinity prediction': ['PDBBind']
 }
+
+
+def load_dataset(name: str) -> NeuroDataset:
+  return NeuroDataset(name, 'dgllifesci')
+
+
+def load_model(name: str) -> NeuroModel:
+  return NeuroModel(name, 'dgllifesci')

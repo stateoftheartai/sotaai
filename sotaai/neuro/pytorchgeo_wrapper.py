@@ -7,6 +7,7 @@ Model information taken from:
 https://pytorch-geometric.readthedocs.io/en/latest/modules/nn.html#models
 Dataset information taken from:
 '''
+from sotaai.neuro.abstractions import NeuroDataset, NeuroModel
 
 SOURCE_METADATA = {
     'name': 'pytorchgeo',
@@ -37,3 +38,11 @@ DATASETS = {
         'Actor', 'JODIE', 'MixHopSyntheticDataset'
     ],
 }
+
+
+def load_dataset(name: str) -> NeuroDataset:
+  return NeuroDataset(name, 'pytorchgeo')
+
+
+def load_model(name: str) -> NeuroModel:
+  return NeuroModel(name, 'pytorchgeo')

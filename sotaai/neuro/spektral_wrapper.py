@@ -6,6 +6,7 @@
 Model information taken from: https://graphneural.network/models/
 Dataset information taken from: https://graphneural.network/datasets/
 '''
+from sotaai.neuro.abstractions import NeuroDataset, NeuroModel
 
 SOURCE_METADATA = {
     'name': 'spektral',
@@ -44,3 +45,11 @@ ADDITIONAL_FEATURES = {
     ],
     'base layers': ['InnerProduct', 'Disjoint2Batch', 'MinkowskiProduct']
 }
+
+
+def load_dataset(name: str) -> NeuroDataset:
+  return NeuroDataset(name, 'spektral')
+
+
+def load_model(name: str) -> NeuroModel:
+  return NeuroModel(name, 'spektral')

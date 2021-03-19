@@ -8,6 +8,7 @@ http://keg.cs.tsinghua.edu.cn/cogdl/methods.html
 Dataset information taken from:
 http://keg.cs.tsinghua.edu.cn/cogdl/datasets.html
 '''
+from sotaai.neuro.abstractions import NeuroDataset, NeuroModel
 
 SOURCE_METADATA = {
     'name': 'codgl',
@@ -49,3 +50,11 @@ DATASETS = {
     'graph classification': ['MUTAG', 'IMDB-B', 'IMDB-M', 'PROEINS', 'COLLAB'],
     'multiplex node classification': ['DBLP', 'ACM', 'IMDB']
 }
+
+
+def load_dataset(name: str) -> NeuroDataset:
+  return NeuroDataset(name, 'codgl')
+
+
+def load_model(name: str) -> NeuroModel:
+  return NeuroModel(name, 'codgl')

@@ -8,6 +8,7 @@ Model information taken from:
 Dataset information taken from:
 https://docs.dgl.ai/en/latest/api/python/dgl.data.html
 '''
+from sotaai.neuro.abstractions import NeuroDataset, NeuroModel
 
 SOURCE_METADATA = {
     'name': 'dgl',
@@ -67,3 +68,11 @@ DATASETS = {
 ADDITIONAL_FEATURES = {
     'graph matching routines': ['astar', 'beam', 'bipartite', 'hausdorff'],
 }
+
+
+def load_dataset(name: str) -> NeuroDataset:
+  return NeuroDataset(name, 'dgl')
+
+
+def load_model(name: str) -> NeuroModel:
+  return NeuroModel(name, 'dgl')
