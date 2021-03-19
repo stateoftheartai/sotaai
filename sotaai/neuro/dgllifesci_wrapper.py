@@ -8,8 +8,8 @@ Dataset information taken from: https://lifesci.dgl.ai/api/data.html
 '''
 
 SOURCE_METADATA = {
-    'id': 'dgllifesci',
-    'name': 'DGL-LifeSci',
+    'name': 'dgllifesci',
+    'original_name': 'DGL-LifeSci',
     'url': 'https://lifesci.dgl.ai/'
 }
 

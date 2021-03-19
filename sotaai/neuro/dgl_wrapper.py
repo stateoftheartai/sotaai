@@ -10,8 +10,8 @@ https://docs.dgl.ai/en/latest/api/python/dgl.data.html
 '''
 
 SOURCE_METADATA = {
-    'id': 'dgl',
-    'name': 'Deep Graph Library (DGL)',
+    'name': 'dgl',
+    'original_name': 'Deep Graph Library (DGL)',
     'url': 'https://www.dgl.ai/'
 }
 

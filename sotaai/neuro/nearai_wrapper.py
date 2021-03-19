@@ -7,8 +7,8 @@ Dataset information taken from:
 '''
 
 SOURCE_METADATA = {
-    'id': 'nearai',
-    'name': 'NEAR Program Synthesis',
+    'name': 'nearai',
+    'original_name': 'NEAR Program Synthesis',
     'url': 'https://github.com/nearai/program_synthesis'
 }
 

@@ -10,8 +10,8 @@ https://karateclub.readthedocs.io/en/latest/notes/introduction.html
 '''
 
 SOURCE_METADATA = {
-    'id': 'karateclub',
-    'name': 'Karate Club',
+    'name': 'karateclub',
+    'original_name': 'Karate Club',
     'url': 'https://karateclub.readthedocs.io/en/latest/'
 }
 

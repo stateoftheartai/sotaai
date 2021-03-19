@@ -9,8 +9,8 @@ Dataset information taken from:
 '''
 
 SOURCE_METADATA = {
-    'id': 'pytorchgeo',
-    'name': 'PyTorch geometric',
+    'name': 'pytorchgeo',
+    'original_name': 'PyTorch geometric',
     'url': 'https://pytorch-geometric.readthedocs.io/en/latest/'
 }
 

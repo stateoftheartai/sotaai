@@ -4,9 +4,9 @@
 '''Causal Discovery Toolbox's library wrapper.'''
 
 SOURCE_METADATA = {
-    'id':
-        'cdt',
     'name':
+        'cdt',
+    'original_name':
         'Causal Discovery Toolbox',
     'url':
         'https://fentechsolutions.github.io/CausalDiscoveryToolbox/html/index.html'  # pylint: disable=line-too-long

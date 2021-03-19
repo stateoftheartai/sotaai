@@ -9,8 +9,8 @@ Dataset information taken from:
 '''
 
 SOURCE_METADATA = {
-    'id': 'dglke',
-    'name': 'DGL-KE',
+    'name': 'dglke',
+    'original_name': 'DGL-KE',
     'url': 'https://dglke.dgl.ai/doc/'
 }
 

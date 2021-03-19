@@ -8,8 +8,8 @@ Dataset information taken from: https://graphneural.network/datasets/
 '''
 
 SOURCE_METADATA = {
-    'id': 'spektral',
-    'name': 'Spektral',
+    'name': 'spektral',
+    'original_name': 'Spektral',
     'url': 'https://graphneural.network/'
 }
 

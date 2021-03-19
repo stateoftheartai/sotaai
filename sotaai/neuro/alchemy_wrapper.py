@@ -8,8 +8,8 @@ Dataset information taken from: https://alchemy.cs.washington.edu/data/
 from sotaai.neuro.abstractions import NeuroDataset
 
 SOURCE_METADATA = {
-    'id': 'alchemy',
-    'name': 'Alchemy: Open Source AI',
+    'name': 'alchemy',
+    'original_name': 'Alchemy: Open Source AI',
     'url': 'https://alchemy.cs.washington.edu/'
 }
 

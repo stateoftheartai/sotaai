@@ -4,8 +4,8 @@
 '''Ampligraph's library wrapper.'''
 
 SOURCE_METADATA = {
-    'id': 'ampligraph',
-    'name': 'AmpliGraph',
+    'name': 'ampligraph',
+    'original_name': 'AmpliGraph',
     'url': 'ampligraph.org'
 }
 
