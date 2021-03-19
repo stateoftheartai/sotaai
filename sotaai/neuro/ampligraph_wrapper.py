@@ -2,7 +2,6 @@
 # Author: Tonio Teran <tonio@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2021.
 '''Ampligraph's library wrapper.'''
-from sotaai.neuro.abstractions import NeuroDataset, NeuroModel
 
 SOURCE_METADATA = {
     'name': 'ampligraph',
@@ -25,9 +24,9 @@ DATASETS = {
 }
 
 
-def load_dataset(name: str) -> NeuroDataset:
-  return NeuroDataset(name, 'ampligraph')
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'ampligraph'}
 
 
-def load_model(name: str) -> NeuroModel:
-  return NeuroModel(name, 'ampligraph')
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'ampligraph'}

@@ -8,7 +8,6 @@ Model information taken from:
 Dataset information taken from:
 https://docs.dgl.ai/en/latest/api/python/dgl.data.html
 '''
-from sotaai.neuro.abstractions import NeuroDataset, NeuroModel
 
 SOURCE_METADATA = {
     'name': 'dgl',
@@ -70,9 +69,9 @@ ADDITIONAL_FEATURES = {
 }
 
 
-def load_dataset(name: str) -> NeuroDataset:
-  return NeuroDataset(name, 'dgl')
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'dgl'}
 
 
-def load_model(name: str) -> NeuroModel:
-  return NeuroModel(name, 'dgl')
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'dgl'}

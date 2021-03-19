@@ -5,7 +5,6 @@
 
 Dataset information taken from:
 '''
-from sotaai.neuro.abstractions import NeuroDataset, NeuroModel
 
 SOURCE_METADATA = {
     'name': 'nearai',
@@ -16,9 +15,5 @@ SOURCE_METADATA = {
 DATASETS = {'program synthesis': ['AlgoLisp', 'Karel', 'NAPS']}
 
 
-def load_dataset(name: str) -> NeuroDataset:
-  return NeuroDataset(name, 'nearai')
-
-
-def load_model(name: str) -> NeuroModel:
-  return NeuroModel(name, 'nearai')
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'nearai'}

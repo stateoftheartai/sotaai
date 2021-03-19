@@ -8,7 +8,6 @@ https://karateclub.readthedocs.io/en/latest/modules/root.html
 Dataset information taken from:
 https://karateclub.readthedocs.io/en/latest/notes/introduction.html
 '''
-from sotaai.neuro.abstractions import NeuroDataset, NeuroModel
 
 SOURCE_METADATA = {
     'name': 'karateclub',
@@ -77,9 +76,9 @@ DATASETS = {
 }
 
 
-def load_dataset(name: str) -> NeuroDataset:
-  return NeuroDataset(name, 'karateclub')
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'karateclub'}
 
 
-def load_model(name: str) -> NeuroModel:
-  return NeuroModel(name, 'karateclub')
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'karateclub'}

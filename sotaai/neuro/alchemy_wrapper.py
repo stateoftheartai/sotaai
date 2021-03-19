@@ -5,7 +5,6 @@
 
 Dataset information taken from: https://alchemy.cs.washington.edu/data/
 '''
-from sotaai.neuro.abstractions import NeuroDataset
 
 SOURCE_METADATA = {
     'name': 'alchemy',
@@ -22,5 +21,5 @@ DATASETS = {
 }
 
 
-def load_dataset(name: str) -> NeuroDataset:
-  return NeuroDataset(name, 'alchemy')
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'alchemy'}

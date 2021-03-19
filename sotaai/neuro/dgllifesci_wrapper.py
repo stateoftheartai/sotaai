@@ -6,7 +6,6 @@
 Model information taken from: https://lifesci.dgl.ai/api/model.zoo.html
 Dataset information taken from: https://lifesci.dgl.ai/api/data.html
 '''
-from sotaai.neuro.abstractions import NeuroDataset, NeuroModel
 
 SOURCE_METADATA = {
     'name': 'dgllifesci',
@@ -34,9 +33,9 @@ DATASETS = {
 }
 
 
-def load_dataset(name: str) -> NeuroDataset:
-  return NeuroDataset(name, 'dgllifesci')
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'dgllifesci'}
 
 
-def load_model(name: str) -> NeuroModel:
-  return NeuroModel(name, 'dgllifesci')
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'dgllifesci'}
