@@ -47,7 +47,7 @@ def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:  #
 
   for source in sources:
     # wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
-    wrapper = importlib.import_module(source + '_wrapper')
+    wrapper = importlib.import_module('sotaai.neuro.' + source + '_wrapper')
     items = wrapper.DATASETS if nametype == 'datasets' else wrapper.MODELS
     for task in items:
       for item in items[task]:
