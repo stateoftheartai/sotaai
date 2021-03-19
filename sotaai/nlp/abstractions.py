@@ -2,6 +2,10 @@
 # Author: Tonio Teran
 # Copyright: Stateoftheart AI PBC 2021.
 '''Abstract classes for standardized models and datasets.'''
+from sotaai.nlp import utils
+
+datasets_tasks_map = utils.map_name_tasks('datasets')
+models_tasks_map = utils.map_name_tasks('models')
 
 
 class NlpDataset(object):
@@ -10,13 +14,19 @@ class NlpDataset(object):
   TODO(lalo) describe.
   '''
 
-  def __init__(self, raw_dataset):
-    '''Ctor for building wrapped dataset from `raw_dataset`.
+  def __init__(self, name: str, source: str):
+    '''Very preliminary class to encapsulate any NLP dataset.'''
+    self.name = name
+    self.source = source
+    self.tasks = datasets_tasks_map[name]
 
-    TODO(lalo) describe.
-    '''
-    self.raw = raw_dataset
-    # TODO(lalo) implement.
+  def to_dict(self) -> dict:
+    return {
+        'name': self.name,
+        'type': 'dataset',
+        'source': self.source,
+        'tasks': self.tasks
+    }
 
 
 class NlpModel(object):
@@ -25,10 +35,16 @@ class NlpModel(object):
   TODO(lalo) describe.
   '''
 
-  def __init__(self, raw_model):
-    '''Ctor for building wrapped model from `raw_model`.
+  def __init__(self, name: str, source: str):
+    '''Very preliminary class to encapsulate any NLP model.'''
+    self.name = name
+    self.source = source
+    self.tasks = models_tasks_map[name]
 
-    TODO(lalo) describe.
-    '''
-    self.raw = raw_model
-    # TODO(lalo) implement.
+  def to_dict(self) -> dict:
+    return {
+        'name': self.name,
+        'type': 'model',
+        'source': self.source,
+        'tasks': self.tasks
+    }
