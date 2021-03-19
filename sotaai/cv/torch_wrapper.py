@@ -16,6 +16,7 @@ import torchvision.transforms as transforms
 
 SOURCE_METADATA = {
     'name': 'torch',
+    'area': 'cv',
     'original_name': 'PyTorch',
     'url': 'https://pytorch.org/'
 }

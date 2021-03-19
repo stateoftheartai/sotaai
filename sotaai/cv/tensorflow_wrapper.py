@@ -18,6 +18,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 SOURCE_METADATA = {
     'name': 'tensorflow',
+    'area': 'cv',
     'original_name': 'TensorFlow',
     'url': 'https://www.tensorflow.org/'
 }

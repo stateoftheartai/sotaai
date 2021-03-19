@@ -29,26 +29,31 @@ def load_model(name: str,
   model_source_map = utils.map_name_sources('models',
                                             return_original_names=False)
   lower_name = name.lower()
-  if source:
-    valid_sources = model_source_map[lower_name]
-    # Make sure the chosen source is available.
-    if source not in valid_sources:
-      raise NameError(
-          'Source {} not available for model {}.'.format(source, name) +
-          ' Available sources are: {}'.format(valid_sources))
+  valid_sources = model_source_map[lower_name]
+
+  if source and source not in valid_sources:
+    raise NameError(
+        'Source {} not available for model {}.'.format(source, name) +
+        ' Available sources are: {}'.format(valid_sources))
   else:
-    source = model_source_map[lower_name][0]
+    source = valid_sources[0]
 
   wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
 
+  # TODO(Hugo)
+  # As more sources are being added (fully-implemented), update the IF
+  # statement.
+  # The IF was added temporary to make sure only fully implemented sources are
+  # actually returned and thus being able to be used in code
+  raw_object = None
   if source == 'torch':
     raw_object = wrapper.load_model(name, pretrained=pretrained)
-  else:
+  elif source == 'keras':
     raw_object = wrapper.load_model(name,
                                     input_tensor=input_tensor,
                                     include_top=include_top)
 
-  return abstractions.CvModel(raw_object, name)
+  return abstractions.CvModel(raw_object, name, source)
 
 
 def load_dataset(name: str,

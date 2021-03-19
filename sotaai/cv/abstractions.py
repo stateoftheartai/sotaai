@@ -5,6 +5,7 @@
 from sotaai.cv import utils
 
 datasets_tasks_map = utils.map_name_tasks('datasets')
+models_tasks_map = utils.map_name_tasks('models')
 
 
 class CvDataset(object):
@@ -102,7 +103,7 @@ class CvModel(object):
   Each abstract `CvModel` represents a model from one of the sources.
   '''
 
-  def __init__(self, raw_model, name: str):
+  def __init__(self, raw_model, name: str, source=None):
     '''Constructor using `raw_model` from a source library.
 
     Args:
@@ -114,9 +115,26 @@ class CvModel(object):
     '''
     self.raw = raw_model
     self.name = name
-    self.tasks = utils.map_name_tasks('models')[name]
-    self.source = utils.get_source_from_model(self.raw)
-    self._populate_attributes()
+    self.tasks = models_tasks_map[name]
+
+    # TODO(Hugo)
+    # Once all sources are implemented we will remove this
+    # For the time being, we allow some abstractions to not to have the raw
+    # object and have almost all attribute in None to be able to construct the
+    # JSON version of all models however they are implemented or not
+    if self.raw is None:
+      self.source = source
+      self.original_input_type = None
+      self.original_input_shape = None
+      self.original_output_shape = None
+      self.input_shape_min = None
+      self.num_channels = None
+      self.num_layers = None
+      self.num_params = None
+      self.paper = None
+    else:
+      self.source = utils.get_source_from_model(self.raw)
+      self._populate_attributes()
 
   def _populate_attributes(self):
     self.original_input_type = utils.get_input_type(self.raw)
@@ -136,21 +154,36 @@ class CvModel(object):
 
   def to_dict(self) -> dict:
     return {
-        'name': self.name,
-        'area': 'cv',
-        'type': 'model',
-        'source': self.source,
-        'tasks': self.tasks,
-        'paper': self.paper,
-        'cv_input_type': self.original_input_type,
-        'cv_input_shape_height': self.original_input_shape[0],
-        'cv_input_shape_width': self.original_input_shape[1],
-        'cv_input_shape_channels': self.original_input_shape[2],
-        'cv_input_shape_min_height': self.input_shape_min[0],
-        'cv_input_shape_min_width': self.input_shape_min[1],
-        'cv_output_shape': self.original_output_shape,
-        'cv_num_layers': self.num_layers,
-        'cv_num_params': self.num_params,
+        'name':
+            self.name,
+        'area':
+            'cv',
+        'type':
+            'model',
+        'source':
+            self.source,
+        'tasks':
+            self.tasks,
+        'paper':
+            self.paper,
+        'cv_input_type':
+            self.original_input_type,
+        'cv_input_shape_height':
+            self.original_input_shape[0] if self.original_input_shape else None,
+        'cv_input_shape_width':
+            self.original_input_shape[1] if self.original_input_shape else None,
+        'cv_input_shape_channels':
+            self.original_input_shape[2] if self.original_input_shape else None,
+        'cv_input_shape_min_height':
+            self.input_shape_min[0] if self.input_shape_min else None,
+        'cv_input_shape_min_width':
+            self.input_shape_min[1] if self.input_shape_min else None,
+        'cv_output_shape':
+            self.original_output_shape,
+        'cv_num_layers':
+            self.num_layers,
+        'cv_num_params':
+            self.num_params,
     }
 
   def update_raw_model(self, model) -> None:

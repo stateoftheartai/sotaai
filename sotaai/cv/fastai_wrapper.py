@@ -13,6 +13,13 @@ from fastai.vision import get_transforms, get_annotations
 from fastai.vision import pickle, bb_pad_collate
 import numpy as np
 
+SOURCE_METADATA = {
+    'name': 'fastai',
+    'area': 'cv',
+    'original_name': 'fast.ai',
+    'url': 'https://fastai1.fast.ai/index.html'
+}
+
 MODELS = {
     'classification': [
         'alexnet', 'densenet121', 'densenet161', 'densenet169', 'densenet201',
