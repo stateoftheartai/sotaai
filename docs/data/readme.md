@@ -28,19 +28,21 @@ For each Dataset or Model of the lists, the following structure must be met:
 
 ```json
 {
-  "_name": "Dataset or model name",
-  "_type": "model or dataset",
-  "_tasks": [
-    "task-n"
-  ],
-  "_sources": [
+  "name": "Dataset or model name",
+  "area": "Area name e.g. cv"
+  "type": "model or dataset",
+  "sources": [
     "source-n"
   ]
-  "_paper": "The paper name, only for models when data is available",
+  "tasks": [
+    "task-n"
+  ],
+  "paper": "The paper name, only for models when data is available",
 
   ...
 
-    Any other values that depend on the area must be added here (without _)
+  Area dependent attributes must be added here prefixed with
+  <area>_attribute_name e.g. cv_output_shape
 
   ...
 
@@ -51,26 +53,27 @@ This is an example taken from CV:
 
 ```
 {
-  "_name": "InceptionResNetV2",
-  "_type": "model",
-  "_tasks": [
-    "classification"
-  ],
-  "_sources": [
+  "name": "InceptionResNetV2",
+  "area": "cv",
+  "type": "model",
+  "sources": [
     "keras"
   ]
-  "_paper": null,
-  "input_type": "numpy.ndarray",
-  "input_shape_height": null,
-  "input_shape_width": null,
-  "input_shape_channels": 3,
-  "input_shape_min_height": 75,
-  "input_shape_min_width": 75,
-  "output_shape": [
+  "tasks": [
+    "classification"
+  ],
+  "paper": null,
+  "cv_input_type": "numpy.ndarray",
+  "cv_input_shape_height": null,
+  "cv_input_shape_width": null,
+  "cv_input_shape_channels": 3,
+  "cv_input_shape_min_height": 75,
+  "cv_input_shape_min_width": 75,
+  "cv_output_shape": [
     1536
   ],
-  "num_layers": 244,
-  "num_params": 54336736,
+  "cv_num_layers": 244,
+  "cv_num_params": 54336736,
 }
 ```
 
@@ -78,8 +81,8 @@ For the sources the following structure must be met:
 
 ```
 {
-  "id": "source identifier",
-  "name": "source name",
+  "name": "source identifier",
+  "original_name": "source name",
   "url": "source website url"
 }
 ```
@@ -88,8 +91,8 @@ This is an example taken from CV:
 
 ```
 {
-  "id": "torch",
-  "name": "PyTorch",
+  "name": "torch",
+  "original_name": "PyTorch",
   "url": "https://pytorch.org/"
 }
 ```
