@@ -9,6 +9,12 @@ Dataset information taken from:
 https://docs.dgl.ai/en/latest/api/python/dgl.data.html
 '''
 
+SOURCE_METADATA = {
+    'name': 'dgl',
+    'original_name': 'Deep Graph Library (DGL)',
+    'url': 'https://www.dgl.ai/'
+}
+
 MODELS = {
     'unknown': [
         'GATNE-T', 'GNN-FiLM', 'NGCF', 'APPNP', 'ARMA', 'CapsuleNetwork',
@@ -61,3 +67,11 @@ DATASETS = {
 ADDITIONAL_FEATURES = {
     'graph matching routines': ['astar', 'beam', 'bipartite', 'hausdorff'],
 }
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'dgl'}
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'dgl'}

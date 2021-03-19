@@ -8,6 +8,12 @@ Model information taken from:
 Dataset information taken from:
 '''
 
+SOURCE_METADATA = {
+    'name': 'dglke',
+    'original_name': 'DGL-KE',
+    'url': 'https://dglke.dgl.ai/doc/'
+}
+
 MODELS = {
     'unknown': [
         'TransE', 'TransE_l1', 'TransE_l2', 'TransR', 'RESCAL', 'DistMult',
@@ -16,3 +22,11 @@ MODELS = {
 }
 
 DATASETS = {'unknown': ['FB15k', 'FB15k237', 'WN18', 'WN18RR', 'Freebase']}
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'dglke'}
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'dglke'}
