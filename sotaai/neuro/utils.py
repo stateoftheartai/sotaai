@@ -107,3 +107,34 @@ def map_source_metadata() -> dict:
     items_breakdown[source] = wrapper.SOURCE_METADATA
 
   return items_breakdown
+
+
+def map_name_tasks(nametype: str) -> dict:
+  '''Gathers all models/datasets and their supported tasks.
+
+  Builds a dictionary where each entry is of the form:
+
+    <item-name>: [<supported-task-1>, <supported-task-2>, ...]
+
+  Args:
+    nametype (str):
+      Types of names to be used, i.e., either 'models' or 'datasets'.
+
+  Returns (dict):
+    Dictionary with an entry for all available items of the above form.
+
+  TODO(tonioteran) THIS SHOULD BE CACHED EVERY TIME WE USE IT.
+  '''
+  item_sources_tasks = map_name_source_tasks(nametype)
+  item_tasks = dict()
+
+  for item in item_sources_tasks:
+    it_tasks = []
+
+    for source in item_sources_tasks[item].keys():
+      for t in item_sources_tasks[item][source]:
+        it_tasks.append(t)
+    it_tasks = list(set(it_tasks))
+    item_tasks[item] = it_tasks
+
+  return item_tasks
