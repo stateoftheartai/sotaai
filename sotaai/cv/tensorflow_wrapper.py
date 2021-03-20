@@ -98,7 +98,7 @@ DATASETS = {
         # 'open_images_v4', Apache beam
         # 'voc',
         # 'the300w_lp',
-        # 'wider_face'  # Wrong checksum
+        'wider_face'
     ],
     # TODO(team)
     # Eventually implement the remaining tasks...

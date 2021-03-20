@@ -95,7 +95,7 @@ def load_dataset(name: str,
   test_datasets = [
       'mnist', 'cifar10', 'cifar100', 'fashion_mnist', 'beans',
       'binary_alpha_digits', 'caltech_birds2010', 'caltech_birds2011',
-      'cars196', 'cats_vs_dogs', 'omniglot', 'lost_and_found'
+      'cars196', 'cats_vs_dogs', 'omniglot', 'lost_and_found', 'wider_face'
   ]
 
   raw_object = {'train': None}
