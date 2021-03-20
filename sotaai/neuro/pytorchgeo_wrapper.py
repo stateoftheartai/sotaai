@@ -10,6 +10,7 @@ Dataset information taken from:
 
 SOURCE_METADATA = {
     'name': 'pytorchgeo',
+    'area': 'neuro',
     'original_name': 'PyTorch geometric',
     'url': 'https://pytorch-geometric.readthedocs.io/en/latest/'
 }

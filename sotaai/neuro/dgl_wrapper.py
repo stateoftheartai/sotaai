@@ -11,6 +11,7 @@ https://docs.dgl.ai/en/latest/api/python/dgl.data.html
 
 SOURCE_METADATA = {
     'name': 'dgl',
+    'area': 'neuro',
     'original_name': 'Deep Graph Library (DGL)',
     'url': 'https://www.dgl.ai/'
 }

@@ -5,6 +5,7 @@
 
 SOURCE_METADATA = {
     'name': 'ampligraph',
+    'area': 'neuro',
     'original_name': 'AmpliGraph',
     'url': 'ampligraph.org'
 }

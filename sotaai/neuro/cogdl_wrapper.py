@@ -11,6 +11,7 @@ http://keg.cs.tsinghua.edu.cn/cogdl/datasets.html
 
 SOURCE_METADATA = {
     'name': 'codgl',
+    'area': 'neuro',
     'original_name': 'CogDL: Deep Learning on Graphs',
     'url': 'http://keg.cs.tsinghua.edu.cn/cogdl/'
 }

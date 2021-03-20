@@ -8,6 +8,7 @@ Dataset information taken from: https://alchemy.cs.washington.edu/data/
 
 SOURCE_METADATA = {
     'name': 'alchemy',
+    'area': 'neuro',
     'original_name': 'Alchemy: Open Source AI',
     'url': 'https://alchemy.cs.washington.edu/'
 }

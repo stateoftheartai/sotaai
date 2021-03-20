@@ -9,6 +9,7 @@ Dataset information taken from: https://graphneural.network/datasets/
 
 SOURCE_METADATA = {
     'name': 'spektral',
+    'area': 'neuro',
     'original_name': 'Spektral',
     'url': 'https://graphneural.network/'
 }

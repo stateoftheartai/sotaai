@@ -6,6 +6,8 @@
 SOURCE_METADATA = {
     'name':
         'cdt',
+    'area':
+        'neuro',
     'original_name':
         'Causal Discovery Toolbox',
     'url':

@@ -10,6 +10,7 @@ Dataset information taken from:
 
 SOURCE_METADATA = {
     'name': 'dglke',
+    'area': 'neuro',
     'original_name': 'DGL-KE',
     'url': 'https://dglke.dgl.ai/doc/'
 }

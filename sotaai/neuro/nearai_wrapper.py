@@ -8,6 +8,7 @@ Dataset information taken from:
 
 SOURCE_METADATA = {
     'name': 'nearai',
+    'area': 'neuro',
     'original_name': 'NEAR Program Synthesis',
     'url': 'https://github.com/nearai/program_synthesis'
 }
