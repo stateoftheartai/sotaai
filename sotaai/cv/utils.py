@@ -19,7 +19,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 MODEL_SOURCES = ['keras', 'torch', 'fastai']  # 'mxnet', 'pretrainedmodels'
 
-DATASET_SOURCES = ['tensorflow', 'keras', 'torch']  # 'mxnet', 'fastai'
+DATASET_SOURCES = ['tensorflow', 'keras', 'torch', 'fastai']  # 'mxnet'
 
 IMPLEMENTED_SOURCES = ['keras', 'torch', 'tensorflow']
 

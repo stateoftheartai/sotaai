@@ -14,7 +14,12 @@ class CvDataset(object):
   Each `CvDataset` represents a specific split of a full dataset.
   '''
 
-  def __init__(self, raw_dataset, iterator, name: str, split_name: str):
+  def __init__(self,
+               raw_dataset,
+               iterator,
+               name: str,
+               split_name: str,
+               source=None):
     '''Constructor using `raw_dataset` from a source library.
 
     Args:
@@ -25,43 +30,55 @@ class CvDataset(object):
         Name of the dataset.
       split_name (str):
         Name of the dataset's split.
+      source (str):
+        Source name used when no raw_model is given
     '''
+
     self.raw = raw_dataset
-    self.iterator = iterator
     self.name = name
-    self.source = utils.get_source_from_dataset(raw_dataset)
-    self.split_name = split_name
     self.tasks = datasets_tasks_map[name]
-    self.size = utils.get_size_from_dataset(raw_dataset, self.split_name)
-    self.shape = utils.get_shape_from_dataset(raw_dataset, name, split_name)
+    self.iterator = iterator
 
-    # Populated for datasets supporting classification or detection tasks.
-    self.classes = None
-    self.classes_names = None
-    self.classes_shape = None
+    if self.raw is None:
 
-    if 'classification' in self.tasks or 'object_detection' in self.tasks:
-      classes, classes_names, classes_shape = utils.get_classes_from_dataset(
-          raw_dataset, self.source, self.name, self.split_name)
+      self.source = source
+      self.split_name = None
+      self.size = None
+      self.shape = None
+      self.classes = None
+      self.classes_names = None
+      self.classes_shape = None
+      self.pixel_classes = None
+      self.pixel_classes_names = None
+      self.source = None
 
-      self.classes = classes
-      self.classes_names = classes_names
-      self.classes_shape = classes_shape
+    else:
 
-    # Only populated for datasets that support segmentation tasks.
-    self.pixel_classes = None
-    self.pixel_classes_names = None
-    if 'segmentation' in self.tasks:
-      self.pixel_classes, self.pixel_classes_names = (
-          utils.extract_pixel_classes(raw_dataset, self.name, self.source,
-                                      self.split_name))
+      self.source = utils.get_source_from_dataset(raw_dataset)
+      self.split_name = split_name
+      self.size = utils.get_size_from_dataset(raw_dataset, self.split_name)
+      self.shape = utils.get_shape_from_dataset(raw_dataset, name, split_name)
 
-    # Only populated for datasets that support image captioning tasks.
-    self.captions = None
+      # Populated for datasets supporting classification or detection tasks.
+      self.classes = None
+      self.classes_names = None
+      self.classes_shape = None
 
-    # For visual question answering tasks.A
-    self.annotations = None
-    self.vocab = None
+      if 'classification' in self.tasks or 'object_detection' in self.tasks:
+        classes, classes_names, classes_shape = utils.get_classes_from_dataset(
+            raw_dataset, self.source, self.name, self.split_name)
+
+        self.classes = classes
+        self.classes_names = classes_names
+        self.classes_shape = classes_shape
+
+      # Only populated for datasets that support segmentation tasks.
+      self.pixel_classes = None
+      self.pixel_classes_names = None
+      if 'segmentation' in self.tasks:
+        self.pixel_classes, self.pixel_classes_names = (
+            utils.extract_pixel_classes(raw_dataset, self.name, self.source,
+                                        self.split_name))
 
   def to_dict(self) -> dict:
     return {
@@ -78,11 +95,11 @@ class CvDataset(object):
         'cv_num_items':
             self.size,
         'cv_item_width':
-            self.shape[0],
+            self.shape[0] if self.shape else None,
         'cv_item_height':
-            self.shape[1],
+            self.shape[1] if self.shape else None,
         'cv_item_channels':
-            self.shape[2] if len(self.shape) == 3 else None,
+            self.shape[2] if self.shape and len(self.shape) == 3 else None,
         'cv_num_classes':
             self.classes_shape[0] if self.classes_shape else None,
         'cv_num_pixel_classes':
@@ -112,6 +129,8 @@ class CvModel(object):
         is dependent on the source library.
       name (str):
         Name of the model.
+      source (str):
+        Source name used when no raw_model is given
     '''
     self.raw = raw_model
     self.name = name
