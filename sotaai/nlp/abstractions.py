@@ -9,10 +9,7 @@ models_tasks_map = utils.map_name_tasks('models')
 
 
 class NlpDataset(object):
-  '''Our attempt at a standardized, task-agnostic NLP dataset wrapper.
-
-  TODO(lalo) describe.
-  '''
+  '''Our attempt at a standardized, task-agnostic NLP dataset wrapper.'''
 
   def __init__(self, name: str, source: str):
     '''Very preliminary class to encapsulate any NLP dataset.'''
@@ -30,10 +27,7 @@ class NlpDataset(object):
 
 
 class NlpModel(object):
-  '''Our attempt at a standardized, task-agnostic NLP model wrapper.
-
-  TODO(lalo) describe.
-  '''
+  '''Our attempt at a standardized, task-agnostic NLP model wrapper.'''
 
   def __init__(self, name: str, source: str):
     '''Very preliminary class to encapsulate any NLP model.'''
