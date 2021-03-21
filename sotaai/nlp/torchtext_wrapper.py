@@ -3,6 +3,12 @@
 # Copyright: Stateoftheart AI PBC 2021.
 '''Torchtext wrapper module.'''
 
+SOURCE_METADATA = {
+    'name': 'torchtext',
+    'original_name': 'PyTorch',
+    'url': 'https://pytorch.org/text/stable/index.html'
+}
+
 DATASETS = {
     'Sentiment Analysis': ['SST', 'IMDb'],
     'Question Classification': ['TREC'],
@@ -14,18 +20,6 @@ DATASETS = {
 }
 
 
-def load_model(name: str):
-  '''Gets a model directly from Torchtext library.
-
-    Args:
-      name: Name of the model to be gotten.
-
-    Returns:
-      Torchtext model.
-    '''
-  raise NotImplementedError('TODO(lalito) Implement me!')
-
-
 def load_dataset(name: str):
   '''Gets a dataset directly from Torchtext library.
 
@@ -35,4 +29,4 @@ def load_dataset(name: str):
     Returns:
       Torchtext dataset.
     '''
-  raise NotImplementedError('TODO(lalito) Implement me!')
+  return {'name': name, 'source': 'torchtext'}
