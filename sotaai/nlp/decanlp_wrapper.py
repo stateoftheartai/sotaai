@@ -8,6 +8,12 @@ https://github.com/salesforce/decaNLP/tree/master/models
 Dataset information taken from:
 '''
 
+SOURCE_METADATA = {
+    'name': 'decanlp',
+    'original_name': 'decaNLP',
+    'url': 'https://decanlp.com/'
+}
+
 ALL_MODELS = [
     'CoattentivePointerGenerator', 'MultitaskQuestionAnsweringNetwork',
     'PointerGenerator', 'SelfAttentivePointerGenerator'
@@ -38,3 +44,11 @@ DATASETS = {
     'semantic parsing': ['WikiSQL'],
     'commonsense reasoning': ['MWSC']
 }
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'decanlp'}
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'decanlp'}
