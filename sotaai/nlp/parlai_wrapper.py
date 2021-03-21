@@ -8,6 +8,12 @@ https://github.com/facebookresearch/ParlAI/tree/master/parlai/agents
 Dataset information taken from:
 '''
 
+SOURCE_METADATA = {
+    'name': 'parlai',
+    'original_name': 'ParlAI',
+    'url': 'https://parl.ai/'
+}
+
 MODELS = {
     'unknown': [
         'alice', 'bart', 'bert_classifier', 'bert_ranker', 'drqa',
@@ -44,3 +50,11 @@ DATASETS = {
         'wikipedia', 'wikiqa', 'wikisql', 'wizard_of_wikipedia', 'wmt', 'woz'
     ]
 }
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'parlai'}
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'parlai'}

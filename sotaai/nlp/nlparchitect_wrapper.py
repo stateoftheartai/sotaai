@@ -8,6 +8,12 @@ Model information taken from:
 Dataset information taken from:
 '''
 
+SOURCE_METADATA = {
+    'name': 'nlparchitect',
+    'original_name': 'NLP Architect',
+    'url': 'https://intellabs.github.io/nlp-architect/'
+}
+
 MODELS = {
     'part-of-speech tagging': ['NeuralTagger', 'IDCNN', 'CNNLSTM'],
     'named entity recognition': ['NeuralTagger', 'IDCNN', 'CNNLSTM'],
@@ -17,3 +23,7 @@ MODELS = {
     ],
     'semantic segmentation': ['NpSemanticSegClassifier',]
 }
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'nlparchitect'}

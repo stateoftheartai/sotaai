@@ -7,6 +7,12 @@ Model information taken from:
 Dataset information taken from:
 '''
 
+SOURCE_METADATA = {
+    'name': 'flair',
+    'original_name': 'flair',
+    'url': 'https://github.com/flairNLP/flair'
+}
+
 DATASETS = {
     'text classification': [
         'AMAZON_REVIEWS', 'COMMUNICATIVE_FUNCTIONS', 'IMDB', 'NEWSGROUPS',
@@ -77,3 +83,11 @@ MODELS = {
         'communicative-functions'
     ]
 }
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'flair'}
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'flair'}

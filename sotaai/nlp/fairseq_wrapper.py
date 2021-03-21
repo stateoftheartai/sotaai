@@ -9,6 +9,12 @@ http://github.com/pytorch/fairseq/blob/master/examples/translation/README.md
 Dataset information taken from:
 '''
 
+SOURCE_METADATA = {
+    'name': 'fairseq',
+    'original_name': 'decaNLP',
+    'url': 'https://github.com/pytorch/fairseq'
+}
+
 MODELS = {
     'neural machine translation': [
         'conv.wmt14.en-de', 'conv.wmt14.en-fr', 'conv.wmt17.en-de',
@@ -26,10 +32,8 @@ MODELS = {
     ],
 }
 
-DATASETS = {}
 
-
-def load_model(name: str):
+def load_model(name: str) -> dict:
   '''Gets a model directly from Fairseq library.
 
   Args:
@@ -38,16 +42,4 @@ def load_model(name: str):
   Returns:
     Fairseq model.
   '''
-  raise NotImplementedError('TODO(lalito) Implement me!')
-
-
-def load_dataset(name: str):
-  '''Gets a dataset directly from Fairseq library.
-
-  Args:
-    name: Name of the dataset to be gotten.
-
-  Returns:
-    Fairseq dataset.
-  '''
-  raise NotImplementedError('TODO(lalito) Implement me!')
+  return {'name': name, 'source': 'fairseq'}
