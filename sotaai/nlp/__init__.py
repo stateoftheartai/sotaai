@@ -2,29 +2,27 @@
 # Author: Tonio Teran <tonio@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2021.
 '''Main NLP module to abstract away library specific API and standardize.'''
-from sotaai.nlp.abstractions import NlpModel, NlpDataset
+from sotaai.neuro import utils
+from sotaai.neuro.abstraction import NlpModel, NlpDataset
+import importlib
 
 
 def load_model(name: str) -> NlpModel:
-  '''TODO(lalito) describe.'''
-  # Get the source library for model `name`.
-  source = utils.get_source_from_name(name)  # Would return something like
-  # "huggingface".
-  wrapper = get_wrapper_from_source(source)  # Would have some module like
-  # huggingface_wrapper.
-  raw_model = wrapper.load_model(name)
-  return NlpModel(raw_model)
+  '''Dummy load model function. Placeholder for real wrapper.'''
+  model_source_map = utils.map_name_sources('models')
+  source = model_source_map[name][0]
+  wrapper = importlib.import_module('sotaai.nlp.' + source + '_wrapper')
+  raw_object = wrapper.load_model(name)
+  return NlpModel(raw_object['name'], raw_object['source'])
 
 
 def load_dataset(name: str) -> NlpDataset:
-  '''TODO(lalito) describe.'''
-  # Get the source library for dataset `name`.
-  source = utils.get_source_from_name(name)  # Would return something like
-  # "huggingface".
-  wrapper = get_wrapper_from_source(source)  # Would have some module like
-  # huggingface_wrapper.
-  raw_dataset = wrapper.load_dataset(name)
-  return NlpDataset(raw_dataset)
+  '''Dummy load dataset function. Placeholder for real wrapper.'''
+  dataset_source_map = utils.map_name_sources('datasets')
+  source = dataset_source_map[name][0]
+  wrapper = importlib.import_module('sotaai.nlp.' + source + '_wrapper')
+  raw_object = wrapper.load_dataset(name)
+  return NlpDataset(raw_object['name'], raw_object['source'])
 
 
 def model_to_dataset(model: NlpModel,
@@ -37,25 +35,65 @@ def model_to_dataset(model: NlpModel,
   #
   #  compatible_dataset = utils.resize_samples(model, dataset)
   #
-  raise NotImplementedError("TODO(lalito) implement me")
+  raise NotImplementedError('TODO(lalito) implement me')
 
 
-'''
+def create_models_dict(model_names, models_sources_map):
+  '''Given a list of model names, return a list with the JSON representation
+  of each model as an standardized dict
+  Args:
+    model_names (list): list of model names to return the standardized dict
+    models_sources_map: a dict map between model names and sources as returned
+      by the utils function map_name_sources('models')
+  Returns:
+    A list of dictionaries with the JSON representation of each CV model
+  '''
 
-model = nlp.load_model("LSTM")
-dataset = nlp.load_dataset("Wikipedia")
+  print('\nCreating model JSONs...')
 
-# No necesarimente podrian correr. Esto podria causar error:
-sample = dataset.get_sample()
-prediction = model.evaluate(sample)  # Me va a causar error.
+  models = []
+
+  for i, model_name in enumerate(model_names):
+    print(' - ({}/{}) {}'.format(i + 1, len(model_names),
+                                 'models.' + model_name))
+    model = load_model(model_name)
+    model_dict = model.to_dict()
+
+    model_dict['sources'] = models_sources_map[model_dict['name']]
+    del model_dict['source']
+
+    models.append(model_dict)
+
+  return models
 
 
-# En cambio, hacer esto SIEMPRE funciona.
-model = nlp.load_model("LSTM")
-dataset = nlp.load_dataset("Wikipedia")
-(compatible_model, compatible_dataset) = nlp.model_to_dataset(model, dataset)
+def create_datasets_dict(dataset_names, dataset_sources_map):
+  '''Given a list of dataset names, return a list with the JSON representation
+  of each dataset as an standardized dict
 
-sample = compatible_dataset.get_sample()
-prediction = compatible_model.evaluate(sample)  # SIEMPRE JALA.
+  Args:
+    dataset_names (list): list of dataset names to return the standardized dict
+      dataset
+    dataset_sources_map: a dict map between dataset names and sources as
+      returned by the utils function map_name_sources('datasets')
 
-'''
+  Returns:
+    A list of dictionaries with the JSON representation of each CV model
+  '''
+
+  print('\nCreating model JSONs...')
+
+  datasets = []
+
+  for i, dataset_name in enumerate(dataset_names):
+    print(' - ({}/{}) {}'.format(i + 1, len(dataset_names),
+                                 'datasets.' + dataset_name))
+    dataset = load_dataset(dataset_name)
+    dataset_dict = dataset.to_dict()
+
+    dataset_dict['sources'] = dataset_sources_map[dataset_dict['name']]
+    del dataset_dict['source']
+
+    datasets.append(dataset_dict)
+
+  return datasets
