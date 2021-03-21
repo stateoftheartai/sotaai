@@ -2,31 +2,32 @@
 # Author: Tonio Teran <tonio@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2021.
 '''Main NLP module to abstract away library specific API and standardize.'''
-from sotaai.neuro import utils
-from sotaai.neuro.abstraction import NlpModel, NlpDataset
+from sotaai.nlp import utils
+from sotaai.nlp import abstractions
 import importlib
 
 
-def load_model(name: str) -> NlpModel:
+def load_model(name: str) -> abstractions.NlpModel:
   '''Dummy load model function. Placeholder for real wrapper.'''
   model_source_map = utils.map_name_sources('models')
   source = model_source_map[name][0]
   wrapper = importlib.import_module('sotaai.nlp.' + source + '_wrapper')
   raw_object = wrapper.load_model(name)
-  return NlpModel(raw_object['name'], raw_object['source'])
+  return abstractions.NlpModel(raw_object['name'], raw_object['source'])
 
 
-def load_dataset(name: str) -> NlpDataset:
+def load_dataset(name: str) -> abstractions.NlpDataset:
   '''Dummy load dataset function. Placeholder for real wrapper.'''
   dataset_source_map = utils.map_name_sources('datasets')
   source = dataset_source_map[name][0]
   wrapper = importlib.import_module('sotaai.nlp.' + source + '_wrapper')
   raw_object = wrapper.load_dataset(name)
-  return NlpDataset(raw_object['name'], raw_object['source'])
+  return abstractions.NlpDataset(raw_object['name'], raw_object['source'])
 
 
-def model_to_dataset(model: NlpModel,
-                     dataset: NlpDataset) -> (NlpModel, NlpDataset):
+def model_to_dataset(
+    model: abstractions.NlpModel, dataset: abstractions.NlpDataset
+) -> (abstractions.NlpModel, abstractions.NlpDataset):
   '''TODO(lalito) describe.'''
   # 1. Check whether to modify the model or the datset.
   # 2. Modify whatever is necessary, e.g.,
