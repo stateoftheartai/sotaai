@@ -9,6 +9,8 @@ from sotaai.cv import keras_wrapper
 from sotaai.cv import torch_wrapper
 import importlib
 
+datasets_source_map = utils.map_name_sources('datasets')
+
 
 def load_model(name: str,
                source: str = '',
@@ -29,24 +31,27 @@ def load_model(name: str,
   model_source_map = utils.map_name_sources('models',
                                             return_original_names=False)
   lower_name = name.lower()
-  if source:
-    valid_sources = model_source_map[lower_name]
-    # Make sure the chosen source is available.
-    if source not in valid_sources:
-      raise NameError(
-          'Source {} not available for model {}.'.format(source, name) +
-          ' Available sources are: {}'.format(valid_sources))
+  valid_sources = model_source_map[lower_name]
+
+  if source and source not in valid_sources:
+    raise NameError(
+        'Source {} not available for model {}.'.format(source, name) +
+        ' Available sources are: {}'.format(valid_sources))
   else:
-    source = model_source_map[lower_name][0]
+    source = valid_sources[0]
 
   wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
 
+  raw_object = None
   if source == 'torch':
     raw_object = wrapper.load_model(name, pretrained=pretrained)
-  else:
+  elif source == 'keras':
     raw_object = wrapper.load_model(name,
                                     input_tensor=input_tensor,
                                     include_top=include_top)
+  # Non fully implemented sources fall in this case
+  else:
+    raw_object = wrapper.load_model(name)
 
   return abstractions.CvModel(raw_object, name)
 
@@ -70,25 +75,42 @@ def load_dataset(name: str,
   # TODO(tonioteran) Add input sanitizer checks to make sure we're loading only
   # available models.
   '''
-  # TODO(hugo) Switch for new function to get the dataset source.
-  ds_source_map = utils.map_name_sources('datasets')
-  if source:
-    valid_sources = ds_source_map[name]
-    # Make sure the chosen source is available.
-    if source not in valid_sources:
-      raise NameError(
-          'Source {} not available for dataset {}.'.format(source, name) +
-          ' Available sources are: {}'.format(valid_sources))
+  valid_sources = datasets_source_map[name]
+
+  if source and source not in valid_sources:
+    raise NameError(
+        'Source {} not available for dataset {}.'.format(source, name) +
+        ' Available sources are: {}'.format(valid_sources))
   else:
-    source = ds_source_map[name][0]
+    source = datasets_source_map[name][0]
 
   wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
 
-  if source == 'torch':
-    raw_object = wrapper.load_dataset(name,
-                                      transform=transform,
-                                      ann_file=ann_file,
-                                      target_transform=target_transform)
+  # TODO(Hugo)
+  # Remove this variable or comment it out to create the full JSON data
+  # This is a temporal variable to test the JSON creation only for a subset of
+  # datasets to save memory
+  test_datasets = [
+      'mnist', 'cifar10', 'cifar100', 'fashion_mnist', 'beans',
+      'binary_alpha_digits', 'caltech_birds2010', 'caltech_birds2011',
+      'cars196', 'cats_vs_dogs', 'omniglot', 'lost_and_found', 'wider_face'
+  ]
+
+  if name in test_datasets:
+    # TODO(Hugo)
+    # As more sources are being added (fully-implemented), update the IF
+    # statement.
+    # The IF was added temporary to make sure only fully implemented sources
+    # have the raw object and can actually be used in code
+    if source == 'torch':
+      raw_object = wrapper.load_dataset(name,
+                                        transform=transform,
+                                        ann_file=ann_file,
+                                        target_transform=target_transform)
+    else:
+      raw_object = wrapper.load_dataset(name)
+  elif source in ['keras', 'tensorflow', 'torch']:
+    raw_object = wrapper.load_dataset(name, download=False)
   else:
     raw_object = wrapper.load_dataset(name)
 
@@ -96,9 +118,15 @@ def load_dataset(name: str,
   std_dataset = dict()
   for split_name in raw_object:
     raw = raw_object[split_name]
-    iterator = wrapper.DatasetIterator(raw)
 
-    # print(iterator)
+    # TODO(Hugo)
+    # As of now, iterator does not exists for those sources not fully
+    # implemented or tested, once all sources are implemented this if will be
+    # irrelevant since all wrappers will have their iterator class
+    iterator = None
+    if raw and hasattr(wrapper, 'DatasetIterator'):
+      iterator = wrapper.DatasetIterator(raw)
+
     std_dataset[split_name] = abstractions.CvDataset(raw, iterator, name,
                                                      split_name)
 
@@ -194,16 +222,6 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
     A list of dictionaries with the JSON representation of each CV model
   '''
 
-  # TODO(Hugo)
-  # This is a temporal variable to test datasets JSON creation only for this set
-  # of datasets to save memory. Once tested, the JSON is to be tested and
-  # created for the whole set of datasets available
-  test_datasets = [
-      'mnist', 'cifar10', 'cifar100', 'fashion_mnist', 'beans',
-      'binary_alpha_digits', 'caltech_birds2010', 'caltech_birds2011',
-      'cars196', 'cats_vs_dogs', 'omniglot', 'lost_and_found'
-  ]
-
   print('\nCreating dataset JSONs...')
 
   datasets = []
@@ -212,11 +230,6 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
 
     print(' - ({}/{}) {}'.format(i + 1, len(dataset_names),
                                  'datasets.' + dataset_name))
-
-    # TODO(Hugo)
-    # Remove this if when test_datasets variable is removed
-    if not dataset_name in test_datasets:
-      continue
 
     # Abstract datasets are created per split, but for the JSON representation
     # we only want one global representation which contains the split metadata
@@ -235,7 +248,9 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
       dataset_dict = dataset.to_dict()
       split_names.append(split_name)
       split_num_items.append(dataset_dict['cv_num_items'])
-      total_items += dataset_dict['cv_num_items']
+
+      if dataset_dict['cv_num_items'] is not None:
+        total_items += dataset_dict['cv_num_items']
 
       del dataset_dict['source']
       del dataset_dict['cv_num_items']

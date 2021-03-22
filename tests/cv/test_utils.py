@@ -21,7 +21,7 @@ class TestCvUtils(unittest.TestCase):
     # Try first for datasets.
     ds_to_sourcetasks = utils.map_name_source_tasks('datasets')
 
-    for source in utils.DATASET_SOURCES:
+    for source in utils.SOURCES:
       wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
       for task in wrapper.DATASETS:
         for ds in wrapper.DATASETS[task]:
@@ -32,7 +32,7 @@ class TestCvUtils(unittest.TestCase):
     # Now for models.
     model_to_sourcetasks = utils.map_name_source_tasks('models')
 
-    for source in utils.MODEL_SOURCES:
+    for source in utils.SOURCES:
       wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
       for task in wrapper.MODELS:
         for model in wrapper.MODELS[task]:
@@ -46,7 +46,7 @@ class TestCvUtils(unittest.TestCase):
     # First for datasets.
     ds_to_tasks = utils.map_name_tasks('datasets')
 
-    for source in utils.DATASET_SOURCES:
+    for source in utils.SOURCES:
       wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
       for task in wrapper.DATASETS:
         for ds in wrapper.DATASETS[task]:
@@ -57,7 +57,7 @@ class TestCvUtils(unittest.TestCase):
     # Then for models.
     model_to_tasks = utils.map_name_tasks('models')
 
-    for source in utils.MODEL_SOURCES:
+    for source in utils.SOURCES:
       wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
       for task in wrapper.MODELS:
         for model in wrapper.MODELS[task]:
@@ -71,7 +71,7 @@ class TestCvUtils(unittest.TestCase):
     # First for datasets.
     ds_to_sources = utils.map_name_sources('datasets')
 
-    for source in utils.DATASET_SOURCES:
+    for source in utils.SOURCES:
       wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
       for task in wrapper.DATASETS:
         for ds in wrapper.DATASETS[task]:
@@ -82,7 +82,7 @@ class TestCvUtils(unittest.TestCase):
     # Then for models.
     model_to_sources = utils.map_name_sources('models')
 
-    for source in utils.MODEL_SOURCES:
+    for source in utils.SOURCES:
       wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
       for task in wrapper.MODELS:
         for model in wrapper.MODELS[task]:
@@ -96,7 +96,7 @@ class TestCvUtils(unittest.TestCase):
     # First for datasets.
     ds_to_info = utils.map_name_info('datasets')
 
-    for source in utils.DATASET_SOURCES:
+    for source in utils.SOURCES:
       wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
       for task in wrapper.DATASETS:
         for ds in wrapper.DATASETS[task]:
@@ -108,7 +108,7 @@ class TestCvUtils(unittest.TestCase):
     # Then for models.
     models_to_info = utils.map_name_info('models')
 
-    for source in utils.MODEL_SOURCES:
+    for source in utils.SOURCES:
       wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
       for task in wrapper.MODELS:
         for model in wrapper.MODELS[task]:

@@ -17,13 +17,11 @@ from random import randrange
 # Prevent Tensorflow to print warning and meta logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-# TODO(tonioteran) Removed 'fastai', 'mxnet' and 'pretrainedmodels' from
-# MODEL_SOURCES. Need to restore as soon as the wrapper is done and unit test.
-MODEL_SOURCES = ['keras', 'torch']  # 'fastai', 'mxnet', 'pretrainedmodels'
+SOURCES = [
+    'tensorflow', 'keras', 'torch', 'fastai', 'mxnet', 'pretrainedmodels', 'mmf'
+]
 
-# TODO(tonioteran) Removed 'fastai' and 'mxnet' from DATASET_SOURCES. Need to
-# restore as soon as the wrapper is done and unit test.
-DATASET_SOURCES = ['tensorflow', 'keras', 'torch']  # 'mxnet', 'fastai'
+IMPLEMENTED_SOURCES = ['keras', 'torch', 'tensorflow']
 
 IMAGE_MINS = {
     'InceptionV3': 75,
@@ -54,6 +52,21 @@ IMAGE_MINS = {
 }
 
 PIXELS_CLASSES = {'lost_and_found': 44, 'cityscapes': 35, 'scene_parse150': 150}
+
+
+def split_sources(sources):
+  '''Temporal function to split sources in two groups: those that are already
+  fully implmented, and those who are not
+
+  Args:
+    sources: array of sources name to split
+
+  Returns:
+    implemented: array of sources fully implemented
+  '''
+  implemented = filter(lambda s: s in IMPLEMENTED_SOURCES, sources)
+  not_implemented = filter(lambda s: s not in IMPLEMENTED_SOURCES, sources)
+  return list(implemented), list(not_implemented)
 
 
 def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:
@@ -89,7 +102,24 @@ def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:
   items_breakdown = dict()
   original_names = dict()
 
-  sources = DATASET_SOURCES if nametype == 'datasets' else MODEL_SOURCES
+  sources = SOURCES
+
+  # TODO When original_names are replaced, the original name replaced
+  # is the last one written to the original_names dict e.g. If vgg exists as
+  # VGG and vgg in different sources, the original_names dict will only keep
+  # one of those two. We need to fix this evenutally.
+
+  # TODO(Hugo)
+  # Once all sources are fully implemented remove this re-ordering
+  # Sources are reoredered from not_implemented to implemented to keep the
+  # original_name of the implemented version (in case the model/dataset exists
+  # in a fully implemented source and in one not implemented as well). This
+  # allow us to use as default the implemented one when no source name is
+  # given to load_model or load_dataset.
+  # Example: if alexnet exists in FastAI and Keras, we want to preserve the
+  # original name of Keras so that we can import it from there by default.
+  implemented, not_implemented = split_sources(sources)
+  sources = not_implemented + implemented
 
   for source in sources:
     wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
@@ -105,11 +135,6 @@ def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:
             items_breakdown[item][source] = [task]
         else:
           items_breakdown[item] = {source: [task]}
-
-  # TODO When original_names are replaced, the original name replaced
-  # is the last one added to the original_names dict e.g. If vgg exists as
-  # VGG and vgg in different sources, the original_names dict will only keep
-  # one of those two. We need to fix this evenutally.
 
   if not return_original_names:
     return items_breakdown
@@ -135,7 +160,7 @@ def map_source_metadata() -> dict:
   '''
   items_breakdown = dict()
 
-  sources = set(DATASET_SOURCES + MODEL_SOURCES)
+  sources = SOURCES
 
   for source in sources:
     wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
@@ -196,7 +221,14 @@ def map_name_sources(nametype: str, return_original_names=True) -> dict:
   item_sources = dict()
 
   for item in item_sources_tasks:
-    item_sources[item] = list(item_sources_tasks[item].keys())
+    sources = list(item_sources_tasks[item].keys())
+
+    # TODO(Hugo)
+    # Once all sources are fully implemented remove this re-ordering
+    # Make sure to return implemented sources first, so that the source used by
+    # default is an implemented one
+    implemented, not_implemented = split_sources(sources)
+    item_sources[item] = list(implemented) + list(not_implemented)
 
   return item_sources
 
@@ -241,6 +273,9 @@ def get_source_from_model(model) -> str:
     return 'mxnet'
   if 'keras' in str(type(model)):
     return 'keras'
+  # Non-implemented models
+  if isinstance(model, dict) and 'source' in model:
+    return model['source']
   raise NotImplementedError(
       'Need source extraction implementation for this type of model!')
 
@@ -558,6 +593,9 @@ def get_source_from_dataset(dataset) -> str:
     source = obj_type.split('.')[0]
   if 'tensorflow' in source:
     source = 'tensorflow'
+  # Non-implemented dataset
+  if isinstance(dataset, dict) and 'source' in dataset:
+    return dataset['source']
   return source
 
 

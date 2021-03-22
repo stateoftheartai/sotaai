@@ -6,7 +6,7 @@
 SOURCE_METADATA = {
     'name': 'ampligraph',
     'original_name': 'AmpliGraph',
-    'url': 'ampligraph.org'
+    'url': 'https://docs.ampligraph.org'
 }
 
 MODELS = {
