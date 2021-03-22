@@ -18,7 +18,7 @@ from random import randrange
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 SOURCES = [
-    'tensorflow', 'keras', 'torch', 'fastai', 'mxnet', 'pretrainedmodels'
+    'tensorflow', 'keras', 'torch', 'fastai', 'mxnet', 'pretrainedmodels', 'mmf'
 ]
 
 IMPLEMENTED_SOURCES = ['keras', 'torch', 'tensorflow']
