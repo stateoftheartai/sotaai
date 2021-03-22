@@ -247,7 +247,9 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
       dataset = dataset_splits[split_name]
       dataset_dict = dataset.to_dict()
       split_names.append(split_name)
-      split_num_items.append(dataset_dict['cv_num_items'])
+
+      if dataset_dict['cv_num_items']:
+        split_num_items.append(dataset_dict['cv_num_items'])
 
       if dataset_dict['cv_num_items'] is not None:
         total_items += dataset_dict['cv_num_items']
