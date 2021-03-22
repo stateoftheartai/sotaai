@@ -8,6 +8,12 @@ https://github.com/stanfordnlp/stanza/tree/main/stanza/models
 Dataset information taken from:
 '''
 
+SOURCE_METADATA = {
+    'name': 'stanza',
+    'original_name': 'Stanza',
+    'url': 'https://stanfordnlp.github.io/stanza/'
+}
+
 MODELS = {
     'text classification': ['CNNClassifier'],
     'dependency parsing': ['Parser'],
@@ -20,3 +26,7 @@ MODELS = {
         'ncbi_disease', 's800', 'i2b2', 'radiology'
     ]
 }
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'stanza'}

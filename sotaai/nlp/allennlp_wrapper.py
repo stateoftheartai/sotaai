@@ -8,6 +8,12 @@ https://github.com/allenai/allennlp-models/tree/main/allennlp_models
 Dataset information taken from:
 '''
 
+SOURCE_METADATA = {
+    'name': 'allennlp',
+    'original_name': 'AllenNLP',
+    'url': 'https://allennlp.org/'
+}
+
 MODELS = {
     'classification': ['BiattentiveClassificationNetwork'],
     'coreference resolution': ['CoarseToFineCoref'],
@@ -47,3 +53,11 @@ DATASETS = {
     'tagging': ['EnglishOntoNotes', 'CCGbank', 'CoNLL'],
     'vision': ['VQAv2', 'GQA']
 }
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'allennlp'}
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'allennlp'}

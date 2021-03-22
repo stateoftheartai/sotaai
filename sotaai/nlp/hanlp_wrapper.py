@@ -9,6 +9,12 @@ Dataset information taken from:
 - https://hanlp.hankcs.com/docs/api/hanlp/datasets/index.html
 '''
 
+SOURCE_METADATA = {
+    'name': 'hanlp',
+    'original_name': 'HanLP',
+    'url': 'https://hanlp.hankcs.com/docs/index.html'
+}
+
 MODELS = {
     'mtl': ['Electra', 'mt5', 'XLM-R'],
     'sentence boundary detection': ['EOS'],
@@ -32,3 +38,11 @@ DATASETS = {
     'semantic role labeling': ['CoNLL 2012', 'OntoNotes5'],
     'constituency parsing': ['CTB8', 'CTB9', 'PTB'],
 }
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'hanlp'}
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'hanlp'}

@@ -7,6 +7,12 @@ Model information taken from:
 Dataset information taken from:
 '''
 
+SOURCE_METADATA = {
+    'name': 'tensorflow',
+    'original_name': 'TensorFlow Datasets',
+    'url': 'https://www.tensorflow.org/datasets/'
+}
+
 DATASETS = {
     'question answering': [
         'cosmos_qa', 'mctaco', 'natural_questions', 'squad', 'trivia_qa/rc',
@@ -120,3 +126,7 @@ DATASETS = {
         'wmt19_translate', 'wmt_t2t_translate'
     ]
 }
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'tensorflow'}
