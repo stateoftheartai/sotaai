@@ -6,15 +6,26 @@ Many thanks to the great work of pretrainedmodels library by Cadene
 
 import pretrainedmodels
 from torch import nn
-# All models in this library are classification models
-MODELS = [
-    'fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d',
-    'inceptionv4', 'inceptionresnetv2', 'nasnetamobile', 'nasnetalarge',
-    'dpn68', 'dpn68b', 'dpn92', 'dpn98', 'dpn131', 'dpn107', 'xception',
-    'senet154', 'se_resnet50', 'se_resnet101', 'se_resnet152',
-    'se_resnext50_32x4d', 'se_resnext101_32x4d', 'cafferesnet101',
-    'pnasnet5large', 'polynet'
-]
+
+SOURCE_METADATA = {
+    'name': 'pretrained-models',
+    'area': 'cv',
+    'original_name': 'pretrainedmodels',
+    'url': 'https://github.com/cadene/pretrained-models.pytorch'
+}
+
+DATASETS = {}
+
+MODELS = {
+    'classification': [
+        'fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d',
+        'inceptionv4', 'inceptionresnetv2', 'nasnetamobile', 'nasnetalarge',
+        'dpn68', 'dpn68b', 'dpn92', 'dpn98', 'dpn131', 'dpn107', 'xception',
+        'senet154', 'se_resnet50', 'se_resnet101', 'se_resnet152',
+        'se_resnext50_32x4d', 'se_resnext101_32x4d', 'cafferesnet101',
+        'pnasnet5large', 'polynet'
+    ]
+}
 
 
 def load_model(model_name, classes=1000, pretrained=False):
@@ -77,6 +88,8 @@ def adapt_last_layer(model, classes):
   bool1 = isinstance(ll, nn.Conv1d)
   bool2 = isinstance(ll, nn.Conv2d)
   bool3 = isinstance(ll, nn.Conv3d)
+
+  new_layer = None
   if bool1 or bool2 or bool3:
     l_type = str(type(ll)).split('.')[-1][:6]
     conv = getattr(nn, l_type)

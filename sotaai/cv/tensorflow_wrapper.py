@@ -124,6 +124,8 @@ DATASETS = {
     ]
 }
 
+MODELS = {}
+
 
 def load_dataset(dataset_name):
   '''Return a tensorflow dataset in its iterable version

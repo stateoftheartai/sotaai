@@ -14,7 +14,7 @@ SOURCE_METADATA = {
     'url': 'https://mxnet.apache.org/'
 }
 
-DATASETS = {'classification': []}
+DATASETS = {}
 
 MODELS = {
     'classification': [

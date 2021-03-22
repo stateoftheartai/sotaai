@@ -17,9 +17,9 @@ from random import randrange
 # Prevent Tensorflow to print warning and meta logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-MODEL_SOURCES = ['keras', 'torch', 'fastai', 'mxnet']  #  'pretrainedmodels'
-
-DATASET_SOURCES = ['tensorflow', 'keras', 'torch', 'fastai']  # 'mxnet'
+SOURCES = [
+    'tensorflow', 'keras', 'torch', 'fastai', 'mxnet', 'pretrainedmodels'
+]
 
 IMPLEMENTED_SOURCES = ['keras', 'torch', 'tensorflow']
 
@@ -102,7 +102,7 @@ def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:
   items_breakdown = dict()
   original_names = dict()
 
-  sources = DATASET_SOURCES if nametype == 'datasets' else MODEL_SOURCES
+  sources = SOURCES
 
   # TODO When original_names are replaced, the original name replaced
   # is the last one written to the original_names dict e.g. If vgg exists as
@@ -160,7 +160,7 @@ def map_source_metadata() -> dict:
   '''
   items_breakdown = dict()
 
-  sources = set(DATASET_SOURCES + MODEL_SOURCES)
+  sources = SOURCES
 
   for source in sources:
     wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
