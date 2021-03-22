@@ -9,7 +9,6 @@ Dataset information taken from: https://lifesci.dgl.ai/api/data.html
 
 SOURCE_METADATA = {
     'name': 'dgllifesci',
-    'area': 'neuro',
     'original_name': 'DGL-LifeSci',
     'url': 'https://lifesci.dgl.ai/'
 }

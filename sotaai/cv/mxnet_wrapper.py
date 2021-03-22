@@ -9,7 +9,6 @@ import copy
 
 SOURCE_METADATA = {
     'name': 'mxnet',
-    'area': 'cv',
     'original_name': 'MXNet',
     'url': 'https://mxnet.apache.org/'
 }

@@ -13,7 +13,6 @@ import numpy as np
 
 SOURCE_METADATA = {
     'name': 'keras',
-    'area': 'cv',
     'original_name': 'Keras',
     'url': 'https://keras.io/'
 }

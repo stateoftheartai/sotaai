@@ -49,6 +49,9 @@ def main(area: str, output_dir='./data/output/'):
                                                   datasets_sources_map)
     sources = list(sources_metadata_map.values())
 
+    for source in sources:
+      source['area'] = area
+
     data = {'models': models, 'datasets': datasets, 'sources': sources}
 
     save_json(data, output_file_path)

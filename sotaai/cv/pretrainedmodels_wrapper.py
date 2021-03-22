@@ -9,7 +9,6 @@ from torch import nn
 
 SOURCE_METADATA = {
     'name': 'pretrained-models',
-    'area': 'cv',
     'original_name': 'pretrainedmodels',
     'url': 'https://github.com/cadene/pretrained-models.pytorch'
 }

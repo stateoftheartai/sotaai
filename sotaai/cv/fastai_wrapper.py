@@ -15,7 +15,6 @@ import numpy as np
 
 SOURCE_METADATA = {
     'name': 'fastai',
-    'area': 'cv',
     'original_name': 'fast.ai',
     'url': 'https://fastai1.fast.ai/index.html'
 }

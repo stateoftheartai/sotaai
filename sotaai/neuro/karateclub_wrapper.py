@@ -11,7 +11,6 @@ https://karateclub.readthedocs.io/en/latest/notes/introduction.html
 
 SOURCE_METADATA = {
     'name': 'karateclub',
-    'area': 'neuro',
     'original_name': 'Karate Club',
     'url': 'https://karateclub.readthedocs.io/en/latest/'
 }
