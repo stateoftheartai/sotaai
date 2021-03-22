@@ -45,8 +45,9 @@ def main(area: str, output_dir='./data/output/'):
     print('JSON output: {}'.format(output_file_path))
 
     models = sotaai_module.create_models_dict(model_names, models_sources_map)
-    datasets = sotaai_module.create_datasets_dict(dataset_names,
-                                                  datasets_sources_map)
+    datasets = []
+    # datasets = sotaai_module.create_datasets_dict(dataset_names,
+    # datasets_sources_map)
     sources = list(sources_metadata_map.values())
 
     data = {'models': models, 'datasets': datasets, 'sources': sources}

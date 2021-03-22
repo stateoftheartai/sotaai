@@ -17,7 +17,7 @@ from random import randrange
 # Prevent Tensorflow to print warning and meta logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-MODEL_SOURCES = ['keras', 'torch', 'fastai']  # 'mxnet', 'pretrainedmodels'
+MODEL_SOURCES = ['keras', 'torch', 'fastai', 'mxnet']  #  'pretrainedmodels'
 
 DATASET_SOURCES = ['tensorflow', 'keras', 'torch', 'fastai']  # 'mxnet'
 
