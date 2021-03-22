@@ -273,6 +273,9 @@ def get_source_from_model(model) -> str:
     return 'mxnet'
   if 'keras' in str(type(model)):
     return 'keras'
+  # Non-implemented models
+  if isinstance(model, dict) and 'source' in model:
+    return model['source']
   raise NotImplementedError(
       'Need source extraction implementation for this type of model!')
 
@@ -590,6 +593,9 @@ def get_source_from_dataset(dataset) -> str:
     source = obj_type.split('.')[0]
   if 'tensorflow' in source:
     source = 'tensorflow'
+  # Non-implemented dataset
+  if isinstance(dataset, dict) and 'source' in dataset:
+    return dataset['source']
   return source
 
 

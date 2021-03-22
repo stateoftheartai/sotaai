@@ -14,12 +14,7 @@ class CvDataset(object):
   Each `CvDataset` represents a specific split of a full dataset.
   '''
 
-  def __init__(self,
-               raw_dataset,
-               iterator,
-               name: str,
-               split_name: str,
-               source=None):
+  def __init__(self, raw_dataset, iterator, name: str, split_name: str):
     '''Constructor using `raw_dataset` from a source library.
 
     Args:
@@ -38,10 +33,12 @@ class CvDataset(object):
     self.name = name
     self.tasks = datasets_tasks_map[name]
     self.iterator = iterator
+    self.source = utils.get_source_from_dataset(self.raw)
 
-    if self.raw is None:
+    self.is_implemented = not (isinstance(self.raw, dict) and
+                               'source' in self.raw)
+    if not self.is_implemented:
 
-      self.source = source
       self.split_name = None
       self.size = None
       self.shape = None
@@ -54,7 +51,6 @@ class CvDataset(object):
 
     else:
 
-      self.source = utils.get_source_from_dataset(raw_dataset)
       self.split_name = split_name
       self.size = utils.get_size_from_dataset(raw_dataset, self.split_name)
       self.shape = utils.get_shape_from_dataset(raw_dataset, name, split_name)
@@ -120,7 +116,7 @@ class CvModel(object):
   Each abstract `CvModel` represents a model from one of the sources.
   '''
 
-  def __init__(self, raw_model, name: str, source=None):
+  def __init__(self, raw_model, name: str):
     '''Constructor using `raw_model` from a source library.
 
     Args:
@@ -135,14 +131,11 @@ class CvModel(object):
     self.raw = raw_model
     self.name = name
     self.tasks = models_tasks_map[name]
+    self.source = utils.get_source_from_model(self.raw)
+    self.is_implemented = not (isinstance(self.raw, dict) and
+                               'source' in self.raw)
 
-    # TODO(Hugo)
-    # Once all sources are implemented we will remove this
-    # For the time being, we allow some abstractions to not to have the raw
-    # object and have almost all attribute in None to be able to construct the
-    # JSON version of all models however they are implemented or not
-    if self.raw is None:
-      self.source = source
+    if not self.is_implemented:
       self.original_input_type = None
       self.original_input_shape = None
       self.original_output_shape = None
@@ -152,7 +145,6 @@ class CvModel(object):
       self.num_params = None
       self.paper = None
     else:
-      self.source = utils.get_source_from_model(self.raw)
       self._populate_attributes()
 
   def _populate_attributes(self):

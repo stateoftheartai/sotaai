@@ -32,3 +32,11 @@ DATASETS = {
         'vqa2',
     ]
 }
+
+
+def load_model(name: str):
+  return {'name': name, 'source': 'mmf'}
+
+
+def load_dataset(name: str):
+  return {'train': {'name': name, 'source': 'mmf'}}

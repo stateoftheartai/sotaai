@@ -42,11 +42,6 @@ def load_model(name: str,
 
   wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
 
-  # TODO(Hugo)
-  # As more sources are being added (fully-implemented), update the IF
-  # statement.
-  # The IF was added temporary to make sure only fully implemented sources are
-  # actually returned and thus being able to be used in code
   raw_object = None
   if source == 'torch':
     raw_object = wrapper.load_model(name, pretrained=pretrained)
@@ -54,8 +49,11 @@ def load_model(name: str,
     raw_object = wrapper.load_model(name,
                                     input_tensor=input_tensor,
                                     include_top=include_top)
+  # Non fully implemented sources fall in this case
+  else:
+    raw_object = wrapper.load_model(name)
 
-  return abstractions.CvModel(raw_object, name, source)
+  return abstractions.CvModel(raw_object, name)
 
 
 def load_dataset(name: str,
@@ -98,8 +96,6 @@ def load_dataset(name: str,
       'cars196', 'cats_vs_dogs', 'omniglot', 'lost_and_found', 'wider_face'
   ]
 
-  raw_object = {'train': None}
-
   if name in test_datasets:
     # TODO(Hugo)
     # As more sources are being added (fully-implemented), update the IF
@@ -111,8 +107,12 @@ def load_dataset(name: str,
                                         transform=transform,
                                         ann_file=ann_file,
                                         target_transform=target_transform)
-    elif source in ['keras', 'tensorflow']:
+    else:
       raw_object = wrapper.load_dataset(name)
+  elif source in ['keras', 'tensorflow', 'torch']:
+    raw_object = wrapper.load_dataset(name, download=False)
+  else:
+    raw_object = wrapper.load_dataset(name)
 
   # Build a standardized `CvDataset` object per dataset split:
   std_dataset = dict()

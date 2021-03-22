@@ -141,7 +141,8 @@ def load_dataset(dataset_name,
                  target_transform=None,
                  transform=None,
                  extensions=None,
-                 frames_per_clip=None):
+                 frames_per_clip=None,
+                 download=True):
   '''
     Input:
         dataset_name: str, one from MODELS variable
@@ -169,6 +170,8 @@ def load_dataset(dataset_name,
         dict, with keys indicating the partition of the dataset,
                 and the values are of type DataLoader
   '''
+  if not download:
+    return {'train': {'name': dataset_name, 'source': 'tensorflow'}}
 
   if root == 'default':
     root = '~/.torch/' + dataset_name

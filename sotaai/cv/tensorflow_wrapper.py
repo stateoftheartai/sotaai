@@ -126,7 +126,7 @@ DATASETS = {
 MODELS = {}
 
 
-def load_dataset(dataset_name):
+def load_dataset(dataset_name, download=True):
   '''Return a tensorflow dataset in its iterable version
 
   Args:
@@ -138,8 +138,11 @@ def load_dataset(dataset_name):
     has the 'image' and 'label' keys which are in turn numpy arrays of the image
     and label respectively.
   '''
-  ds = tfds.load(dataset_name)
-  return tfds.as_numpy(ds)
+  if download:
+    ds = tfds.load(dataset_name)
+    return tfds.as_numpy(ds)
+  else:
+    return {'train': {'name': dataset_name, 'source': 'tensorflow'}}
 
 
 class DatasetIterator():

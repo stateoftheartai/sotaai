@@ -136,7 +136,7 @@ def load_model(model_name,
   return model
 
 
-def load_dataset(dataset_name):
+def load_dataset(dataset_name, download=True):
   '''Load a given dataset with all its splits
 
     Args:
@@ -147,9 +147,12 @@ def load_dataset(dataset_name):
       Each entry is a numpy array
     '''
 
-  dataset = getattr(keras.datasets, dataset_name)
-  dataset = dataset.load_data()
-  dataset_dict = {'train': dataset[0], 'test': dataset[1]}
+  if download:
+    dataset = getattr(keras.datasets, dataset_name)
+    dataset = dataset.load_data()
+    dataset_dict = {'train': dataset[0], 'test': dataset[1]}
+  else:
+    return {'train': {'name': dataset_name, 'source': 'tensorflow'}}
 
   return dataset_dict
 
