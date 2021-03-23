@@ -12,11 +12,11 @@ import importlib
 datasets_source_map = utils.map_name_sources('datasets')
 
 
-def load_model(name: str,
-               source: str = '',
-               input_tensor=None,
-               pretrained=None,
-               include_top=None) -> abstractions.CvModel:
+def load_model(
+    name: str,
+    source: str = '',
+    pretrained=None,
+) -> abstractions.CvModel:
   '''Fetch a model from a specific source, and return standardized object.
 
   Args:
@@ -42,13 +42,13 @@ def load_model(name: str,
 
   wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
 
-  raw_object = None
-  if source == 'torch':
+  # TODO(Hugo)
+  # Create an abstraction for the input of models that standardizes model inputs
+  # across different libraries (configs)
+  # As of now, we only have one input: pretrained or not
+
+  if source in ['torch', 'keras']:
     raw_object = wrapper.load_model(name, pretrained=pretrained)
-  elif source == 'keras':
-    raw_object = wrapper.load_model(name,
-                                    input_tensor=input_tensor,
-                                    include_top=include_top)
   # Non fully implemented sources fall in this case
   else:
     raw_object = wrapper.load_model(name)

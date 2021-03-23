@@ -32,17 +32,23 @@ MODELS = {
 }
 
 
-def load_model(model_name,
-               pretrained=False,
-               alpha=1.0,
-               depth_multiplier=1,
-               dropout=0.001,
-               input_tensor=None,
-               input_shape=None,
-               include_top=None,
-               pooling=None,
-               classes=1000,
-               classifier_activation='softmax'):
+def load_model(
+    model_name,
+    pretrained=False,
+    alpha=1.0,
+    depth_multiplier=1,
+    dropout=0.001,
+    input_tensor=None,
+    input_shape=None,
+    # TODO(Hugo)
+    # Once standardized input is defined (configs), this param should be put by
+    # the end-user
+    # As per Keras docs, it is important to set include_top to
+    # false to be able to modify model input/output
+    include_top=False,
+    pooling=None,
+    classes=1000,
+    classifier_activation='softmax'):
   '''Load a model with specific configuration.
 
     Args:
@@ -141,6 +147,8 @@ def load_dataset(dataset_name, download=True):
 
     Args:
       dataset_name (string): name of dataset
+      download: temporal flag to skip download and only create the dataset
+        instance with no data (used for JSONs creation)
 
     Returns:
       Dict with keys {'train':(x_train, y_train), 'test':(x_test,y_test),

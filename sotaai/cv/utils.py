@@ -5,7 +5,6 @@
 # TODO(tonioteran) Deprecate specific dataset/model functions for the
 # generalized version.
 import importlib
-import mxnet as mx
 import numpy as np
 import tensorflow_datasets as tfds
 import time
@@ -319,34 +318,36 @@ def flatten_model_recursively(block, source: str, layers: list):
   TODO(tonioteran,hugoochoa) Clean this up and unit test! This code seems
   pretty messy...
   '''
-  if source == 'mxnet':
-    bottleneck_layer = mx.gluon.model_zoo.vision.BottleneckV1
-    list1 = dir(bottleneck_layer)
-    if 'features' in dir(block):
-      flatten_model_recursively(block.features, source, layers)
+  # TODO(team)
+  # Uncomment this code once mxnet is fully-implemented
+  # import mxnet as mx
+  # if source == 'mxnet':
+  # bottleneck_layer = mx.gluon.model_zoo.vision.BottleneckV1
+  # list1 = dir(bottleneck_layer)
+  # if 'features' in dir(block):
+  # flatten_model_recursively(block.features, source, layers)
 
-    elif 'HybridSequential' in str(type(block)):
-      for j in block:
-        flatten_model_recursively(j, source, layers)
+  # elif 'HybridSequential' in str(type(block)):
+  # for j in block:
+  # flatten_model_recursively(j, source, layers)
 
-    elif 'Bottleneck' in str(type(block)):
-      list2 = dir(block)
-      for ll in list1:
-        list2.remove(ll)
-      subblocks = [x for x in list2 if not x.startswith('_')]
-      for element in subblocks:
-        attr = getattr(block, element)
-        flatten_model_recursively(attr, source, layers)
+  # elif 'Bottleneck' in str(type(block)):
+  # list2 = dir(block)
+  # for ll in list1:
+  # list2.remove(ll)
+  # subblocks = [x for x in list2 if not x.startswith('_')]
+  # for element in subblocks:
+  # attr = getattr(block, element)
+  # flatten_model_recursively(attr, source, layers)
+  # else:
+  # layers.append(block)
+  # else:
+  for child in block.children():
+    obj = str(type(child))
+    if 'container' in obj or 'torch.nn' not in obj:
+      flatten_model_recursively(child, source, layers)
     else:
-      layers.append(block)
-
-  else:
-    for child in block.children():
-      obj = str(type(child))
-      if 'container' in obj or 'torch.nn' not in obj:
-        flatten_model_recursively(child, source, layers)
-      else:
-        layers.append(child)
+      layers.append(child)
 
 
 def get_input_type(model) -> str:
