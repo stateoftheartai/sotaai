@@ -49,8 +49,9 @@ def main(area: str, output_dir='./data/output/'):
                                                   datasets_sources_map)
     sources = list(sources_metadata_map.values())
 
-    for source in sources:
-      source['area'] = area
+    add_area(area, models)
+    add_area(area, datasets)
+    add_area(area, sources)
 
     data = {'models': models, 'datasets': datasets, 'sources': sources}
 
@@ -63,7 +64,7 @@ def main(area: str, output_dir='./data/output/'):
         'JSON creation for {} is still not implemented'.format(area)) from e
 
 
-def items_by_source(items_sources_map):
+def items_by_source(items_sources_map: dict) -> dict:
   by_source = {}
   for item_name in items_sources_map:
     sources = items_sources_map[item_name]
@@ -72,6 +73,11 @@ def items_by_source(items_sources_map):
         by_source[source] = 0
       by_source[source] += 1
   return by_source
+
+
+def add_area(area: str, items):
+  for item in items:
+    item['area'] = area
 
 
 def save_json(data, file_path):

@@ -80,8 +80,6 @@ class CvDataset(object):
     return {
         'name':
             self.name,
-        'area':
-            'cv',
         'type':
             'dataset',
         'source':
@@ -167,8 +165,6 @@ class CvModel(object):
     return {
         'name':
             self.name,
-        'area':
-            'cv',
         'type':
             'model',
         'source':
