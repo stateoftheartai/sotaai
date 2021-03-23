@@ -22,9 +22,9 @@ ______________________________________________________________________
 We provide the following **main functions** to train any model on any
 available dataset and get predictions:
 
-- `model = load_model()`: creates an instance of a model from any source library.
-- `dataset = load_dataset()`: creates an instance of a dataset from any source library.
-- `model, dataset = model_to_dataset()`: given a model and a dataset, this pairing function
+- `model = load_model('model-name')`: creates an instance of a model from any source library.
+- `dataset = load_dataset('dataset-name')`: creates an instance of a dataset from any source library.
+- `model, dataset = model_to_dataset(model,dataset)`: given a model and a dataset, this pairing function
   adjusts both objects to ensure they are compatible.
 - `predictions = model(dataset)`: each model instance is callable, thus you can get
   predictions by calling the model and passing the dataset to get predictions
