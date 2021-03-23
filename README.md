@@ -15,19 +15,9 @@ machine learning libraries available out there.
 - We provide the functionality to obtain predictions i.e. evaluating a model on
   a given dataset `predictions = model(dataset)`
 
-## Installation and quick start
-
-This library is provided as a pip module to be installed locally.
-
-```
-pip install sotaai
-```
-
 ______________________________________________________________________
 
-______________________________________________________________________
-
-# Overview of the platform
+## Overview of the platform
 
 We provide the following **main functions** to train any model on any
 available dataset and get predictions:
@@ -57,9 +47,7 @@ established, and where is more work needed.
 
 ______________________________________________________________________
 
-______________________________________________________________________
-
-# Areas Supported
+## Areas Supported
 
 Currently we support the areas listed below. To see more information and
 documentation of a specific area navigate to the respective section:
@@ -69,3 +57,18 @@ documentation of a specific area navigate to the respective section:
 - Neurosymbolic Reasoning **\[WORK IN PROGRESS\]**
 - Reinforcement Learning **\[WORK IN PROGRESS\]**
 - Robotics **\[WORK IN PROGRESS\]**
+
+______________________________________________________________________
+
+## Installation
+
+Requirements:
+
+- Python 3.8.0
+- pip 19.2.3
+
+This library is provided as a `pip` module. You can install it by running:
+
+```
+pip install sotaai
+```
