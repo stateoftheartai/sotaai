@@ -257,16 +257,7 @@ class TestTorchWrapper(unittest.TestCase):
       predctions = cv_model.raw(images, tar)
       print(predctions)
 
-    single_test('fasterrcnn_resnet50_fpn', 'flic')
-    # for model in torch_wrapper.MODELS['object_detection']:
-    #   single_test(model, 'VOCDetection/2008')
-    # single_test('fasterrcnn_resnet50_fpn', 'VOCDetection/2007')
-
-    #TODO
-    # asserts tests
-    # error reshape boxes
-    # test datasets tensorflow (todos)
-    #
+    single_test('fasterrcnn_resnet50_fpn', 'VOCDetection/2008')
 
 
 if __name__ == '__main__':

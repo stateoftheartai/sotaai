@@ -38,7 +38,6 @@ DATASETS = {
     'object_detection': [
         # TODO(Jorge)
         # Finish object_detection implementation
-        'CelebA',
         # 'Flickr30k',  # No download.
         'VOCDetection/2007',
         'VOCDetection/2008',
@@ -46,6 +45,7 @@ DATASETS = {
         'VOCDetection/2010',
         'VOCDetection/2011',
         'VOCDetection/2012',
+        'CelebA',
     ],
     'segmentation': [
         # 'Cityscapes',  # No download.
@@ -558,7 +558,6 @@ def model_to_dataset_object_detection(cv_model, cv_dataset):
   '''
   source = cv_dataset.source
   raw_model = cv_model.raw
-  print(cv_dataset.classes_names)
 
   classes_labels = (
       '__background__ ',
@@ -591,7 +590,6 @@ def model_to_dataset_object_detection(cv_model, cv_dataset):
     preprocess = transforms.Compose([transforms.ToTensor()])
 
     if source == 'tensorflow':
-      print('esta entrando aqui')
       image = datapoint['image']
       bbox = datapoint['torsobox']
       image = preprocess(image)
@@ -604,7 +602,7 @@ def model_to_dataset_object_detection(cv_model, cv_dataset):
       boxes.append([xmin, ymin, xmax, ymax])
       boxes = torch.as_tensor(boxes, dtype=torch.float32)
 
-      area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+      # area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
 
       target['boxes'] = boxes
       # target['area'] = area
@@ -615,7 +613,6 @@ def model_to_dataset_object_detection(cv_model, cv_dataset):
       image = datapoint[0]
       target = datapoint[1]
 
-      print(target)
       anno = target['annotation']
       boxes = []
       classes = []
@@ -668,15 +665,3 @@ def model_to_dataset_object_detection(cv_model, cv_dataset):
   cv_model.update_raw_model(raw_model)
 
   return cv_model, cv_dataset
-
-
-# class Compose(object):
-
-#   def __init__(self, transforms):
-#     self.transforms = transforms
-
-#   def __call__(self, image, target):
-#     for t in self.transforms:
-#       image = t(image)
-#       target = t(target)
-#     return image, target
