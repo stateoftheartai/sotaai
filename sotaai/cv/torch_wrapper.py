@@ -7,9 +7,11 @@
 from sotaai.cv import utils
 from torchvision import models
 from torchvision import datasets as dset
+from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from re import search
 # from PIL import Image
 import os
+import torch
 import torch.nn as nn
 import numpy as np
 import torchvision.transforms as transforms
@@ -30,14 +32,14 @@ DATASETS = {
     'object_detection': [
         # TODO(Jorge)
         # Finish object_detection implementation
-        # 'CelebA',
+        'CelebA',
         # 'Flickr30k',  # No download.
-        # 'VOCDetection/2007',
-        # 'VOCDetection/2008',
+        'VOCDetection/2007',
+        'VOCDetection/2008',
         # 'VOCDetection/2009', Corrupted
-        # 'VOCDetection/2010',
-        # 'VOCDetection/2011',
-        # 'VOCDetection/2012',
+        'VOCDetection/2010',
+        'VOCDetection/2011',
+        'VOCDetection/2012',
     ],
     'segmentation': [
         # 'Cityscapes',  # No download.
@@ -88,10 +90,8 @@ MODELS = {
         'fcn_resnet50'
     ],
     'object_detection': [
-        # TODO(Jorge)
-        # Finish object_detection implementation
-        # 'fasterrcnn_resnet50_fpn', 'keypointrcnn_resnet50_fpn',
-        # 'maskrcnn_resnet50_fpn'
+        'fasterrcnn_resnet50_fpn', 'keypointrcnn_resnet50_fpn',
+        'maskrcnn_resnet50_fpn'
     ],
     'video': [
         # 'mc3_18',
@@ -341,24 +341,30 @@ class DatasetIterator():
 
     Returns:
     '''
-    datapoint = next(self._iterator)
-    if search('DataLoader', str(type(self._raw))):
-      image = np.array(datapoint[0])
-      label = datapoint[1].numpy() if search('Tensor', str(type(
-          datapoint[1]))) else datapoint[1]
-      img = image[0]
-      if self._image_preprocessing_callback:
-        img = self._image_preprocessing_callback(image[0])
-      # image, label = self._iterator.next()
-      return {'image': img, 'label': label[0]}
+    if 'VOCDetection' in str(type(self._raw)):
+      image, target = next(self._iterator)
+      element = [image, target]
+      image, target = self._image_preprocessing_callback(element)
+      return image, target
     else:
-      image = np.array(datapoint[0])
-      label = datapoint[1]
+      datapoint = next(self._iterator)
+      if search('DataLoader', str(type(self._raw))):
+        image = np.array(datapoint[0])
+        label = datapoint[1].numpy() if search('Tensor', str(type(
+            datapoint[1]))) else datapoint[1]
+        img = image[0]
+        if self._image_preprocessing_callback:
+          img = self._image_preprocessing_callback(image[0])
+        # image, label = self._iterator.next()
+        return {'image': img, 'label': label[0]}
+      else:
+        image = np.array(datapoint[0])
+        label = datapoint[1]
 
-      if self._image_preprocessing_callback:
-        image = self._image_preprocessing_callback(image)
+        if self._image_preprocessing_callback:
+          image = self._image_preprocessing_callback(image)
 
-      return {'image': image, 'label': label}
+        return {'image': image, 'label': label}
 
   def create_iterator(self):
     '''Create an iterator out of the raw dataset split object
@@ -523,3 +529,143 @@ def model_to_dataset_segmentation(cv_model, cv_dataset):
   cv_model.update_raw_model(raw_model)
 
   return cv_model, cv_dataset
+
+
+def model_to_dataset_object_detection(cv_model, cv_dataset):
+  '''If compatible, adjust model and dataset so that they can be executed
+  against each other
+
+  Args:
+    cv_model: an abstracted cv model whose source is Segmentation Torch
+    cv_dataset: an abstracted segmentation cv dataset
+
+  Returns:
+    cv_model: the abstracted cv model adjusted to be executed against
+      cv_dataset
+    cv_dataset: the abstracted cv dataset adjust to be executed against
+      cv_model
+  '''
+  source = cv_dataset.source
+  raw_model = cv_model.raw
+  print(cv_dataset.classes_names)
+
+  classes_labels = (
+      '__background__ ',
+      'aeroplane',
+      'bicycle',
+      'bird',
+      'boat',
+      'bottle',
+      'bus',
+      'car',
+      'cat',
+      'chair',
+      'cow',
+      'diningtable',
+      'dog',
+      'horse',
+      'motorbike',
+      'person',
+      'pottedplant',
+      'sheep',
+      'sofa',
+      'train',
+      'tvmonitor',
+  )
+
+  def preprocess_image(datapoint):
+    # image, target
+    # preprocess = transforms.Compose(
+    #     [transforms.ToTensor(), transforms.Resize(300)])
+    preprocess = transforms.Compose([transforms.ToTensor()])
+
+    if source == 'tensorflow':
+      print('esta entrando aqui')
+      image = datapoint['image']
+      bbox = datapoint['torsobox']
+      image = preprocess(image)
+      target = {}
+      boxes = []
+      ymin = bbox[1]
+      ymax = bbox[3]
+      xmin = bbox[0]
+      xmax = bbox[2]
+      boxes.append([xmin, ymin, xmax, ymax])
+      boxes = torch.as_tensor(boxes, dtype=torch.float32)
+
+      area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+
+      target['boxes'] = boxes
+      # target['area'] = area
+
+      return image, target
+    else:
+
+      image = datapoint[0]
+      target = datapoint[1]
+
+      print(target)
+      anno = target['annotation']
+      boxes = []
+      classes = []
+      area = []
+      iscrowd = []
+      objects = anno['object']
+
+      if not isinstance(objects, list):
+        objects = [objects]
+      for obj in objects:
+        bbox = obj['bndbox']
+        bbox = [
+            int(float(bbox[n])) - 1 for n in ['xmin', 'ymin', 'xmax', 'ymax']
+        ]
+        boxes.append(bbox)
+        classes.append(classes_labels.index(obj['name']))
+        iscrowd.append(int(float(obj['difficult'])))
+        area.append((bbox[2] - bbox[0]) * (bbox[3] - bbox[1]))
+
+      boxes = torch.as_tensor(boxes, dtype=torch.float32)
+      classes = torch.as_tensor(classes)
+      area = torch.as_tensor(area)
+      iscrowd = torch.as_tensor(iscrowd)
+
+      image_id = anno['filename'][5:-4]
+      image_id = torch.as_tensor([int(image_id)])
+
+      target = {}
+
+      target['boxes'] = boxes
+      target['labels'] = classes
+      target['image_id'] = image_id
+
+      # for conversion to coco api
+      target['area'] = area
+      target['iscrowd'] = iscrowd
+
+      image = preprocess(image)  # reshape bounding boxex
+      # w = image.shape[0]
+      # h = image.shape[1]
+      # image = image.expand(1, w, h)
+      return image, target
+
+  cv_dataset.set_image_preprocessing(preprocess_image)
+
+  in_features = raw_model.roi_heads.box_predictor.cls_score.in_features
+  raw_model.roi_heads.box_predictor = FastRCNNPredictor(in_features,
+                                                        len(classes_labels))
+
+  cv_model.update_raw_model(raw_model)
+
+  return cv_model, cv_dataset
+
+
+# class Compose(object):
+
+#   def __init__(self, transforms):
+#     self.transforms = transforms
+
+#   def __call__(self, image, target):
+#     for t in self.transforms:
+#       image = t(image)
+#       target = t(target)
+#     return image, target

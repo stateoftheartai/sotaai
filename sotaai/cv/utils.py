@@ -481,22 +481,27 @@ def get_output_shape(model) -> str:
     output_shape = (last_item,)
     return output_shape
   elif source == 'torchvision':
-    if hasattr(list(model.children())[-1], '__getitem__'):
-      last_output = list(model.children())[-1][-1]
-    else:
-      last_output = list(model.children())[-1]
+    last_output = 0
+    modules = model.__dict__
+    attributes = list(modules['_modules'])
+    last_layer = getattr(model, attributes[-1])
+    while hasattr(list(last_layer.children()), '__getitem__'):
+      if len(list(last_layer.children())) > 0:
+        last_layer = list(last_layer.children())[-1]
+      else:
+        break
 
-    if hasattr(last_output, 'out_features'):
-      return (last_output.out_features,)
-    if hasattr(last_output, 'out_channels'):
+    if hasattr(last_layer, 'out_features'):
+      last_output = last_layer.out_features
+      return (last_output,)
+    elif hasattr(last_layer, 'out_channels'):
       # This case was added for Segmentation models, and as per Torch docs,
       # all its segmentition models require and input image size of (224,224)
       # which entails the output shape (the pixel mask) must be the same size as
       # well but containing one layer or extra dimension per pixel class:
-      return (last_output.out_channels, 224, 224)
-    else:
-      last_output = list(model.children())[-1][1].out_channels
-      return (last_output,)
+
+      last_output = last_layer.out_channels
+      return (last_output, 224, 224)
   else:
     raise NotImplementedError
 

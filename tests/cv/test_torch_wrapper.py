@@ -224,6 +224,7 @@ class TestTorchWrapper(unittest.TestCase):
       for dataset in keras_wrapper.DATASETS['classification']:
         single_test(model, dataset)
 
+  @unittest.SkipTest
   def test_model_to_dataset_segmentation(self):
 
     # cv_model = load_model('deeplabv3_resnet101', source='torch')
@@ -276,6 +277,47 @@ class TestTorchWrapper(unittest.TestCase):
     for model in torch_wrapper.MODELS['segmentation']:
       for dataset in tensorflow_wrapper.DATASETS['segmentation']:
         single_test(model, dataset)
+
+  def test_model_to_dataset_object_detection(self):
+
+    def single_test(model_name, dataset_name):
+      '''This is an inner function that test model_to_dataset for a single case
+      i.e. a single model against a single dataset
+      '''
+
+      print('\n---')
+
+      cv_model = load_model(model_name, source='torch')
+
+      dataset_splits = load_dataset(dataset_name)
+      split_name = next(iter(dataset_splits.keys()))
+      cv_dataset = dataset_splits[split_name]
+
+      cv_model, cv_dataset = model_to_dataset(cv_model, cv_dataset)
+
+      device = torch.device(
+          'cuda') if torch.cuda.is_available() else torch.device('cpu')
+
+      image, target = next(iter(cv_dataset))
+      targets = [target]
+      images = [image]
+
+      images = list(img for img in images)
+      tar = [{k: v.to(device) for k, v in t.items()} for t in targets]
+
+      predctions = cv_model.raw(images, tar)
+      print(predctions)
+
+    single_test('fasterrcnn_resnet50_fpn', 'flic')
+    # for model in torch_wrapper.MODELS['object_detection']:
+    #   single_test(model, 'VOCDetection/2008')
+    # single_test('fasterrcnn_resnet50_fpn', 'VOCDetection/2007')
+
+    #TODO
+    # asserts tests
+    # error reshape boxes
+    # test datasets tensorflow (todos)
+    #
 
 
 if __name__ == '__main__':
