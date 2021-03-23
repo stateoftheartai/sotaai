@@ -87,17 +87,15 @@ DATASETS = {
         # 'scene_parse150' #error torch soruce download
     ],
     'object_detection': [
-        # TODO(Jorge)
-        # Finish object_detection implementation
         # 'celeb_a_hq',  # manual download
-        # 'coco',
-        # 'flic',
-        # 'kitti',
-        # 'open_images_challenge2019_detection', Apache beam
-        # 'open_images_v4', Apache beam
-        # 'voc',
-        # 'the300w_lp',
-        'wider_face'
+        'coco',  # tested
+        'flic',  # tested
+        'kitti',
+        'open_images_challenge2019_detection',  # Apache beam
+        'open_images_v4',  # Apache beam
+        'voc',
+        'the300w_lp',
+        'wider_face'  # Wrong checksum
     ],
     # TODO(team)
     # Eventually implement the remaining tasks...
@@ -175,7 +173,13 @@ class DatasetIterator():
       image = item['image_left']
 
     if self._image_preprocessing_callback:
-      image = self._image_preprocessing_callback(image)
+      # For Object Detection
+      if 'torsobox' in item:
+        image, target = self._image_preprocessing_callback(item)
+
+        return image, target
+      else:
+        image = self._image_preprocessing_callback(image)
 
     std_item = {'image': image}
 

@@ -149,13 +149,13 @@ def model_to_dataset(cv_model, cv_dataset):
   '''
 
   # Uncomment following prints to test model_to_dataset input and outputs...
-  # print('\nModel ', cv_model.name)
-  # print(' Input: ', cv_model.original_input_shape)
-  # print(' Output: ', cv_model.original_output_shape)
-  # print(' Input Type', cv_model.original_input_type)
-  # print('Dataset: ', cv_dataset.name)
-  # print(' Shape:   ', cv_dataset.shape)
-  # print(' Classes: ', cv_dataset.classes_shape)
+  print('\nModel ', cv_model.name)
+  print(' Input: ', cv_model.original_input_shape)
+  print(' Output: ', cv_model.original_output_shape)
+  print(' Input Type', cv_model.original_input_type)
+  print('Dataset: ', cv_dataset.name)
+  print(' Shape:   ', cv_dataset.shape)
+  print(' Classes: ', cv_dataset.classes_shape)
 
   if cv_model.source == 'keras':
     cv_model, cv_dataset = keras_wrapper.model_to_dataset(cv_model, cv_dataset)
@@ -166,6 +166,8 @@ def model_to_dataset(cv_model, cv_dataset):
       torch_wrapper.model_to_dataset_classification(cv_model, cv_dataset)
     elif task == 'segmentation':
       torch_wrapper.model_to_dataset_segmentation(cv_model, cv_dataset)
+    elif task in ('object_detection', 'pose estimation'):
+      torch_wrapper.model_to_dataset_object_detection(cv_model, cv_dataset)
 
   # print('\nModel ', cv_model.name)
   # print(' Input: ', cv_model.original_input_shape)
