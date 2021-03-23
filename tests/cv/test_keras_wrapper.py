@@ -128,9 +128,7 @@ class TestKerasWrapper(unittest.TestCase):
 
       print('\n---')
 
-      # As per Keras docs, it is important to set include_top to
-      # false to be able to modify model input/output
-      cv_model = load_model(model_name, 'keras', include_top=False)
+      cv_model = load_model(model_name, 'keras')
 
       dataset_splits = load_dataset(dataset_name)
       split_name = next(iter(dataset_splits.keys()))

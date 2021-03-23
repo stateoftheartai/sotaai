@@ -131,6 +131,8 @@ def load_dataset(dataset_name, download=True):
 
   Args:
     dataset_name: the dataset name in string
+    download: temporal flag to skip download and only create the dataset
+      instance with no data (used for JSONs creation)
 
   Returns:
     A dict where each key is a dataset split and the value is a dataset

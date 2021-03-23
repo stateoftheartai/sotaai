@@ -166,6 +166,8 @@ def load_dataset(dataset_name,
                 and is_valid_file should not be passed
         target_transform:(callable, optional), A function/transform
                 that takes in the target and transforms it.
+        download: temporal flag to skip download and only create the dataset
+          instance with no data (used for JSONs creation)
     Output:
         dict, with keys indicating the partition of the dataset,
                 and the values are of type DataLoader
