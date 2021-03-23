@@ -4,9 +4,14 @@
 '''Useful utility functions to navigate the library's available resources.'''
 import importlib
 
-MODEL_SOURCES = ['garage', 'rllib', 'stablebaselines3']
+MODEL_SOURCES = [
+    'allennlp', 'decanlp', 'fairseq', 'flair', 'hanlp', 'nlparchitect',
+    'parlai', 'stanza'
+]
 
-DATASET_SOURCES = []
+DATASET_SOURCES = [
+    'allennlp', 'decanlp', 'flair', 'hanlp', 'parlai', 'tensorflow', 'torchtext'
+]
 
 
 def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:  # pylint: disable=unused-argument
@@ -40,7 +45,7 @@ def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:  #
   sources = DATASET_SOURCES if nametype == 'datasets' else MODEL_SOURCES
 
   for source in sources:
-    wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
+    wrapper = importlib.import_module('sotaai.nlp.' + source + '_wrapper')
     items = wrapper.DATASETS if nametype == 'datasets' else wrapper.MODELS
     for task in items:
       for item in items[task]:
@@ -96,7 +101,7 @@ def map_source_metadata() -> dict:
   sources = set(DATASET_SOURCES + MODEL_SOURCES)
 
   for source in sources:
-    wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
+    wrapper = importlib.import_module('sotaai.nlp.' + source + '_wrapper')
     items_breakdown[source] = wrapper.SOURCE_METADATA
 
   return items_breakdown

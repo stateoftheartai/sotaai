@@ -8,6 +8,12 @@ https://pytorch-geometric.readthedocs.io/en/latest/modules/nn.html#models
 Dataset information taken from:
 '''
 
+SOURCE_METADATA = {
+    'name': 'pytorchgeo',
+    'original_name': 'PyTorch geometric',
+    'url': 'https://pytorch-geometric.readthedocs.io/en/latest/'
+}
+
 MODELS = {
     'unknown': [
         'ARGA', 'ARGVA', 'CorrectAndSmooth', 'DeepGCNLayer', 'DeepGraphInfomax',
@@ -31,3 +37,11 @@ DATASETS = {
         'Actor', 'JODIE', 'MixHopSyntheticDataset'
     ],
 }
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'pytorchgeo'}
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'pytorchgeo'}

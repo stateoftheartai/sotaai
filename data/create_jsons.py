@@ -19,66 +19,65 @@ def main(area: str, output_dir='./data/output/'):
 
   print('\nAbout to create JSONs...')
 
-  sotaai_module = importlib.import_module('sotaai.{}'.format(area))
-
-  output_file_path = '{}{}.json'.format(output_dir, area)
-  model_names, dataset_names = get_model_and_dataset_names(area)
-
-  print('Area: {}'.format(area.upper()))
-  print('Models: {}'.format(len(model_names)))
-  print('Datasets: {}'.format(len(dataset_names)))
-  print('JSON output: {}'.format(output_file_path))
-
   try:
-    models = sotaai_module.create_models_dict(model_names)
-    datasets = sotaai_module.create_datasets_dict(dataset_names)
+    sotaai_module = importlib.import_module('sotaai.{}'.format(area))
+    sotaai_utils_module = importlib.import_module(
+        'sotaai.{}.utils'.format(area))
+
+    models_sources_map = sotaai_utils_module.map_name_sources('models')
+    datasets_sources_map = sotaai_utils_module.map_name_sources('datasets')
+    sources_metadata_map = sotaai_utils_module.map_source_metadata()
+
+    models_by_source = items_by_source(models_sources_map)
+    datasets_by_source = items_by_source(datasets_sources_map)
+
+    output_file_path = '{}{}.json'.format(output_dir, area)
+    model_names = models_sources_map.keys()
+    dataset_names = datasets_sources_map.keys()
+
+    print('Area: {}'.format(area.upper()))
+    print('Unique Models: {}'.format(len(model_names)))
+    for source in models_by_source:
+      print(' - {}: {}'.format(source, models_by_source[source]))
+    print('Unique Datasets: {}'.format(len(dataset_names)))
+    for source in datasets_by_source:
+      print(' - {}: {}'.format(source, datasets_by_source[source]))
+    print('JSON output: {}'.format(output_file_path))
+
+    models = sotaai_module.create_models_dict(model_names, models_sources_map)
+    datasets = sotaai_module.create_datasets_dict(dataset_names,
+                                                  datasets_sources_map)
+    sources = list(sources_metadata_map.values())
+
+    add_area(area, models)
+    add_area(area, datasets)
+    add_area(area, sources)
+
+    data = {'models': models, 'datasets': datasets, 'sources': sources}
+
+    save_json(data, output_file_path)
+
+    print('\nJSONs files created successfully.\n')
+
   except Exception as e:
     raise NotImplementedError(
         'JSON creation for {} is still not implemented'.format(area)) from e
 
-  save_json(models + datasets, output_file_path)
 
-  print('\nJSONs files created successfully.\n')
-
-
-def get_model_and_dataset_names(area: str):
-  '''Return the set of model and datasets name available for a given area
-
-  Args:
-    area (str): a valid area e.g. cv, nlp, rl, or neuro
-
-  Returns:
-    model_names (list): the list of model names available for the given area
-    dataset_names (list): the list of dataset names available for the given area
-  '''
-
-  try:
-    sotaai_utils = importlib.import_module('sotaai.{}.utils'.format(area))
-
-    sources = list(
-        set(sotaai_utils.MODEL_SOURCES + sotaai_utils.DATASET_SOURCES))
-
-    model_names = []
-    dataset_names = []
-
+def items_by_source(items_sources_map: dict) -> dict:
+  by_source = {}
+  for item_name in items_sources_map:
+    sources = items_sources_map[item_name]
     for source in sources:
+      if source not in by_source:
+        by_source[source] = 0
+      by_source[source] += 1
+  return by_source
 
-      wrapper_file_name = 'sotaai.{}.{}_wrapper'.format(area, source)
-      wrapper = importlib.import_module(wrapper_file_name)
 
-      if hasattr(wrapper, 'MODELS'):
-        for task in wrapper.MODELS:
-          model_names = model_names + wrapper.MODELS[task]
-
-      if hasattr(wrapper, 'DATASETS'):
-        for task in wrapper.DATASETS:
-          dataset_names = dataset_names + wrapper.DATASETS[task]
-
-  except Exception as e:
-    raise NotImplementedError(
-        'JSON creation for {} is still not implemented'.format(area)) from e
-
-  return model_names, dataset_names
+def add_area(area: str, items):
+  for item in items:
+    item['area'] = area
 
 
 def save_json(data, file_path):

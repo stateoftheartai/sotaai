@@ -1,42 +1,28 @@
 # -*- coding: utf-8 -*-
 # Author: Tonio Teran <tonio@stateoftheart.ai>
 # Copyright: Stateoftheart AI PBC 2021.
-'''Main NLP module to abstract away library specific API and standardize.'''
-from sotaai.nlp import utils
-from sotaai.nlp import abstractions
+'''Main RL module to abstract away library specific API and standardize.'''
+from sotaai.rl import utils
+from sotaai.rl import abstractions
 import importlib
 
 
-def load_model(name: str) -> abstractions.NlpModel:
+def load_model(name: str) -> abstractions.RlModel:
   '''Dummy load model function. Placeholder for real wrapper.'''
   model_source_map = utils.map_name_sources('models')
   source = model_source_map[name][0]
-  wrapper = importlib.import_module('sotaai.nlp.' + source + '_wrapper')
+  wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
   raw_object = wrapper.load_model(name)
-  return abstractions.NlpModel(raw_object['name'], raw_object['source'])
+  return abstractions.RlModel(raw_object['name'], raw_object['source'])
 
 
-def load_dataset(name: str) -> abstractions.NlpDataset:
+def load_dataset(name: str) -> abstractions.RlDataset:
   '''Dummy load dataset function. Placeholder for real wrapper.'''
   dataset_source_map = utils.map_name_sources('datasets')
   source = dataset_source_map[name][0]
-  wrapper = importlib.import_module('sotaai.nlp.' + source + '_wrapper')
+  wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
   raw_object = wrapper.load_dataset(name)
-  return abstractions.NlpDataset(raw_object['name'], raw_object['source'])
-
-
-def model_to_dataset(
-    model: abstractions.NlpModel, dataset: abstractions.NlpDataset
-) -> (abstractions.NlpModel, abstractions.NlpDataset):
-  '''TODO(lalito) describe.'''
-  # 1. Check whether to modify the model or the datset.
-  # 2. Modify whatever is necessary, e.g.,
-  #
-  #  compatible_model = utils.modify_layers(model, dataset), o
-  #
-  #  compatible_dataset = utils.resize_samples(model, dataset)
-  #
-  raise NotImplementedError('TODO(lalito) implement me')
+  return abstractions.RlDataset(raw_object['name'], raw_object['source'])
 
 
 def create_models_dict(model_names, models_sources_map):

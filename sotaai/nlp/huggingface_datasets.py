@@ -3,6 +3,12 @@
 # Copyright: Stateoftheart AI PBC 2021.
 '''Hugging Face datsets dictionary module.'''
 
+# Most of the models have too-long names that raises line-too-long warning, this is why
+# pylint skips this file. Also, it is not relevant to lint this file since it
+# only contains lists/dicts of data
+
+# pylint: skip-file
+
 DATASETS = {
     'machine-translation': [
         'alt', 'arxiv_dataset', 'autshumato', 'bianet', 'bible_para',

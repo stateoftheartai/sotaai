@@ -16,6 +16,12 @@ resource.setrlimit(resource.RLIMIT_NOFILE, (1000, high))
 # Prevent Tensorflow to print warning and meta logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
+SOURCE_METADATA = {
+    'name': 'tensorflow',
+    'original_name': 'TensorFlow',
+    'url': 'https://www.tensorflow.org/'
+}
+
 DATASETS = {
     'classification': [
         'beans',
@@ -115,12 +121,16 @@ DATASETS = {
     ]
 }
 
+MODELS = {}
 
-def load_dataset(dataset_name):
+
+def load_dataset(dataset_name, download=True):
   '''Return a tensorflow dataset in its iterable version
 
   Args:
     dataset_name: the dataset name in string
+    download: temporal flag to skip download and only create the dataset
+      instance with no data (used for JSONs creation)
 
   Returns:
     A dict where each key is a dataset split and the value is a dataset
@@ -128,8 +138,11 @@ def load_dataset(dataset_name):
     has the 'image' and 'label' keys which are in turn numpy arrays of the image
     and label respectively.
   '''
-  ds = tfds.load(dataset_name)
-  return tfds.as_numpy(ds)
+  if download:
+    ds = tfds.load(dataset_name)
+    return tfds.as_numpy(ds)
+  else:
+    return {'train': {'name': dataset_name, 'source': 'tensorflow'}}
 
 
 class DatasetIterator():

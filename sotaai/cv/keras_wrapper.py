@@ -11,6 +11,12 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense, GlobalAveragePooling2D
 import numpy as np
 
+SOURCE_METADATA = {
+    'name': 'keras',
+    'original_name': 'Keras',
+    'url': 'https://keras.io/'
+}
+
 DATASETS = {'classification': ['mnist', 'cifar10', 'cifar100', 'fashion_mnist']}
 
 # @author HO
@@ -26,17 +32,23 @@ MODELS = {
 }
 
 
-def load_model(model_name,
-               pretrained=False,
-               alpha=1.0,
-               depth_multiplier=1,
-               dropout=0.001,
-               input_tensor=None,
-               input_shape=None,
-               include_top=None,
-               pooling=None,
-               classes=1000,
-               classifier_activation='softmax'):
+def load_model(
+    model_name,
+    pretrained=False,
+    alpha=1.0,
+    depth_multiplier=1,
+    dropout=0.001,
+    input_tensor=None,
+    input_shape=None,
+    # TODO(Hugo)
+    # Once standardized input is defined (configs), this param should be put by
+    # the end-user
+    # As per Keras docs, it is important to set include_top to
+    # false to be able to modify model input/output
+    include_top=False,
+    pooling=None,
+    classes=1000,
+    classifier_activation='softmax'):
   '''Load a model with specific configuration.
 
     Args:
@@ -130,20 +142,25 @@ def load_model(model_name,
   return model
 
 
-def load_dataset(dataset_name):
+def load_dataset(dataset_name, download=True):
   '''Load a given dataset with all its splits
 
     Args:
       dataset_name (string): name of dataset
+      download: temporal flag to skip download and only create the dataset
+        instance with no data (used for JSONs creation)
 
     Returns:
       Dict with keys {'train':(x_train, y_train), 'test':(x_test,y_test),
       Each entry is a numpy array
     '''
 
-  dataset = getattr(keras.datasets, dataset_name)
-  dataset = dataset.load_data()
-  dataset_dict = {'train': dataset[0], 'test': dataset[1]}
+  if download:
+    dataset = getattr(keras.datasets, dataset_name)
+    dataset = dataset.load_data()
+    dataset_dict = {'train': dataset[0], 'test': dataset[1]}
+  else:
+    return {'train': {'name': dataset_name, 'source': 'tensorflow'}}
 
   return dataset_dict
 

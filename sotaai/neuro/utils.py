@@ -15,7 +15,7 @@ DATASET_SOURCES = [
 ]
 
 
-def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:
+def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:  # pylint: disable=unused-argument
   '''Gathers all models/datasets and their respective sources and tasks.
 
   Crawls through all modules to arrange entries of the form:
@@ -42,18 +42,15 @@ def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:
   TODO(tonioteran) THIS SHOULD BE CACHED EVERY TIME WE USE IT.
   '''
   items_breakdown = dict()
-  original_names = dict()
 
   sources = DATASET_SOURCES if nametype == 'datasets' else MODEL_SOURCES
 
   for source in sources:
     # wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
-    wrapper = importlib.import_module(source + '_wrapper')
+    wrapper = importlib.import_module('sotaai.neuro.' + source + '_wrapper')
     items = wrapper.DATASETS if nametype == 'datasets' else wrapper.MODELS
     for task in items:
       for item in items[task]:
-        original_names[item.lower()] = item
-        item = item.lower()
         if item in items_breakdown.keys():
           if source in items_breakdown[item].keys():
             items_breakdown[item][source].append(task)
@@ -62,18 +59,82 @@ def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:
         else:
           items_breakdown[item] = {source: [task]}
 
-  # TODO When original_names are replaced, the original name replaced
-  # is the last one added to the original_names dict e.g. If vgg exists as
-  # VGG and vgg in different sources, the original_names dict will only keep
-  # one of those two. We need to fix this evenutally.
+  return items_breakdown
 
-  if not return_original_names:
-    return items_breakdown
 
-  # Uses the entries of `original_names` as keys to store the entries from
-  # the `items_breakdown` dict, which uses lowercase names as keys.
-  output_dict = dict()
-  for itemname in items_breakdown:
-    output_dict[original_names[itemname]] = items_breakdown[itemname]
+def map_name_sources(nametype: str, return_original_names=True) -> dict:
+  '''Gathers all models/datasets and their source libraries.
 
-  return output_dict
+  Builds a dictionary where each entry is of the form:
+
+    <item-name>: [<source-library-1>, <source-library-2>, ...]
+
+  Args:
+    nametype (str):
+      Types of names to be used, i.e., either 'models' or 'datasets'.
+
+    return_original_names: if true return source original names, if false return
+      unified (lower case) names
+
+  Returns (dict):
+    Dictionary with an entry for all available items of the above form.
+  '''
+  item_sources_tasks = map_name_source_tasks(nametype, return_original_names)
+  item_sources = dict()
+
+  for item in item_sources_tasks:
+    item_sources[item] = list(item_sources_tasks[item].keys())
+
+  return item_sources
+
+
+def map_source_metadata() -> dict:
+  '''Return a map between the source name and its original name
+
+  Crawls through all modules to arrange entries of the form:
+
+    <source-name>: <source-original-name>
+
+  Returns (dict):
+    Dictionary with an entry for all available items of the above form.
+  '''
+  items_breakdown = dict()
+
+  sources = set(DATASET_SOURCES + MODEL_SOURCES)
+
+  for source in sources:
+    wrapper = importlib.import_module('sotaai.neuro.' + source + '_wrapper')
+    items_breakdown[source] = wrapper.SOURCE_METADATA
+
+  return items_breakdown
+
+
+def map_name_tasks(nametype: str) -> dict:
+  '''Gathers all models/datasets and their supported tasks.
+
+  Builds a dictionary where each entry is of the form:
+
+    <item-name>: [<supported-task-1>, <supported-task-2>, ...]
+
+  Args:
+    nametype (str):
+      Types of names to be used, i.e., either 'models' or 'datasets'.
+
+  Returns (dict):
+    Dictionary with an entry for all available items of the above form.
+
+  TODO(tonioteran) THIS SHOULD BE CACHED EVERY TIME WE USE IT.
+  '''
+  item_sources_tasks = map_name_source_tasks(nametype)
+  item_tasks = dict()
+
+  for item in item_sources_tasks:
+    it_tasks = []
+
+    for source in item_sources_tasks[item].keys():
+      for t in item_sources_tasks[item][source]:
+        it_tasks.append(t)
+    it_tasks = list(set(it_tasks))
+    item_tasks[item] = it_tasks
+
+  return item_tasks

@@ -5,7 +5,6 @@
 # TODO(tonioteran) Deprecate specific dataset/model functions for the
 # generalized version.
 import importlib
-import mxnet as mx
 import numpy as np
 import tensorflow_datasets as tfds
 import time
@@ -17,13 +16,11 @@ from random import randrange
 # Prevent Tensorflow to print warning and meta logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-# TODO(tonioteran) Removed 'fastai', 'mxnet' and 'pretrainedmodels' from
-# MODEL_SOURCES. Need to restore as soon as the wrapper is done and unit test.
-MODEL_SOURCES = ['keras', 'torch']  # 'fastai', 'mxnet', 'pretrainedmodels'
+SOURCES = [
+    'tensorflow', 'keras', 'torch', 'fastai', 'mxnet', 'pretrainedmodels', 'mmf'
+]
 
-# TODO(tonioteran) Removed 'fastai' and 'mxnet' from DATASET_SOURCES. Need to
-# restore as soon as the wrapper is done and unit test.
-DATASET_SOURCES = ['tensorflow', 'keras', 'torch']  # 'mxnet', 'fastai'
+IMPLEMENTED_SOURCES = ['keras', 'torch', 'tensorflow']
 
 IMAGE_MINS = {
     'InceptionV3': 75,
@@ -56,125 +53,19 @@ IMAGE_MINS = {
 PIXELS_CLASSES = {'lost_and_found': 44, 'cityscapes': 35, 'scene_parse150': 150}
 
 
-def map_dataset_source_tasks() -> dict:
-  '''Gathers all datasets and their respective sources and available tasks.
+def split_sources(sources):
+  '''Temporal function to split sources in two groups: those that are already
+  fully implmented, and those who are not
 
-  Crawls through all modules to arrange entries of the form:
+  Args:
+    sources: array of sources name to split
 
-    <dataset-name>: {
-        <name-source-1>: [<supported-task-11>, <supported-task-12>, ...],
-        <name-source-2>: [<supported-task-21>, <supported-task-22>, ...],
-        ...
-        <name-source-n>: [<supported-task-n1>, <supported-task-n2>, ...],
-    }
-
-  Ensures duplicate removals by transforming all strings to lower case, and
-  preserving the original names in an additional `original_names` dictionary.
-
-  Returns (dict):
-    Dictionary with an entry for all available datasets of the above form.
-
-  TODO(tonioteran) THIS SHOULD BE CACHED EVERY TIME WE USE IT.
+  Returns:
+    implemented: array of sources fully implemented
   '''
-  datasets_breakdown = dict()
-  original_names = dict()
-
-  for source in DATASET_SOURCES:
-    wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
-    for task in wrapper.DATASETS:
-      for ds in wrapper.DATASETS[task]:
-        original_names[ds.lower()] = ds
-        ds = ds.lower()
-        if ds in datasets_breakdown.keys():
-          if source in datasets_breakdown[ds].keys():
-            datasets_breakdown[ds][source].append(task)
-          else:
-            datasets_breakdown[ds][source] = [task]
-        else:
-          datasets_breakdown[ds] = {source: [task]}
-  # Uses the entries of `original_names` as keys to store the entries from
-  # the `datasets_breakdown` dict, which uses lowercase names as keys.
-  output_dict = dict()
-  for dsname in datasets_breakdown:
-    output_dict[original_names[dsname]] = datasets_breakdown[dsname]
-
-  return output_dict
-
-
-def map_dataset_tasks() -> dict:
-  '''Gathers all datasets and their supported tasks.
-
-  Builds a dictionary where each entry is of the form:
-
-      <dataset-name>: [<supported-task-1>, <supported-task-2>, ...]
-
-  Returns (dict):
-      Dictionary with an entry for all available datasets of the above form.
-
-  TODO(tonioteran) THIS SHOULD BE CACHED EVERY TIME WE USE IT.
-  '''
-  dataset_sources_tasks = map_dataset_source_tasks()
-  dataset_tasks = dict()
-
-  for ds in dataset_sources_tasks:
-    ds_tasks = []
-
-    for source in dataset_sources_tasks[ds].keys():
-      for t in dataset_sources_tasks[ds][source]:
-        ds_tasks.append(t)
-    ds_tasks = list(set(ds_tasks))
-    dataset_tasks[ds] = ds_tasks
-
-  return dataset_tasks
-
-
-def map_dataset_sources(count=False) -> dict:
-  '''Gathers all datasets and their source libraries.
-
-  Builds a dictionary where each entry is of the form:
-
-      <dataset-name>: [<source-library-1>, <source-library-2>, ...]
-
-  If count is True, return the count (length) of sources instead
-
-  Returns (dict):
-      Dictionary with an entry for all available datasets of the above form.
-  '''
-  dataset_sources_tasks = map_dataset_source_tasks()
-  dataset_sources = dict()
-
-  for ds in dataset_sources_tasks:
-    dataset_sources[ds] = list(
-        dataset_sources_tasks[ds].keys()) if not count else len(
-            dataset_sources_tasks[ds].keys())
-
-  return dataset_sources
-
-
-def map_dataset_info() -> dict:
-  '''Gathers all datasets, listing supported tasks and source libraries.
-
-  Builds a dictionary where each entry is of the form:
-
-      <dataset-name>: {
-          'tasks': [<supported-task-1>, <supported-task-2>, ...],
-          'sources': [<supported-task-1>, <supported-task-2>, ...]
-      }
-
-  Returns (dict):
-      Dictionary with an entry for all available datasets of the above form.
-  '''
-  dataset_tasks = map_dataset_tasks()
-  dataset_sources = map_dataset_sources()
-  dataset_info = dict()
-
-  for ds in dataset_tasks:
-    dataset_info[ds] = {
-        'sources': dataset_sources[ds],
-        'tasks': dataset_tasks[ds]
-    }
-
-  return dataset_info
+  implemented = filter(lambda s: s in IMPLEMENTED_SOURCES, sources)
+  not_implemented = filter(lambda s: s not in IMPLEMENTED_SOURCES, sources)
+  return list(implemented), list(not_implemented)
 
 
 def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:
@@ -196,7 +87,11 @@ def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:
     nametype (str):
       Types of names to be used, i.e., either 'models' or 'datasets'.
     return_original_names: if true return source original names, if false return
-      unified (lower case) names
+      unified (lower case) names. When more than one original name give the same
+      unified name, then only one of those will be returned (the last one being
+      captured in the `original_names` dictionary) e.g. resnet might have two
+      original names (Resnet and ResNet), then only one of those will be
+      returned.
 
   Returns (dict):
     Dictionary with an entry for all available items of the above form.
@@ -206,7 +101,24 @@ def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:
   items_breakdown = dict()
   original_names = dict()
 
-  sources = DATASET_SOURCES if nametype == 'datasets' else MODEL_SOURCES
+  sources = SOURCES
+
+  # TODO When original_names are replaced, the original name replaced
+  # is the last one written to the original_names dict e.g. If vgg exists as
+  # VGG and vgg in different sources, the original_names dict will only keep
+  # one of those two. We need to fix this evenutally.
+
+  # TODO(Hugo)
+  # Once all sources are fully implemented remove this re-ordering
+  # Sources are reoredered from not_implemented to implemented to keep the
+  # original_name of the implemented version (in case the model/dataset exists
+  # in a fully implemented source and in one not implemented as well). This
+  # allow us to use as default the implemented one when no source name is
+  # given to load_model or load_dataset.
+  # Example: if alexnet exists in FastAI and Keras, we want to preserve the
+  # original name of Keras so that we can import it from there by default.
+  implemented, not_implemented = split_sources(sources)
+  sources = not_implemented + implemented
 
   for source in sources:
     wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
@@ -223,11 +135,6 @@ def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:
         else:
           items_breakdown[item] = {source: [task]}
 
-  # TODO When original_names are replaced, the original name replaced
-  # is the last one added to the original_names dict e.g. If vgg exists as
-  # VGG and vgg in different sources, the original_names dict will only keep
-  # one of those two. We need to fix this evenutally.
-
   if not return_original_names:
     return items_breakdown
 
@@ -238,6 +145,27 @@ def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:
     output_dict[original_names[itemname]] = items_breakdown[itemname]
 
   return output_dict
+
+
+def map_source_metadata() -> dict:
+  '''Return a map between the source name and its original name
+
+  Crawls through all modules to arrange entries of the form:
+
+    <source-name>: <source-original-name>
+
+  Returns (dict):
+    Dictionary with an entry for all available items of the above form.
+  '''
+  items_breakdown = dict()
+
+  sources = SOURCES
+
+  for source in sources:
+    wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
+    items_breakdown[source] = wrapper.SOURCE_METADATA
+
+  return items_breakdown
 
 
 def map_name_tasks(nametype: str) -> dict:
@@ -292,7 +220,14 @@ def map_name_sources(nametype: str, return_original_names=True) -> dict:
   item_sources = dict()
 
   for item in item_sources_tasks:
-    item_sources[item] = list(item_sources_tasks[item].keys())
+    sources = list(item_sources_tasks[item].keys())
+
+    # TODO(Hugo)
+    # Once all sources are fully implemented remove this re-ordering
+    # Make sure to return implemented sources first, so that the source used by
+    # default is an implemented one
+    implemented, not_implemented = split_sources(sources)
+    item_sources[item] = list(implemented) + list(not_implemented)
 
   return item_sources
 
@@ -337,6 +272,9 @@ def get_source_from_model(model) -> str:
     return 'mxnet'
   if 'keras' in str(type(model)):
     return 'keras'
+  # Non-implemented models
+  if isinstance(model, dict) and 'source' in model:
+    return model['source']
   raise NotImplementedError(
       'Need source extraction implementation for this type of model!')
 
@@ -380,34 +318,36 @@ def flatten_model_recursively(block, source: str, layers: list):
   TODO(tonioteran,hugoochoa) Clean this up and unit test! This code seems
   pretty messy...
   '''
-  if source == 'mxnet':
-    bottleneck_layer = mx.gluon.model_zoo.vision.BottleneckV1
-    list1 = dir(bottleneck_layer)
-    if 'features' in dir(block):
-      flatten_model_recursively(block.features, source, layers)
+  # TODO(team)
+  # Uncomment this code once mxnet is fully-implemented
+  # import mxnet as mx
+  # if source == 'mxnet':
+  # bottleneck_layer = mx.gluon.model_zoo.vision.BottleneckV1
+  # list1 = dir(bottleneck_layer)
+  # if 'features' in dir(block):
+  # flatten_model_recursively(block.features, source, layers)
 
-    elif 'HybridSequential' in str(type(block)):
-      for j in block:
-        flatten_model_recursively(j, source, layers)
+  # elif 'HybridSequential' in str(type(block)):
+  # for j in block:
+  # flatten_model_recursively(j, source, layers)
 
-    elif 'Bottleneck' in str(type(block)):
-      list2 = dir(block)
-      for ll in list1:
-        list2.remove(ll)
-      subblocks = [x for x in list2 if not x.startswith('_')]
-      for element in subblocks:
-        attr = getattr(block, element)
-        flatten_model_recursively(attr, source, layers)
+  # elif 'Bottleneck' in str(type(block)):
+  # list2 = dir(block)
+  # for ll in list1:
+  # list2.remove(ll)
+  # subblocks = [x for x in list2 if not x.startswith('_')]
+  # for element in subblocks:
+  # attr = getattr(block, element)
+  # flatten_model_recursively(attr, source, layers)
+  # else:
+  # layers.append(block)
+  # else:
+  for child in block.children():
+    obj = str(type(child))
+    if 'container' in obj or 'torch.nn' not in obj:
+      flatten_model_recursively(child, source, layers)
     else:
-      layers.append(block)
-
-  else:
-    for child in block.children():
-      obj = str(type(child))
-      if 'container' in obj or 'torch.nn' not in obj:
-        flatten_model_recursively(child, source, layers)
-      else:
-        layers.append(child)
+      layers.append(child)
 
 
 def get_input_type(model) -> str:
@@ -659,6 +599,9 @@ def get_source_from_dataset(dataset) -> str:
     source = obj_type.split('.')[0]
   if 'tensorflow' in source:
     source = 'tensorflow'
+  # Non-implemented dataset
+  if isinstance(dataset, dict) and 'source' in dataset:
+    return dataset['source']
   return source
 
 

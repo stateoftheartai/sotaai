@@ -4,6 +4,9 @@
 '''Abstract classes for standardized models and datasets.'''
 from sotaai.cv import utils
 
+datasets_tasks_map = utils.map_name_tasks('datasets')
+models_tasks_map = utils.map_name_tasks('models')
+
 
 class CvDataset(object):
   '''Our attempt at a standardized, task-agnostic dataset wrapper.
@@ -22,65 +25,78 @@ class CvDataset(object):
         Name of the dataset.
       split_name (str):
         Name of the dataset's split.
+      source (str):
+        Source name used when no raw_model is given
     '''
+
     self.raw = raw_dataset
-    self.iterator = iterator
     self.name = name
-    self.source = utils.get_source_from_dataset(raw_dataset)
-    self.split_name = split_name
-    self.tasks = utils.map_dataset_tasks()[name]
-    self.size = utils.get_size_from_dataset(raw_dataset, self.split_name)
-    self.shape = utils.get_shape_from_dataset(raw_dataset, name, split_name)
+    self.tasks = datasets_tasks_map[name]
+    self.iterator = iterator
+    self.source = utils.get_source_from_dataset(self.raw)
 
-    # Populated for datasets supporting classification or detection tasks.
-    self.classes = None
-    self.classes_names = None
-    self.classes_shape = None
+    self.is_implemented = not (isinstance(self.raw, dict) and
+                               'source' in self.raw)
+    if not self.is_implemented:
 
-    if 'classification' in self.tasks or 'object_detection' in self.tasks:
-      classes, classes_names, classes_shape = utils.get_classes_from_dataset(
-          raw_dataset, self.source, self.name, self.split_name)
+      self.split_name = None
+      self.size = None
+      self.shape = None
+      self.classes = None
+      self.classes_names = None
+      self.classes_shape = None
+      self.pixel_classes = None
+      self.pixel_classes_names = None
+      self.source = None
 
-      self.classes = classes
-      self.classes_names = classes_names
-      self.classes_shape = classes_shape
+    else:
 
-    # Only populated for datasets that support segmentation tasks.
-    self.pixel_classes = None
-    self.pixel_classes_names = None
-    if 'segmentation' in self.tasks:
-      self.pixel_classes, self.pixel_classes_names = (
-          utils.extract_pixel_classes(raw_dataset, self.name, self.source,
-                                      self.split_name))
+      self.split_name = split_name
+      self.size = utils.get_size_from_dataset(raw_dataset, self.split_name)
+      self.shape = utils.get_shape_from_dataset(raw_dataset, name, split_name)
 
-    # Only populated for datasets that support image captioning tasks.
-    self.captions = None
+      # Populated for datasets supporting classification or detection tasks.
+      self.classes = None
+      self.classes_names = None
+      self.classes_shape = None
 
-    # For visual question answering tasks.A
-    self.annotations = None
-    self.vocab = None
+      if 'classification' in self.tasks or 'object_detection' in self.tasks:
+        classes, classes_names, classes_shape = utils.get_classes_from_dataset(
+            raw_dataset, self.source, self.name, self.split_name)
+
+        self.classes = classes
+        self.classes_names = classes_names
+        self.classes_shape = classes_shape
+
+      # Only populated for datasets that support segmentation tasks.
+      self.pixel_classes = None
+      self.pixel_classes_names = None
+      if 'segmentation' in self.tasks:
+        self.pixel_classes, self.pixel_classes_names = (
+            utils.extract_pixel_classes(raw_dataset, self.name, self.source,
+                                        self.split_name))
 
   def to_dict(self) -> dict:
     return {
-        '_name':
+        'name':
             self.name,
-        '_type':
+        'type':
             'dataset',
-        '_source':
+        'source':
             self.source,
-        '_tasks':
+        'tasks':
             self.tasks,
-        'num_items':
+        'cv_num_items':
             self.size,
-        'item_width':
-            self.shape[0],
-        'item_height':
-            self.shape[1],
-        'item_channels':
-            self.shape[2] if len(self.shape) == 3 else None,
-        'num_classes':
+        'cv_item_width':
+            self.shape[0] if self.shape else None,
+        'cv_item_height':
+            self.shape[1] if self.shape else None,
+        'cv_item_channels':
+            self.shape[2] if self.shape and len(self.shape) == 3 else None,
+        'cv_num_classes':
             self.classes_shape[0] if self.classes_shape else None,
-        'num_pixel_classes':
+        'cv_num_pixel_classes':
             len(self.pixel_classes) if self.pixel_classes else None,
     }
 
@@ -107,12 +123,27 @@ class CvModel(object):
         is dependent on the source library.
       name (str):
         Name of the model.
+      source (str):
+        Source name used when no raw_model is given
     '''
     self.raw = raw_model
     self.name = name
-    self.tasks = utils.map_name_tasks('models')[name]
+    self.tasks = models_tasks_map[name]
     self.source = utils.get_source_from_model(self.raw)
-    self._populate_attributes()
+    self.is_implemented = not (isinstance(self.raw, dict) and
+                               'source' in self.raw)
+
+    if not self.is_implemented:
+      self.original_input_type = None
+      self.original_input_shape = None
+      self.original_output_shape = None
+      self.input_shape_min = None
+      self.num_channels = None
+      self.num_layers = None
+      self.num_params = None
+      self.paper = None
+    else:
+      self._populate_attributes()
 
   def _populate_attributes(self):
     self.original_input_type = utils.get_input_type(self.raw)
@@ -132,20 +163,34 @@ class CvModel(object):
 
   def to_dict(self) -> dict:
     return {
-        '_name': self.name,
-        '_type': 'model',
-        '_source': self.source,
-        '_tasks': self.tasks,
-        '_paper': self.paper,
-        'input_type': self.original_input_type,
-        'input_shape_height': self.original_input_shape[0],
-        'input_shape_width': self.original_input_shape[1],
-        'input_shape_channels': self.original_input_shape[2],
-        'input_shape_min_height': self.input_shape_min[0],
-        'input_shape_min_width': self.input_shape_min[1],
-        'output_shape': self.original_output_shape,
-        'num_layers': self.num_layers,
-        'num_params': self.num_params,
+        'name':
+            self.name,
+        'type':
+            'model',
+        'source':
+            self.source,
+        'tasks':
+            self.tasks,
+        'paper':
+            self.paper,
+        'cv_input_type':
+            self.original_input_type,
+        'cv_input_shape_height':
+            self.original_input_shape[0] if self.original_input_shape else None,
+        'cv_input_shape_width':
+            self.original_input_shape[1] if self.original_input_shape else None,
+        'cv_input_shape_channels':
+            self.original_input_shape[2] if self.original_input_shape else None,
+        'cv_input_shape_min_height':
+            self.input_shape_min[0] if self.input_shape_min else None,
+        'cv_input_shape_min_width':
+            self.input_shape_min[1] if self.input_shape_min else None,
+        'cv_output_shape':
+            self.original_output_shape,
+        'cv_num_layers':
+            self.num_layers,
+        'cv_num_params':
+            self.num_params,
     }
 
   def update_raw_model(self, model) -> None:

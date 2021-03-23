@@ -16,6 +16,12 @@ import torch.nn as nn
 import numpy as np
 import torchvision.transforms as transforms
 
+SOURCE_METADATA = {
+    'name': 'torch',
+    'original_name': 'PyTorch',
+    'url': 'https://pytorch.org/'
+}
+
 DATASETS = {
     'classification': [
         # 'CelebA',
@@ -135,7 +141,8 @@ def load_dataset(dataset_name,
                  target_transform=None,
                  transform=None,
                  extensions=None,
-                 frames_per_clip=None):
+                 frames_per_clip=None,
+                 download=True):
   '''
     Input:
         dataset_name: str, one from MODELS variable
@@ -159,10 +166,14 @@ def load_dataset(dataset_name,
                 and is_valid_file should not be passed
         target_transform:(callable, optional), A function/transform
                 that takes in the target and transforms it.
+        download: temporal flag to skip download and only create the dataset
+          instance with no data (used for JSONs creation)
     Output:
         dict, with keys indicating the partition of the dataset,
                 and the values are of type DataLoader
   '''
+  if not download:
+    return {'train': {'name': dataset_name, 'source': 'tensorflow'}}
 
   if root == 'default':
     root = '~/.torch/' + dataset_name

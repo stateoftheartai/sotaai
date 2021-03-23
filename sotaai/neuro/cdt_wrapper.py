@@ -3,6 +3,15 @@
 # Copyright: Stateoftheart AI PBC 2021.
 '''Causal Discovery Toolbox's library wrapper.'''
 
+SOURCE_METADATA = {
+    'name':
+        'cdt',
+    'original_name':
+        'Causal Discovery Toolbox',
+    'url':
+        'https://fentechsolutions.github.io/CausalDiscoveryToolbox/html/index.html'  # pylint: disable=line-too-long
+}
+
 MODELS = {
     'causal pairwise inference': [
         'ANM', 'IGCI', 'RCC', 'NCC', 'GNN', 'BivariateFit', 'Jarfo', 'CDS',
@@ -23,3 +32,11 @@ MODELS = {
 }
 
 DATASETS = {'unknown': ['tuebingen', 'sachs', 'dream4']}
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'cdt'}
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'cdt'}

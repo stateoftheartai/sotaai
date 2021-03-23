@@ -7,6 +7,12 @@ Model information taken from: https://lifesci.dgl.ai/api/model.zoo.html
 Dataset information taken from: https://lifesci.dgl.ai/api/data.html
 '''
 
+SOURCE_METADATA = {
+    'name': 'dgllifesci',
+    'original_name': 'DGL-LifeSci',
+    'url': 'https://lifesci.dgl.ai/'
+}
+
 MODELS = {
     'molecular property prediction': [
         'AttentiveFP', 'GAT', 'GCN', 'MGCN', 'MPNN', 'SchNet', 'Weave', 'GIN',
@@ -25,3 +31,11 @@ DATASETS = {
     'generative models': ['JTVAE'],
     'protein-ligand binding affinity prediction': ['PDBBind']
 }
+
+
+def load_dataset(name: str) -> dict:
+  return {'name': name, 'source': 'dgllifesci'}
+
+
+def load_model(name: str) -> dict:
+  return {'name': name, 'source': 'dgllifesci'}
