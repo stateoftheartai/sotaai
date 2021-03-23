@@ -32,12 +32,12 @@ a functionality, a "not applicable" (N/A) is used.
 
 |                            |    `load_model()`    |   `load_dataset()`   | `model_to_dataset()` |
 | :------------------------: | :------------------: | :------------------: | :------------------: |
-|        Torchvision         | :white\_check\_mark: | :white\_check\_mark: | :withe\_check\_mark: |
-|         Tensorflow         |         N/A          | :white\_check\_mark: | :withe\_check\_mark: |
-|           Keras            | :white\_check\_mark: | :white\_check\_mark: | :withe\_check\_mark: |
-| Pretrainedmodels (Cadene)  |   :yellow-circle:    |   :yellow-circle:    |   :yellow\_circle:   |
-|           MXNet            |   :yellow-circle:    |   :yellow-circle:    |   :yellow\_circle:   |
-|          fast.ai           |   :yellow-circle:    |   :yellow-circle:    |   :yellow\_circle:   |
+|        Torchvision         | :white\_check\_mark: | :white\_check\_mark: | :white\_check\_mark: |
+|         Tensorflow         |         N/A          | :white\_check\_mark: | :white\_check\_mark: |
+|           Keras            | :white\_check\_mark: | :white\_check\_mark: | :white\_check\_mark: |
+| Pretrainedmodels (Cadene)  |   :yellow\_circle:   |   :yellow\_circle:   |   :yellow\_circle:   |
+|           MXNet            |   :yellow\_circle:   |   :yellow\_circle:   |   :yellow\_circle:   |
+|          fast.ai           |   :yellow\_circle:   |   :yellow\_circle:   |   :yellow\_circle:   |
 | SegmentationModels pytorch |    :red\_circle:     |         N/A          |    :red\_circle:     |
 |  SegmentationModels keras  |    :red\_circle:     |         N/A          |    :red\_circle:     |
 |            ISR             |    :red\_circle:     |         N/A          |    :red\_circle:     |
@@ -53,20 +53,20 @@ established. The rows correspond to the models of a library, and the columns
 correspond to the datasets. Hence, cell _(i,j)_ says that model from library _i_
 can run with a dataset from library _j_.
 
-|                              |     Torchvision      |        Keras         |      Tensorflow      |        MXNet         |         VQA          |
-| :--------------------------: | :------------------: | :------------------: | :------------------: | :------------------: | :------------------: |
-|         Torchvision          | :white\_check\_mark: |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |
-|            Keras             |    :red\_circle:     | :white\_check\_mark: | :white\_check\_mark: |    :red\_circle:     |    :red\_circle:     |
-|       Pretrainedmodels       |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |
-| Segmentation\_models pytorch |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |
-|  Segmentation\_models keras  |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |
-|             ISR              |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |
-|            MXNet             |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     | :white\_check\_mark: |    :red\_circle:     |
-|          Gans Keras          |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |
-|         Gans Pytorch         |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |
-|             VQA              |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     | :white\_check\_mark: |
+|                              |     Torchvision      |        Keras         |      Tensorflow      |     MXNet     |      VQA      |
+| :--------------------------: | :------------------: | :------------------: | :------------------: | :-----------: | :-----------: |
+|         Torchvision          | :white\_check\_mark: | :white\_check\_mark: | :white\_check\_mark: | :red\_circle: | :red\_circle: |
+|            Keras             | :white\_check\_mark: | :white\_check\_mark: | :white\_check\_mark: | :red\_circle: | :red\_circle: |
+|       Pretrainedmodels       |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     | :red\_circle: | :red\_circle: |
+| Segmentation\_models pytorch |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     | :red\_circle: | :red\_circle: |
+|  Segmentation\_models keras  |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     | :red\_circle: | :red\_circle: |
+|             ISR              |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     | :red\_circle: | :red\_circle: |
+|            MXNet             |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     | :red\_circle: | :red\_circle: |
+|          Gans Keras          |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     | :red\_circle: | :red\_circle: |
+|         Gans Pytorch         |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     | :red\_circle: | :red\_circle: |
+|             VQA              |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     | :red\_circle: | :red\_circle: |
 
-### CV-Specific Notes and Implementation Details
+### Specific Notes and Implementation Details
 
 The main challenge in the training pipeline is to make a model compatible with a
 dataset. For instance, specific requirements have to be fulfilled by the input
