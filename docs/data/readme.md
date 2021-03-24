@@ -17,12 +17,20 @@ where, area can be one of: `cv`, `nlp`, `rl`, or `neuro`, for instance:
 python data/create_jsons.py cv
 ```
 
-This will create a JSON file in `data/output/<area>.json` e.g.
-`data/output/cv.json`. The file will contain the following keys:
+To create the JSONs of all areas, do not pass any argument:
 
-- `datasets`: a list of datastes of the given area with its metadata
-- `models`: a list of models of the given area with its metadata
-- `sources`: a list of sources (libraries) of the given area with its metadata
+```
+python data/create_jsons.py
+```
+
+This will create a JSON file in `data/output/items.json`. The file will contain
+the following keys:
+
+- `datasets`: a list of datastes of the given area(s) with its metadata
+- `models`: a list of models of the given area(s) with its metadata
+- `sources`: a list of sources (libraries) of the given area(s) with its metadata
+- `tasks`: a list of tasks of the given area(s) with its metadata
+- `area`: a list of areas with its metadata
 
 For each Dataset or Model of the lists, the following structure must be met:
 

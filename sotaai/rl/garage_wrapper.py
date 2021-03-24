@@ -5,7 +5,7 @@
 
 SOURCE_METADATA = {
     'name': 'garage',
-    'original_name': '',
+    'original_name': 'garage',
     'url': 'https://garage.readthedocs.io/en/latest/index.html'
 }
 

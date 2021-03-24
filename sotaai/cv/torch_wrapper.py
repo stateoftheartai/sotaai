@@ -18,8 +18,8 @@ import torchvision.transforms as transforms
 
 SOURCE_METADATA = {
     'name': 'torch',
-    'original_name': 'PyTorch',
-    'url': 'https://pytorch.org/'
+    'original_name': 'Torchvision',
+    'url': 'http://pytorch.org/vision/stable/index.html'
 }
 
 DATASETS = {

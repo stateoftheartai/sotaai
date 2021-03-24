@@ -5,7 +5,7 @@
 
 SOURCE_METADATA = {
     'name': 'torchtext',
-    'original_name': 'PyTorch',
+    'original_name': 'Torchtext',
     'url': 'https://pytorch.org/text/stable/index.html'
 }
 
