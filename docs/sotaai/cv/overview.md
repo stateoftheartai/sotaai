@@ -66,7 +66,7 @@ can run with a dataset from library _j_.
 |         Gans Pytorch         |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     | :red\_circle: | :red\_circle: |
 |             VQA              |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     | :red\_circle: | :red\_circle: |
 
-### Specific Notes and Implementation Details
+## Specific Notes and Implementation Details
 
 The main challenge in the training pipeline is to make a model compatible with a
 dataset. For instance, specific requirements have to be fulfilled by the input
@@ -77,17 +77,72 @@ dataset's properties, e.g., number of labels.
 All of the above (e.g., compatibility checks and modifications thereof) is
 encapsulated by the `model_to_dataset()` function, which does the following:
 
-1. Converts the dataset to a data type that a model understands. For example, a
-   torchvision model accepts only tensors, hence a dataset obtained from
-   tensorflow or mxnet will not immediately work in torchvision. Thus, this
-   function converts a dataset to the type that the model accepts.
-1. A computer vision model has, among others, convolutional and pooling layers
-   that reduce the image's dimension when passing through them. The image needs
-   to be large enough so that the dimension stays positive, otherwise an error
-   occurs. Hence, the function calculates the dimension reduction occurring
-   inside the model, and resizes the image in case it is smaller than the
-   minimum acceptable size.
-1. The output of the model must be in accordance with the dataset. For
-   instance, in classification tasks, the number of categories varies from
-   dataset to dataset. Appropriate changes to the last layer of the model have
-   to be made so that it complies with the dataset at hand.
+- Converts the dataset to a data type that a model understands. For example, a
+  torchvision model accepts only tensors, hence a dataset obtained from
+  tensorflow or mxnet will not immediately work in torchvision. Thus, this
+  function converts a dataset to the type that the model accepts.
+- A computer vision model has, among others, convolutional and pooling layers
+  that reduce the image's dimension when passing through them. The image needs
+  to be large enough so that the dimension stays positive, otherwise an error
+  occurs. Hence, the function calculates the dimension reduction occurring
+  inside the model, and resizes the image in case it is smaller than the
+  minimum acceptable size.
+- The output of the model must be in accordance with the dataset. For
+  instance, in classification tasks, the number of categories varies from
+  dataset to dataset. Appropriate changes to the last layer of the model have
+  to be made so that it complies with the dataset at hand.
+- As of now, we **do not** provide an API to modify or tune models. However, to
+  make modifications we provide access to the raw model i.e. the original object
+  instance as provided by the source), this way the end-user can make any modifications
+  by using the source API directly.
+
+## Quickstart
+
+Import the main functions from the CV module:
+
+```
+from sotaai.cv import load_dataset, load_model, model_to_dataset
+```
+
+Instantiate your desired model and dataset:
+
+```
+model = load_model('ResNet152', 'keras')
+dataset = load_dataset('mnist')
+```
+
+A dataset is a dictionary where each key is a split and the
+value is an object belonging to the `CvDataset` class. To get an specific split do:
+
+```
+dataset_split = dataset['train']
+```
+
+If necessary, you can make the model and dataset compatible:
+
+```
+model, dataset_split = model_to_dataset(model, dataset_split)
+```
+
+Build an small batch of data to get predictions from:
+
+```
+batch = []
+batch_size = 10
+
+for i, item in enumerate(cv_dataset):
+
+  if i == batch_size:
+    break
+
+  image_sample = item['image']
+  batch.append(image_sample)
+
+batch = np.array(batch)
+```
+
+Finally, obtain predictions for the given batch of data:
+
+```
+predictions = model(batch)
+```
