@@ -68,7 +68,7 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
     A list of dictionaries with the JSON representation of each CV model
   '''
 
-  print('\nCreating model JSONs...')
+  print('\nCreating dataset JSONs...')
 
   datasets = []
 
