@@ -18,8 +18,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 SOURCE_METADATA = {
     'name': 'tensorflow',
-    'original_name': 'TensorFlow',
-    'url': 'https://www.tensorflow.org/'
+    'original_name': 'TensorFlow Datasets',
+    'url': 'https://www.tensorflow.org/datasets/'
 }
 
 DATASETS = {

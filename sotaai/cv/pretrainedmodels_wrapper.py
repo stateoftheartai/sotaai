@@ -5,8 +5,8 @@ Many thanks to the great work of pretrainedmodels library by Cadene
 '''
 
 SOURCE_METADATA = {
-    'name': 'pretrained-models',
-    'original_name': 'pretrainedmodels',
+    'name': 'pretrainedmodels',
+    'original_name': 'pretrained-models',
     'url': 'https://github.com/cadene/pretrained-models.pytorch'
 }
 
