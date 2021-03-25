@@ -13,7 +13,7 @@ of the library to [PyPI](https://pypi.org/)
 ## Requirements
 
 - Make sure to have the required admin credentials, or have register
-  your on accont in PyPI.
+  your own account in PyPI.
 - If you have your own PyPI account, make sure your account is added
   as a contributor of the stateoftheai PyPI packages
   (for each environment of Test PyPI and Real PyPI packages, you need
