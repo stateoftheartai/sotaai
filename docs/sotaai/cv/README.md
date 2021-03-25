@@ -131,12 +131,9 @@ dataset_split = dataset['train']
 
 ### Compatibility
 
-A model implementation cannot be directly compatible with a dataset, since it
-is pretrained on a certain dataset, it has an specific input and output shape
-that must be in accordance with the datset. However, models and datasets can
-belonging theoretically compatible meaning that a model that works on a certain
-task e.g. Classification, must run for a dataset that is for that very same
-task. If that is the case, you can make both compatible by running:
+A model implementation might not be directly compatible with a dataset. However
+if both of them are theoretically compatible the `model_to_dataset` function
+do the work to make both implementations compatible:
 
 ```
 model, dataset_split = model_to_dataset(model, dataset_split)
