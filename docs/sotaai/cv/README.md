@@ -66,6 +66,9 @@ can run with a dataset from library _j_.
 |         Gans Pytorch         |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     | :red\_circle: | :red\_circle: |
 |             VQA              |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     | :red\_circle: | :red\_circle: |
 
+For a full list of the available Source Libraries, Models and Datasets go to [Stateoftheart.ai Dev
+Library](https://www.stateoftheart.ai/dev-library)
+
 ## Specific Notes and Implementation Details
 
 The main challenge in the training pipeline is to make a model compatible with a
@@ -103,6 +106,8 @@ encapsulated by the `model_to_dataset()` function, which does the following:
   can modify, tune or train the model using the API you know the most.
 
 ## Overview
+
+The code on this overview can be found in [examples/example1.py](https://github.com/stateoftheartai/sotaai/blob/master/examples/example1.py)
 
 ### Load a Model and Dataset
 
@@ -174,7 +179,7 @@ To get predictions, create a batch of data:
 batch = []
 batch_size = 10
 
-for i, item in enumerate(cv_dataset):
+for i, item in enumerate(dataset_split):
 
   if i == batch_size:
     break
