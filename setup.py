@@ -10,10 +10,15 @@ setup(name='sotaai',
       author_email='admin@stateoftheart.ai',
       description='Stateoftheart AI Official Library',
       url='https://github.com/stateoftheartai/sotaai',
-      packages=['sotaai', 'sotaai.cv'],
-      install_requires=[
-          'tensorflow', 'tensorflow-datasets', 'gym', 'torchvision', 'torch',
-          'transformers', 'datasets', 'scikit-image', 'opencv-python==4.5.1.48'
-      ],
+      packages=['sotaai'],
+      install_requires=[],
       python_requires='>=3,<3.9',
-      extras_require={})
+      extras_require={
+          'cv': [
+              'tensorflow', 'tensorflow-datasets', 'torchvision', 'torch',
+              'transformers', 'scikit-image', 'opencv-python==4.5.1.48'
+          ],
+          'neuro': [],
+          'nlp': ['datasets'],
+          'rl': ['gym']
+      })
