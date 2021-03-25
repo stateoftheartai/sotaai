@@ -62,13 +62,47 @@ ______________________________________________________________________
 
 ## Installation
 
-Requirements:
+### Requirements
 
-- Python 3.8.0
-- pip 19.2.3
+- Python3 is required. Recommended to use **Python \<= 3.8.0**.
+- If you have a different version we recommend you to use
+  [pyenv](https://github.com/pyenv/pyenv) and thus you can have different
+  versions of Python installed in your machine and switch among them.
+- In regards to the library installation, we have detected some issues with
+  the `pip` version. As of now the library installation has been fully tested
+  and proved working with the following versions of pip: `19.2.3`, `21.0.1`
+  (latest as of March 2021)
 
-This library is provided as a `pip` module. You can install it by running:
+### PIP Installation
+
+The library can be installed through `pip`. Since `sotaai` depends on many
+libraries, we split the library into subpackages so that end users can install
+only the subpackage and dependencies they require. Depending on the area you
+have to install the respective subpackage.
+
+For Computer Vision:
 
 ```
-pip install sotaai
+pip install sotaai[cv]
 ```
+
+For Natural Language Processing:
+
+```
+pip install sotaai[nlp]
+```
+
+For Neurosymbolic Reasoning:
+
+```
+pip install sotaai[neuro]
+```
+
+For Reinforcement Learning:
+
+```
+pip install sotaai[rl]
+```
+
+**Important:** if you use `zsh` you have to add an `\` before each bracket (\[\])
+in order for `zsh` to understand the command e.g. `pip install sotaai\[cv\]`.
