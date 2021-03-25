@@ -81,7 +81,7 @@ encapsulated by the `model_to_dataset()` function, which does the following:
   torchvision model accepts only tensors, hence a dataset obtained from
   tensorflow or mxnet will not immediately work in torchvision. Thus, this
   function converts a dataset to the type that the model accepts.
-- A computer vision model has, among others, convolutional and pooling layers
+- A Computer Vision model has, among others, convolutional and pooling layers
   that reduce the image's dimension when passing through them. The image needs
   to be large enough so that the dimension stays positive, otherwise an error
   occurs. Hence, the function calculates the dimension reduction occurring
@@ -91,12 +91,20 @@ encapsulated by the `model_to_dataset()` function, which does the following:
   instance, in classification tasks, the number of categories varies from
   dataset to dataset. Appropriate changes to the last layer of the model have
   to be made so that it complies with the dataset at hand.
-- As of now, we **do not** provide an API to modify or tune models. However, to
-  make modifications we provide access to the raw model i.e. the original object
-  instance as provided by the source), this way the end-user can make any modifications
-  by using the source API directly.
+- As of now, we **do not** provide an API to **modify, tune, and train models**.
+  However, we provide access to the raw instance as provided by the source
+  library. This way the end user can modify, tune or train a model by using
+  the source library API directly.
+- Datasets come from only one source, if a dataset exists in multiple source
+  libraries, we selected one of them by default. This source cannot be changed
+  as of now.
+- On the other hand, models come from multiple sources, if a model exists in
+  multiple source libraries you can specify which source to use. This way you
+  can modify, tune or train the model using the API you know the most.
 
-## Quickstart
+## Overview
+
+### Load a Model and Dataset
 
 Import the main functions from the CV module:
 
@@ -107,24 +115,63 @@ from sotaai.cv import load_dataset, load_model, model_to_dataset
 Instantiate your desired model and dataset:
 
 ```
-model = load_model('ResNet152', 'keras')
+model = load_model('ResNet152')
 dataset = load_dataset('mnist')
 ```
 
+You can also select the source of the model if desired `model = load_model('ResNet152, 'keras')`
+
 A dataset is a dictionary where each key is a split and the
-value is an object belonging to the `CvDataset` class. To get an specific split do:
+value is an object belonging to the `CvDataset` class. To get a specific
+dataset split do:
 
 ```
 dataset_split = dataset['train']
 ```
 
-If necessary, you can make the model and dataset compatible:
+### Compatibility
+
+A model implementation cannot be directly compatible with a dataset, since it
+is pretrained on a certain dataset, it has an specific input and output shape
+that must be in accordance with the datset. However, models and datasets can
+belonging theoretically compatible meaning that a model that works on a certain
+task e.g. Classification, must run for a dataset that is for that very same
+task. If that is the case, you can make both compatible by running:
 
 ```
 model, dataset_split = model_to_dataset(model, dataset_split)
 ```
 
-Build an small batch of data to get predictions from:
+This function will return a new model and dataset instances whose
+implementations where modified so that both can run against each other.
+
+### Modify, Tune or Train
+
+As mentioned above, currently we do not provide an API to modify, tune or
+train models. However you can access the raw instance as provided by the source
+library:
+
+```
+model = load_model('ResNet152', 'keras')
+source_model = model.raw
+
+...
+Here you can make any modifications using source_model which for this case
+is the Keras instance
+...
+
+```
+
+Once the model was modified, tuned or trained as desired, you should pass it
+back:
+
+```
+model.update_raw_model(source_model)
+```
+
+### Get Predictions
+
+To get predictions, create a batch of data:
 
 ```
 batch = []
@@ -141,7 +188,7 @@ for i, item in enumerate(cv_dataset):
 batch = np.array(batch)
 ```
 
-Finally, obtain predictions for the given batch of data:
+Obtain predictions for the given batch of data:
 
 ```
 predictions = model(batch)
