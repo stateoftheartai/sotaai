@@ -403,7 +403,6 @@ def model_to_dataset_classification(cv_model, cv_dataset):
     cv_dataset: the abstracted cv dataset adjust to be executed against
       cv_model
   '''
-
   raw_model = cv_model.raw
   are_channels_compatible = len(cv_dataset.shape) == len(
       cv_model.original_input_shape)

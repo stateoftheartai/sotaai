@@ -35,8 +35,15 @@ class CvDataset(object):
     self.iterator = iterator
     self.source = utils.get_source_from_dataset(self.raw)
 
+    print('Name: ', self.name)
+    print('Source: ', self.source)
+    print('RawL: ', self.raw)
+    print('Instance:', isinstance(self.raw, dict))
     self.is_implemented = not (isinstance(self.raw, dict) and
                                'source' in self.raw)
+
+    print('Implemented', self.is_implemented)
+    print('=' * 200)
     if not self.is_implemented:
 
       self.split_name = None

@@ -35,14 +35,22 @@ class TestTorchWrapper(unittest.TestCase):
       'beans',
       'binary_alpha_digits',
       'caltech_birds2010',
-      # 'caltech_birds2011',
-      # 'cars196',
-      # 'cats_vs_dogs', ERROR
-      # 'celeb_a', ERROR
+      'caltech_birds2011',
+      'cars196',
+      'cats_vs_dogs',
+      # 'celeb_a',
       'cifar10_1',
-      # 'cifar10_corrupted',
-      # 'cmaterdb',
-      # 'colorectal_histology',
+      'cifar10_corrupted',
+      'cmaterdb',
+      'colorectal_histology',
+      'colorectal_histology_large',
+      'cycle_gan',
+      'diabetic_retinopathy_detection',
+      'downsampled_imagenet',
+      'dtd',
+      'emnist',
+      'eurosat',
+      'food101',
   ]
 
   #'googlenet' is not working
@@ -114,7 +122,8 @@ class TestTorchWrapper(unittest.TestCase):
     # transform = transforms.Compose([transforms.ToTensor()])
 
     for dataset in self.test_datasets:
-      dso = load_dataset(dataset, ann_file='~/.torch/annotation_file.json')
+      dso = load_dataset(dataset,
+                         torch_ann_file='~/.torch/annotation_file.json')
       for split_name in dso:
         cv_dataset = dso[split_name]
         self.assertEqual(CvDataset, type(cv_dataset))
@@ -122,7 +131,7 @@ class TestTorchWrapper(unittest.TestCase):
         datapoint = next(iterable_dataset)
         print(datapoint)
 
-  @unittest.SkipTest
+  # @unittest.SkipTest
   def test_model_to_dataset_classification(self):
 
     def single_test(model_name, dataset_name):
@@ -227,6 +236,7 @@ class TestTorchWrapper(unittest.TestCase):
       for dataset in tensorflow_wrapper.DATASETS['segmentation']:
         single_test(model, dataset)
 
+  @unittest.SkipTest
   def test_model_to_dataset_object_detection(self):
 
     def single_test(model_name, dataset_name):

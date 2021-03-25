@@ -12,11 +12,18 @@ import importlib
 datasets_source_map = utils.map_name_sources('datasets')
 
 
-def load_model(
-    name: str,
-    source: str = '',
-    pretrained=None,
-) -> abstractions.CvModel:
+def load_model(name: str,
+               source: str = '',
+               pretrained=None,
+               keras_alpha=1.0,
+               keras_depth_multiplier=1,
+               keras_dropout=0.001,
+               keras_input_tensor=None,
+               keras_input_shape=None,
+               keras_include_top=False,
+               keras_pooling=None,
+               keras_classes=1000,
+               keras_classifier_activation='softmax') -> abstractions.CvModel:
   '''Fetch a model from a specific source, and return standardized object.
 
   Args:
@@ -47,7 +54,21 @@ def load_model(
   # across different libraries (configs)
   # As of now, we only have one input: pretrained or not
 
-  if source in ['torch', 'keras']:
+  # if source in ['torch', 'keras']:
+  if source == 'keras':
+    raw_object = wrapper.load_model(
+        name,
+        pretrained=pretrained,
+        alpha=keras_alpha,
+        depth_multiplier=keras_depth_multiplier,
+        dropout=keras_dropout,
+        input_tensor=keras_input_tensor,
+        input_shape=keras_input_shape,
+        include_top=keras_include_top,
+        pooling=keras_pooling,
+        classes=keras_classes,
+        classifier_activation=keras_classifier_activation)
+  elif source == 'torch':
     raw_object = wrapper.load_model(name, pretrained=pretrained)
   # Non fully implemented sources fall in this case
   else:
@@ -57,10 +78,14 @@ def load_model(
 
 
 def load_dataset(name: str,
+                 download=True,
                  source: str = '',
-                 transform=None,
-                 target_transform=None,
-                 ann_file=None) -> abstractions.CvDataset:
+                 torch_transform=None,
+                 torch_root='default',
+                 torch_target_transform=None,
+                 torch_ann_file=None,
+                 torch_extensions=None,
+                 torch_frames_per_clip=None) -> abstractions.CvDataset:
   '''Fetch a dataset from a specific source, and return standardized object.
 
   Args:
@@ -104,12 +129,25 @@ def load_dataset(name: str,
     # have the raw object and can actually be used in code
     if source == 'torch':
       raw_object = wrapper.load_dataset(name,
-                                        transform=transform,
-                                        ann_file=ann_file,
-                                        target_transform=target_transform)
+                                        transform=torch_transform,
+                                        ann_file=torch_ann_file,
+                                        target_transform=torch_target_transform,
+                                        root=torch_root,
+                                        extensions=torch_extensions,
+                                        frames_per_clip=torch_frames_per_clip,
+                                        download=download)
     else:
       raw_object = wrapper.load_dataset(name)
-  elif source in ['keras', 'tensorflow', 'torch']:
+  elif source == 'torch':
+    raw_object = wrapper.load_dataset(name,
+                                      transform=torch_transform,
+                                      ann_file=torch_ann_file,
+                                      target_transform=torch_target_transform,
+                                      root=torch_root,
+                                      extensions=torch_extensions,
+                                      frames_per_clip=torch_frames_per_clip,
+                                      download=download)
+  elif source in ['keras', 'tensorflow']:
     raw_object = wrapper.load_dataset(name, download=False)
   else:
     raw_object = wrapper.load_dataset(name)
