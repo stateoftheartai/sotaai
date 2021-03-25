@@ -1,13 +1,26 @@
 # Library Development
 
+This documentation is for those who want to contribute to the development of
+this library.
+
 ## Requirements
 
-- As of now, **Python 3.8.0**. If you have a different version we recommend you
-  to use [pyenv](https://github.com/pyenv/pyenv) and thus you can have different
+- Use Python3, not compatible with Python2.
+- Recommended to use **Python \<= 3.8.0**.
+- If you have a different version we recommend you to use
+  [pyenv](https://github.com/pyenv/pyenv) and thus you can have different
   versions of Python installed in your machine and switch among them.
-- As of now, we recommend you to have **pip==19.2.3**.
+- In regards to the library installation, we have detected some issues with
+  the `pip` version. As of now the library installation has been fully tested
+  and proved working with the following versions of pip: `19.2.3`, `21.0.1`
+  (latest as of March 2021)
+- If necessary, access to our JIRA instance where we manage the library
+  development and roadmap.
 
 ## Guidelines
+
+If you want to contribute to the development of this library please adhere to
+the following:
 
 - In general, we adhere to
   [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
@@ -23,6 +36,9 @@
   This will run once a Pull Request is created or push to master is made.
 
 ## Local Environment Setup
+
+To contribute to this library you will need to install the source code locally,
+follow the following docs to achieve this.
 
 Create a new environment using `venv`. We recommend you to create the virutal
 environment directory inside the repository (it will be ignore it) and name it
@@ -73,6 +89,9 @@ Check for added large files..............................................Passed
 library.
 
 ## Contribution Flow
+
+Regarding feature development or improvements, we adhere to the flow described
+below.
 
 **Step 1:** Make sure your local repo email match the email you use in Jira, in
 the repo run:
