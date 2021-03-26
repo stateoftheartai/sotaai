@@ -16,38 +16,38 @@ SOURCE_METADATA = {
 }
 
 MODELS = {
-    'unsupervised node classification': [
+    'unsupervised_node_classification': [
         'ProNE', 'NetMF', 'Node2Vec', 'NetSMF', 'DeepWalk', 'LINE', 'Hope',
         'SDNE', 'GraRep', 'DNGR'
     ],
-    'semi-supervised node classification': [
+    'semi-supervised_node_classification': [
         'Graph U-Net', 'MixHop', 'DR-GAT', 'GAT', 'DGI', 'GCN', 'GraphSAGE',
         'Chebyshev'
     ],
-    'heterogeneous node classification': [
+    'heterogeneous_node_classification': [
         'GTN', 'HAN', 'PTE', 'Metapath2vec', 'Hin2vec'
     ],
-    'edge prediction': [
+    'edge_prediction': [
         'ProNE', 'NetMF', 'Node2Vec', 'DeepWalk', 'LINE', 'Hope', 'NetSMF',
         'SDNE'
     ],
-    'multiplex link prediction': [
+    'multiplex_link_prediction': [
         'GATNE', 'NetMF', 'ProNE', 'Node2Vec', 'DeepWalk', 'LINE', 'Hope',
         'GraRep'
     ],
-    'unsupervised graph classification': ['InfoGraph', 'Graph2Vec', 'DGK'],
-    'supervised graph classification': [
+    'unsupervised_graph_classification': ['InfoGraph', 'Graph2Vec', 'DGK'],
+    'supervised_graph_classification': [
         'GIN', 'DiffPool', 'SortPool', 'PATCH_SAN', 'DGCNN'
     ]
 }
 
 DATASETS = {
-    'unsupervised node classification': [
+    'unsupervised_node_classification': [
         'BlogCatalog', 'Wikipedia', 'PPI', 'DBLP', 'Youtube'
     ],
-    'semi-supervised node classification': ['Cora', 'Citeseer', 'Pubmed'],
-    'graph classification': ['MUTAG', 'IMDB-B', 'IMDB-M', 'PROEINS', 'COLLAB'],
-    'multiplex node classification': ['DBLP', 'ACM', 'IMDB']
+    'semi-supervised_node_classification': ['Cora', 'Citeseer', 'Pubmed'],
+    'graph_classification': ['MUTAG', 'IMDB-B', 'IMDB-M', 'PROEINS', 'COLLAB'],
+    'multiplex_node_classification': ['DBLP', 'ACM', 'IMDB']
 }
 
 
