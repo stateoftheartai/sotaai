@@ -172,12 +172,12 @@ class TestTorchWrapper(unittest.TestCase):
       for dataset in self.test_datasets_tensorflow:
         single_test(model, dataset)
 
-    # #test models torch with datasets torch
+    # # #test models torch with datasets torch
     for model in self.test_models:
       for dataset in self.test_datasets:
         single_test(model, dataset)
 
-    # #test models torch with dataset keras
+    # # #test models torch with dataset keras
     for model in self.test_models:
       for dataset in keras_wrapper.DATASETS['classification']:
         single_test(model, dataset)
