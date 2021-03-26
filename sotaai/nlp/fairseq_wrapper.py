@@ -11,7 +11,7 @@ Dataset information taken from:
 
 SOURCE_METADATA = {
     'name': 'fairseq',
-    'original_name': 'decaNLP',
+    'original_name': 'Fairseq',
     'url': 'https://github.com/pytorch/fairseq'
 }
 
