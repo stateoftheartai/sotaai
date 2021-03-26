@@ -37,6 +37,7 @@ class CvDataset(object):
 
     self.is_implemented = not (isinstance(self.raw, dict) and
                                'source' in self.raw)
+
     if not self.is_implemented:
 
       self.split_name = None
