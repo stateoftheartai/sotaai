@@ -106,3 +106,19 @@ pip install sotaai[rl]
 
 **Important:** if you use `zsh` you have to add an `\` before each bracket (\[\])
 in order for `zsh` to understand the command e.g. `pip install sotaai\[cv\]`.
+
+### Installation Issues
+
+#### Tensorflow SSL: CERTIFICATE\_VERIFY\_FAILED
+
+This is a [known issue in Tensorlow](https://github.com/tensorflow/models/issues/5871).
+It is documented to occur in MacOSX. As of now, a working solution is to manually install
+certificates by running the `Install Certificates.command` that exists inside the python
+installation directory:
+
+```
+Applications/Python X.Y/Install Certificates.command
+```
+
+Replace `Python X.Y` with your installed version e.g. `Python 3.8`. Take into
+account that the location of this file might depend on your Python and/or OS version.
