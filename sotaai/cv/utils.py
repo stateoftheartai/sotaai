@@ -22,6 +22,25 @@ SOURCES = [
 
 IMPLEMENTED_SOURCES = ['keras', 'torch', 'tensorflow']
 
+OBJECT_DETECTION_COMPATIBILITY = {
+    'fasterrcnn_resnet50_fpn': {
+        'VOCDetection/2007',
+        'VOCDetection/2008',
+        'VOCDetection/2010',
+        'VOCDetection/2011',
+        'VOCDetection/2012',
+        'CelebA',
+        'coco',
+        'flic',
+        'kitti',
+        'open_images_challenge2019_detection',
+        'open_images_v4',
+        'wider_face',
+    },
+    'keypointrcnn_resnet50_fpn': {},
+    'maskrcnn_resnet50_fpn': {'coco'}
+}
+
 IMAGE_MINS = {
     'InceptionV3': 75,
     'InceptionResNetV2': 75,
