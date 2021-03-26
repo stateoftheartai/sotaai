@@ -10,7 +10,7 @@ http://keg.cs.tsinghua.edu.cn/cogdl/datasets.html
 '''
 
 SOURCE_METADATA = {
-    'name': 'codgl',
+    'name': 'cogdl',
     'original_name': 'CogDL: Deep Learning on Graphs',
     'url': 'http://keg.cs.tsinghua.edu.cn/cogdl/'
 }
@@ -52,8 +52,8 @@ DATASETS = {
 
 
 def load_dataset(name: str) -> dict:
-  return {'name': name, 'source': 'codgl'}
+  return {'name': name, 'source': 'cogdl'}
 
 
 def load_model(name: str) -> dict:
-  return {'name': name, 'source': 'codgl'}
+  return {'name': name, 'source': 'cogdl'}
