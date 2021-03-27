@@ -195,9 +195,6 @@ def model_to_dataset(cv_model, cv_dataset):
   # print(' Shape:   ', cv_dataset.shape)
   # print(' Classes: ', cv_dataset.classes_shape)
 
-  if not cv_dataset.name in utils.OBJECT_DETECTION_COMPATIBILITY[cv_model.name]:
-    raise Exception(f'{cv_dataset.name} is not compatible with {cv_model.name}')
-
   if cv_model.source == 'keras':
     cv_model, cv_dataset = keras_wrapper.model_to_dataset(cv_model, cv_dataset)
 
@@ -208,6 +205,12 @@ def model_to_dataset(cv_model, cv_dataset):
     elif task == 'segmentation':
       torch_wrapper.model_to_dataset_segmentation(cv_model, cv_dataset)
     elif task in ('object_detection', 'pose estimation'):
+
+      if not cv_dataset.name in utils.OBJECT_DETECTION_COMPATIBILITY[
+          cv_model.name]:
+        raise Exception(
+            f'{cv_dataset.name} is not compatible with {cv_model.name}')
+
       torch_wrapper.model_to_dataset_object_detection(cv_model, cv_dataset)
 
   # print('\nModel ', cv_model.name)
