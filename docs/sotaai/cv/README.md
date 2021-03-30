@@ -67,7 +67,7 @@ can run with a dataset from library _j_.
 |             VQA              |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     | :red\_circle: | :red\_circle: |
 
 For a full list of the available Source Libraries, Models and Datasets go to [Stateoftheart.ai Dev
-Library](https://www.stateoftheart.ai/dev-library)
+Library](https://staging.stateoftheart.ai/dev-library)
 
 ## Specific Notes and Implementation Details
 
@@ -107,7 +107,7 @@ encapsulated by the `model_to_dataset()` function, which does the following:
 
 ## Overview
 
-The code on this overview can be found in [examples/example1.py](https://github.com/stateoftheartai/sotaai/blob/master/examples/example1.py)
+The code on this overview can be found in [examples/example1.py](https://github.com/stateoftheartai/sotaai-beta/blob/master/examples/example1.py)
 
 ### Load a Model and Dataset
 
