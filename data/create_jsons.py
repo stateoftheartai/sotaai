@@ -110,7 +110,7 @@ def get_data(area: str):
 
 def add_items(items: dict, new_items: list, unified_field: str,
               append_field: str):
-  '''Add items to the global items dictionary, keep the unified by the given
+  '''Add items to the global items dictionary, keep them unified by the given
     unified_field, and per each unified item it appends the different values of
     the append_field of each item e.g. unify items by name, and for each unified
     item concats the 'area' value, so that we can know each unified item to
