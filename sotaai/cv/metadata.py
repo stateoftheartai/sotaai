@@ -248,6 +248,131 @@ MODELS = {
     }
 }
 
+UNIFIED_MODELS = {
+    'densenet': {
+        'name': 'DenseNet: Dense Convolutional Network',
+        'paper_name': 'Densely Connected Convolutional Networks',
+        'paper_link': 'https://arxiv.org/abs/1608.06993',
+    },
+    'deeplabv3': {
+        'name':
+            'DeepLabv3 ResNet',
+        'paper_name':
+            'Rethinking Atrous Convolution for Semantic Image Segmentation',
+        'paper_link':
+            'https://arxiv.org/abs/1706.05587',
+    },
+    'dpn': {
+        'name': 'Dual Path Networks',
+        'paper_name': 'Dual Path Networks',
+        'paper_link': 'https://arxiv.org/abs/1707.01629',
+    },
+    'fcn_resnet': {
+        'name': 'FCN ResNet: Fully Convolutional Network ResNet',
+        'paper_name': 'Fully Convolutional Networks for Semantic Segmentation',
+        'paper_link': 'https://arxiv.org/abs/1605.06211',
+    },
+    'mnasnet': {
+        'name':
+            'MnasNet',
+        'paper_name':
+            'MnasNet: Platform-Aware Neural Architecture Search for Mobile',
+        'paper_link':
+            'https://arxiv.org/abs/1807.11626',
+    },
+    'mobilenet': {
+        'name': 'MobileNets',
+        'paper_name':
+            'MobileNets: Efficient Convolutional Neural Networks for Mobile'
+            ' Vision Applications',
+        'paper_link': 'https://arxiv.org/abs/1704.04861',
+    },
+    'nasnet': {
+        'name': 'NASNet: Neuron Attention Stage-by-Stage Net',
+        'paper_name':
+            'NASNet: A Neuron Attention Stage-by-Stage Net for Single Image'
+            ' Deraining',
+        'paper_link': 'https://arxiv.org/abs/1912.03151',
+    },
+    'resnet': {
+        'name': 'ResNet: Residual Networks',
+        'paper_name': 'Deep Residual Learning for Image Recognition',
+        'paper_link': 'https://arxiv.org/abs/1512.03385',
+    },
+    'resnext': {
+        'name':
+            'ResNeXt',
+        'paper_name':
+            'Aggregated Residual Transformations for Deep Neural Networks',
+        'paper_link':
+            'https://arxiv.org/abs/1611.05431',
+    },
+    'se_resnet': {
+        'name': 'SE-ResNet: Squeeze-and-Excitation ResNet',
+        'paper_name': 'Squeeze-and-Excitation Networks',
+        'paper_link': 'https://arxiv.org/abs/1709.01507',
+    },
+    'se_resnext': {
+        'name': 'SE-ResNet: Squeeze-and-Excitation ResNeXt',
+        'paper_name': 'Squeeze-and-Excitation Networks',
+        'paper_link': 'https://arxiv.org/abs/1709.01507',
+    },
+    'senet': {
+        'name': 'SENet: Squeeze-and-Excitation Networks',
+        'paper_name': 'Squeeze-and-Excitation Networks',
+        'paper_link': 'https://arxiv.org/abs/1709.01507',
+    },
+    'shufflenet': {
+        'name': 'ShuffleNet',
+        'paper_name':
+            'ShuffleNet: An Extremely Efficient Convolutional Neural Network'
+            'for Mobile Devices',
+        'paper_link': 'https://arxiv.org/abs/1707.01083',
+    },
+    'squeezenet': {
+        'name': 'SqueezeNet',
+        'paper_name':
+            'SqueezeNet: AlexNet-level accuracy with 50x fewer parameters'
+            'and <0.5MB model size',
+        'paper_link': 'https://arxiv.org/abs/1602.07360',
+    },
+    'vgg': {
+        'name': 'VGG',
+        'paper_name': 'Very Deep Convolutional Networks for Large-Scale Image'
+                      ' Recognition',
+        'paper_link': 'https://arxiv.org/abs/1409.1556',
+    },
+    'xresnet': {
+        'name': 'X-ResNet',
+        'paper_name': '',
+        'paper_link': '',
+    },
+}
+
+UNIFIED_DATASETS = {}
+
+
+def get_unified_name(item_type=None, name=None):
+  '''Return the unified name to be displayed in front end.
+
+  Args:
+    item_type: whether 'models' or 'datasets'
+    name: a valid dataset or model name e.g. 'mnist'.
+
+  Returns:
+    String with the unified name.
+  '''
+  items = UNIFIED_MODELS if item_type == 'models' else UNIFIED_DATASETS
+  unified_keys = [key for key, val in items.items() if key in name.lower()]
+  # Check that both strings start with the same pattern to avoid mismatches.
+  for k in unified_keys:
+    substr_len = min(len(k), len(name))
+    if name.lower()[:substr_len] == k[:substr_len]:
+      return UNIFIED_MODELS[k]['name']
+  # If we are here, it means that no unification matches were found, so we
+  # just simply return the intial name.
+  return name
+
 
 def get(item_type=None, name=None, source=None):
   '''Return datasets/models metadata given source or name
