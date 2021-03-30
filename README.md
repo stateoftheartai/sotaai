@@ -52,7 +52,7 @@ ______________________________________________________________________
 Currently we support the areas listed below. To see more information and
 documentation of a specific area navigate to the respective section:
 
-- [Computer Vision](https://github.com/stateoftheartai/sotaai/blob/master/docs/sotaai/cv/README.md)
+- [Computer Vision](https://github.com/stateoftheartai/sotaai-beta/blob/master/docs/sotaai/cv/README.md)
 - Natural Language Process **\[WORK IN PROGRESS\]**
 - Neurosymbolic Reasoning **\[WORK IN PROGRESS\]**
 - Reinforcement Learning **\[WORK IN PROGRESS\]**
