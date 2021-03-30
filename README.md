@@ -50,10 +50,10 @@ ______________________________________________________________________
 ## Areas Supported
 
 Currently we support the areas listed below. To see more information and
-documentation of a specific area navigate to the respective section:
+documentation of a specific area feel free to navigate to the respective section:
 
 - [Computer Vision](https://github.com/stateoftheartai/sotaai-beta/blob/master/docs/sotaai/cv/README.md)
-- Natural Language Process **\[WORK IN PROGRESS\]**
+- Natural Language Processing **\[WORK IN PROGRESS\]**
 - Neurosymbolic Reasoning **\[WORK IN PROGRESS\]**
 - Reinforcement Learning **\[WORK IN PROGRESS\]**
 - Robotics **\[WORK IN PROGRESS\]**
@@ -65,20 +65,21 @@ ______________________________________________________________________
 ### Requirements
 
 - Python3 is required. Recommended to use **Python \<= 3.8.0**.
-- If you have a different version we recommend you to use
-  [pyenv](https://github.com/pyenv/pyenv) and thus you can have different
-  versions of Python installed in your machine and switch among them.
-- In regards to the library installation, we have detected some issues with
+- As a best practice, we recommend the use of
+  [pyenv](https://github.com/pyenv/pyenv), this way you can have different
+  versions of Python installed in your machine and switch among them, being able
+  to meet any Python version requirement.
+- Regarding the installation process, we have detected some issues with
   the `pip` version. As of now the library installation has been fully tested
   and proved working with the following versions of pip: `19.2.3`, `21.0.1`
   (latest as of March 2021)
 
 ### PIP Installation
 
-The library can be installed through `pip`. Since `sotaai` depends on many
+The library can be installed through `pip`. However, since `sotaai` depends on many
 libraries, we split the library into subpackages so that end users can install
-only the subpackage and dependencies they require. Depending on the area you
-have to install the respective subpackage.
+only the subpackage and dependencies they require, to install the desired
+subpackage use the following instructions:
 
 For Computer Vision:
 
@@ -104,7 +105,7 @@ For Reinforcement Learning:
 pip install sotaai[rl]
 ```
 
-**Important:** if you use `zsh` you have to add an `\` before each bracket (\[\])
+**Important:** if you make use of `zsh` you have to add a `\` before each bracket (\[\])
 in order for `zsh` to understand the command e.g. `pip install sotaai\[cv\]`.
 
 ### Installation Issues

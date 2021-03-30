@@ -1,18 +1,17 @@
 # Computer Vision
 
-We seek to include the following **libraries** to our computer vision
+We seek to include the following **libraries** to our Computer Vision
 section:
 
 - [Torchvision](https://github.com/pytorch/vision)
 - [Keras](https://github.com/keras-team/keras)
 - [Tensorflow Datasets](https://github.com/tensorflow/tensorflow)
-- [Pretrainedmodels
-  (Cadene)](https://github.com/Cadene/pretrained-models.pytorch)
-- [Segmentation Models
+- [Cadene Pretrainedmodels](https://github.com/Cadene/pretrained-models.pytorch)
+- [Qubvel Segmentation Models
   (PyTorch)](https://github.com/qubvel/segmentation_models.pytorch)
-- [Segmentation Models
+- [Qubvel Segmentation Models
   (Keras)](https://github.com/qubvel/segmentation_models)
-- [Image Super-Resolution](https://github.com/idealo/image-super-resolution)
+- [Idealo Image Super-Resolution](https://github.com/idealo/image-super-resolution)
 - [MXNet](https://github.com/apache/incubator-mxnet)
 - [GANs Keras](https://github.com/eriklindernoren/Keras-GAN)
 - [GANs PyTorch](https://github.com/eriklindernoren/PyTorch-GAN)
@@ -20,8 +19,8 @@ section:
 - [Detectron2](https://github.com/facebookresearch/detectron2)
 
 Together, these libraries offer **models** and **datasets** for tasks spanning
-from object detection and scene segmentation to image super-resolution and human
-activity recognition.
+from Object Detection and Scene Segmentation to Image Super-resolution and Human
+Activity Recognition.
 
 As previously mentioned, the common interfaces between all libraries are still
 under development. The progress for each of them with respect to the
@@ -30,25 +29,25 @@ as readily available (:white\_check\_mark:), in progress (:yellow\_circle:), and
 implementation not yet started (:red\_circle:). In case a library does not offer
 a functionality, a "not applicable" (N/A) is used.
 
-|                            |    `load_model()`    |   `load_dataset()`   | `model_to_dataset()` |
-| :------------------------: | :------------------: | :------------------: | :------------------: |
-|        Torchvision         | :white\_check\_mark: | :white\_check\_mark: | :white\_check\_mark: |
-|    Tensorflow Datasets     |         N/A          | :white\_check\_mark: | :white\_check\_mark: |
-|           Keras            | :white\_check\_mark: | :white\_check\_mark: | :white\_check\_mark: |
-| Pretrainedmodels (Cadene)  |   :yellow\_circle:   |   :yellow\_circle:   |   :yellow\_circle:   |
-|           MXNet            |   :yellow\_circle:   |   :yellow\_circle:   |   :yellow\_circle:   |
-|          fast.ai           |   :yellow\_circle:   |   :yellow\_circle:   |   :yellow\_circle:   |
-| SegmentationModels pytorch |    :red\_circle:     |         N/A          |    :red\_circle:     |
-|  SegmentationModels keras  |    :red\_circle:     |         N/A          |    :red\_circle:     |
-|            ISR             |    :red\_circle:     |         N/A          |    :red\_circle:     |
-|         Gans Keras         |    :red\_circle:     |         N/A          |    :red\_circle:     |
-|        Gans Pytorch        |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |
-|            VQA             |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |
-|         Detectron2         |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |
+|                                       |    `load_model()`    |   `load_dataset()`   | `model_to_dataset()` |
+| :-----------------------------------: | :------------------: | :------------------: | :------------------: |
+|              Torchvision              | :white\_check\_mark: | :white\_check\_mark: | :white\_check\_mark: |
+|          Tensorflow Datasets          |         N/A          | :white\_check\_mark: | :white\_check\_mark: |
+|                 Keras                 | :white\_check\_mark: | :white\_check\_mark: | :white\_check\_mark: |
+|        Cadene Pretrainedmodels        |   :yellow\_circle:   |   :yellow\_circle:   |   :yellow\_circle:   |
+|                 MXNet                 |   :yellow\_circle:   |   :yellow\_circle:   |   :yellow\_circle:   |
+|                fast.ai                |   :yellow\_circle:   |   :yellow\_circle:   |   :yellow\_circle:   |
+| Qubvel SegmentationModels ( pytorch ) |    :red\_circle:     |         N/A          |    :red\_circle:     |
+| Qubvel Segmentation Models ( keras )  |    :red\_circle:     |         N/A          |    :red\_circle:     |
+|                  ISR                  |    :red\_circle:     |         N/A          |    :red\_circle:     |
+|              Gans Keras               |    :red\_circle:     |         N/A          |    :red\_circle:     |
+|             Gans Pytorch              |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |
+|                  VQA                  |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |
+|              Detectron2               |    :red\_circle:     |    :red\_circle:     |    :red\_circle:     |
 
 The goal is to be able to run a model of any of the available libraries with a
 dataset of any of the available libraries. Thus, the following compatibility
-matrix pictorially depicts which connections have already been successfully
+matrix depicts which connections have already been successfully
 established. The rows correspond to the models of a library, and the columns
 correspond to the datasets. Hence, cell _(i,j)_ says that model from library _i_
 can run with a dataset from library _j_.
@@ -78,11 +77,11 @@ that the last layer of the model requires modifications in accordance with the
 dataset's properties, e.g., number of labels.
 
 All of the above (e.g., compatibility checks and modifications thereof) is
-encapsulated by the `model_to_dataset()` function, which does the following:
+encapsulated by the `model_to_dataset` function, which does the following:
 
 - Converts the dataset to a data type that a model understands. For example, a
-  torchvision model accepts only tensors, hence a dataset obtained from
-  tensorflow or mxnet will not immediately work in torchvision. Thus, this
+  Torchvision model accepts only tensors, hence a dataset obtained from
+  Tensorflow or MXNet will not immediately work in Torchvision. Thus, this
   function converts a dataset to the type that the model accepts.
 - A Computer Vision model has, among others, convolutional and pooling layers
   that reduce the image's dimension when passing through them. The image needs
@@ -94,20 +93,23 @@ encapsulated by the `model_to_dataset()` function, which does the following:
   instance, in classification tasks, the number of categories varies from
   dataset to dataset. Appropriate changes to the last layer of the model have
   to be made so that it complies with the dataset at hand.
+
+Also, please take into account the following:
+
 - As of now, we **do not** provide an API to **modify, tune, and train models**.
   However, we provide access to the raw instance as provided by the source
   library. This way the end user can modify, tune or train a model by using
   the source library API directly.
-- Datasets come from only one source, if a dataset exists in multiple source
-  libraries, we selected one of them by default. This source cannot be changed
+- Datasets come from only one source, when a dataset exists in multiple source
+  libraries, we choose one of them by default. This source cannot be changed
   as of now.
-- On the other hand, models come from multiple sources, if a model exists in
+- On the other hand, models come from multiple sources, when a model exists in
   multiple source libraries you can specify which source to use. This way you
-  can modify, tune or train the model using the API you know the most.
+  can modify, tune or train the model using the API you are more familiar with.
 
 ## Overview
 
-The code on this overview can be found in [examples/example1.py](https://github.com/stateoftheartai/sotaai-beta/blob/master/examples/example1.py)
+The code in this overview can be found in [examples/example1.py](https://github.com/stateoftheartai/sotaai-beta/blob/master/examples/example1.py)
 
 ### Load a Model and Dataset
 
