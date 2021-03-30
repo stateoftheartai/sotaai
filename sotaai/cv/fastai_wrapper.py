@@ -31,7 +31,7 @@ DATASETS = {
         'IMAGEWOOF', 'IMAGEWOOF_160', 'IMAGEWOOF_320', 'MNIST_SAMPLE',
         'MNIST_TINY', 'MNIST_VAR_SIZE_TINY', 'PETS', 'SKIN_LESION'
     ],
-    'key-point detection': ['BIWI_SAMPLE'],
+    'key_point_detection': ['BIWI_SAMPLE'],
     'object_detection': ['COCO_SAMPLE', 'COCO_TINY'],
     'multi-label classification': ['PLANET_SAMPLE', 'PLANET_TINY'],
     'segmentation': ['CAMVID', 'CAMVID_TINY']

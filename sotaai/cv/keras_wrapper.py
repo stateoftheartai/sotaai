@@ -229,6 +229,10 @@ def model_to_dataset(cv_model, cv_dataset):
   # If dataset and model input are not compatible, we have to (1) reshape
   # the dataset shape a bit more or (2) change the model input layer
 
+  print('compare shapes 1')
+  print(f'cv_dataset shape: {cv_dataset.shape}')
+  print(f'cv_model shape: {cv_model.original_input_shape}')
+
   is_input_compatible = utils.compare_shapes(cv_model.original_input_shape,
                                              cv_dataset.shape)
 
@@ -250,6 +254,9 @@ def model_to_dataset(cv_model, cv_dataset):
   # Case 4:
   # If output is not compatible with dataset classes, we have to change the
   # model output layer
+  print('compare shapes 2')
+  print(f'cv_dataset classes shape: {cv_dataset.classes_shape}')
+  print(f'cv_model shape: {cv_model.original_input_shape}')
   is_output_compatible = utils.compare_shapes(cv_model.original_output_shape,
                                               cv_dataset.classes_shape)
 

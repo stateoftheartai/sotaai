@@ -198,8 +198,23 @@ class TestKerasWrapper(unittest.TestCase):
     # pass tests... or think on how to better test all Tensorflow datasets
 
     tensorflow_datasets_names = [
-        'beans', 'omniglot', 'binary_alpha_digits', 'caltech_birds2010',
-        'caltech_birds2011', 'cars196'
+        'beans',
+        'omniglot',
+        'binary_alpha_digits',
+        'caltech_birds2010',
+        'caltech_birds2011',
+        'cars196',
+        'cats_vs_dogs',
+        'cmaterdb',
+        'colorectal_histology',
+        # 'colorectal_histology_large', # uknown classes shape
+        'cycle_gan',
+        # 'diabetic_retinopathy_detection', # manual download
+        # 'downsampled_imagenet',  # Error source
+        'dtd',
+        'emnist',
+        'eurosat',
+        'food101',
     ]
     dataset_names = dataset_names + tensorflow_datasets_names
 
@@ -222,8 +237,13 @@ class TestKerasWrapper(unittest.TestCase):
             continue
           single_test(model_name, dataset_name)
 
+    for ds in dataset_names:
+      print('Dataset: ', ds)
+      load_dataset(ds)
+
     # Uncomment the next line to test a particular case of model_to_dataset:
-    # single_test('model-name', 'dataset-name')
+
+    # single_test('InceptionResNetV2', 'colorectal_histology_large')
 
 
 if __name__ == '__main__':
