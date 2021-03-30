@@ -42,8 +42,8 @@ DATASETS = {
         # 'curated_breast_imaging_ddsm',  # manual download
         'cycle_gan',
         # 'deep_weeds',  # manual download
-        'diabetic_retinopathy_detection',
-        'downsampled_imagenet',
+        # 'diabetic_retinopathy_detection', # manual download
+        # 'downsampled_imagenet', # Error link source
         'dtd',
         'emnist',
         'eurosat',
@@ -105,14 +105,14 @@ DATASETS = {
         # 'starcraft_video',
         # 'ucf101'  # Bug tensorflow
     ],
-    'image super resolution': ['div2k',],
-    'key point detection': ['aflw2k3d', 'celeb_a', 'the300w_lp'],
-    'pose estimation': ['flic', 'the300w_lp'],
-    'face alignment': ['the300w_lp'],
-    'visual reasoning': ['clevr'],
-    'visual question answering': ['clevr'],
-    'image generation': ['dsprites', 'shapes3d'],
-    '3d image generation': ['shapes3d',],
+    'image_super_resolution': ['div2k',],
+    'key_point_detection': ['aflw2k3d', 'celeb_a', 'the300w_lp'],
+    'pose_estimation': ['flic', 'the300w_lp'],
+    'face_alignment': ['the300w_lp'],
+    'visual_reasoning': ['clevr'],
+    'visual_question answering': ['clevr'],
+    'image_generation': ['dsprites', 'shapes3d'],
+    '3d_image_generation': ['shapes3d',],
     'other': [
         # 'binarized_mnist',
         # 'chexpert',  # manual download
