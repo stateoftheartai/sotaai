@@ -16,7 +16,7 @@ section:
 - [MXNet](https://github.com/apache/incubator-mxnet)
 - [GANs Keras](https://github.com/eriklindernoren/Keras-GAN)
 - [GANs PyTorch](https://github.com/eriklindernoren/PyTorch-GAN)
-- [Visual Question Answering](https://github.com/Cadene/vqa.pytorch)
+- [Cadene: Visual Question Answering](https://github.com/Cadene/vqa.pytorch)
 - [Detectron2](https://github.com/facebookresearch/detectron2)
 
 Together, these libraries offer **models** and **datasets** for tasks spanning
