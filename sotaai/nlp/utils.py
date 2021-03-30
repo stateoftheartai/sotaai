@@ -102,7 +102,19 @@ def map_source_metadata() -> dict:
 
   for source in sources:
     wrapper = importlib.import_module('sotaai.nlp.' + source + '_wrapper')
-    items_breakdown[source] = wrapper.SOURCE_METADATA
+
+    model_tasks = []
+    dataset_tasks = []
+    if hasattr(wrapper, 'MODELS'):
+      model_tasks = list(wrapper.MODELS.keys())
+    if hasattr(wrapper, 'DATASETS'):
+      dataset_tasks = list(wrapper.DATASETS.keys())
+    tasks = list(set(model_tasks + dataset_tasks))
+
+    metadata = dict(wrapper.SOURCE_METADATA)
+    metadata['tasks'] = tasks
+
+    items_breakdown[source] = metadata
 
   return items_breakdown
 

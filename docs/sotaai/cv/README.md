@@ -5,7 +5,7 @@ section:
 
 - [Torchvision](https://github.com/pytorch/vision)
 - [Keras](https://github.com/keras-team/keras)
-- [Tensorflow](https://github.com/tensorflow/tensorflow)
+- [Tensorflow Datasets](https://github.com/tensorflow/tensorflow)
 - [Pretrainedmodels
   (Cadene)](https://github.com/Cadene/pretrained-models.pytorch)
 - [Segmentation Models
@@ -16,7 +16,7 @@ section:
 - [MXNet](https://github.com/apache/incubator-mxnet)
 - [GANs Keras](https://github.com/eriklindernoren/Keras-GAN)
 - [GANs PyTorch](https://github.com/eriklindernoren/PyTorch-GAN)
-- [Visual Question Answering](https://github.com/Cadene/vqa.pytorch)
+- [Cadene: Visual Question Answering](https://github.com/Cadene/vqa.pytorch)
 - [Detectron2](https://github.com/facebookresearch/detectron2)
 
 Together, these libraries offer **models** and **datasets** for tasks spanning
@@ -33,7 +33,7 @@ a functionality, a "not applicable" (N/A) is used.
 |                            |    `load_model()`    |   `load_dataset()`   | `model_to_dataset()` |
 | :------------------------: | :------------------: | :------------------: | :------------------: |
 |        Torchvision         | :white\_check\_mark: | :white\_check\_mark: | :white\_check\_mark: |
-|         Tensorflow         |         N/A          | :white\_check\_mark: | :white\_check\_mark: |
+|    Tensorflow Datasets     |         N/A          | :white\_check\_mark: | :white\_check\_mark: |
 |           Keras            | :white\_check\_mark: | :white\_check\_mark: | :white\_check\_mark: |
 | Pretrainedmodels (Cadene)  |   :yellow\_circle:   |   :yellow\_circle:   |   :yellow\_circle:   |
 |           MXNet            |   :yellow\_circle:   |   :yellow\_circle:   |   :yellow\_circle:   |

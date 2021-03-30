@@ -31,19 +31,19 @@ DATASETS = {
         'caltech_birds2011',
         'cars196',
         'cats_vs_dogs',
-        'celeb_a',  #hasta aqui por ahora
-        'celeb_a_hq',  # manual download
+        # 'celeb_a',  # manual download
+        # 'celeb_a_hq',  # manual download
         'cifar10_1',
         'cifar10_corrupted',
         # 'citrus_leaves',  # Wrong checksum
         'cmaterdb',
         'colorectal_histology',
         'colorectal_histology_large',
-        'curated_breast_imaging_ddsm',  # manual download
+        # 'curated_breast_imaging_ddsm',  # manual download
         'cycle_gan',
-        'deep_weeds',  # manual download
-        'diabetic_retinopathy_detection',
-        'downsampled_imagenet',
+        # 'deep_weeds',  # manual download
+        # 'diabetic_retinopathy_detection', # manual download
+        # 'downsampled_imagenet', # Error link source
         'dtd',
         'emnist',
         'eurosat',
@@ -51,9 +51,9 @@ DATASETS = {
         'geirhos_conflict_stimuli',
         'horses_or_humans',
         'i_naturalist2017',
-        'imagenet2012',  # manual download
-        'imagenet2012_corrupted',  # manual download
-        'imagenet2012_subset',  # manual download
+        # 'imagenet2012',  # manual download
+        # 'imagenet2012_corrupted',  # manual download
+        # 'imagenet2012_subset',  # manual download
         'imagenet_resized',
         'imagenette',
         'imagewang',
@@ -67,7 +67,7 @@ DATASETS = {
         'patch_camelyon',
         'places365_small',
         'quickdraw_bitmap',
-        'resisc45',  # manual download
+        # 'resisc45',  # manual download
         'rock_paper_scissors',
         'smallnorb',
         'so2sat',
@@ -78,7 +78,7 @@ DATASETS = {
         'svhn_cropped',
         'tf_flowers',
         'uc_merced',
-        'vgg_face2',  # manual download
+        # 'vgg_face2',  # manual download
         'visual_domain_decathlon'
     ],
     'segmentation': [
@@ -105,14 +105,14 @@ DATASETS = {
         # 'starcraft_video',
         # 'ucf101'  # Bug tensorflow
     ],
-    'image super resolution': ['div2k',],
-    'key point detection': ['aflw2k3d', 'celeb_a', 'the300w_lp'],
-    'pose estimation': ['flic', 'the300w_lp'],
-    'face alignment': ['the300w_lp'],
-    'visual reasoning': ['clevr'],
-    'visual question answering': ['clevr'],
-    'image generation': ['dsprites', 'shapes3d'],
-    '3d image generation': ['shapes3d',],
+    'image_super_resolution': ['div2k',],
+    'key_point_detection': ['aflw2k3d', 'celeb_a', 'the300w_lp'],
+    'pose_estimation': ['flic', 'the300w_lp'],
+    'face_alignment': ['the300w_lp'],
+    'visual_reasoning': ['clevr'],
+    'visual_question answering': ['clevr'],
+    'image_generation': ['dsprites', 'shapes3d'],
+    '3d_image_generation': ['shapes3d',],
     'other': [
         # 'binarized_mnist',
         # 'chexpert',  # manual download

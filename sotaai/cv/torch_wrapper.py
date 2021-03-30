@@ -66,12 +66,12 @@ DATASETS = {
         # 'Flickr30k',  # No download.
         # 'SBU'
     ],
-    'human activity recognition': [
+    'human_activity_recognition': [
         # 'HMDB51',  # No download.
         # 'Kinetics400',  # No download.
         # 'UCF101',  # No download.
     ],
-    'local image descriptors': [
+    'local_image_descriptors': [
         # 'PhotoTour/notredame',
         # 'PhotoTour/yosemite',
         # 'PhotoTour/liberty',

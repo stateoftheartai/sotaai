@@ -22,6 +22,25 @@ SOURCES = [
 
 IMPLEMENTED_SOURCES = ['keras', 'torch', 'tensorflow']
 
+OBJECT_DETECTION_COMPATIBILITY = {
+    'fasterrcnn_resnet50_fpn': {
+        'VOCDetection/2007',
+        'VOCDetection/2008',
+        'VOCDetection/2010',
+        'VOCDetection/2011',
+        'VOCDetection/2012',
+        'CelebA',
+        'coco',
+        'flic',
+        'kitti',
+        'open_images_challenge2019_detection',
+        'open_images_v4',
+        'wider_face',
+    },
+    'keypointrcnn_resnet50_fpn': {},
+    'maskrcnn_resnet50_fpn': {'coco'}
+}
+
 IMAGE_MINS = {
     'InceptionV3': 75,
     'InceptionResNetV2': 75,
@@ -163,7 +182,19 @@ def map_source_metadata() -> dict:
 
   for source in sources:
     wrapper = importlib.import_module('sotaai.cv.' + source + '_wrapper')
-    items_breakdown[source] = wrapper.SOURCE_METADATA
+
+    model_tasks = []
+    dataset_tasks = []
+    if hasattr(wrapper, 'MODELS'):
+      model_tasks = list(wrapper.MODELS.keys())
+    if hasattr(wrapper, 'DATASETS'):
+      dataset_tasks = list(wrapper.DATASETS.keys())
+    tasks = list(set(model_tasks + dataset_tasks))
+
+    metadata = dict(wrapper.SOURCE_METADATA)
+    metadata['tasks'] = tasks
+
+    items_breakdown[source] = metadata
 
   return items_breakdown
 

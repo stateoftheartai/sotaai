@@ -116,9 +116,46 @@ def load_dataset(name: str,
   # This is a temporal variable to test the JSON creation only for a subset of
   # datasets to save memory
   test_datasets = [
-      'mnist', 'cifar10', 'cifar100', 'fashion_mnist', 'beans',
-      'binary_alpha_digits', 'caltech_birds2010', 'caltech_birds2011',
-      'cars196', 'cats_vs_dogs', 'omniglot', 'lost_and_found', 'wider_face'
+      'mnist',
+      'cifar10',
+      'cifar100',
+      'fashion_mnist',
+      'beans',
+      'binary_alpha_digits',
+      'caltech_birds2010',
+      'caltech_birds2011',
+      'cars196',
+      'cats_vs_dogs',
+      'omniglot',
+      'lost_and_found',
+      'wider_face',
+      'cats_vs_dogs',
+      'cmaterdb',
+      'colorectal_histology',
+      'colorectal_histology_large',
+      'cycle_gan',
+      'diabetic_retinopathy_detection',
+      'downsampled_imagenet',
+      'dtd',
+      'emnist',
+      'eurosat',
+      'food101',
+      'geirhos_conflict_stimuli',
+      'horses_or_humans',
+      'i_naturalist2017',
+      'imagenet_resized',
+      'imagenette',
+      'imagewang',
+      'kmnist',
+      'lfw',
+      'malaria',
+      'mnist_corrupted',
+      'omniglot',
+      'oxford_flowers102',
+      'oxford_iiit_pet',
+      'patch_camelyon',
+      'places365_small',
+      'quickdraw_bitmap',
   ]
 
   if name in test_datasets:
@@ -187,13 +224,13 @@ def model_to_dataset(cv_model, cv_dataset):
   '''
 
   # Uncomment following prints to test model_to_dataset input and outputs...
-  print('\nModel ', cv_model.name)
-  print(' Input: ', cv_model.original_input_shape)
-  print(' Output: ', cv_model.original_output_shape)
-  print(' Input Type', cv_model.original_input_type)
-  print('Dataset: ', cv_dataset.name)
-  print(' Shape:   ', cv_dataset.shape)
-  print(' Classes: ', cv_dataset.classes_shape)
+  # print('\nModel ', cv_model.name)
+  # print(' Input: ', cv_model.original_input_shape)
+  # print(' Output: ', cv_model.original_output_shape)
+  # print(' Input Type', cv_model.original_input_type)
+  # print('Dataset: ', cv_dataset.name)
+  # print(' Shape:   ', cv_dataset.shape)
+  # print(' Classes: ', cv_dataset.classes_shape)
 
   if cv_model.source == 'keras':
     cv_model, cv_dataset = keras_wrapper.model_to_dataset(cv_model, cv_dataset)
@@ -205,14 +242,13 @@ def model_to_dataset(cv_model, cv_dataset):
     elif task == 'segmentation':
       torch_wrapper.model_to_dataset_segmentation(cv_model, cv_dataset)
     elif task in ('object_detection', 'pose estimation'):
-      torch_wrapper.model_to_dataset_object_detection(cv_model, cv_dataset)
 
-  # print('\nModel ', cv_model.name)
-  # print(' Input: ', cv_model.original_input_shape)
-  # print(' Output: ', cv_model.original_output_shape)
-  # print('Dataset: ', cv_dataset.name)
-  # print(' Shape:   ', cv_dataset.shape)
-  # print(' Classes: ', cv_dataset.classes_shape)
+      if not cv_dataset.name in utils.OBJECT_DETECTION_COMPATIBILITY[
+          cv_model.name]:
+        raise Exception(
+            f'{cv_dataset.name} is not compatible with {cv_model.name}')
+
+      torch_wrapper.model_to_dataset_object_detection(cv_model, cv_dataset)
 
   return cv_model, cv_dataset
 
