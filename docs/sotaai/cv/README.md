@@ -33,7 +33,7 @@ a functionality, a "not applicable" (N/A) is used.
 |                            |    `load_model()`    |   `load_dataset()`   | `model_to_dataset()` |
 | :------------------------: | :------------------: | :------------------: | :------------------: |
 |        Torchvision         | :white\_check\_mark: | :white\_check\_mark: | :white\_check\_mark: |
-|         Tensorflow         |         N/A          | :white\_check\_mark: | :white\_check\_mark: |
+|    Tensorflow Datasets     |         N/A          | :white\_check\_mark: | :white\_check\_mark: |
 |           Keras            | :white\_check\_mark: | :white\_check\_mark: | :white\_check\_mark: |
 | Pretrainedmodels (Cadene)  |   :yellow\_circle:   |   :yellow\_circle:   |   :yellow\_circle:   |
 |           MXNet            |   :yellow\_circle:   |   :yellow\_circle:   |   :yellow\_circle:   |
