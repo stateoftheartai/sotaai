@@ -237,10 +237,6 @@ class TestKerasWrapper(unittest.TestCase):
             continue
           single_test(model_name, dataset_name)
 
-    for ds in dataset_names:
-      print('Dataset: ', ds)
-      load_dataset(ds)
-
     # Uncomment the next line to test a particular case of model_to_dataset:
 
     # single_test('InceptionResNetV2', 'colorectal_histology_large')
