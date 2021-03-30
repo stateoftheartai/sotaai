@@ -115,48 +115,49 @@ def load_dataset(name: str,
   # TODO(Hugo)
   # Remove this variable or comment it out to create the full JSON data
   # This is a temporal variable to test the JSON creation only for a subset of
-  # datasets to save memory
+  # datasets to save memory. If a dataset is in this array, then its JSON will
+  # be created with its full data and the dataset will be downloaded
   test_datasets = [
-      'mnist',
-      'cifar10',
-      'cifar100',
-      'fashion_mnist',
-      'beans',
-      'binary_alpha_digits',
-      'caltech_birds2010',
-      'caltech_birds2011',
-      'cars196',
-      'cats_vs_dogs',
-      'omniglot',
-      'lost_and_found',
-      'wider_face',
-      'cats_vs_dogs',
-      'cmaterdb',
-      'colorectal_histology',
-      'colorectal_histology_large',
-      'cycle_gan',
-      'diabetic_retinopathy_detection',
-      'downsampled_imagenet',
-      'dtd',
-      'emnist',
-      'eurosat',
-      'food101',
-      'geirhos_conflict_stimuli',
-      'horses_or_humans',
-      'i_naturalist2017',
-      'imagenet_resized',
-      'imagenette',
-      'imagewang',
-      'kmnist',
-      'lfw',
-      'malaria',
-      'mnist_corrupted',
-      'omniglot',
-      'oxford_flowers102',
-      'oxford_iiit_pet',
-      'patch_camelyon',
-      'places365_small',
-      'quickdraw_bitmap',
+      # 'mnist',
+      # 'cifar10',
+      # 'cifar100',
+      # 'fashion_mnist',
+      # 'beans',
+      # 'binary_alpha_digits',
+      # 'caltech_birds2010',
+      # 'caltech_birds2011',
+      # 'cars196',
+      # 'cats_vs_dogs',
+      # 'omniglot',
+      # 'lost_and_found',
+      # 'wider_face',
+      # 'cats_vs_dogs',
+      # 'cmaterdb',
+      # 'colorectal_histology',
+      # 'colorectal_histology_large',
+      # 'cycle_gan',
+      # 'diabetic_retinopathy_detection',
+      # 'downsampled_imagenet',
+      # 'dtd',
+      # 'emnist',
+      # 'eurosat',
+      # 'food101',
+      # 'geirhos_conflict_stimuli',
+      # 'horses_or_humans',
+      # 'i_naturalist2017',
+      # 'imagenet_resized',
+      # 'imagenette',
+      # 'imagewang',
+      # 'kmnist',
+      # 'lfw',
+      # 'malaria',
+      # 'mnist_corrupted',
+      # 'omniglot',
+      # 'oxford_flowers102',
+      # 'oxford_iiit_pet',
+      # 'patch_camelyon',
+      # 'places365_small',
+      # 'quickdraw_bitmap',
   ]
 
   if name in test_datasets:
@@ -176,16 +177,10 @@ def load_dataset(name: str,
                                         download=download)
     else:
       raw_object = wrapper.load_dataset(name)
-  elif source == 'torch':
-    raw_object = wrapper.load_dataset(name,
-                                      transform=torch_transform,
-                                      ann_file=torch_ann_file,
-                                      target_transform=torch_target_transform,
-                                      root=torch_root,
-                                      extensions=torch_extensions,
-                                      frames_per_clip=torch_frames_per_clip,
-                                      download=download)
-  elif source in ['keras', 'tensorflow']:
+  # The next two cases, will return the dataset instance (raw_object) but skip
+  # the download. This allows the JSON creation for all datasets no matter if
+  # they are downloaded or not
+  elif source in ['keras', 'tensorflow', 'torch']:
     raw_object = wrapper.load_dataset(name, download=False)
   else:
     raw_object = wrapper.load_dataset(name)
@@ -286,7 +281,43 @@ def create_models_dict(model_names, models_sources_map):
 
     models.append(model_dict)
 
-  return models
+  # Return only one model per unified name
+  # TODO(Hugo)
+  # Unified models do not have all the attributes of a model e.g.
+  # cv_input_shape_height, cv_num_layers, etc. We still have to define how to
+  # treat these fields when models are unified, since these attributes may vary
+  # from one model to other even when they have the same unified name e.g.
+  # ResNet102 and ResNet152 are both ResNet but they have a different
+  # cv_num_layers value.
+  unified_models = {}
+  for model in models:
+    if model['unified_name'] not in unified_models:
+      unified_models[model['unified_name']] = {
+          'name': model['unified_name'],
+          'type': model['type'],
+          'paper': model['paper'],
+          'name_alt': [model['name']],
+          'tasks': model['tasks'],
+          'sources': model['sources'],
+      }
+    else:
+      unified_models[model['unified_name']]['name_alt'].append(model['name'])
+      unified_models[model['unified_name']]['tasks'] = unified_models[
+          model['unified_name']]['tasks'] + model['tasks']
+      unified_models[model['unified_name']]['sources'] = unified_models[
+          model['unified_name']]['sources'] + model['sources']
+
+  unified_models_list = list(unified_models.values())
+
+  for model in unified_models_list:
+    model['name_alt'] = list(set(model['name_alt']))
+    model['tasks'] = list(set(model['tasks']))
+    model['sources'] = list(set(model['sources']))
+
+  print('\nNOT UNIFIED MODELS: {}'.format(len(models)))
+  print('UNIFIED MODELS: {}'.format(len(unified_models_list)))
+
+  return unified_models_list
 
 
 def create_datasets_dict(dataset_names, dataset_sources_map):
