@@ -7,6 +7,7 @@ from sotaai.cv import utils
 from sotaai.cv import abstractions
 from sotaai.cv import keras_wrapper
 from sotaai.cv import torch_wrapper
+from sotaai.cv import metadata
 import importlib
 
 datasets_source_map = utils.map_name_sources('datasets')
@@ -271,13 +272,17 @@ def create_models_dict(model_names, models_sources_map):
   models = []
 
   for i, model_name in enumerate(model_names):
-    print(' - ({}/{}) {}'.format(i + 1, len(model_names),
-                                 'models.' + model_name))
+    unified_name = metadata.get_unified_name('models', model_name)
+    print(' - ({}/{}) {}, unified: {}'.format(i + 1, len(model_names),
+                                              'models.' + model_name,
+                                              unified_name))
     model = load_model(model_name)
     model_dict = model.to_dict()
 
     model_dict['sources'] = models_sources_map[model_dict['name']]
     del model_dict['source']
+
+    model_dict['unified_name'] = unified_name
 
     models.append(model_dict)
 
@@ -338,6 +343,9 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
     dataset_dict['cv_split_names'] = split_names
     dataset_dict['cv_split_num_items'] = split_num_items
     dataset_dict['cv_total_items'] = total_items
+
+    dataset_dict['unified_name'] = dataset_name  # TODO(tonio) unify.
+
     datasets.append(dataset_dict)
 
   return datasets

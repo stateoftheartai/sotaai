@@ -351,6 +351,10 @@ UNIFIED_MODELS = {
 
 UNIFIED_DATASETS = {}
 
+IGNORE_THESE_DATASETS = [
+    'i_naturalist2017', 'CelebA', 'lfw', 'SBD/segmentation'
+]
+
 
 def get_unified_name(item_type=None, name=None):
   '''Return the unified name to be displayed in front end.
