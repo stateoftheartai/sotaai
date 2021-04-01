@@ -131,7 +131,7 @@ class TestTorchWrapper(unittest.TestCase):
         datapoint = next(iterable_dataset)
         print(datapoint)
 
-  # @unittest.SkipTest
+  @unittest.SkipTest
   def test_model_to_dataset_classification(self):
 
     def single_test(model_name, dataset_name):

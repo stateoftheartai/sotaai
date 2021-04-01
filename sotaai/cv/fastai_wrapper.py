@@ -5,6 +5,8 @@
 fastai https://www.fast.ai/ wrapper module
 '''
 
+from fastai.vision import models, URLs, ImageList, untar_data
+
 # TODO(team)
 # Fully implement this wrapper
 
@@ -33,14 +35,41 @@ DATASETS = {
     ],
     'key_point_detection': ['BIWI_SAMPLE'],
     'object_detection': ['COCO_SAMPLE', 'COCO_TINY'],
-    'multi-label classification': ['PLANET_SAMPLE', 'PLANET_TINY'],
+    'multi_label_classification': ['PLANET_SAMPLE', 'PLANET_TINY'],
     'segmentation': ['CAMVID', 'CAMVID_TINY']
 }
 
 
-def load_model(name: str):
-  return {'name': name, 'source': 'fastai'}
+def load_model(name: str, pretrained=False):
+  model = getattr(models, name)(pretrained=pretrained)
+
+  return model
 
 
 def load_dataset(name: str):
-  return {'train': {'name': name, 'source': 'fastai'}}
+  ds_url = getattr(URLs, name)
+  path = untar_data(ds_url)
+
+  ds_dic = {}
+
+  if path.exists():
+    for element in path.ls():
+      if 'train' in str(element):
+        ds_dic['train'] = ImageList.from_folder(
+            element).split_none().label_from_folder().databunch()
+      if 'val' in str(element):
+        ds_dic['val'] = ImageList.from_folder(
+            element).split_none().label_from_folder().databunch()
+      if 'test' in str(element):
+        ds_dic['test'] = ImageList.from_folder(
+            element).split_none().label_from_folder().databunch()
+      if 'images' in str(element):
+        ds_dic['train'] = ImageList.from_folder(
+            element).split_none().label_from_folder().databunch().train_ds
+        ds_dic['test'] = ImageList.from_folder(
+            element).split_none().label_from_folder().databunch().test_ds
+
+  else:
+    ds_dic = {'train': {'name': name, 'source': 'fastai'}}
+
+  return ds_dic
