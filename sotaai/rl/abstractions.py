@@ -12,7 +12,16 @@ class RlEnvironment(object):
   '''Our attempt at a standardized, task-agnostic NLP dataset wrapper.'''
 
   def __init__(self, raw_object, name: str, source: str):
-    '''Very preliminary class to encapsulate any NLP dataset.'''
+    '''Very preliminary class to encapsulate any RL environment.
+     Args:
+      raw_object:
+        Environment object directly instantiated from a source library. Type
+        is dependent on the source library.
+      name (str):
+        Name of the dataset.
+      source (str):
+        Source name used when no raw_environment is given
+    '''
     self.name = name
     self.source = source
     self.raw = raw_object

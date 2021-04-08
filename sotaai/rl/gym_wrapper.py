@@ -18,6 +18,11 @@ ENVIRONMENTS = envs.registry.env_specs
 
 
 def load_environment(name: str) -> dict:
+  '''Return a gym environment
+
+  Args:
+    name: the environment name in string
+  '''
   if name in envs.registry.env_specs:
     env = gym.make(name)
     return env
