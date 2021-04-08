@@ -20,5 +20,8 @@ setup(name='sotaai',
           ],
           'neuro': [],
           'nlp': ['datasets'],
-          'rl': ['gym']
+          'rl': [
+              'gym', 'procgen', 'gym-minigrid',
+              'git+https://github.com/benelot/pybullet-gym'
+          ]
       })

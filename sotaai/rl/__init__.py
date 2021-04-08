@@ -16,13 +16,13 @@ def load_model(name: str) -> abstractions.RlModel:
   return abstractions.RlModel(raw_object['name'], raw_object['source'])
 
 
-def load_dataset(name: str) -> abstractions.RlDataset:
+def load_environment(name: str) -> abstractions.RlEnvironment:
   '''Dummy load dataset function. Placeholder for real wrapper.'''
-  dataset_source_map = utils.map_name_sources('datasets')
-  source = dataset_source_map[name][0]
+  # dataset_source_map = utils.map_name_sources('datasets')
+  source = 'gym'
   wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
-  raw_object = wrapper.load_dataset(name)
-  return abstractions.RlDataset(raw_object['name'], raw_object['source'])
+  raw_object = wrapper.load_environment(name)
+  return abstractions.RlEnvironment(raw_object, name, source)
 
 
 def create_models_dict(model_names, models_sources_map):
@@ -77,7 +77,7 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
   for i, dataset_name in enumerate(dataset_names):
     print(' - ({}/{}) {}'.format(i + 1, len(dataset_names),
                                  'datasets.' + dataset_name))
-    dataset = load_dataset(dataset_name)
+    dataset = load_environment(dataset_name)
     dataset_dict = dataset.to_dict()
 
     dataset_dict['sources'] = dataset_sources_map[dataset_dict['name']]

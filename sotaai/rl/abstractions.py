@@ -8,21 +8,21 @@ datasets_tasks_map = utils.map_name_tasks('datasets')
 models_tasks_map = utils.map_name_tasks('models')
 
 
-class RlDataset(object):
+class RlEnvironment(object):
   '''Our attempt at a standardized, task-agnostic NLP dataset wrapper.'''
 
-  def __init__(self, name: str, source: str):
+  def __init__(self, raw_object, name: str, source: str):
     '''Very preliminary class to encapsulate any NLP dataset.'''
     self.name = name
     self.source = source
-    self.tasks = datasets_tasks_map[name]
+    self.raw = raw_object
+    # self.tasks = datasets_tasks_map[name]
 
   def to_dict(self) -> dict:
     return {
         'name': self.name,
-        'type': 'dataset',
+        'type': 'Environment',
         'source': self.source,
-        'tasks': self.tasks
     }
 
 
