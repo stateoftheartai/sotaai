@@ -3,6 +3,7 @@
 # Copyright: Stateoftheart AI PBC 2021.
 '''Useful utility functions to navigate the library's available resources.'''
 import importlib
+from sotaai.rl import gym_wrapper
 
 MODEL_SOURCES = ['garage', 'rllib', 'stablebaselines3']
 
@@ -53,6 +54,23 @@ def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:  #
           items_breakdown[item] = {source: [task]}
 
   return items_breakdown
+
+
+def get_source(name_env: str) -> str:
+  '''
+    Return library source from environment
+
+    Args:
+      name_env: the environment name in string
+  '''
+
+  source = 'None'
+  for library in gym_wrapper.LIST_ENVIRONMENTS:
+    if name_env in gym_wrapper.LIST_ENVIRONMENTS[library]:
+      source = library
+      return source
+
+  return source
 
 
 def map_name_sources(nametype: str, return_original_names=True) -> dict:
