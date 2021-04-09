@@ -22,7 +22,7 @@ def load_environment(name: str) -> abstractions.RlEnvironment:
   source = 'gym'
   wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
   raw_object = wrapper.load_environment(name)
-  return abstractions.RlEnvironment(raw_object, name, source)
+  return abstractions.RlEnvironment(raw_object, name)
 
 
 def create_models_dict(model_names, models_sources_map):
