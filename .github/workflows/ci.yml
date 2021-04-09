@@ -16,7 +16,7 @@ jobs:
       - name: Install Python 3
         uses: actions/setup-python@v1
         with:
-          python-version: 3.8.0
+          python-version: 3.8
       - name: Install sotaai Library & Dependencies
         run: |
           python -m pip install pip==19.2.3
