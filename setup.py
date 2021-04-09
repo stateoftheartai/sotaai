@@ -21,7 +21,7 @@ setup(name='sotaai',
           'neuro': [],
           'nlp': ['datasets'],
           'rl': [
-              'gym', 'procgen', 'gym-minigrid', 'box2d', 'gym[atari]'
-              'git+https://github.com/benelot/pybullet-gym'
+              'gym', 'procgen', 'gym-minigrid', 'box2d', 'gym[atari]',
+              'pybullet-gym @ git+https://github.com/benelot/pybullet-gym'
           ]
       })
