@@ -29,7 +29,7 @@ DATASETS = {
     ],
     'Unknown': ['GERMEVAL_14', 'CONLL_2000', 'FeideggerCorpus'],
     'Keyword Extraction': ['INSPEC', 'SEMEVAL2010', 'SEMEVAL2017'],
-    'Universal Dependency Treebanks': [
+    'Dependency Parsing': [
         'UD_ARABIC', 'UD_BASQUE', 'UD_BULGARIAN', 'UD_CATALAN', 'UD_CHINESE',
         'UD_CROATIAN', 'UD_CZECH', 'UD_DANISH', 'UD_DUTCH', 'UD_ENGLISH',
         'UD_FINNISH', 'UD_FRENCH', 'UD_GERMAN', 'UD_GERMAN_HDT', 'UD_HEBREW',
