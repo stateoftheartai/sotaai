@@ -21,7 +21,7 @@ MODELS = {
         'MultiTaskIntentModel', 'Seq2Seq2IntentModel', 'MostCommonWordSense',
         'NERCRF', 'NP2vec'
     ],
-    'Semantic Parsing': ['NpSemanticSegClassifier',]
+    'Semantic Parsing': ['NpSemanticSegClassifier'],
 }
 
 
