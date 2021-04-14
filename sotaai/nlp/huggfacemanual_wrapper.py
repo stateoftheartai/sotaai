@@ -38,12 +38,6 @@ MODELS = {
         'Reformer', 'RoBERTa', 'SqueezeBERT', 'TAPAS', 'Transformer XL', 'XLM',
         'XLM-RoBERTa', 'XLNet'
     ],
-    'Multiple Choice': [
-        'ALBERT', 'BERT', 'BigBird', 'BORT', 'CamemBERT', 'ConvBERT',
-        'DistilBERT', 'ELECTRA', 'FlauBERT', 'Funnel Transformer', 'I-BERT',
-        'Longformer', 'MobileBERT', 'MPNet', 'RoBERTa', 'SqueezeBERT', 'TAPAS',
-        'XLM', 'XLM-RoBERTa', 'XLNet'
-    ],
     'Token Classification': [
         'ALBERT', 'BERT', 'BigBird', 'BORT', 'CamemBERT', 'ConvBERT', 'DeBERTa',
         'DeBERTa-v2', 'DistilBERT', 'ELECTRA', 'FlauBERT', 'Funnel Transformer',
@@ -53,9 +47,10 @@ MODELS = {
     'Question Answering': [
         'ALBERT', 'BART', 'BERT', 'BigBird', 'BORT', 'CamemBERT', 'ConvBERT',
         'DeBERTa', 'DeBERTa-v2', 'DistilBERT', 'ELECTRA', 'FlauBERT',
-        'Funnel Transformer', 'I-BERT', 'LED', 'Longformer', 'LXMERT', 'MBart',
-        'MBart-50', 'MobileBERT', 'MPNet', 'Reformer', 'RoBERTa', 'SqueezeBERT',
-        'XLM', 'XLM-ProphetNet', 'XLM-RoBERTa', 'XLNet'
+        'Funnel Transformer', 'I-BERT', 'LED', 'Longformer', 'LXMERT',
+        'MobileBERT', 'MBart', 'MBart-50', 'MobileBERT', 'MPNet', 'Reformer',
+        'RoBERTa', 'SqueezeBERT', 'TAPAS', 'XLM', 'XLM-ProphetNet',
+        'XLM-RoBERTa', 'XLNet'
     ],
     'Text Classification': ['Bertweet',],
     'Part-of-speech Tagging': ['Bertweet',],
