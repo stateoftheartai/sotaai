@@ -16,7 +16,7 @@ SOURCE_METADATA = {
 }
 
 MODELS = {
-    'neural machine translation': [
+    'Machine Translation': [
         'conv.wmt14.en-de', 'conv.wmt14.en-fr', 'conv.wmt17.en-de',
         'transformer.wmt14.en-fr', 'transformer.wmt16.en-de',
         'transformer.wmt18.en-de', 'transformer.wmt19.de-en',
@@ -25,7 +25,7 @@ MODELS = {
         'transformer.wmt19.en-ru.single_model', 'transformer.wmt19.ru-en',
         'transformer.wmt19.ru-en.single_model'
     ],
-    'language modeling': [
+    'Language Modeling': [
         'transformer_lm.gbw.adaptive_huge', 'transformer_lm.wiki103.adaptive',
         'transformer_lm.wmt19.de', 'transformer_lm.wmt19.en',
         'transformer_lm.wmt19.ru', 'conv.stories', 'conv.stories.pretrained'
