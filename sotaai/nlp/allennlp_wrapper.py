@@ -33,10 +33,12 @@ MODELS = {
         'TransformerQA', 'QANet', 'NumericallyAugmentedQANet', 'DialogQA',
         'BiDAFEnsemble', 'BidirectionalAttentionFlow'
     ],
-    'Structured Prediction': [
+    'Dependency Parsing': [
         'SrlBERT', 'BiaffineDependencyParser', 'SpanConstituencyParser'
     ],
-    'Vision': ['VisualEntailmentModel', 'VisionTextModel', 'VQAVilBERT']
+    'Visual Language Reasoning': [
+        'VisualEntailmentModel', 'VisionTextModel', 'VQAVilBERT'
+    ]
 }
 
 DATASETS = {
@@ -47,11 +49,11 @@ DATASETS = {
     'Question Answering': ['SWAG', 'PIQA', 'CommonsenseQA'],
     'Pair Classification': ['QuoraParaphrase', 'SNLI'],
     'Reading Comprehension': ['TriviaQA', 'SQuAD', 'QuAC', 'Qangaroo', 'DROP'],
-    'Structured Prediction': [
+    'Dependency Parsing': [
         'CoNLL', 'EnglishOntoNotes', 'SemEvalSDP', 'PennTreeBank'
     ],
     'Tagging': ['EnglishOntoNotes', 'CCGbank', 'CoNLL'],
-    'Vision': ['VQAv2', 'GQA']
+    'Visual Language Reasoning': ['VQAv2', 'GQA']
 }
 
 

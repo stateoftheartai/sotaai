@@ -19,7 +19,7 @@ DATASETS = {
         'trivia_qa/rc.nocontext', 'trivia_qa/unfiltered',
         'trivia_qa/unfiltered.nocontext', 'web_questions'
     ],
-    'Structured': [
+    'Domain Specific': [
         'amazon_us_reviews/Wireless_v1_00', 'amazon_us_reviews/Watches_v1_00',
         'amazon_us_reviews/Video_Games_v1_00',
         'amazon_us_reviews/Video_DVD_v1_00', 'amazon_us_reviews/Video_v1_00',
