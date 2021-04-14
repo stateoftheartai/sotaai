@@ -55,7 +55,7 @@ MODELS = {
     'Text Classification': ['Bertweet',],
     'Part-of-speech Tagging': ['Bertweet',],
     'Named Entity Recognition': ['Bertweet',],
-    'Text Summarization': ['BARThez', 'BertGeneration'],
+    'Summarization': ['BARThez', 'BertGeneration'],
     'Text Generation': ['DialoGPT', 'RAG', 'XLM-ProphetNet'],
     'Token Generation': ['RAG',],
     'Machine Translation': ['BertGeneration',],

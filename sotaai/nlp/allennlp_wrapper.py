@@ -17,7 +17,7 @@ SOURCE_METADATA = {
 MODELS = {
     'Text Classification': ['BiattentiveClassificationNetwork'],
     'Coreference Resolution': ['CoarseToFineCoref'],
-    'Text Summarization': [
+    'Summarization': [
         'BART', 'Seq2Seq2Encode', 'ComposedSeq2Seq', 'CopyNet', 'SimpleSeq2Seq'
     ],
     'Text Generation': [
@@ -42,7 +42,7 @@ MODELS = {
 DATASETS = {
     'Text Classification': ['StanfordSentimentTreebank'],
     'Coreference Resolution': ['CoNLL', 'PreCo', 'Winobias'],
-    'Text Summarization': ['CNN/DailyMail'],
+    'Summarization': ['CNN/DailyMail'],
     'Language Modeling': [],
     'Question Answering': ['SWAG', 'PIQA', 'CommonsenseQA'],
     'Pair Classification': ['QuoraParaphrase', 'SNLI'],
