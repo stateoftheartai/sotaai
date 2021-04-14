@@ -14,7 +14,7 @@ DATASETS = {
     'Entailment': ['SNLI', 'MultiNLI'],
     'Language Modeling': ['WikiText-2', 'WikiText103', 'PennTreebank'],
     'Machine Translation': ['Multi30k', 'IWSLT', 'WMT14'],
-    'Sequence Tagging': ['UDPOS', 'CoNLL2000Chunking'],
+    'Tagging': ['UDPOS', 'CoNLL2000Chunking'],
     'Question Answering': ['BABI20', 'TREC']
 }
 
