@@ -14,35 +14,35 @@ SOURCE_METADATA = {
 }
 
 MODELS = {
-    'classification': ['GCN'],
-    'unknown': ['GeneralGNN'],
+    'Graph Classification': ['GCN'],
+    'Unknown': ['GeneralGNN'],
 }
 
 DATASETS = {
-    'unknown': [
+    'Unknown': [
         'Cora', 'Citeseer', 'Pubmed', 'ModelNet10', 'ModelNet40', 'OGB'
     ],
-    'inductive representation learning': ['GraphSage'],
-    'inductive node classification': ['GraphSage', 'PPI'],
-    'community detection': ['Reddit'],
-    'graph signal classification': ['MNIST'],
-    'molecular machine learning': ['QM7', 'QM9'],
-    'graph kernels': ['TUDataset']
+    'Inductive Representation Learning': ['GraphSage'],
+    'Inductive Node Classification': ['GraphSage', 'PPI'],
+    'Community Detection': ['Reddit'],
+    'Graph Classification': ['MNIST'],
+    'Molecular Machine Learning': ['QM7', 'QM9'],
+    'Graph Kernels': ['TUDataset']
 }
 
 ADDITIONAL_FEATURES = {
-    'convolutional layers': [
+    'Convolutional Layers': [
         'MessagePassing', 'AGNNConv', 'APPNPConv', 'ARMAConv', 'ChebConv',
         'CrystalConv', 'DiffusionConv', 'ECCConv', 'EdgeConv', 'GATConv',
         'GatedGraphConv', 'GCNConv', 'GeneralConv', 'GCSConv', 'GINConv',
         'GraphSageConv', 'TAGConv'
     ],
-    'pooling layers': [
+    'Pooling Layers': [
         'DiffPool', 'MinCutPool', 'SAGPool', 'TopKPool', 'GlobalAvgPool',
         'GlobalMaxPool', 'GlobalSumPool', 'GlobalAttentionPool',
         'GlobalAttnSumPool', 'SortPool'
     ],
-    'base layers': ['InnerProduct', 'Disjoint2Batch', 'MinkowskiProduct']
+    'Base Layers': ['InnerProduct', 'Disjoint2Batch', 'MinkowskiProduct']
 }
 
 
