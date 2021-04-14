@@ -15,43 +15,43 @@ SOURCE_METADATA = {
 }
 
 MODELS = {
-    'classification': ['BiattentiveClassificationNetwork'],
-    'coreference resolution': ['CoarseToFineCoref'],
-    'text summarization': [
+    'Text Classification': ['BiattentiveClassificationNetwork'],
+    'Coreference Resolution': ['CoarseToFineCoref'],
+    'Text Summarization': [
         'BART', 'Seq2Seq2Encode', 'ComposedSeq2Seq', 'CopyNet', 'SimpleSeq2Seq'
     ],
-    'text generation': [
+    'Text Generation': [
         'BART', 'Seq2Seq2Encode', 'ComposedSeq2Seq', 'CopyNet', 'SimpleSeq2Seq'
     ],
-    'language modeling': [
+    'Language Modeling': [
         'NextTokenLM', 'MaskedLanguageModel', 'LanguageModel',
         'BidirectionalLanguageModel'
     ],
-    'multiple choice': ['RoBERTa'],
-    'pair classification': ['ESIM', 'DecomposableAttention', 'BiPM'],
-    'reading comprehension': [
+    'Question Answering': ['RoBERTa'],
+    'Pair Classification': ['ESIM', 'DecomposableAttention', 'BiPM'],
+    'Reading Comprehension': [
         'TransformerQA', 'QANet', 'NumericallyAugmentedQANet', 'DialogQA',
         'BiDAFEnsemble', 'BidirectionalAttentionFlow'
     ],
-    'structured prediction': [
+    'Structured Prediction': [
         'SrlBERT', 'BiaffineDependencyParser', 'SpanConstituencyParser'
     ],
-    'vision': ['VisualEntailmentModel', 'VisionTextModel', 'VQAVilBERT']
+    'Vision': ['VisualEntailmentModel', 'VisionTextModel', 'VQAVilBERT']
 }
 
 DATASETS = {
-    'classification': ['StanfordSentimentTreebank'],
-    'coreference resolution': ['CoNLL', 'PreCo', 'Winobias'],
-    'text summarization': ['CNN/DailyMail'],
-    'language modeling': [],
-    'multiple choice': ['SWAG', 'PIQA', 'CommonsenseQA'],
-    'pair classification': ['QuoraParaphrase', 'SNLI'],
-    'reading comprehension': ['TriviaQA', 'SQuAD', 'QuAC', 'Qangaroo', 'DROP'],
-    'structured prediction': [
+    'Text Classification': ['StanfordSentimentTreebank'],
+    'Coreference Resolution': ['CoNLL', 'PreCo', 'Winobias'],
+    'Text Summarization': ['CNN/DailyMail'],
+    'Language Modeling': [],
+    'Question Answering': ['SWAG', 'PIQA', 'CommonsenseQA'],
+    'Pair Classification': ['QuoraParaphrase', 'SNLI'],
+    'Reading Comprehension': ['TriviaQA', 'SQuAD', 'QuAC', 'Qangaroo', 'DROP'],
+    'Structured Prediction': [
         'CoNLL', 'EnglishOntoNotes', 'SemEvalSDP', 'PennTreeBank'
     ],
-    'tagging': ['EnglishOntoNotes', 'CCGbank', 'CoNLL'],
-    'vision': ['VQAv2', 'GQA']
+    'Tagging': ['EnglishOntoNotes', 'CCGbank', 'CoNLL'],
+    'Vision': ['VQAv2', 'GQA']
 }
 
 
