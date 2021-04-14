@@ -27,9 +27,7 @@ DATASETS = {
         'WIKINER_GERMAN', 'WIKINER_ITALIAN', 'WIKINER_POLISH',
         'WIKINER_PORTUGUESE', 'WIKINER_RUSSIAN', 'WIKINER_SPANISH', 'WNUT_17'
     ],
-    'Chunking': ['CONLL_2000'],
-    'Similarity Learning': ['FeideggerCorpus'],
-    'Unknown': ['GERMEVAL_14'],
+    'Unknown': ['GERMEVAL_14', 'CONLL_2000', 'FeideggerCorpus'],
     'Keyword Extraction': ['INSPEC', 'SEMEVAL2010', 'SEMEVAL2017'],
     'Universal Dependency Treebanks': [
         'UD_ARABIC', 'UD_BASQUE', 'UD_BULGARIAN', 'UD_CATALAN', 'UD_CHINESE',
@@ -52,7 +50,7 @@ DATASETS = {
         'LINNEAUS', 'LocText', 'miRNA', 'NCBI Disease', 'Osiris v1.2',
         'Plant-Disease-Relations', 'S800', 'SCAI Chemicals', 'SCAI Disease',
         'Variome'
-    ]
+    ],
 }
 
 MODELS = {
