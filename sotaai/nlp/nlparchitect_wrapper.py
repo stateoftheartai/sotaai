@@ -15,13 +15,13 @@ SOURCE_METADATA = {
 }
 
 MODELS = {
-    'part-of-speech tagging': ['NeuralTagger', 'IDCNN', 'CNNLSTM'],
-    'named entity recognition': ['NeuralTagger', 'IDCNN', 'CNNLSTM'],
-    'intent extraction': [
+    'Part-of-speech Tagging': ['NeuralTagger', 'IDCNN', 'CNNLSTM'],
+    'Named Entity Recognition': ['NeuralTagger', 'IDCNN', 'CNNLSTM'],
+    'Intent Extraction': [
         'MultiTaskIntentModel', 'Seq2Seq2IntentModel', 'MostCommonWordSense',
         'NERCRF', 'NP2vec'
     ],
-    'semantic segmentation': ['NpSemanticSegClassifier',]
+    'Semantic Parsing': ['NpSemanticSegClassifier',]
 }
 
 
