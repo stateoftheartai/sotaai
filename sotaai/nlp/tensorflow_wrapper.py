@@ -14,12 +14,12 @@ SOURCE_METADATA = {
 }
 
 DATASETS = {
-    'question answering': [
+    'Question Answering': [
         'cosmos_qa', 'mctaco', 'natural_questions', 'squad', 'trivia_qa/rc',
         'trivia_qa/rc.nocontext', 'trivia_qa/unfiltered',
         'trivia_qa/unfiltered.nocontext', 'web_questions'
     ],
-    'structured': [
+    'Structured': [
         'amazon_us_reviews/Wireless_v1_00', 'amazon_us_reviews/Watches_v1_00',
         'amazon_us_reviews/Video_Games_v1_00',
         'amazon_us_reviews/Video_DVD_v1_00', 'amazon_us_reviews/Video_v1_00',
@@ -55,14 +55,14 @@ DATASETS = {
         'amazon_us_reviews/Digital_Ebook_Purchase_v1_01',
         'amazon_us_reviews/Books_v1_01', 'amazon_us_reviews/Books_v1_02'
     ],
-    'summarization': [
+    'Summarization': [
         'aeslc', 'big_patent', 'billsum', 'cnn_dailymail', 'covid19sum',
         'gigaword', 'multi_news', 'newsroom',
         'opinion_abstracts/rotten_tomatoes', 'opinion_abstracts/idebate',
         'opinosis', 'reddit', 'reddit_tifu/short', 'reddit_tifu/long', 'samsum',
         'scientific_papers/arxiv', 'scientific_papers/pubmed', 'wikihow', 'xsum'
     ],
-    'text classification': [
+    'Text Classification': [
         'anli/r1', 'anli/r2', 'anli/r3', 'blimp/adjunct_island',
         'blimp/anaphor_gender_agreement', 'blimp/anaphor_number_agreement',
         'blimp/animate_subject_passive', 'blimp/animate_subject_trans',
@@ -119,7 +119,7 @@ DATASETS = {
         'wikipedia_toxicity_subtypes', 'winogrande', 'wordnet', 'xnli',
         'yelp_popularity_reviews'
     ],
-    'translation': [
+    'Machine Translation': [
         'flores', 'opus', 'para_crawl', 'ted_hrlr_translate',
         'ted_multi_translate', 'wmt14_translate', 'wmt15_translate',
         'wmt16_translate', 'wmt17_translate', 'wmt18_translate',
