@@ -7,13 +7,15 @@ from sotaai.rl import abstractions
 import importlib
 
 
-def load_model(name: str) -> abstractions.RlModel:
+def load_model(name: str,
+               name_env: str = None,
+               env=None) -> abstractions.RlModel:
   '''Dummy load model function. Placeholder for real wrapper.'''
-  model_source_map = utils.map_name_sources('models')
-  source = model_source_map[name][0]
+  # model_source_map = utils.map_name_sources('models')
+  source = 'garage'
   wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
-  raw_object = wrapper.load_model(name)
-  return abstractions.RlModel(raw_object['name'], raw_object['source'])
+  raw_object = wrapper.load_model(name, name_env=name_env, gym_env=env)
+  return abstractions.RlModel(name=name, raw_object=raw_object, source=source)
 
 
 def load_environment(name: str) -> abstractions.RlEnvironment:
