@@ -21,7 +21,8 @@ MODELS = {
         'VGAE', 'Tree-LSTM', 'BP-Transformer', 'TAGCN', 'STGCN', 'SIGN', 'SGC',
         'SEAL', 'SAGPool', 'RRN', 'Relational-GCN', 'PointNet', 'PointNet++',
         'DynamicEdgeConv', 'PinSAGE', 'OGB', 'Metapath2vec', 'JunctionTreeVAE',
-        'DeepWalk', 'ClusterGAT', 'ClusterSAGE', 'LINE', 'DAGNN', 'Cluster-GCN'
+        'DeepWalk', 'ClusterGAT', 'ClusterSAGE', 'LINE', 'DAGNN', 'Cluster-GCN',
+        'GC-MC'
     ],
     'Node Classification': [
         'GCN', 'GAT', 'GraphSAGE', 'APPNP', 'GIN', 'TAGCN', 'SGC', 'AGNN',
@@ -32,7 +33,6 @@ MODELS = {
     'Representation Learning': [
         'InfoGraph', 'GraphSAGE', 'GIN', 'DiffPool', 'DGI'
     ],
-    'Hierarchical Representation Learning': ['DiffPool'],
     'Node Embedding': ['HardGAT'],
     'Graph Embedding': ['HardGAT', 'HGT', 'HAN'],
     'Heterogeneous Graph Embedding': ['HGT', 'HAN'],
@@ -40,9 +40,8 @@ MODELS = {
     'Reasoning': ['GGNN',],
     'Graph Algorithm Learning': ['GGNN'],
     'Program Verification': ['GGNN'],
-    'Recommendation': ['GC-MC'],
     'Molecular Machine Learning': ['DimeNet', 'DimeNet++'],
-    'Generative Models': ['GraphModel'],
+    'Graph Generation': ['GraphModel'],
     'Scene Graph Parsing': ['SceneGraphParsing']
 }
 
