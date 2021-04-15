@@ -84,6 +84,16 @@ def get_data(area: str):
     datasets = sotaai_module.create_datasets_dict(dataset_names,
                                                   datasets_sources_map)
     sources = list(sources_metadata_map.values())
+
+    # TODO(Team)
+    # Fix all task names in wrappers to be in lower snake case
+    # This is a temporal fix to overwrite task names in all places
+    for item in models + datasets + sources:
+      fixed_tasks = []
+      for task in item['tasks']:
+        fixed_tasks.append(create_name(task))
+      item['tasks'] = fixed_tasks
+
     tasks = get_catalogue('tasks', models + datasets)
 
     print('\nArea: {}'.format(area.upper()))
@@ -186,9 +196,16 @@ def get_catalogue(field: str, items: list) -> list:
       value = [value]
     for name in value:
       if name not in catalogue:
+        # Temporal fix due to those tasks which are still not named with
+        # _ and lower case
+        name = create_name(name)
         original_name = create_original_name(name)
         catalogue[name] = {'name': name, 'original_name': original_name}
   return list(catalogue.values())
+
+
+def create_name(name):
+  return name.replace(' ', '_').lower()
 
 
 def create_original_name(name) -> str:
@@ -201,9 +218,6 @@ def create_original_name(name) -> str:
   Returns:
     The original name as string
   '''
-  # Temporal fix due to those tasks which are still not named with _ and lower
-  # case
-  name = name.replace(' ', '_').lower()
 
   original_name = None
   for item in name.split('_'):
