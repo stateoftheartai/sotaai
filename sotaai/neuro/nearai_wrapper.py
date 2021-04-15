@@ -12,7 +12,7 @@ SOURCE_METADATA = {
     'url': 'https://github.com/nearai/program_synthesis'
 }
 
-DATASETS = {'program synthesis': ['AlgoLisp', 'Karel', 'NAPS']}
+DATASETS = {'Program Synthesis': ['AlgoLisp', 'Karel', 'NAPS']}
 
 
 def load_dataset(name: str) -> dict:

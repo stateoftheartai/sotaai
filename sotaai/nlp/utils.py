@@ -6,7 +6,7 @@ import importlib
 
 MODEL_SOURCES = [
     'allennlp', 'decanlp', 'fairseq', 'flair', 'hanlp', 'nlparchitect',
-    'parlai', 'stanza'
+    'parlai', 'stanza', 'huggfacemanual'
 ]
 
 DATASET_SOURCES = [

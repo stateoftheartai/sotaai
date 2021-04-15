@@ -11,12 +11,11 @@ SOURCE_METADATA = {
 
 DATASETS = {
     'Sentiment Analysis': ['SST', 'IMDb'],
-    'Question Classification': ['TREC'],
     'Entailment': ['SNLI', 'MultiNLI'],
     'Language Modeling': ['WikiText-2', 'WikiText103', 'PennTreebank'],
     'Machine Translation': ['Multi30k', 'IWSLT', 'WMT14'],
-    'Sequence Tagging': ['UDPOS', 'CoNLL2000Chunking'],
-    'Question Answering': ['BABI20']
+    'Tagging': ['UDPOS', 'CoNLL2000Chunking'],
+    'Question Answering': ['BABI20', 'TREC']
 }
 
 

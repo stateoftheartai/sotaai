@@ -20,29 +20,29 @@ ALL_MODELS = [
 ]
 
 MODELS = {
-    'question answering': ALL_MODELS,
-    'machine translation': ALL_MODELS,
-    'summarization': ALL_MODELS,
-    'natural language inference': ALL_MODELS,
-    'sentiment analysis': ALL_MODELS,
-    'semantic role labeling': ALL_MODELS,
-    'zero-shot relation extraction': ALL_MODELS,
-    'goal-oriented dialogue': ALL_MODELS,
-    'semantic parsing': ALL_MODELS,
-    'commonsense reasoning': ALL_MODELS
+    'Question Answering': ALL_MODELS,
+    'Machine Translation': ALL_MODELS,
+    'Summarization': ALL_MODELS,
+    'Natural Language Inference': ALL_MODELS,
+    'Sentiment Analysis': ALL_MODELS,
+    'Semantic Role Labeling': ALL_MODELS,
+    'Zero-shot Relation Extraction': ALL_MODELS,
+    'Goal-oriented Dialogue': ALL_MODELS,
+    'Semantic Parsing': ALL_MODELS,
+    'Commonsense Reasoning': ALL_MODELS
 }
 
 DATASETS = {
-    'question answering': ['SQuAD'],
-    'machine translation': ['IWSLT'],
-    'summarization': ['CNN/DM'],
-    'natural language inference': ['MNLI'],
-    'sentiment analysis': ['SST'],
-    'semantic role labeling': ['QA-SRL'],
-    'zero-shot relation extraction': ['QA-ZRE'],
-    'goal-oriented dialogue': ['WOZ'],
-    'semantic parsing': ['WikiSQL'],
-    'commonsense reasoning': ['MWSC']
+    'Question Answering': ['SQuAD'],
+    'Machine Translation': ['IWSLT'],
+    'Summarization': ['CNN/DM'],
+    'Natural Language Inference': ['MNLI'],
+    'Sentiment Analysis': ['SST'],
+    'Semantic Role Labeling': ['QA-SRL'],
+    'Zero-shot Relation Extraction': ['QA-ZRE'],
+    'Goal-oriented Dialogue': ['WOZ'],
+    'Semantic Parsing': ['WikiSQL'],
+    'Commonsense Reasoning': ['MWSC']
 }
 
 

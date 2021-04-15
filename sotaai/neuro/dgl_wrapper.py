@@ -16,50 +16,46 @@ SOURCE_METADATA = {
 }
 
 MODELS = {
-    'unknown': [
+    'Unknown': [
         'GATNE-T', 'GNN-FiLM', 'NGCF', 'APPNP', 'ARMA', 'CapsuleNetwork',
         'VGAE', 'Tree-LSTM', 'BP-Transformer', 'TAGCN', 'STGCN', 'SIGN', 'SGC',
         'SEAL', 'SAGPool', 'RRN', 'Relational-GCN', 'PointNet', 'PointNet++',
         'DynamicEdgeConv', 'PinSAGE', 'OGB', 'Metapath2vec', 'JunctionTreeVAE',
-        'DeepWalk', 'ClusterGAT', 'ClusterSAGE', 'LINE', 'DAGNN', 'Cluster-GCN'
+        'DeepWalk', 'ClusterGAT', 'ClusterSAGE', 'LINE', 'DAGNN', 'Cluster-GCN',
+        'GC-MC'
     ],
-    'node classification': [
+    'Node Classification': [
         'GCN', 'GAT', 'GraphSAGE', 'APPNP', 'GIN', 'TAGCN', 'SGC', 'AGNN',
         'ChebNet', 'MixHop', 'GXN'
     ],
-    'graph classification': ['ChebNet', 'MoNet', 'HGP-SL', 'GXN', 'GIN'],
-    'community detection': ['CDGNN'],
-    'representation learning': [
+    'Graph Classification': ['ChebNet', 'MoNet', 'HGP-SL', 'GXN', 'GIN'],
+    'Community Detection': ['CDGNN'],
+    'Representation Learning': [
         'InfoGraph', 'GraphSAGE', 'GIN', 'DiffPool', 'DGI'
     ],
-    'hierarchical representation learning': ['DiffPool'],
-    'node embedding': ['HardGAT'],
-    'graph embedding': ['HardGAT', 'HGT', 'HAN'],
-    'heterogeneous graph embedding': [
-        'HGT',
-        'HAN',
-    ],
-    'text generation': ['GraphWriter'],
-    'bAbI': ['GGNN',],
-    'graph algorithm learning': ['GGNN'],
-    'program verification': ['GGNN'],
-    'recommendation': ['GC-MC'],
-    'molecular machine learning': ['DimeNet', 'DimeNet++'],
-    'generative models': ['GraphModel'],
-    'scene graph parsing': ['SceneGraphParsing']
+    'Node Embedding': ['HardGAT'],
+    'Graph Embedding': ['HardGAT', 'HGT', 'HAN'],
+    'Heterogeneous Graph Embedding': ['HGT', 'HAN'],
+    'Text Generation': ['GraphWriter'],
+    'Reasoning': ['GGNN',],
+    'Graph Algorithm Learning': ['GGNN'],
+    'Program Verification': ['GGNN'],
+    'Molecular Machine Learning': ['DimeNet', 'DimeNet++'],
+    'Graph Generation': ['GraphModel'],
+    'Scene Graph Parsing': ['SceneGraphParsing']
 }
 
 DATASETS = {
-    'node classification': [
+    'Node Classification': [
         'Stanford sentiment treebank', 'Karate club', 'Cora', 'Citeseer',
         'Pubmed', 'CoraFull', 'AIFB', 'MUTAG', 'AM', 'BGS', 'Amazon Computer',
         'Amazon Photo', 'Coauthor CS', 'Coauthor Physics', 'PPI', 'Reddit',
         'Symmetric stochastic block model mixture'
     ],
-    'edge prediction': [
+    'Edge/Link Prediction': [
         'FB15k237', 'FB15k', 'WN18', 'BitcoinOTC', 'ICEWS18', 'GDELT'
     ],
-    'graph prediction': [
+    'Graph Prediction': [
         'QM7b', 'QM9', 'QM9Edge', 'MiniGraph', 'TU', 'LegacyTU', 'GIN'
     ]
 }

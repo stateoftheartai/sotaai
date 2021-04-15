@@ -10,14 +10,14 @@ SOURCE_METADATA = {
 }
 
 MODELS = {
-    'unknown': [
+    'Unknown': [
         'RandomBaseline', 'TransE', 'DistMult', 'ComplEx', 'HolE', 'ConvE',
         'ConvKB'
     ],
 }
 
 DATASETS = {
-    'unknown': [
+    'Unknown': [
         'FB15k-237', 'WN18RR', 'YAGO3-10', 'Freebase15k', 'WordNet18',
         'WordNet11', 'Freebase13'
     ],

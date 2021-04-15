@@ -17,9 +17,8 @@ SOURCE_METADATA = {
 MODELS = {
     'text classification': ['CNNClassifier'],
     'dependency parsing': ['Parser'],
-    'named entity recongnition': ['NERTagger'],
+    'named entity recognition': ['NERTagger'],
     'part-of-speech tagging': ['Tagger'],
-    'tokenization': ['Tokenizer'],
     'clinical syntactic analysis': ['craft', 'genia', 'mimic'],
     'clinical named entity recognition': [
         'anatem', 'bc5cdr', 'bc4chemd', 'bionlp13cg', 'jnlpba', 'linnaeus',

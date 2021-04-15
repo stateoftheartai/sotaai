@@ -15,7 +15,7 @@ SOURCE_METADATA = {
 }
 
 MODELS = {
-    'unknown': [
+    'Unknown': [
         'ARGA', 'ARGVA', 'CorrectAndSmooth', 'DeepGCNLayer', 'DeepGraphInfomax',
         'DimeNet', 'GAE', 'GNNExplainer', 'GraphUNet', 'InnerProductDecoder',
         'JumpingKnowledge', 'LabelPropagation', 'Metapath2vec', 'Node2Vec',
@@ -24,7 +24,7 @@ MODELS = {
 }
 
 DATASETS = {
-    'unknown': [
+    'Unknown': [
         'KarateClub', 'TU', 'GNNBenchmark', 'Planetoid', 'CitationFull',
         'CoraFull', 'Coauthor', 'Amazon', 'PPI', 'Reddit', 'Reddit2', 'Flickr',
         'Yelp', 'QM7', 'QM9', 'ZINC', 'MoleculeNet', 'Entities', 'GEDDataset',
