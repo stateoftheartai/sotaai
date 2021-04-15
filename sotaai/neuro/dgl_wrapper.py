@@ -53,7 +53,7 @@ DATASETS = {
         'Amazon Photo', 'Coauthor CS', 'Coauthor Physics', 'PPI', 'Reddit',
         'Symmetric stochastic block model mixture'
     ],
-    'Edge Prediction': [
+    'Edge/Link Prediction': [
         'FB15k237', 'FB15k', 'WN18', 'BitcoinOTC', 'ICEWS18', 'GDELT'
     ],
     'Graph Prediction': [
