@@ -71,18 +71,32 @@ class RlEnvironment(object):
 
 
 class RlModel(object):
-  '''Our attempt at a standardized, task-agnostic NLP model wrapper.'''
+  '''Our attempt at a standardized, model wrapper.
 
-  def __init__(self, name: str, source: str):
-    '''Very preliminary class to encapsulate any NLP model.'''
+  Each abstract `RlModel` represents a model from one of the sources.
+  '''
+
+  def __init__(self, name: str, raw_object, source: str):
+    '''Constructor using `raw_model` from a source library.
+
+    Args:
+      raw_model:
+        Model object directly instantiated from a source library. Type
+        is dependent on the source library.
+      name (str):
+        Name of the model.
+      source (str):
+        Source name used when no raw_model is given
+    '''
     self.name = name
+    self.raw = raw_object
     self.source = source
-    self.tasks = models_tasks_map[name]
+    # self.tasks = models_tasks_map[name]
 
   def to_dict(self) -> dict:
     return {
         'name': self.name,
         'type': 'model',
         'source': self.source,
-        'tasks': self.tasks
+        # 'tasks': self.tasks
     }
