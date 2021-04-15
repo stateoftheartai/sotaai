@@ -916,14 +916,14 @@ LIST_ENVIRONMENTS = {
         'MiniGrid-Dynamic-Obstacles-5x5-v0', 'MiniGrid-LavaCrossingS11N5-v0',
         'MiniGrid-ObstructedMaze-1Dlh-v0', 'MiniGrid-ObstructedMaze-1Dlhb-v0'
     ],
-    # 'procgen': [
-    #     'procgen-caveflyer-v0', 'procgen-fruitbot-v0', 'procgen-maze-v0',
-    #     'procgen-dodgeball-v0', 'procgen-chaser-v0', 'procgen-heist-v0',
-    #     'procgen-starpilot-v0', 'procgen-bigfish-v0', 'procgen-miner-v0',
-    #     'procgen-climber-v0', 'procgen-jumper-v0', 'procgen-ninja-v0',
-    #     'procgen-coinrun-v0', 'procgen-leaper-v0', 'procgen-plunder-v0',
-    #     'procgen-bossfight-v0'
-    # ],
+    'procgen': [
+        'procgen-caveflyer-v0', 'procgen-fruitbot-v0', 'procgen-maze-v0',
+        'procgen-dodgeball-v0', 'procgen-chaser-v0', 'procgen-heist-v0',
+        'procgen-starpilot-v0', 'procgen-bigfish-v0', 'procgen-miner-v0',
+        'procgen-climber-v0', 'procgen-jumper-v0', 'procgen-ninja-v0',
+        'procgen-coinrun-v0', 'procgen-leaper-v0', 'procgen-plunder-v0',
+        'procgen-bossfight-v0'
+    ],
     'pybulletgym': [
         'HopperMuJoCoEnv-v0', 'ReacherPyBulletEnv-v0', 'PusherPyBulletEnv-v0',
         'ThrowerPyBulletEnv-v0', 'HumanoidMuJoCoEnv-v0',
