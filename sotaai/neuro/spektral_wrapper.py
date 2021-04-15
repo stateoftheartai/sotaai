@@ -20,14 +20,14 @@ MODELS = {
 
 DATASETS = {
     'Unknown': [
-        'Cora', 'Citeseer', 'Pubmed', 'ModelNet10', 'ModelNet40', 'OGB'
+        'Cora', 'Citeseer', 'Pubmed', 'ModelNet10', 'ModelNet40', 'OGB',
+        'TUDataset'
     ],
-    'Inductive Representation Learning': ['GraphSage'],
+    'Representation Learning': ['GraphSage'],
     'Inductive Node Classification': ['GraphSage', 'PPI'],
     'Community Detection': ['Reddit'],
     'Graph Classification': ['MNIST'],
     'Molecular Machine Learning': ['QM7', 'QM9'],
-    'Graph Kernels': ['TUDataset']
 }
 
 ADDITIONAL_FEATURES = {
