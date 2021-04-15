@@ -5,7 +5,10 @@
 fastai https://www.fast.ai/ wrapper module
 '''
 
-from fastai.vision import models, URLs, ImageList, untar_data
+# TODO(Hugo)
+# Finish this implementation, it was temporary commented out to allow JSON
+# creation for wrapper
+# from fastai.vision import models, URLs, ImageList, untar_data
 
 # TODO(team)
 # Fully implement this wrapper
@@ -40,36 +43,45 @@ DATASETS = {
 }
 
 
-def load_model(name: str, pretrained=False):
-  model = getattr(models, name)(pretrained=pretrained)
+def load_model(name: str):
+  return {'name': name, 'source': 'mxnet'}
 
-  return model
+  # TODO(Hugo)
+  # Finish this implementation, it was temporary commented out to allow JSON
+  # creation for these models
+  # model = getattr(models, name)(pretrained=pretrained)
+  # return model
 
 
 def load_dataset(name: str):
-  ds_url = getattr(URLs, name)
-  path = untar_data(ds_url)
+  return {'train': {'name': name, 'source': 'mxnet'}}
 
-  ds_dic = {}
+  # TODO(Hugo)
+  # Finish this implementation, it was temporary commented out to allow JSON
+  # creation for these datasets
+  # ds_url = getattr(URLs, name)
+  # path = untar_data(ds_url)
 
-  if path.exists():
-    for element in path.ls():
-      if 'train' in str(element):
-        ds_dic['train'] = ImageList.from_folder(
-            element).split_none().label_from_folder().databunch()
-      if 'val' in str(element):
-        ds_dic['val'] = ImageList.from_folder(
-            element).split_none().label_from_folder().databunch()
-      if 'test' in str(element):
-        ds_dic['test'] = ImageList.from_folder(
-            element).split_none().label_from_folder().databunch()
-      if 'images' in str(element):
-        ds_dic['train'] = ImageList.from_folder(
-            element).split_none().label_from_folder().databunch().train_ds
-        ds_dic['test'] = ImageList.from_folder(
-            element).split_none().label_from_folder().databunch().test_ds
+  # ds_dic = {}
 
-  else:
-    ds_dic = {'train': {'name': name, 'source': 'fastai'}}
+  # if path.exists():
+  # for element in path.ls():
+  # if 'train' in str(element):
+  # ds_dic['train'] = ImageList.from_folder(
+  # element).split_none().label_from_folder().databunch()
+  # if 'val' in str(element):
+  # ds_dic['val'] = ImageList.from_folder(
+  # element).split_none().label_from_folder().databunch()
+  # if 'test' in str(element):
+  # ds_dic['test'] = ImageList.from_folder(
+  # element).split_none().label_from_folder().databunch()
+  # if 'images' in str(element):
+  # ds_dic['train'] = ImageList.from_folder(
+  # element).split_none().label_from_folder().databunch().train_ds
+  # ds_dic['test'] = ImageList.from_folder(
+  # element).split_none().label_from_folder().databunch().test_ds
 
-  return ds_dic
+  # else:
+  # ds_dic = {'train': {'name': name, 'source': 'fastai'}}
+
+  # return ds_dic

@@ -10,7 +10,8 @@ MODEL_SOURCES = [
 ]
 
 DATASET_SOURCES = [
-    'allennlp', 'decanlp', 'flair', 'hanlp', 'parlai', 'tensorflow', 'torchtext'
+    'allennlp', 'decanlp', 'flair', 'hanlp', 'parlai', 'tensorflow',
+    'torchtext', 'huggfacemanual'
 ]
 
 
