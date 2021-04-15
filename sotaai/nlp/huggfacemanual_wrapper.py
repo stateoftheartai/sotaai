@@ -67,7 +67,7 @@ MODELS = {
 }
 
 DATASETS = {
-    'text-classification': [
+    'Text Classification': [
         'ade_corpus_v2', 'ag_news', 'ajgt_twitter_ar', 'allocine',
         'amazon_polarity', 'amazon_reviews_multi', 'ar_res_reviews',
         'ar_sarcasm', 'arsentd_lev', 'assin', 'assin2', 'banking77',
@@ -112,7 +112,7 @@ DATASETS = {
         'woz_dialogue', 'wrbsc', 'xed_en_fi', 'xglue', 'yahoo_answers_topics',
         'yelp_review_full', 'yoruba_bbc_topics'
     ],
-    'conditional-text-generation': [
+    'Conditional Generation': [
         'air_dialogue', 'alt', 'amazon_reviews_multi', 'arxiv_dataset', 'asset',
         'atomic', 'autshumato', 'bianet', 'bible_para', 'big_patent', 'billsum',
         'bsd_ja_en', 'capes', 'chr_en', 'cnn_dailymail', 'conv_ai', 'conv_ai_2',
@@ -163,7 +163,7 @@ DATASETS = {
         'weibo_ner', 'wikiann', 'wikicorpus', 'wino_bias', 'winograd_wsc',
         'wisesight1000', 'woz_dialogue', 'xglue', 'yoruba_gv_ner', 'zest'
     ],
-    'question-answering': [
+    'Question Answering': [
         'adversarial_qa', 'ambig_qa', 'aqua_rat', 'aquamuse', 'babi_qa', 'c3',
         'cbt', 'codah', 'covid_qa_castorini', 'covid_qa_deepset',
         'covid_qa_ucsd', 'cryptonite', 'doc2dial', 'dream', 'duorc', 'dyk',
@@ -200,7 +200,7 @@ DATASETS = {
         'tlc', 'twi_text_c3', 'wikicorpus', 'wikitext_tl39', 'woz_dialogue',
         'yoruba_text_c3', 'youtube_caption_corrections'
     ],
-    'other': [
+    'Other': [
         'aquamuse', 'ar_cov19', 'arabic_speech_corpus', 'cail2018', 'cbt',
         'ccaligned_multilingual', 'cdsc', 'cifar10', 'cifar100',
         'coached_conv_pref', 'common_voice', 'cord19', 'covost2',
@@ -229,7 +229,7 @@ DATASETS = {
         'lavis-nlp/german_legal_sentences', 'metooma', 'nell', 'pec',
         'recipe_nlg', 'times_of_india_news_headlines'
     ],
-    'translation': [
+    'Machine Translation': [
         'persiannlp/parsinlu_translation_en_fa',
         'persiannlp/parsinlu_translation_fa_en'
     ],
