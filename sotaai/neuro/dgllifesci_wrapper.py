@@ -14,22 +14,22 @@ SOURCE_METADATA = {
 }
 
 MODELS = {
-    'molecular property prediction': [
+    'Molecular Machine Learning': [
         'AttentiveFP', 'GAT', 'GCN', 'MGCN', 'MPNN', 'SchNet', 'Weave', 'GIN',
         'GNN OGB'
     ],
-    'generative models': ['DGMG', 'JTNN', 'WLN', 'ACNN']
+    'Graph Generation': ['DGMG', 'JTNN', 'WLN', 'ACNN']
 }
 
 DATASETS = {
-    'molecular property prediction': [
+    'Molecular Machine Learning': [
         'Tox21', 'ESOL', 'FreeSolv', 'Lipophilicity', 'PCBA', 'MUV', 'HIV',
         'BACE', 'BBBP', 'ToxCast', 'SIDER', 'ClinTox', 'AstraZenecaChEMBL',
         'TencentQuantum', 'PubChemAromaticity', 'UnlabeledSMILES'
     ],
-    'reaction prediction': ['USPTO', 'USPTORank'],
-    'generative models': ['JTVAE'],
-    'protein-ligand binding affinity prediction': ['PDBBind']
+    'Reaction Prediction': ['USPTO', 'USPTORank'],
+    'Graph Generation': ['JTVAE'],
+    'Protein-ligand Binding Affinity Prediction': ['PDBBind']
 }
 
 
