@@ -22,6 +22,7 @@ setup(name='sotaai',
           'nlp': ['datasets'],
           'rl': [
               'gym', 'procgen', 'gym-minigrid', 'box2d', 'gym[atari]',
-              'pybullet-gym @ git+https://github.com/benelot/pybullet-gym'
+              'pybullet-gym @ git+https://github.com/benelot/pybullet-gym',
+              'garage==2020.9.0rc1'
           ]
       })
