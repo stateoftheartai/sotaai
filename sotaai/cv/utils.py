@@ -71,6 +71,10 @@ IMAGE_MINS = {
 
 PIXELS_CLASSES = {'lost_and_found': 44, 'cityscapes': 35, 'scene_parse150': 150}
 
+# In keypoint detection there are models that require a box param for training
+KEYPOINT_REQUIRE_BOX = ['keypointrcnn_resnet50_fpn']
+KEYPOINT_REQUIRE_VISIBILTY = ['keypointrcnn_resnet50_fpn']
+
 
 def split_sources(sources):
   '''Temporal function to split sources in two groups: those that are already
@@ -961,3 +965,39 @@ def get_input_shape_min(model_name: str) -> tuple:
     return (IMAGE_MINS[model_name], IMAGE_MINS[model_name])
   else:
     return (None, None)
+
+
+def get_require_box(model_name: str) -> bool:
+  ''' Returns if a model requires a box param for keypoint detection
+
+  Args:
+    model_name: the model name as string
+
+  Returns:
+    A boolean, indicating whether a model requires box parame or not
+  '''
+  return bool(model_name in KEYPOINT_REQUIRE_BOX)
+
+
+def get_keypoint_visibility(model_name: str) -> bool:
+  ''' Returns if a model requires a box param for keypoint detection
+
+  Args:
+    model_name: the model name as string
+
+  Returns:
+    A boolean, indicating whether a model requires visibility along with keypoints
+  '''
+  return bool(model_name in KEYPOINT_REQUIRE_VISIBILTY)
+
+
+def get_keypoints_normalized(dataset_name, source):
+  if source == 'tensorflow':
+
+    if dataset_name == 'aflw2k3d':
+      return True
+    elif dataset_name == 'celeb_a':
+
+      return False
+    elif dataset_name == 'the300w_lp':
+      return True

@@ -11,7 +11,7 @@ setup(name='sotaai',
       description='Stateoftheart AI Official Library',
       url='https://github.com/stateoftheartai/sotaai',
       packages=['sotaai', 'sotaai.cv'],
-      install_requires=[],
+      install_requires=['scikit-image'],
       python_requires='>=3,<=3.8.0',
       extras_require={
           'cv': [
