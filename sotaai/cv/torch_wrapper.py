@@ -99,6 +99,7 @@ MODELS = {
         'fasterrcnn_resnet50_fpn', 'keypointrcnn_resnet50_fpn',
         'maskrcnn_resnet50_fpn'
     ],
+    'keypoint_detection': ['keypointrcnn_resnet50_fpn'],
     'video': [
         # 'mc3_18',
         # 'r2plus1d_18',
@@ -662,5 +663,61 @@ def model_to_dataset_object_detection(cv_model, cv_dataset):
                                                         len(classes_labels))
 
   cv_model.update_raw_model(raw_model)
+
+  return cv_model, cv_dataset
+
+
+def model_to_dataset_keypoint_detection(cv_model, cv_dataset):
+  '''If compatible, adjust model and dataset so that they can be executed
+  against each other
+
+  Args:
+    cv_model: an abstracted cv model whose source is Segmentation Torch
+    cv_dataset: an abstracted segmentation cv dataset
+
+  Returns:
+    cv_model: the abstracted cv model adjusted to be executed against
+      cv_dataset
+    cv_dataset: the abstracted cv dataset adjust to be executed against
+      cv_model
+  '''
+  source = cv_dataset.source
+  print('\nModel ', cv_model.name)
+  print('Dataset: ', cv_dataset.name)
+
+  print('\nAdjusting...')
+
+  def keypoint_preprocess(data):
+    if source == 'tensorflow':
+      transform = transforms.Compose(
+          [transforms.ToPILImage(),
+           transforms.ToTensor()])
+      # Preprocess image
+      image = transform(data['image'])
+
+      # Preprocess target
+      target = {}
+      keypoints = data['keypoints']
+      if cv_model.require_box:
+        # Only if dataset image containes one person.
+        boxes = [[0, 0, data['image'].shape[0], data['image'].shape[1]]]
+        labels = [[1]]
+      if cv_model.keypoint_visibility:
+        keypoints_visibility = np.ones((keypoints.shape[0], 1))
+        # Don't know if keypoints should be normalized or not
+        if cv_dataset.keypoints_normalized:
+          keypoints = np.concatenate((keypoints, keypoints_visibility), axis=1)
+        else:
+          keypoints = np.concatenate((keypoints, keypoints_visibility), axis=1)
+      boxes = torch.as_tensor(boxes)
+      labels = torch.as_tensor(labels)
+      keypoints = torch.as_tensor(keypoints)
+
+      target['boxes'] = boxes
+      target['labels'] = labels
+      target['keypoints'] = keypoints
+    return image, target
+
+  cv_dataset.set_keypoint_preprocessing(keypoint_preprocess)
 
   return cv_model, cv_dataset

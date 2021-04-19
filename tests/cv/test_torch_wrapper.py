@@ -269,6 +269,51 @@ class TestTorchWrapper(unittest.TestCase):
 
     single_test('fasterrcnn_resnet50_fpn', 'VOCDetection/2008')
 
+  def test_model_to_dataset_keypoint_detection(self):
+
+    def single_test(model_name, dataset_name):
+      '''This is an inner function that test model_to_dataset for a single case
+      i.e. a single model against a single dataset
+      '''
+      print('\n---')
+      print('TESTING KEYPOINT FOR:\n')
+      print('MODEL: {} DATASET: {}'.format(model_name, dataset_name))
+      cv_model = load_model(model_name)
+      dataset_splits = load_dataset(dataset_name)
+      split_name = next(iter(dataset_splits.keys()))
+      print('\n---')
+      print('DATASET SPLIT {}:\n'.format(split_name))
+      cv_dataset = dataset_splits[split_name]
+      cv_model, cv_dataset = model_to_dataset(cv_model,
+                                              cv_dataset,
+                                              cv_task='keypoint_detection')
+
+      image, target = next(iter(cv_dataset))
+      images = [image]
+      targets = [target]
+      # print(images)
+      # print(targets)
+
+      images = list(img for img in images)
+
+      cv_model.raw.eval()
+      predictions = cv_model.raw(images)
+      for prediction in predictions:
+        self.assertTrue('keypoints' in prediction)
+        self.assertTrue('keypoints_scores' in prediction)
+        self.assertTrue('boxes' in prediction)
+        self.assertTrue('labels' in prediction)
+        self.assertTrue('scores' in prediction)
+        # print(prediction['keypoints'].shape)
+        # print(prediction['keypoints_scores'].shape)
+        # print(prediction['boxes'].shape)
+        # print(prediction['labels'].shape)
+        # print(prediction['scores'].shape)
+
+    for model in torch_wrapper.MODELS['keypoint_detection']:
+      for dataset in tensorflow_wrapper.DATASETS['keypoint_detection']:
+        single_test(model, dataset)
+
 
 if __name__ == '__main__':
   unittest.main()

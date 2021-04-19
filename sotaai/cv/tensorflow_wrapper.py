@@ -2,6 +2,7 @@
 # Author: Liubove Orlov Savko
 # Copyright: Stateoftheart AI PBC 2020.
 '''Module used to interface with Tensorflow's datasets.'''
+import numpy as np
 import tensorflow_datasets as tfds
 import resource
 import os
@@ -106,7 +107,7 @@ DATASETS = {
         # 'ucf101'  # Bug tensorflow
     ],
     'image_super_resolution': ['div2k',],
-    'key_point_detection': ['aflw2k3d', 'celeb_a', 'the300w_lp'],
+    'keypoint_detection': ['aflw2k3d', 'celeb_a', 'the300w_lp'],
     'pose_estimation': ['flic', 'the300w_lp'],
     'face_alignment': ['the300w_lp'],
     'visual_reasoning': ['clevr'],
@@ -152,6 +153,7 @@ class DatasetIterator():
     self._raw = raw
     self._iterator = self.create_iterator()
     self._image_preprocessing_callback = None
+    self._keypoint_preprocessing_cb = None
 
   def __next__(self):
     '''Get the next item from the dataset in a standardized format.
@@ -183,6 +185,30 @@ class DatasetIterator():
 
     std_item = {'image': image}
 
+    #For Keypoint Detection
+
+    if 'landmarks_68_3d_xy_normalized' in item:
+      std_item['keypoints'] = item['landmarks_68_3d_xy_normalized']
+
+    if 'landmarks_2d' in item:
+      std_item['keypoints'] = item['landmarks_2d']
+
+    if 'landmarks' in item:
+      landmarks = item['landmarks']
+      keypoints = [
+          [landmarks['lefteye_x'], landmarks['lefteye_y']],
+          [landmarks['leftmouth_x'], landmarks['leftmouth_y']],
+          [landmarks['nose_x'], landmarks['nose_y']],
+          [landmarks['righteye_x'], landmarks['righteye_y']],
+          [landmarks['rightmouth_x'], landmarks['rightmouth_y']],
+      ]
+      std_item['keypoints'] = np.array(keypoints)
+    #Check if there is a data preprocessing.
+    # This is set in model_to_dataset methods
+    if self._keypoint_preprocessing_cb:
+      image, target = self._keypoint_preprocessing_cb(std_item)
+      return image, target
+
     if 'label' in item:
       std_item['label'] = item['label']
     elif 'segmentation_label' in item:
@@ -201,3 +227,8 @@ class DatasetIterator():
 
   def set_image_preprocessing(self, image_preprocessing_callback):
     self._image_preprocessing_callback = image_preprocessing_callback
+
+  def set_keypoint_preprocessing(self, keypoint_preprocessing_cb):
+    ''' Set keypoint detection callback. Call in every iterator item. 
+    '''
+    self._keypoint_preprocessing_cb = keypoint_preprocessing_cb

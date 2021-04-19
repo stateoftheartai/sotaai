@@ -181,7 +181,7 @@ def load_dataset(name: str,
   # the download. This allows the JSON creation for all datasets no matter if
   # they are downloaded or not
   elif source in ['keras', 'tensorflow', 'torch']:
-    raw_object = wrapper.load_dataset(name, download=False)
+    raw_object = wrapper.load_dataset(name, download=download)
   else:
     raw_object = wrapper.load_dataset(name)
 
@@ -204,13 +204,14 @@ def load_dataset(name: str,
   return std_dataset
 
 
-def model_to_dataset(cv_model, cv_dataset):
+def model_to_dataset(cv_model, cv_dataset, cv_task=None):
   '''If compatible, adjust model and dataset so that they can be executed
   against each other
 
   Args:
     cv_model: an abstracted cv model
     cv_dataset: an abstracted cv dataset
+    cv_task: a cv task. In case an abstracted cv dataset is found in multiple tasks
 
   Returns:
     cv_model: the abstracted cv model adjusted to be executed against
@@ -232,7 +233,7 @@ def model_to_dataset(cv_model, cv_dataset):
     cv_model, cv_dataset = keras_wrapper.model_to_dataset(cv_model, cv_dataset)
 
   elif cv_model.source == 'torchvision':
-    task = cv_dataset.tasks[0]
+    task = cv_task if cv_task in cv_dataset.tasks else cv_dataset.tasks[0]
     if task == 'classification':
       torch_wrapper.model_to_dataset_classification(cv_model, cv_dataset)
     elif task == 'segmentation':
@@ -245,6 +246,8 @@ def model_to_dataset(cv_model, cv_dataset):
             f'{cv_dataset.name} is not compatible with {cv_model.name}')
 
       torch_wrapper.model_to_dataset_object_detection(cv_model, cv_dataset)
+    elif task == 'keypoint_detection':
+      torch_wrapper.model_to_dataset_keypoint_detection(cv_model, cv_dataset)
 
   return cv_model, cv_dataset
 

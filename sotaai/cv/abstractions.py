@@ -77,6 +77,10 @@ class CvDataset(object):
             utils.extract_pixel_classes(raw_dataset, self.name, self.source,
                                         self.split_name))
 
+      if 'keypoint_detection' in self.tasks:
+        self.keypoints_normalized = utils.get_keypoints_normalized(
+            self.name, self.source)
+
   def to_dict(self) -> dict:
     return {
         'name':
@@ -107,6 +111,9 @@ class CvDataset(object):
 
   def set_image_preprocessing(self, image_preprocessing_callback):
     self.iterator.set_image_preprocessing(image_preprocessing_callback)
+
+  def set_keypoint_preprocessing(self, keypoint_preprocessin_cb):
+    self.iterator.set_keypoint_preprocessing(keypoint_preprocessin_cb)
 
 
 class CvModel(object):
@@ -143,6 +150,8 @@ class CvModel(object):
       self.num_layers = None
       self.num_params = None
       self.paper = None
+      self.require_box = None
+      self.keypoint_visibility = None
     else:
       self._populate_attributes()
 
@@ -160,6 +169,9 @@ class CvModel(object):
     self.num_channels = utils.get_num_channels_from_model(self.raw)
     self.num_layers = utils.get_num_layers_from_model(self.raw)
     self.num_params = utils.get_num_parameters_from_model(self.raw)
+    self.require_box = utils.get_require_box(self.name)
+    self.keypoint_visibility = utils.get_keypoint_visibility(self.name)
+
     self.paper = None  # TODO(tonioteran) Implement me.
 
   def to_dict(self) -> dict:
