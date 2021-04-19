@@ -16,27 +16,26 @@ SOURCE_METADATA = {
 }
 
 MODELS = {
-    'mtl': ['Electra', 'mt5', 'XLM-R'],
-    'sentence boundary detection': ['EOS'],
-    'tokenization tagging': ['ConvModel', 'ALBERT', 'BERT'],
-    'part-of-speech tagging': ['BiLSTM', 'ALBERT'],
-    'named entity recognition': ['BERT', 'ALBERT'],
-    'dependency parsing': ['BiaffineLSTM'],
-    'sdp': ['BiaffineSDP'],
+    'Machine Translation': ['Electra', 'mt5', 'XLM-R'],
+    'Sentence Boundary Detection': ['EOS'],
+    'Tokenization Tagging': ['ConvModel', 'ALBERT', 'BERT'],
+    'Part-of-speech Tagging': ['BiLSTM', 'ALBERT'],
+    'Named Entity Recognition': ['BERT', 'ALBERT'],
+    'Dependency Parsing': ['BiaffineLSTM', 'BiaffineSDP'],
 }
 
 DATASETS = {
-    'sentence boundary detection': [
+    'Sentence Boundary Detection': [
         'EUROPARL_V7_DE_EN_EN_SENTENCES', 'SETIMES2_EN_HR_HR_SENTENCES'
     ],
-    'tokenization tagging': ['sighan2005', 'CTB6', 'CTB8', 'CTTB9'],
-    'part-of-speech tagging': ['CTB6', 'CTB8', 'CTTB9'],
-    'named entity recognition': [
+    'Tokenization Tagging': ['sighan2005', 'CTB6', 'CTB8', 'CTTB9'],
+    'Part-of-speech Tagging': ['CTB6', 'CTB8', 'CTTB9'],
+    'Named Entity Recognition': [
         'CoNLL 2003', 'MSRA', 'OntoNotes5', 'Resume', 'Weibo'
     ],
-    'dependency parsing': ['ChineseTreebank', 'EnglishTreebank'],
-    'semantic role labeling': ['CoNLL 2012', 'OntoNotes5'],
-    'constituency parsing': ['CTB8', 'CTB9', 'PTB'],
+    'Dependency Parsing': ['ChineseTreebank', 'EnglishTreebank'],
+    'Semantic Role Labeling': ['CoNLL 2012', 'OntoNotes5'],
+    'Constituency Parsing': ['CTB8', 'CTB9', 'PTB'],
 }
 
 

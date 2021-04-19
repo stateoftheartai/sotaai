@@ -17,59 +17,67 @@ SOURCE_METADATA = {
 
 MODELS = {
     # ---
-    'community detection': [
+    'Community Detection': [
         'EgoNetSplitter', 'DANMF', 'NNSED', 'MNMF', 'BigClam', 'SymmNMF',
         'GEMSEC', 'EdMot', 'SCD', 'LabelPropagation'
     ],
     # - Community detection subtasks:
-    'overlapping community detection': [
-        'EgoNetSplitter', 'DANMF', 'NNSED', 'MNMF', 'BigClam', 'SymmNMF'
-    ],
-    'non-overlapping community detection': [
-        'GEMSEC', 'EdMot', 'SCD', 'LabelPropagation'
-    ],
+    # 'Overlapping Community Detection': [
+    #     'EgoNetSplitter', 'DANMF', 'NNSED', 'MNMF', 'BigClam', 'SymmNMF'
+    # ],
+    # 'Non-overlapping Community Detection': [
+    #     'GEMSEC', 'EdMot', 'SCD', 'LabelPropagation'
+    # ],
     # ---
-    'node embedding': [
+    'Node Embedding': [
         'SocioDim', 'RandNE', 'GLEE', 'Diff2Vec', 'NodeSketch', 'NetMF',
         'BoostNE', 'Walklets', 'GraRep', 'DeepWalk', 'Node2Vec', 'NMFADMM',
         'LaplacianEigenmaps', 'GraphWave', 'Role2Vec', 'FeatherNode', 'AE',
         'MUSAE', 'SINE', 'BANE', 'TENE', 'TADW', 'FSCNMF', 'ASNE', 'NEU'
     ],
     # - Node embedding subtasks:
-    'neighborhood-based node embedding': [
+    'Neighborhood-based Node Embedding': [
         'SocioDim', 'RandNE', 'GLEE', 'Diff2Vec', 'NodeSketch', 'NetMF',
         'BoostNE', 'Walklets', 'GraRep', 'DeepWalk', 'Node2Vec', 'NMFADMM',
         'LaplacianEigenmaps'
     ],
-    'structural node embedding': ['GraphWave', 'Role2Vec'],
-    'attributed node embedding': [
-        'FeatherNode', 'AE', 'MUSAE', 'SINE', 'BANE', 'TENE', 'TADW', 'FSCNMF',
-        'ASNE'
-    ],
-    'meta node embedding': ['NEU',],
+    'Structural Node Embedding': ['GraphWave', 'Role2Vec'],
+    # 'attributed node embedding': [
+    #     'FeatherNode', 'AE', 'MUSAE', 'SINE', 'BANE', 'TENE', 'TADW',
+    #     'FSCNMF',
+    #     'ASNE'
+    # ],
     # ---
-    'graph embedding': [
-        'LDP', 'FeatherGraph', 'IGE', 'GeoScattering', 'GL2Vec', 'NetLSD', 'SF',
-        'FGSD', 'Graph2Vec'
+    'Graph Embedding': [
+        'LDP',
+        'FeatherGraph',
+        'IGE',
+        'GeoScattering',
+        'GL2Vec',
+        'NetLSD',
+        'SF',
+        'FGSD',
+        'Graph2Vec',
     ],
     # - Graph embedding subtasks:
-    'whole graph embedding': [
-        'LDP', 'FeatherGraph', 'IGE', 'GeoScattering', 'GL2Vec', 'NetLSD', 'SF',
-        'FGSD', 'Graph2Vec'
-    ],
+    # 'Whole Graph Embedding': [
+    #     'LDP', 'FeatherGraph', 'IGE', 'GeoScattering', 'GL2Vec', 'NetLSD',
+    #     'SF',
+    #     'FGSD', 'Graph2Vec'
+    # ],
     # ---
 }
 
 DATASETS = {
-    'community detection': [
+    'Community Detection': [
         'facebook', 'twitch', 'wikipedia', 'github', 'lastfm', 'deezer',
         'reddit10k'
     ],
-    'graph embedding': [
+    'Graph Embedding': [
         'facebook', 'twitch', 'wikipedia', 'github', 'lastfm', 'deezer',
         'reddit10k'
     ],
-    'node embedding': [
+    'Node Embedding': [
         'facebook', 'twitch', 'wikipedia', 'github', 'lastfm', 'deezer',
         'reddit10k'
     ]

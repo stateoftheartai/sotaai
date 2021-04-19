@@ -13,7 +13,7 @@ SOURCE_METADATA = {
 }
 
 DATASETS = {
-    'unknown': [
+    'Unknown': [
         'Animals', 'Citeseer', 'Cora', 'Epinions', 'IMDB', 'Kinships',
         'Nations', 'ProteinInteraction', 'RadishRobotMapping', 'Tutorial',
         'UMLS', 'UW-CSE', 'WebKB'

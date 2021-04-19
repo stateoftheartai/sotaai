@@ -13,25 +13,25 @@ SOURCE_METADATA = {
 }
 
 MODELS = {
-    'causal pairwise inference': [
+    'Causal Pairwise Inference': [
         'ANM', 'IGCI', 'RCC', 'NCC', 'GNN', 'BivariateFit', 'Jarfo', 'CDS',
         'RECI'
     ],
-    'causal graph inference': [
+    'Causal Graph Inference': [
         'CGNN', 'PC', 'GES', 'GIES', 'LiNGAM', 'CAM', 'GS', 'IAMB', 'MMPC',
         'SAM', 'CCDr'
     ],
-    'skeleton inference': [
+    'Skeleton Inference': [
         'RandomizedLasso', 'Glasso', 'HSICLasso', 'FSGNN', 'RFECV', 'LinearSVR',
         'RRelief', 'ARD', 'DecisionTree'
     ],
-    'pairwise dependency': [
+    'Pairwise Dependency': [
         'Pearson', 'Spearman', 'KendallTau', 'NormalizedHSIC', 'MIRegression',
         'Adjusted Mutual Info', 'Normalized Mutual Info'
     ]
 }
 
-DATASETS = {'unknown': ['tuebingen', 'sachs', 'dream4']}
+DATASETS = {'Unknown': ['tuebingen', 'sachs', 'dream4']}
 
 
 def load_dataset(name: str) -> dict:

@@ -15,13 +15,13 @@ SOURCE_METADATA = {
 }
 
 MODELS = {
-    'unknown': [
+    'Unknown': [
         'TransE', 'TransE_l1', 'TransE_l2', 'TransR', 'RESCAL', 'DistMult',
         'ComplEx', 'RotatE'
     ]
 }
 
-DATASETS = {'unknown': ['FB15k', 'FB15k237', 'WN18', 'WN18RR', 'Freebase']}
+DATASETS = {'Unknown': ['FB15k', 'FB15k237', 'WN18', 'WN18RR', 'Freebase']}
 
 
 def load_dataset(name: str) -> dict:

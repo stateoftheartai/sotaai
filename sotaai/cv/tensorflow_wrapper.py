@@ -111,7 +111,7 @@ DATASETS = {
     'pose_estimation': ['flic', 'the300w_lp'],
     'face_alignment': ['the300w_lp'],
     'visual_reasoning': ['clevr'],
-    'visual_question answering': ['clevr'],
+    'visual_question_answering': ['clevr'],
     'image_generation': ['dsprites', 'shapes3d'],
     '3d_image_generation': ['shapes3d',],
     'other': [
