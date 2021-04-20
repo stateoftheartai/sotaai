@@ -46,3 +46,26 @@ This is the original value returned by [as\_numpy](https://www.tensorflow.org/da
 - `B`:
 
 For more details see [tfds](https://www.tensorflow.org/datasets/api_docs/python/tfds)
+
+## Troubleshooting
+
+- Getting the error message `Too many open files `. For example when trying to load the dataset `the300w_lp`. 
+Try:
+
+```
+import resource
+low, high = resource.getrlimit(resource.RLIMIT_NOFILE)
+resource.setrlimit(resource.RLIMIT_NOFILE, (high, high))
+```
+
+Before loading the dataset.
+
+For more details see [#1441](https://github.com/tensorflow/datasets/issues/1441)
+
+- Dataset `celeb_a` needs to be manually downloaded.
+  - Dowload [zip](https://drive.google.com/drive/folders/1MKQ9sRwr5OOFk3OBzLz91SsgF3MBqvtP?usp=sharing) in `~/tensorflow_datasets/celeb_a/2.0.1`.Shared [here](https://github.com/tensorflow/datasets/issues/1482#issuecomment-769312642)
+  - 
+For more details see [manual download](https://www.tensorflow.org/datasets/overview#manual_download_if_download_fails) and [#1482](https://github.com/tensorflow/datasets/issues/1482)
+
+
+
