@@ -4,8 +4,8 @@
 '''Abstract classes for standardized models and datasets.'''
 from sotaai.rl import utils
 
-datasets_tasks_map = utils.map_name_tasks('datasets')
-models_tasks_map = utils.map_name_tasks('models')
+# datasets_tasks_map = utils.map_name_tasks('environments')
+# models_tasks_map = utils.map_name_tasks('models')
 
 
 class RlEnvironment(object):
@@ -25,6 +25,8 @@ class RlEnvironment(object):
     self.name = name
     self.source = utils.get_source(name)
     self.raw = raw_object
+    # print(datasets_tasks_map)
+    self.tasks = utils.map_name_tasks('environments')[name]
 
     self.action_space_size = None
     if hasattr(raw_object.action_space, 'n'):
@@ -42,12 +44,18 @@ class RlEnvironment(object):
     self.observation_space_dtype = str(raw_object.observation_space.dtype)
     self.observation_space_shape = raw_object.observation_space.shape
 
+    self.type = None
+    if 'Discrete' in str(self.raw.action_space):
+      self.type = 'Discrete'
+    else:
+      self.type = 'Box'
     self.metadata = None
     self.reward_range = None
+
     if hasattr(raw_object, 'metadata'):
       self.metadata = raw_object.metadata
     if hasattr(raw_object, 'reward_range'):
-      self.reward_range = raw_object.reward_range
+      self.reward_range = str(raw_object.reward_range)
 
     # self.tasks = datasets_tasks_map[name]
 
@@ -67,7 +75,8 @@ class RlEnvironment(object):
             'shape': self.observation_space_shape
         },
         'metadata': self.metadata,
-        'reward_range': self.reward_range
+        'reward_range': self.reward_range,
+        'tasks': self.tasks
     }
 
 
@@ -77,7 +86,7 @@ class RlModel(object):
   Each abstract `RlModel` represents a model from one of the sources.
   '''
 
-  def __init__(self, name: str, raw_object, source: str):
+  def __init__(self, name: str, raw_algo, source: str, environment):
     '''Constructor using `raw_model` from a source library.
 
     Args:
@@ -90,9 +99,11 @@ class RlModel(object):
         Source name used when no raw_model is given
     '''
     self.name = name
-    self.raw = raw_object
     self.source = source
-    # self.tasks = models_tasks_map[name]
+    self.algo = raw_algo
+
+    self.environment = environment
+    self.tasks = utils.map_name_tasks('models')[name]
 
   def to_dict(self) -> dict:
     return {
@@ -100,5 +111,5 @@ class RlModel(object):
         'type': 'model',
         'is_implemented': True,
         'source': self.source,
-        # 'tasks': self.tasks
+        'tasks': self.tasks
     }

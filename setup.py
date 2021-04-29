@@ -23,6 +23,6 @@ setup(name='sotaai',
           'rl': [
               'gym', 'procgen', 'gym-minigrid', 'box2d', 'gym[atari]',
               'pybullet-gym @ git+https://github.com/benelot/pybullet-gym',
-              'garage==2020.9.0rc1'
+              'garage==2020.9.0rc1', 'mpi4py', 'akro'
           ]
       })

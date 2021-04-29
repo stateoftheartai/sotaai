@@ -191,6 +191,7 @@ def get_catalogue(field: str, items: list) -> list:
   '''
   catalogue = {}
   for item in items:
+    print(item)
     value = item[field]
     if isinstance(value, str):
       value = [value]

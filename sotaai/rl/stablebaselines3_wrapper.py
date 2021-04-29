@@ -10,7 +10,14 @@ SOURCE_METADATA = {
 }
 
 MODELS = {
-    'Box': ['A2C', 'DDPG', 'HER', 'PPO', 'SAC', 'TD3'],
+    'Box': [
+        'A2C',
+        # 'DDPG',
+        'HER',
+        'PPO',
+        'SAC',
+        'TD3'
+    ],
     'Discrete': ['A2C', 'DQN', 'HER', 'PPO'],
     'MultiDiscrete': ['A2C', 'PPO'],
     'MultiBinary': ['A2C', 'PPO'],
