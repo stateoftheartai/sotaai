@@ -931,7 +931,7 @@ LIST_ENVIRONMENTS = {
         'HalfCheetahPyBulletEnv-v0', 'AntPyBulletEnv-v0',
         'HopperPyBulletEnv-v0', 'HumanoidPyBulletEnv-v0',
         'HumanoidFlagrunPyBulletEnv-v0', 'HumanoidFlagrunHarderPyBulletEnv-v0',
-        'AtlasPyBulletEnv-v0', 'InvertedDoublePendulumPyƒBulletEnv-v0',
+        'AtlasPyBulletEnv-v0', 'InvertedDoublePendulumPyBulletEnv-v0',
         'InvertedPendulumMuJoCoEnv-v0', 'InvertedDoublePendulumMuJoCoEnv-v0',
         'HalfCheetahMuJoCoEnv-v0', 'Walker2DMuJoCoEnv-v0', 'AntMuJoCoEnv-v0',
         'InvertedPendulumPyBulletEnv-v0',

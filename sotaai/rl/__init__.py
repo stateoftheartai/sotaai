@@ -17,13 +17,12 @@ def load_environment(name: str) -> abstractions.RlEnvironment:
 
 
 def load_model(name: str,
-               name_env: str = 'CartPole-v1',
-               env='CartPole-v1') -> abstractions.RlModel:
+               name_env: str = 'CartPole-v1') -> abstractions.RlModel:
   '''Dummy load model function. Placeholder for real wrapper.'''
   # model_source_map = utils.map_name_sources('models')
   source = 'garage'
   wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
-  raw_object = wrapper.load_model(name, name_env=name_env, gym_env=env)
+  raw_object = wrapper.load_model(name, name_env=name_env)
   env = load_environment(name=name_env)
   return abstractions.RlModel(name=name,
                               raw_algo=raw_object,
