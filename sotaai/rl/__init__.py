@@ -7,17 +7,6 @@ from sotaai.rl import abstractions
 import importlib
 
 
-def load_model(name: str,
-               name_env: str = None,
-               env=None) -> abstractions.RlModel:
-  '''Dummy load model function. Placeholder for real wrapper.'''
-  # model_source_map = utils.map_name_sources('models')
-  source = 'garage'
-  wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
-  raw_object = wrapper.load_model(name, name_env=name_env, gym_env=env)
-  return abstractions.RlModel(name=name, raw_object=raw_object, source=source)
-
-
 def load_environment(name: str) -> abstractions.RlEnvironment:
   '''Dummy load dataset function. Placeholder for real wrapper.'''
   # dataset_source_map = utils.map_name_sources('datasets')
@@ -25,6 +14,21 @@ def load_environment(name: str) -> abstractions.RlEnvironment:
   wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
   raw_object = wrapper.load_environment(name)
   return abstractions.RlEnvironment(raw_object, name)
+
+
+def load_model(name: str,
+               name_env: str = 'CartPole-v1',
+               env='CartPole-v1') -> abstractions.RlModel:
+  '''Dummy load model function. Placeholder for real wrapper.'''
+  # model_source_map = utils.map_name_sources('models')
+  source = 'garage'
+  wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
+  raw_object = wrapper.load_model(name, name_env=name_env, gym_env=env)
+  env = load_environment(name=name_env)
+  return abstractions.RlModel(name=name,
+                              raw_algo=raw_object,
+                              source=source,
+                              environment=env)
 
 
 def create_models_dict(model_names, models_sources_map):
@@ -45,7 +49,7 @@ def create_models_dict(model_names, models_sources_map):
   for i, model_name in enumerate(model_names):
     print(' - ({}/{}) {}'.format(i + 1, len(model_names),
                                  'models.' + model_name))
-    model = load_model(model_name)
+    model = load_model(name=model_name)
     model_dict = model.to_dict()
 
     model_dict['sources'] = models_sources_map[model_dict['name']]

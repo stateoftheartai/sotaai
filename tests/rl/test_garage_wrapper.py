@@ -8,9 +8,10 @@ import unittest
 from sotaai.rl import gym_wrapper, garage_wrapper, load_model
 from sotaai.rl.abstractions import RlModel
 # from garage.trainer import Trainer
-from garage.experiment import SnapshotConfig
-from garage.trainer import Trainer
-from garage.envs import GymEnv, normalize
+# from garage.experiment import SnapshotConfig, LocalRunner, deterministic
+from garage.envs import GarageEnv, normalize
+import gym
+import akro
 env_error = [
     'Defender-v0', 'Defender-v4', 'DefenderDeterministic-v0',
     'DefenderDeterministic-v4', 'DefenderNoFrameskip-v0',
@@ -24,53 +25,42 @@ MODELS = [
     'SAC', 'TRPO', 'VPG'
 ]
 
-EROR_MODELS = ['DDPG', 'PEARL']
+EROR_MODELS = ['DDPG', 'PEARL', 'BC', 'MAMLPPO', 'MAMLTRPO', 'MAMLVPG', 'MTSAC']
 
 
 class TestGarageWrapper(unittest.TestCase):
   '''Test the wrapped garage module.'''
 
+  @unittest.SkipTest
   def test_load_model(self):
     '''
       Make sure garage envs are returned.
     '''
 
-    hyper_parameters = {
-        'hidden_sizes': [32, 32],
-        'max_kl': 0.01,
-        'gae_lambda': 0.97,
-        'discount': 0.99,
-        'n_epochs': 999,
-        'batch_size': 1024,
-    }
-
-    # env_gym = gym_wrapper.load_environment('CartPole-v0')
-    env = normalize(GymEnv('CartPole-v0'))
-    algo = garage_wrapper.load_model(name='TRPO', name_env='CartPole-v0')
-
-    ctxt = SnapshotConfig(snapshot_dir='~/experiments',
-                          snapshot_mode='all',
-                          snapshot_gap=1)
-    # deterministic.set_seed(10)
-    trainer = Trainer(ctxt)
-
-    trainer.setup(algo, env)
-    trainer.train(n_epochs=hyper_parameters['n_epochs'],
-                  batch_size=hyper_parameters['batch_size'])
-
-    env.close()
-    # trainer.train(n_epochs=hyper_parameters['n_epochs'],
-    #               batch_size=hyper_parameters['batch_size'])
-
-    # with TFTrainer(ctxt) as trainer:
-    #   trainer.setup(algo, env)
-    #   trainer.train(n_epochs=100, batch_size=4000)
-    # for model_name in MODELS:
-    #   if not model_name in EROR_MODELS:
-    #     for task in gym_wrapper.LIST_ENVIRONMENTS:
-    #       for env_name in gym_wrapper.LIST_ENVIRONMENTS[task]:
-    #         print(f'Model name: {model_name}\t---\t Env name: {env_name}')
-    #         garage_wrapper.load_model(name=model_name, name_env=env_name)
+    # hyper_parameters = {
+    #     'policy_lr': 1e-4,
+    #     'qf_lr': 1e-3,
+    #     'policy_hidden_sizes': [64, 64],
+    #     'qf_hidden_sizes': [64, 64],
+    #     'n_epochs': 500,
+    #     'steps_per_epoch': 20,
+    #     'n_exploration_steps': 100,
+    #     'n_train_steps': 50,
+    #     'discount': 0.9,
+    #     'tau': 1e-2,
+    #     'replay_buffer_size': int(1e6),
+    #     'sigma': 0.2
+    # }
+    for model_name in MODELS:
+      if not model_name in EROR_MODELS:
+        for task in gym_wrapper.LIST_ENVIRONMENTS:
+          for env_name in gym_wrapper.LIST_ENVIRONMENTS[task]:
+            env = GarageEnv(normalize(gym.make(env_name)))
+            if not isinstance(env.spec.action_space, akro.Discrete):
+              print(f'Model name: {model_name}\t---\t Env name: {env_name}')
+              algo = garage_wrapper.load_model(name=model_name,
+                                               name_env=env_name)
+              print(algo)
 
   @unittest.SkipTest
   def test_abstraction_load_model(self):

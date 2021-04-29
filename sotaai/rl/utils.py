@@ -7,7 +7,7 @@ from sotaai.rl import gym_wrapper
 
 MODEL_SOURCES = ['garage', 'rllib', 'stablebaselines3']
 
-DATASET_SOURCES = []
+DATASET_SOURCES = ['gym']
 
 
 def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:  # pylint: disable=unused-argument
@@ -38,11 +38,14 @@ def map_name_source_tasks(nametype: str, return_original_names=True) -> dict:  #
   '''
   items_breakdown = dict()
 
-  sources = DATASET_SOURCES if nametype == 'datasets' else MODEL_SOURCES
+  sources = DATASET_SOURCES if nametype == 'environments' else MODEL_SOURCES
 
   for source in sources:
     wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
-    items = wrapper.DATASETS if nametype == 'datasets' else wrapper.MODELS
+    if nametype == 'environments':
+      items = wrapper.LIST_ENVIRONMENTS
+    else:
+      items = wrapper.MODELS
     for task in items:
       for item in items[task]:
         if item in items_breakdown.keys():
@@ -90,6 +93,8 @@ def map_name_sources(nametype: str, return_original_names=True) -> dict:
   Returns (dict):
     Dictionary with an entry for all available items of the above form.
   '''
+  if nametype == 'datasets':
+    nametype = 'environments'
   item_sources_tasks = map_name_source_tasks(nametype, return_original_names)
   item_sources = dict()
 
@@ -150,7 +155,6 @@ def map_name_tasks(nametype: str) -> dict:
   '''
   item_sources_tasks = map_name_source_tasks(nametype)
   item_tasks = dict()
-
   for item in item_sources_tasks:
     it_tasks = []
 

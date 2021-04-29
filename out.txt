@@ -1,0 +1,1912 @@
+Name: Copy-v0 - Source: None
+Tuple(Discrete(2), Discrete(2), Discrete(5))
+Name: RepeatCopy-v0 - Source: None
+Tuple(Discrete(2), Discrete(2), Discrete(5))
+Name: ReversedAddition-v0 - Source: None
+Tuple(Discrete(4), Discrete(2), Discrete(3))
+Name: ReversedAddition3-v0 - Source: None
+Tuple(Discrete(4), Discrete(2), Discrete(3))
+Name: DuplicatedInput-v0 - Source: None
+Tuple(Discrete(2), Discrete(2), Discrete(5))
+Name: Reverse-v0 - Source: None
+Tuple(Discrete(2), Discrete(2), Discrete(2))
+Name: CartPole-v0 - Source: gym
+Discrete(2)
+Name: CartPole-v1 - Source: gym
+Discrete(2)
+Name: MountainCar-v0 - Source: gym
+Discrete(3)
+Name: MountainCarContinuous-v0 - Source: gym
+Box(-1.0, 1.0, (1,), float32)
+Name: Pendulum-v0 - Source: gym
+Box(-2.0, 2.0, (1,), float32)
+Name: Acrobot-v1 - Source: gym
+Discrete(3)
+Name: LunarLander-v2 - Source: gym
+Discrete(4)
+Name: LunarLanderContinuous-v2 - Source: gym
+Box(-1.0, 1.0, (2,), float32)
+Name: BipedalWalker-v3 - Source: gym
+Box(-1.0, 1.0, (4,), float32)
+Name: BipedalWalkerHardcore-v3 - Source: gym
+Box(-1.0, 1.0, (4,), float32)
+Name: CarRacing-v0 - Source: gym
+Box(-1.0, 1.0, (3,), float32)
+Name: Blackjack-v0 - Source: gym
+Discrete(2)
+Name: KellyCoinflip-v0 - Source: gym
+Discrete(25000)
+Name: KellyCoinflipGeneralized-v0 - Source: gym
+Discrete(20100)
+Name: FrozenLake-v0 - Source: gym
+Discrete(4)
+Name: FrozenLake8x8-v0 - Source: gym
+Discrete(4)
+Name: CliffWalking-v0 - Source: gym
+Discrete(4)
+Name: NChain-v0 - Source: gym
+Discrete(2)
+Name: Roulette-v0 - Source: gym
+Discrete(38)
+Name: Taxi-v3 - Source: gym
+Discrete(6)
+Name: GuessingGame-v0 - Source: gym
+Box(-10000.0, 10000.0, (1,), float32)
+Name: HotterColder-v0 - Source: gym
+Box(-2000.0, 2000.0, (1,), float32)
+Name: Reacher-v2 - Source: gym
+Box(-1.0, 1.0, (2,), float32)
+Name: Pusher-v2 - Source: gym
+Box(-2.0, 2.0, (7,), float32)
+Name: Thrower-v2 - Source: gym
+Box(-15.0, 15.0, (7,), float32)
+Name: Striker-v2 - Source: gym
+Box(-3.0, 3.0, (7,), float32)
+Name: InvertedPendulum-v2 - Source: gym
+Box(-3.0, 3.0, (1,), float32)
+Name: InvertedDoublePendulum-v2 - Source: gym
+Box(-1.0, 1.0, (1,), float32)
+Name: HalfCheetah-v2 - Source: gym
+Box(-1.0, 1.0, (6,), float32)
+Name: HalfCheetah-v3 - Source: gym
+Box(-1.0, 1.0, (6,), float32)
+Name: Hopper-v2 - Source: gym
+Box(-1.0, 1.0, (3,), float32)
+Name: Hopper-v3 - Source: gym
+Box(-1.0, 1.0, (3,), float32)
+Name: Swimmer-v2 - Source: gym
+Box(-1.0, 1.0, (2,), float32)
+Name: Swimmer-v3 - Source: gym
+Box(-1.0, 1.0, (2,), float32)
+Name: Walker2d-v2 - Source: gym
+Box(-1.0, 1.0, (6,), float32)
+Name: Walker2d-v3 - Source: gym
+Box(-1.0, 1.0, (6,), float32)
+Name: Ant-v2 - Source: gym
+Box(-1.0, 1.0, (8,), float32)
+Name: Ant-v3 - Source: gym
+Box(-1.0, 1.0, (8,), float32)
+Name: Humanoid-v2 - Source: gym
+Box(-0.4000000059604645, 0.4000000059604645, (17,), float32)
+Name: Humanoid-v3 - Source: gym
+Box(-0.4000000059604645, 0.4000000059604645, (17,), float32)
+Name: HumanoidStandup-v2 - Source: gym
+Box(-0.4000000059604645, 0.4000000059604645, (17,), float32)
+Name: FetchSlide-v1 - Source: gym
+Box(-1.0, 1.0, (4,), float32)
+Name: FetchPickAndPlace-v1 - Source: gym
+Box(-1.0, 1.0, (4,), float32)
+Name: FetchReach-v1 - Source: gym
+Box(-1.0, 1.0, (4,), float32)
+Name: FetchPush-v1 - Source: gym
+Box(-1.0, 1.0, (4,), float32)
+Name: HandReach-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateZ-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateZTouchSensors-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateZTouchSensors-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateParallel-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateParallelTouchSensors-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateParallelTouchSensors-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateXYZ-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateXYZTouchSensors-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateXYZTouchSensors-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockFull-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlock-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockTouchSensors-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockTouchSensors-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateEggRotate-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateEggRotateTouchSensors-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateEggRotateTouchSensors-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateEggFull-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateEgg-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateEggTouchSensors-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateEggTouchSensors-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulatePenRotate-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulatePenRotateTouchSensors-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulatePenRotateTouchSensors-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulatePenFull-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulatePen-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulatePenTouchSensors-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulatePenTouchSensors-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: FetchSlideDense-v1 - Source: gym
+Box(-1.0, 1.0, (4,), float32)
+Name: FetchPickAndPlaceDense-v1 - Source: gym
+Box(-1.0, 1.0, (4,), float32)
+Name: FetchReachDense-v1 - Source: gym
+Box(-1.0, 1.0, (4,), float32)
+Name: FetchPushDense-v1 - Source: gym
+Box(-1.0, 1.0, (4,), float32)
+Name: HandReachDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateZDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateZTouchSensorsDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateZTouchSensorsDense-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateParallelDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateParallelTouchSensorsDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateParallelTouchSensorsDense-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateXYZDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateXYZTouchSensorsDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockRotateXYZTouchSensorsDense-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockFullDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockTouchSensorsDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateBlockTouchSensorsDense-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateEggRotateDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateEggRotateTouchSensorsDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateEggRotateTouchSensorsDense-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateEggFullDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateEggDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateEggTouchSensorsDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulateEggTouchSensorsDense-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulatePenRotateDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulatePenRotateTouchSensorsDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulatePenRotateTouchSensorsDense-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulatePenFullDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulatePenDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulatePenTouchSensorsDense-v0 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: HandManipulatePenTouchSensorsDense-v1 - Source: gym
+Box(-1.0, 1.0, (20,), float32)
+Name: Adventure-v0 - Source: gym
+Discrete(18)
+Name: Adventure-v4 - Source: gym
+Discrete(18)
+Name: AdventureDeterministic-v0 - Source: gym
+Discrete(18)
+Name: AdventureDeterministic-v4 - Source: gym
+Discrete(18)
+Name: AdventureNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: AdventureNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Adventure-ram-v0 - Source: gym
+Discrete(18)
+Name: Adventure-ram-v4 - Source: gym
+Discrete(18)
+Name: Adventure-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Adventure-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Adventure-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Adventure-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: AirRaid-v0 - Source: gym
+Discrete(6)
+Name: AirRaid-v4 - Source: gym
+Discrete(6)
+Name: AirRaidDeterministic-v0 - Source: gym
+Discrete(6)
+Name: AirRaidDeterministic-v4 - Source: gym
+Discrete(6)
+Name: AirRaidNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: AirRaidNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: AirRaid-ram-v0 - Source: gym
+Discrete(6)
+Name: AirRaid-ram-v4 - Source: gym
+Discrete(6)
+Name: AirRaid-ramDeterministic-v0 - Source: gym
+Discrete(6)
+Name: AirRaid-ramDeterministic-v4 - Source: gym
+Discrete(6)
+Name: AirRaid-ramNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: AirRaid-ramNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: Alien-v0 - Source: gym
+Discrete(18)
+Name: Alien-v4 - Source: gym
+Discrete(18)
+Name: AlienDeterministic-v0 - Source: gym
+Discrete(18)
+Name: AlienDeterministic-v4 - Source: gym
+Discrete(18)
+Name: AlienNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: AlienNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Alien-ram-v0 - Source: gym
+Discrete(18)
+Name: Alien-ram-v4 - Source: gym
+Discrete(18)
+Name: Alien-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Alien-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Alien-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Alien-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Amidar-v0 - Source: gym
+Discrete(10)
+Name: Amidar-v4 - Source: gym
+Discrete(10)
+Name: AmidarDeterministic-v0 - Source: gym
+Discrete(10)
+Name: AmidarDeterministic-v4 - Source: gym
+Discrete(10)
+Name: AmidarNoFrameskip-v0 - Source: gym
+Discrete(10)
+Name: AmidarNoFrameskip-v4 - Source: gym
+Discrete(10)
+Name: Amidar-ram-v0 - Source: gym
+Discrete(10)
+Name: Amidar-ram-v4 - Source: gym
+Discrete(10)
+Name: Amidar-ramDeterministic-v0 - Source: gym
+Discrete(10)
+Name: Amidar-ramDeterministic-v4 - Source: gym
+Discrete(10)
+Name: Amidar-ramNoFrameskip-v0 - Source: gym
+Discrete(10)
+Name: Amidar-ramNoFrameskip-v4 - Source: gym
+Discrete(10)
+Name: Assault-v0 - Source: gym
+Discrete(7)
+Name: Assault-v4 - Source: gym
+Discrete(7)
+Name: AssaultDeterministic-v0 - Source: gym
+Discrete(7)
+Name: AssaultDeterministic-v4 - Source: gym
+Discrete(7)
+Name: AssaultNoFrameskip-v0 - Source: gym
+Discrete(7)
+Name: AssaultNoFrameskip-v4 - Source: gym
+Discrete(7)
+Name: Assault-ram-v0 - Source: gym
+Discrete(7)
+Name: Assault-ram-v4 - Source: gym
+Discrete(7)
+Name: Assault-ramDeterministic-v0 - Source: gym
+Discrete(7)
+Name: Assault-ramDeterministic-v4 - Source: gym
+Discrete(7)
+Name: Assault-ramNoFrameskip-v0 - Source: gym
+Discrete(7)
+Name: Assault-ramNoFrameskip-v4 - Source: gym
+Discrete(7)
+Name: Asterix-v0 - Source: gym
+Discrete(9)
+Name: Asterix-v4 - Source: gym
+Discrete(9)
+Name: AsterixDeterministic-v0 - Source: gym
+Discrete(9)
+Name: AsterixDeterministic-v4 - Source: gym
+Discrete(9)
+Name: AsterixNoFrameskip-v0 - Source: gym
+Discrete(9)
+Name: AsterixNoFrameskip-v4 - Source: gym
+Discrete(9)
+Name: Asterix-ram-v0 - Source: gym
+Discrete(9)
+Name: Asterix-ram-v4 - Source: gym
+Discrete(9)
+Name: Asterix-ramDeterministic-v0 - Source: gym
+Discrete(9)
+Name: Asterix-ramDeterministic-v4 - Source: gym
+Discrete(9)
+Name: Asterix-ramNoFrameskip-v0 - Source: gym
+Discrete(9)
+Name: Asterix-ramNoFrameskip-v4 - Source: gym
+Discrete(9)
+Name: Asteroids-v0 - Source: gym
+Discrete(14)
+Name: Asteroids-v4 - Source: gym
+Discrete(14)
+Name: AsteroidsDeterministic-v0 - Source: gym
+Discrete(14)
+Name: AsteroidsDeterministic-v4 - Source: gym
+Discrete(14)
+Name: AsteroidsNoFrameskip-v0 - Source: gym
+Discrete(14)
+Name: AsteroidsNoFrameskip-v4 - Source: gym
+Discrete(14)
+Name: Asteroids-ram-v0 - Source: gym
+Discrete(14)
+Name: Asteroids-ram-v4 - Source: gym
+Discrete(14)
+Name: Asteroids-ramDeterministic-v0 - Source: gym
+Discrete(14)
+Name: Asteroids-ramDeterministic-v4 - Source: gym
+Discrete(14)
+Name: Asteroids-ramNoFrameskip-v0 - Source: gym
+Discrete(14)
+Name: Asteroids-ramNoFrameskip-v4 - Source: gym
+Discrete(14)
+Name: Atlantis-v0 - Source: gym
+Discrete(4)
+Name: Atlantis-v4 - Source: gym
+Discrete(4)
+Name: AtlantisDeterministic-v0 - Source: gym
+Discrete(4)
+Name: AtlantisDeterministic-v4 - Source: gym
+Discrete(4)
+Name: AtlantisNoFrameskip-v0 - Source: gym
+Discrete(4)
+Name: AtlantisNoFrameskip-v4 - Source: gym
+Discrete(4)
+Name: Atlantis-ram-v0 - Source: gym
+Discrete(4)
+Name: Atlantis-ram-v4 - Source: gym
+Discrete(4)
+Name: Atlantis-ramDeterministic-v0 - Source: gym
+Discrete(4)
+Name: Atlantis-ramDeterministic-v4 - Source: gym
+Discrete(4)
+Name: Atlantis-ramNoFrameskip-v0 - Source: gym
+Discrete(4)
+Name: Atlantis-ramNoFrameskip-v4 - Source: gym
+Discrete(4)
+Name: BankHeist-v0 - Source: gym
+Discrete(18)
+Name: BankHeist-v4 - Source: gym
+Discrete(18)
+Name: BankHeistDeterministic-v0 - Source: gym
+Discrete(18)
+Name: BankHeistDeterministic-v4 - Source: gym
+Discrete(18)
+Name: BankHeistNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: BankHeistNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: BankHeist-ram-v0 - Source: gym
+Discrete(18)
+Name: BankHeist-ram-v4 - Source: gym
+Discrete(18)
+Name: BankHeist-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: BankHeist-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: BankHeist-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: BankHeist-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: BattleZone-v0 - Source: gym
+Discrete(18)
+Name: BattleZone-v4 - Source: gym
+Discrete(18)
+Name: BattleZoneDeterministic-v0 - Source: gym
+Discrete(18)
+Name: BattleZoneDeterministic-v4 - Source: gym
+Discrete(18)
+Name: BattleZoneNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: BattleZoneNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: BattleZone-ram-v0 - Source: gym
+Discrete(18)
+Name: BattleZone-ram-v4 - Source: gym
+Discrete(18)
+Name: BattleZone-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: BattleZone-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: BattleZone-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: BattleZone-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: BeamRider-v0 - Source: gym
+Discrete(9)
+Name: BeamRider-v4 - Source: gym
+Discrete(9)
+Name: BeamRiderDeterministic-v0 - Source: gym
+Discrete(9)
+Name: BeamRiderDeterministic-v4 - Source: gym
+Discrete(9)
+Name: BeamRiderNoFrameskip-v0 - Source: gym
+Discrete(9)
+Name: BeamRiderNoFrameskip-v4 - Source: gym
+Discrete(9)
+Name: BeamRider-ram-v0 - Source: gym
+Discrete(9)
+Name: BeamRider-ram-v4 - Source: gym
+Discrete(9)
+Name: BeamRider-ramDeterministic-v0 - Source: gym
+Discrete(9)
+Name: BeamRider-ramDeterministic-v4 - Source: gym
+Discrete(9)
+Name: BeamRider-ramNoFrameskip-v0 - Source: gym
+Discrete(9)
+Name: BeamRider-ramNoFrameskip-v4 - Source: gym
+Discrete(9)
+Name: Berzerk-v0 - Source: gym
+Discrete(18)
+Name: Berzerk-v4 - Source: gym
+Discrete(18)
+Name: BerzerkDeterministic-v0 - Source: gym
+Discrete(18)
+Name: BerzerkDeterministic-v4 - Source: gym
+Discrete(18)
+Name: BerzerkNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: BerzerkNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Berzerk-ram-v0 - Source: gym
+Discrete(18)
+Name: Berzerk-ram-v4 - Source: gym
+Discrete(18)
+Name: Berzerk-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Berzerk-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Berzerk-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Berzerk-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Bowling-v0 - Source: gym
+Discrete(6)
+Name: Bowling-v4 - Source: gym
+Discrete(6)
+Name: BowlingDeterministic-v0 - Source: gym
+Discrete(6)
+Name: BowlingDeterministic-v4 - Source: gym
+Discrete(6)
+Name: BowlingNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: BowlingNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: Bowling-ram-v0 - Source: gym
+Discrete(6)
+Name: Bowling-ram-v4 - Source: gym
+Discrete(6)
+Name: Bowling-ramDeterministic-v0 - Source: gym
+Discrete(6)
+Name: Bowling-ramDeterministic-v4 - Source: gym
+Discrete(6)
+Name: Bowling-ramNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: Bowling-ramNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: Boxing-v0 - Source: gym
+Discrete(18)
+Name: Boxing-v4 - Source: gym
+Discrete(18)
+Name: BoxingDeterministic-v0 - Source: gym
+Discrete(18)
+Name: BoxingDeterministic-v4 - Source: gym
+Discrete(18)
+Name: BoxingNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: BoxingNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Boxing-ram-v0 - Source: gym
+Discrete(18)
+Name: Boxing-ram-v4 - Source: gym
+Discrete(18)
+Name: Boxing-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Boxing-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Boxing-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Boxing-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Breakout-v0 - Source: gym
+Discrete(4)
+Name: Breakout-v4 - Source: gym
+Discrete(4)
+Name: BreakoutDeterministic-v0 - Source: gym
+Discrete(4)
+Name: BreakoutDeterministic-v4 - Source: gym
+Discrete(4)
+Name: BreakoutNoFrameskip-v0 - Source: gym
+Discrete(4)
+Name: BreakoutNoFrameskip-v4 - Source: gym
+Discrete(4)
+Name: Breakout-ram-v0 - Source: gym
+Discrete(4)
+Name: Breakout-ram-v4 - Source: gym
+Discrete(4)
+Name: Breakout-ramDeterministic-v0 - Source: gym
+Discrete(4)
+Name: Breakout-ramDeterministic-v4 - Source: gym
+Discrete(4)
+Name: Breakout-ramNoFrameskip-v0 - Source: gym
+Discrete(4)
+Name: Breakout-ramNoFrameskip-v4 - Source: gym
+Discrete(4)
+Name: Carnival-v0 - Source: gym
+Discrete(6)
+Name: Carnival-v4 - Source: gym
+Discrete(6)
+Name: CarnivalDeterministic-v0 - Source: gym
+Discrete(6)
+Name: CarnivalDeterministic-v4 - Source: gym
+Discrete(6)
+Name: CarnivalNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: CarnivalNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: Carnival-ram-v0 - Source: gym
+Discrete(6)
+Name: Carnival-ram-v4 - Source: gym
+Discrete(6)
+Name: Carnival-ramDeterministic-v0 - Source: gym
+Discrete(6)
+Name: Carnival-ramDeterministic-v4 - Source: gym
+Discrete(6)
+Name: Carnival-ramNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: Carnival-ramNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: Centipede-v0 - Source: gym
+Discrete(18)
+Name: Centipede-v4 - Source: gym
+Discrete(18)
+Name: CentipedeDeterministic-v0 - Source: gym
+Discrete(18)
+Name: CentipedeDeterministic-v4 - Source: gym
+Discrete(18)
+Name: CentipedeNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: CentipedeNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Centipede-ram-v0 - Source: gym
+Discrete(18)
+Name: Centipede-ram-v4 - Source: gym
+Discrete(18)
+Name: Centipede-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Centipede-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Centipede-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Centipede-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: ChopperCommand-v0 - Source: gym
+Discrete(18)
+Name: ChopperCommand-v4 - Source: gym
+Discrete(18)
+Name: ChopperCommandDeterministic-v0 - Source: gym
+Discrete(18)
+Name: ChopperCommandDeterministic-v4 - Source: gym
+Discrete(18)
+Name: ChopperCommandNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: ChopperCommandNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: ChopperCommand-ram-v0 - Source: gym
+Discrete(18)
+Name: ChopperCommand-ram-v4 - Source: gym
+Discrete(18)
+Name: ChopperCommand-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: ChopperCommand-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: ChopperCommand-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: ChopperCommand-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: CrazyClimber-v0 - Source: gym
+Discrete(9)
+Name: CrazyClimber-v4 - Source: gym
+Discrete(9)
+Name: CrazyClimberDeterministic-v0 - Source: gym
+Discrete(9)
+Name: CrazyClimberDeterministic-v4 - Source: gym
+Discrete(9)
+Name: CrazyClimberNoFrameskip-v0 - Source: gym
+Discrete(9)
+Name: CrazyClimberNoFrameskip-v4 - Source: gym
+Discrete(9)
+Name: CrazyClimber-ram-v0 - Source: gym
+Discrete(9)
+Name: CrazyClimber-ram-v4 - Source: gym
+Discrete(9)
+Name: CrazyClimber-ramDeterministic-v0 - Source: gym
+Discrete(9)
+Name: CrazyClimber-ramDeterministic-v4 - Source: gym
+Discrete(9)
+Name: CrazyClimber-ramNoFrameskip-v0 - Source: gym
+Discrete(9)
+Name: CrazyClimber-ramNoFrameskip-v4 - Source: gym
+Discrete(9)
+Name: DemonAttack-v0 - Source: gym
+Discrete(6)
+Name: DemonAttack-v4 - Source: gym
+Discrete(6)
+Name: DemonAttackDeterministic-v0 - Source: gym
+Discrete(6)
+Name: DemonAttackDeterministic-v4 - Source: gym
+Discrete(6)
+Name: DemonAttackNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: DemonAttackNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: DemonAttack-ram-v0 - Source: gym
+Discrete(6)
+Name: DemonAttack-ram-v4 - Source: gym
+Discrete(6)
+Name: DemonAttack-ramDeterministic-v0 - Source: gym
+Discrete(6)
+Name: DemonAttack-ramDeterministic-v4 - Source: gym
+Discrete(6)
+Name: DemonAttack-ramNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: DemonAttack-ramNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: DoubleDunk-v0 - Source: gym
+Discrete(18)
+Name: DoubleDunk-v4 - Source: gym
+Discrete(18)
+Name: DoubleDunkDeterministic-v0 - Source: gym
+Discrete(18)
+Name: DoubleDunkDeterministic-v4 - Source: gym
+Discrete(18)
+Name: DoubleDunkNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: DoubleDunkNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: DoubleDunk-ram-v0 - Source: gym
+Discrete(18)
+Name: DoubleDunk-ram-v4 - Source: gym
+Discrete(18)
+Name: DoubleDunk-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: DoubleDunk-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: DoubleDunk-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: DoubleDunk-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: ElevatorAction-v0 - Source: gym
+Discrete(18)
+Name: ElevatorAction-v4 - Source: gym
+Discrete(18)
+Name: ElevatorActionDeterministic-v0 - Source: gym
+Discrete(18)
+Name: ElevatorActionDeterministic-v4 - Source: gym
+Discrete(18)
+Name: ElevatorActionNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: ElevatorActionNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: ElevatorAction-ram-v0 - Source: gym
+Discrete(18)
+Name: ElevatorAction-ram-v4 - Source: gym
+Discrete(18)
+Name: ElevatorAction-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: ElevatorAction-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: ElevatorAction-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: ElevatorAction-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Enduro-v0 - Source: gym
+Discrete(9)
+Name: Enduro-v4 - Source: gym
+Discrete(9)
+Name: EnduroDeterministic-v0 - Source: gym
+Discrete(9)
+Name: EnduroDeterministic-v4 - Source: gym
+Discrete(9)
+Name: EnduroNoFrameskip-v0 - Source: gym
+Discrete(9)
+Name: EnduroNoFrameskip-v4 - Source: gym
+Discrete(9)
+Name: Enduro-ram-v0 - Source: gym
+Discrete(9)
+Name: Enduro-ram-v4 - Source: gym
+Discrete(9)
+Name: Enduro-ramDeterministic-v0 - Source: gym
+Discrete(9)
+Name: Enduro-ramDeterministic-v4 - Source: gym
+Discrete(9)
+Name: Enduro-ramNoFrameskip-v0 - Source: gym
+Discrete(9)
+Name: Enduro-ramNoFrameskip-v4 - Source: gym
+Discrete(9)
+Name: FishingDerby-v0 - Source: gym
+Discrete(18)
+Name: FishingDerby-v4 - Source: gym
+Discrete(18)
+Name: FishingDerbyDeterministic-v0 - Source: gym
+Discrete(18)
+Name: FishingDerbyDeterministic-v4 - Source: gym
+Discrete(18)
+Name: FishingDerbyNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: FishingDerbyNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: FishingDerby-ram-v0 - Source: gym
+Discrete(18)
+Name: FishingDerby-ram-v4 - Source: gym
+Discrete(18)
+Name: FishingDerby-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: FishingDerby-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: FishingDerby-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: FishingDerby-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Freeway-v0 - Source: gym
+Discrete(3)
+Name: Freeway-v4 - Source: gym
+Discrete(3)
+Name: FreewayDeterministic-v0 - Source: gym
+Discrete(3)
+Name: FreewayDeterministic-v4 - Source: gym
+Discrete(3)
+Name: FreewayNoFrameskip-v0 - Source: gym
+Discrete(3)
+Name: FreewayNoFrameskip-v4 - Source: gym
+Discrete(3)
+Name: Freeway-ram-v0 - Source: gym
+Discrete(3)
+Name: Freeway-ram-v4 - Source: gym
+Discrete(3)
+Name: Freeway-ramDeterministic-v0 - Source: gym
+Discrete(3)
+Name: Freeway-ramDeterministic-v4 - Source: gym
+Discrete(3)
+Name: Freeway-ramNoFrameskip-v0 - Source: gym
+Discrete(3)
+Name: Freeway-ramNoFrameskip-v4 - Source: gym
+Discrete(3)
+Name: Frostbite-v0 - Source: gym
+Discrete(18)
+Name: Frostbite-v4 - Source: gym
+Discrete(18)
+Name: FrostbiteDeterministic-v0 - Source: gym
+Discrete(18)
+Name: FrostbiteDeterministic-v4 - Source: gym
+Discrete(18)
+Name: FrostbiteNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: FrostbiteNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Frostbite-ram-v0 - Source: gym
+Discrete(18)
+Name: Frostbite-ram-v4 - Source: gym
+Discrete(18)
+Name: Frostbite-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Frostbite-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Frostbite-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Frostbite-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Gopher-v0 - Source: gym
+Discrete(8)
+Name: Gopher-v4 - Source: gym
+Discrete(8)
+Name: GopherDeterministic-v0 - Source: gym
+Discrete(8)
+Name: GopherDeterministic-v4 - Source: gym
+Discrete(8)
+Name: GopherNoFrameskip-v0 - Source: gym
+Discrete(8)
+Name: GopherNoFrameskip-v4 - Source: gym
+Discrete(8)
+Name: Gopher-ram-v0 - Source: gym
+Discrete(8)
+Name: Gopher-ram-v4 - Source: gym
+Discrete(8)
+Name: Gopher-ramDeterministic-v0 - Source: gym
+Discrete(8)
+Name: Gopher-ramDeterministic-v4 - Source: gym
+Discrete(8)
+Name: Gopher-ramNoFrameskip-v0 - Source: gym
+Discrete(8)
+Name: Gopher-ramNoFrameskip-v4 - Source: gym
+Discrete(8)
+Name: Gravitar-v0 - Source: gym
+Discrete(18)
+Name: Gravitar-v4 - Source: gym
+Discrete(18)
+Name: GravitarDeterministic-v0 - Source: gym
+Discrete(18)
+Name: GravitarDeterministic-v4 - Source: gym
+Discrete(18)
+Name: GravitarNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: GravitarNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Gravitar-ram-v0 - Source: gym
+Discrete(18)
+Name: Gravitar-ram-v4 - Source: gym
+Discrete(18)
+Name: Gravitar-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Gravitar-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Gravitar-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Gravitar-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Hero-v0 - Source: gym
+Discrete(18)
+Name: Hero-v4 - Source: gym
+Discrete(18)
+Name: HeroDeterministic-v0 - Source: gym
+Discrete(18)
+Name: HeroDeterministic-v4 - Source: gym
+Discrete(18)
+Name: HeroNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: HeroNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Hero-ram-v0 - Source: gym
+Discrete(18)
+Name: Hero-ram-v4 - Source: gym
+Discrete(18)
+Name: Hero-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Hero-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Hero-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Hero-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: IceHockey-v0 - Source: gym
+Discrete(18)
+Name: IceHockey-v4 - Source: gym
+Discrete(18)
+Name: IceHockeyDeterministic-v0 - Source: gym
+Discrete(18)
+Name: IceHockeyDeterministic-v4 - Source: gym
+Discrete(18)
+Name: IceHockeyNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: IceHockeyNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: IceHockey-ram-v0 - Source: gym
+Discrete(18)
+Name: IceHockey-ram-v4 - Source: gym
+Discrete(18)
+Name: IceHockey-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: IceHockey-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: IceHockey-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: IceHockey-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Jamesbond-v0 - Source: gym
+Discrete(18)
+Name: Jamesbond-v4 - Source: gym
+Discrete(18)
+Name: JamesbondDeterministic-v0 - Source: gym
+Discrete(18)
+Name: JamesbondDeterministic-v4 - Source: gym
+Discrete(18)
+Name: JamesbondNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: JamesbondNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Jamesbond-ram-v0 - Source: gym
+Discrete(18)
+Name: Jamesbond-ram-v4 - Source: gym
+Discrete(18)
+Name: Jamesbond-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Jamesbond-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Jamesbond-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Jamesbond-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: JourneyEscape-v0 - Source: gym
+Discrete(16)
+Name: JourneyEscape-v4 - Source: gym
+Discrete(16)
+Name: JourneyEscapeDeterministic-v0 - Source: gym
+Discrete(16)
+Name: JourneyEscapeDeterministic-v4 - Source: gym
+Discrete(16)
+Name: JourneyEscapeNoFrameskip-v0 - Source: gym
+Discrete(16)
+Name: JourneyEscapeNoFrameskip-v4 - Source: gym
+Discrete(16)
+Name: JourneyEscape-ram-v0 - Source: gym
+Discrete(16)
+Name: JourneyEscape-ram-v4 - Source: gym
+Discrete(16)
+Name: JourneyEscape-ramDeterministic-v0 - Source: gym
+Discrete(16)
+Name: JourneyEscape-ramDeterministic-v4 - Source: gym
+Discrete(16)
+Name: JourneyEscape-ramNoFrameskip-v0 - Source: gym
+Discrete(16)
+Name: JourneyEscape-ramNoFrameskip-v4 - Source: gym
+Discrete(16)
+Name: Kangaroo-v0 - Source: gym
+Discrete(18)
+Name: Kangaroo-v4 - Source: gym
+Discrete(18)
+Name: KangarooDeterministic-v0 - Source: gym
+Discrete(18)
+Name: KangarooDeterministic-v4 - Source: gym
+Discrete(18)
+Name: KangarooNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: KangarooNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Kangaroo-ram-v0 - Source: gym
+Discrete(18)
+Name: Kangaroo-ram-v4 - Source: gym
+Discrete(18)
+Name: Kangaroo-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Kangaroo-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Kangaroo-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Kangaroo-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Krull-v0 - Source: gym
+Discrete(18)
+Name: Krull-v4 - Source: gym
+Discrete(18)
+Name: KrullDeterministic-v0 - Source: gym
+Discrete(18)
+Name: KrullDeterministic-v4 - Source: gym
+Discrete(18)
+Name: KrullNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: KrullNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Krull-ram-v0 - Source: gym
+Discrete(18)
+Name: Krull-ram-v4 - Source: gym
+Discrete(18)
+Name: Krull-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Krull-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Krull-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Krull-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: KungFuMaster-v0 - Source: gym
+Discrete(14)
+Name: KungFuMaster-v4 - Source: gym
+Discrete(14)
+Name: KungFuMasterDeterministic-v0 - Source: gym
+Discrete(14)
+Name: KungFuMasterDeterministic-v4 - Source: gym
+Discrete(14)
+Name: KungFuMasterNoFrameskip-v0 - Source: gym
+Discrete(14)
+Name: KungFuMasterNoFrameskip-v4 - Source: gym
+Discrete(14)
+Name: KungFuMaster-ram-v0 - Source: gym
+Discrete(14)
+Name: KungFuMaster-ram-v4 - Source: gym
+Discrete(14)
+Name: KungFuMaster-ramDeterministic-v0 - Source: gym
+Discrete(14)
+Name: KungFuMaster-ramDeterministic-v4 - Source: gym
+Discrete(14)
+Name: KungFuMaster-ramNoFrameskip-v0 - Source: gym
+Discrete(14)
+Name: KungFuMaster-ramNoFrameskip-v4 - Source: gym
+Discrete(14)
+Name: MontezumaRevenge-v0 - Source: gym
+Discrete(18)
+Name: MontezumaRevenge-v4 - Source: gym
+Discrete(18)
+Name: MontezumaRevengeDeterministic-v0 - Source: gym
+Discrete(18)
+Name: MontezumaRevengeDeterministic-v4 - Source: gym
+Discrete(18)
+Name: MontezumaRevengeNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: MontezumaRevengeNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: MontezumaRevenge-ram-v0 - Source: gym
+Discrete(18)
+Name: MontezumaRevenge-ram-v4 - Source: gym
+Discrete(18)
+Name: MontezumaRevenge-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: MontezumaRevenge-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: MontezumaRevenge-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: MontezumaRevenge-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: MsPacman-v0 - Source: gym
+Discrete(9)
+Name: MsPacman-v4 - Source: gym
+Discrete(9)
+Name: MsPacmanDeterministic-v0 - Source: gym
+Discrete(9)
+Name: MsPacmanDeterministic-v4 - Source: gym
+Discrete(9)
+Name: MsPacmanNoFrameskip-v0 - Source: gym
+Discrete(9)
+Name: MsPacmanNoFrameskip-v4 - Source: gym
+Discrete(9)
+Name: MsPacman-ram-v0 - Source: gym
+Discrete(9)
+Name: MsPacman-ram-v4 - Source: gym
+Discrete(9)
+Name: MsPacman-ramDeterministic-v0 - Source: gym
+Discrete(9)
+Name: MsPacman-ramDeterministic-v4 - Source: gym
+Discrete(9)
+Name: MsPacman-ramNoFrameskip-v0 - Source: gym
+Discrete(9)
+Name: MsPacman-ramNoFrameskip-v4 - Source: gym
+Discrete(9)
+Name: NameThisGame-v0 - Source: gym
+Discrete(6)
+Name: NameThisGame-v4 - Source: gym
+Discrete(6)
+Name: NameThisGameDeterministic-v0 - Source: gym
+Discrete(6)
+Name: NameThisGameDeterministic-v4 - Source: gym
+Discrete(6)
+Name: NameThisGameNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: NameThisGameNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: NameThisGame-ram-v0 - Source: gym
+Discrete(6)
+Name: NameThisGame-ram-v4 - Source: gym
+Discrete(6)
+Name: NameThisGame-ramDeterministic-v0 - Source: gym
+Discrete(6)
+Name: NameThisGame-ramDeterministic-v4 - Source: gym
+Discrete(6)
+Name: NameThisGame-ramNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: NameThisGame-ramNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: Phoenix-v0 - Source: gym
+Discrete(8)
+Name: Phoenix-v4 - Source: gym
+Discrete(8)
+Name: PhoenixDeterministic-v0 - Source: gym
+Discrete(8)
+Name: PhoenixDeterministic-v4 - Source: gym
+Discrete(8)
+Name: PhoenixNoFrameskip-v0 - Source: gym
+Discrete(8)
+Name: PhoenixNoFrameskip-v4 - Source: gym
+Discrete(8)
+Name: Phoenix-ram-v0 - Source: gym
+Discrete(8)
+Name: Phoenix-ram-v4 - Source: gym
+Discrete(8)
+Name: Phoenix-ramDeterministic-v0 - Source: gym
+Discrete(8)
+Name: Phoenix-ramDeterministic-v4 - Source: gym
+Discrete(8)
+Name: Phoenix-ramNoFrameskip-v0 - Source: gym
+Discrete(8)
+Name: Phoenix-ramNoFrameskip-v4 - Source: gym
+Discrete(8)
+Name: Pitfall-v0 - Source: gym
+Discrete(18)
+Name: Pitfall-v4 - Source: gym
+Discrete(18)
+Name: PitfallDeterministic-v0 - Source: gym
+Discrete(18)
+Name: PitfallDeterministic-v4 - Source: gym
+Discrete(18)
+Name: PitfallNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: PitfallNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Pitfall-ram-v0 - Source: gym
+Discrete(18)
+Name: Pitfall-ram-v4 - Source: gym
+Discrete(18)
+Name: Pitfall-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Pitfall-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Pitfall-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Pitfall-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Pong-v0 - Source: gym
+Discrete(6)
+Name: Pong-v4 - Source: gym
+Discrete(6)
+Name: PongDeterministic-v0 - Source: gym
+Discrete(6)
+Name: PongDeterministic-v4 - Source: gym
+Discrete(6)
+Name: PongNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: PongNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: Pong-ram-v0 - Source: gym
+Discrete(6)
+Name: Pong-ram-v4 - Source: gym
+Discrete(6)
+Name: Pong-ramDeterministic-v0 - Source: gym
+Discrete(6)
+Name: Pong-ramDeterministic-v4 - Source: gym
+Discrete(6)
+Name: Pong-ramNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: Pong-ramNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: Pooyan-v0 - Source: gym
+Discrete(6)
+Name: Pooyan-v4 - Source: gym
+Discrete(6)
+Name: PooyanDeterministic-v0 - Source: gym
+Discrete(6)
+Name: PooyanDeterministic-v4 - Source: gym
+Discrete(6)
+Name: PooyanNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: PooyanNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: Pooyan-ram-v0 - Source: gym
+Discrete(6)
+Name: Pooyan-ram-v4 - Source: gym
+Discrete(6)
+Name: Pooyan-ramDeterministic-v0 - Source: gym
+Discrete(6)
+Name: Pooyan-ramDeterministic-v4 - Source: gym
+Discrete(6)
+Name: Pooyan-ramNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: Pooyan-ramNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: PrivateEye-v0 - Source: gym
+Discrete(18)
+Name: PrivateEye-v4 - Source: gym
+Discrete(18)
+Name: PrivateEyeDeterministic-v0 - Source: gym
+Discrete(18)
+Name: PrivateEyeDeterministic-v4 - Source: gym
+Discrete(18)
+Name: PrivateEyeNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: PrivateEyeNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: PrivateEye-ram-v0 - Source: gym
+Discrete(18)
+Name: PrivateEye-ram-v4 - Source: gym
+Discrete(18)
+Name: PrivateEye-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: PrivateEye-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: PrivateEye-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: PrivateEye-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Qbert-v0 - Source: gym
+Discrete(6)
+Name: Qbert-v4 - Source: gym
+Discrete(6)
+Name: QbertDeterministic-v0 - Source: gym
+Discrete(6)
+Name: QbertDeterministic-v4 - Source: gym
+Discrete(6)
+Name: QbertNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: QbertNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: Qbert-ram-v0 - Source: gym
+Discrete(6)
+Name: Qbert-ram-v4 - Source: gym
+Discrete(6)
+Name: Qbert-ramDeterministic-v0 - Source: gym
+Discrete(6)
+Name: Qbert-ramDeterministic-v4 - Source: gym
+Discrete(6)
+Name: Qbert-ramNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: Qbert-ramNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: Riverraid-v0 - Source: gym
+Discrete(18)
+Name: Riverraid-v4 - Source: gym
+Discrete(18)
+Name: RiverraidDeterministic-v0 - Source: gym
+Discrete(18)
+Name: RiverraidDeterministic-v4 - Source: gym
+Discrete(18)
+Name: RiverraidNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: RiverraidNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Riverraid-ram-v0 - Source: gym
+Discrete(18)
+Name: Riverraid-ram-v4 - Source: gym
+Discrete(18)
+Name: Riverraid-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Riverraid-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Riverraid-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Riverraid-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: RoadRunner-v0 - Source: gym
+Discrete(18)
+Name: RoadRunner-v4 - Source: gym
+Discrete(18)
+Name: RoadRunnerDeterministic-v0 - Source: gym
+Discrete(18)
+Name: RoadRunnerDeterministic-v4 - Source: gym
+Discrete(18)
+Name: RoadRunnerNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: RoadRunnerNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: RoadRunner-ram-v0 - Source: gym
+Discrete(18)
+Name: RoadRunner-ram-v4 - Source: gym
+Discrete(18)
+Name: RoadRunner-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: RoadRunner-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: RoadRunner-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: RoadRunner-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Robotank-v0 - Source: gym
+Discrete(18)
+Name: Robotank-v4 - Source: gym
+Discrete(18)
+Name: RobotankDeterministic-v0 - Source: gym
+Discrete(18)
+Name: RobotankDeterministic-v4 - Source: gym
+Discrete(18)
+Name: RobotankNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: RobotankNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Robotank-ram-v0 - Source: gym
+Discrete(18)
+Name: Robotank-ram-v4 - Source: gym
+Discrete(18)
+Name: Robotank-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Robotank-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Robotank-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Robotank-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Seaquest-v0 - Source: gym
+Discrete(18)
+Name: Seaquest-v4 - Source: gym
+Discrete(18)
+Name: SeaquestDeterministic-v0 - Source: gym
+Discrete(18)
+Name: SeaquestDeterministic-v4 - Source: gym
+Discrete(18)
+Name: SeaquestNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: SeaquestNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Seaquest-ram-v0 - Source: gym
+Discrete(18)
+Name: Seaquest-ram-v4 - Source: gym
+Discrete(18)
+Name: Seaquest-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Seaquest-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Seaquest-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Seaquest-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Skiing-v0 - Source: gym
+Discrete(3)
+Name: Skiing-v4 - Source: gym
+Discrete(3)
+Name: SkiingDeterministic-v0 - Source: gym
+Discrete(3)
+Name: SkiingDeterministic-v4 - Source: gym
+Discrete(3)
+Name: SkiingNoFrameskip-v0 - Source: gym
+Discrete(3)
+Name: SkiingNoFrameskip-v4 - Source: gym
+Discrete(3)
+Name: Skiing-ram-v0 - Source: gym
+Discrete(3)
+Name: Skiing-ram-v4 - Source: gym
+Discrete(3)
+Name: Skiing-ramDeterministic-v0 - Source: gym
+Discrete(3)
+Name: Skiing-ramDeterministic-v4 - Source: gym
+Discrete(3)
+Name: Skiing-ramNoFrameskip-v0 - Source: gym
+Discrete(3)
+Name: Skiing-ramNoFrameskip-v4 - Source: gym
+Discrete(3)
+Name: Solaris-v0 - Source: gym
+Discrete(18)
+Name: Solaris-v4 - Source: gym
+Discrete(18)
+Name: SolarisDeterministic-v0 - Source: gym
+Discrete(18)
+Name: SolarisDeterministic-v4 - Source: gym
+Discrete(18)
+Name: SolarisNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: SolarisNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Solaris-ram-v0 - Source: gym
+Discrete(18)
+Name: Solaris-ram-v4 - Source: gym
+Discrete(18)
+Name: Solaris-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Solaris-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Solaris-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Solaris-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: SpaceInvaders-v0 - Source: gym
+Discrete(6)
+Name: SpaceInvaders-v4 - Source: gym
+Discrete(6)
+Name: SpaceInvadersDeterministic-v0 - Source: gym
+Discrete(6)
+Name: SpaceInvadersDeterministic-v4 - Source: gym
+Discrete(6)
+Name: SpaceInvadersNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: SpaceInvadersNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: SpaceInvaders-ram-v0 - Source: gym
+Discrete(6)
+Name: SpaceInvaders-ram-v4 - Source: gym
+Discrete(6)
+Name: SpaceInvaders-ramDeterministic-v0 - Source: gym
+Discrete(6)
+Name: SpaceInvaders-ramDeterministic-v4 - Source: gym
+Discrete(6)
+Name: SpaceInvaders-ramNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: SpaceInvaders-ramNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: StarGunner-v0 - Source: gym
+Discrete(18)
+Name: StarGunner-v4 - Source: gym
+Discrete(18)
+Name: StarGunnerDeterministic-v0 - Source: gym
+Discrete(18)
+Name: StarGunnerDeterministic-v4 - Source: gym
+Discrete(18)
+Name: StarGunnerNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: StarGunnerNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: StarGunner-ram-v0 - Source: gym
+Discrete(18)
+Name: StarGunner-ram-v4 - Source: gym
+Discrete(18)
+Name: StarGunner-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: StarGunner-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: StarGunner-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: StarGunner-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Tennis-v0 - Source: gym
+Discrete(18)
+Name: Tennis-v4 - Source: gym
+Discrete(18)
+Name: TennisDeterministic-v0 - Source: gym
+Discrete(18)
+Name: TennisDeterministic-v4 - Source: gym
+Discrete(18)
+Name: TennisNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: TennisNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Tennis-ram-v0 - Source: gym
+Discrete(18)
+Name: Tennis-ram-v4 - Source: gym
+Discrete(18)
+Name: Tennis-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Tennis-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Tennis-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Tennis-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: TimePilot-v0 - Source: gym
+Discrete(10)
+Name: TimePilot-v4 - Source: gym
+Discrete(10)
+Name: TimePilotDeterministic-v0 - Source: gym
+Discrete(10)
+Name: TimePilotDeterministic-v4 - Source: gym
+Discrete(10)
+Name: TimePilotNoFrameskip-v0 - Source: gym
+Discrete(10)
+Name: TimePilotNoFrameskip-v4 - Source: gym
+Discrete(10)
+Name: TimePilot-ram-v0 - Source: gym
+Discrete(10)
+Name: TimePilot-ram-v4 - Source: gym
+Discrete(10)
+Name: TimePilot-ramDeterministic-v0 - Source: gym
+Discrete(10)
+Name: TimePilot-ramDeterministic-v4 - Source: gym
+Discrete(10)
+Name: TimePilot-ramNoFrameskip-v0 - Source: gym
+Discrete(10)
+Name: TimePilot-ramNoFrameskip-v4 - Source: gym
+Discrete(10)
+Name: Tutankham-v0 - Source: gym
+Discrete(8)
+Name: Tutankham-v4 - Source: gym
+Discrete(8)
+Name: TutankhamDeterministic-v0 - Source: gym
+Discrete(8)
+Name: TutankhamDeterministic-v4 - Source: gym
+Discrete(8)
+Name: TutankhamNoFrameskip-v0 - Source: gym
+Discrete(8)
+Name: TutankhamNoFrameskip-v4 - Source: gym
+Discrete(8)
+Name: Tutankham-ram-v0 - Source: gym
+Discrete(8)
+Name: Tutankham-ram-v4 - Source: gym
+Discrete(8)
+Name: Tutankham-ramDeterministic-v0 - Source: gym
+Discrete(8)
+Name: Tutankham-ramDeterministic-v4 - Source: gym
+Discrete(8)
+Name: Tutankham-ramNoFrameskip-v0 - Source: gym
+Discrete(8)
+Name: Tutankham-ramNoFrameskip-v4 - Source: gym
+Discrete(8)
+Name: UpNDown-v0 - Source: gym
+Discrete(6)
+Name: UpNDown-v4 - Source: gym
+Discrete(6)
+Name: UpNDownDeterministic-v0 - Source: gym
+Discrete(6)
+Name: UpNDownDeterministic-v4 - Source: gym
+Discrete(6)
+Name: UpNDownNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: UpNDownNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: UpNDown-ram-v0 - Source: gym
+Discrete(6)
+Name: UpNDown-ram-v4 - Source: gym
+Discrete(6)
+Name: UpNDown-ramDeterministic-v0 - Source: gym
+Discrete(6)
+Name: UpNDown-ramDeterministic-v4 - Source: gym
+Discrete(6)
+Name: UpNDown-ramNoFrameskip-v0 - Source: gym
+Discrete(6)
+Name: UpNDown-ramNoFrameskip-v4 - Source: gym
+Discrete(6)
+Name: Venture-v0 - Source: gym
+Discrete(18)
+Name: Venture-v4 - Source: gym
+Discrete(18)
+Name: VentureDeterministic-v0 - Source: gym
+Discrete(18)
+Name: VentureDeterministic-v4 - Source: gym
+Discrete(18)
+Name: VentureNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: VentureNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Venture-ram-v0 - Source: gym
+Discrete(18)
+Name: Venture-ram-v4 - Source: gym
+Discrete(18)
+Name: Venture-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Venture-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Venture-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Venture-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: VideoPinball-v0 - Source: gym
+Discrete(9)
+Name: VideoPinball-v4 - Source: gym
+Discrete(9)
+Name: VideoPinballDeterministic-v0 - Source: gym
+Discrete(9)
+Name: VideoPinballDeterministic-v4 - Source: gym
+Discrete(9)
+Name: VideoPinballNoFrameskip-v0 - Source: gym
+Discrete(9)
+Name: VideoPinballNoFrameskip-v4 - Source: gym
+Discrete(9)
+Name: VideoPinball-ram-v0 - Source: gym
+Discrete(9)
+Name: VideoPinball-ram-v4 - Source: gym
+Discrete(9)
+Name: VideoPinball-ramDeterministic-v0 - Source: gym
+Discrete(9)
+Name: VideoPinball-ramDeterministic-v4 - Source: gym
+Discrete(9)
+Name: VideoPinball-ramNoFrameskip-v0 - Source: gym
+Discrete(9)
+Name: VideoPinball-ramNoFrameskip-v4 - Source: gym
+Discrete(9)
+Name: WizardOfWor-v0 - Source: gym
+Discrete(10)
+Name: WizardOfWor-v4 - Source: gym
+Discrete(10)
+Name: WizardOfWorDeterministic-v0 - Source: gym
+Discrete(10)
+Name: WizardOfWorDeterministic-v4 - Source: gym
+Discrete(10)
+Name: WizardOfWorNoFrameskip-v0 - Source: gym
+Discrete(10)
+Name: WizardOfWorNoFrameskip-v4 - Source: gym
+Discrete(10)
+Name: WizardOfWor-ram-v0 - Source: gym
+Discrete(10)
+Name: WizardOfWor-ram-v4 - Source: gym
+Discrete(10)
+Name: WizardOfWor-ramDeterministic-v0 - Source: gym
+Discrete(10)
+Name: WizardOfWor-ramDeterministic-v4 - Source: gym
+Discrete(10)
+Name: WizardOfWor-ramNoFrameskip-v0 - Source: gym
+Discrete(10)
+Name: WizardOfWor-ramNoFrameskip-v4 - Source: gym
+Discrete(10)
+Name: YarsRevenge-v0 - Source: gym
+Discrete(18)
+Name: YarsRevenge-v4 - Source: gym
+Discrete(18)
+Name: YarsRevengeDeterministic-v0 - Source: gym
+Discrete(18)
+Name: YarsRevengeDeterministic-v4 - Source: gym
+Discrete(18)
+Name: YarsRevengeNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: YarsRevengeNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: YarsRevenge-ram-v0 - Source: gym
+Discrete(18)
+Name: YarsRevenge-ram-v4 - Source: gym
+Discrete(18)
+Name: YarsRevenge-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: YarsRevenge-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: YarsRevenge-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: YarsRevenge-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Zaxxon-v0 - Source: gym
+Discrete(18)
+Name: Zaxxon-v4 - Source: gym
+Discrete(18)
+Name: ZaxxonDeterministic-v0 - Source: gym
+Discrete(18)
+Name: ZaxxonDeterministic-v4 - Source: gym
+Discrete(18)
+Name: ZaxxonNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: ZaxxonNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: Zaxxon-ram-v0 - Source: gym
+Discrete(18)
+Name: Zaxxon-ram-v4 - Source: gym
+Discrete(18)
+Name: Zaxxon-ramDeterministic-v0 - Source: gym
+Discrete(18)
+Name: Zaxxon-ramDeterministic-v4 - Source: gym
+Discrete(18)
+Name: Zaxxon-ramNoFrameskip-v0 - Source: gym
+Discrete(18)
+Name: Zaxxon-ramNoFrameskip-v4 - Source: gym
+Discrete(18)
+Name: CubeCrash-v0 - Source: gym
+Discrete(3)
+Name: CubeCrashSparse-v0 - Source: gym
+Discrete(3)
+Name: CubeCrashScreenBecomesBlack-v0 - Source: gym
+Discrete(3)
+Name: MemorizeDigits-v0 - Source: gym
+Discrete(10)
+Name: MiniGrid-Empty-5x5-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-Empty-Random-5x5-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-Empty-6x6-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-Empty-Random-6x6-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-Empty-8x8-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-Empty-16x16-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-DoorKey-5x5-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-DoorKey-6x6-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-DoorKey-8x8-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-DoorKey-16x16-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-MultiRoom-N2-S4-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-MultiRoom-N4-S5-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-MultiRoom-N6-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-Fetch-5x5-N2-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-Fetch-6x6-N2-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-Fetch-8x8-N3-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-GoToObject-6x6-N2-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-GoToObject-8x8-N2-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-GoToDoor-5x5-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-GoToDoor-6x6-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-GoToDoor-8x8-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-PutNear-6x6-N2-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-PutNear-8x8-N3-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-LockedRoom-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-KeyCorridorS3R1-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-KeyCorridorS3R2-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-KeyCorridorS3R3-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-KeyCorridorS4R3-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-KeyCorridorS5R3-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-KeyCorridorS6R3-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-Unlock-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-UnlockPickup-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-BlockedUnlockPickup-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-Playground-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-RedBlueDoors-6x6-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-RedBlueDoors-8x8-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-ObstructedMaze-1Dl-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-ObstructedMaze-1Dlh-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-ObstructedMaze-1Dlhb-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-ObstructedMaze-2Dl-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-ObstructedMaze-2Dlh-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-ObstructedMaze-2Dlhb-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-ObstructedMaze-1Q-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-ObstructedMaze-2Q-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-ObstructedMaze-Full-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-MemoryS17Random-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-MemoryS13Random-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-MemoryS13-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-MemoryS11-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-MemoryS9-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-MemoryS7-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-FourRooms-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-LavaCrossingS9N1-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-LavaCrossingS9N2-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-LavaCrossingS9N3-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-LavaCrossingS11N5-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-SimpleCrossingS9N1-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-SimpleCrossingS9N2-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-SimpleCrossingS9N3-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-SimpleCrossingS11N5-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-LavaGapS5-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-LavaGapS6-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-LavaGapS7-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-Dynamic-Obstacles-5x5-v0 - Source: minigrid
+Discrete(3)
+Name: MiniGrid-Dynamic-Obstacles-Random-5x5-v0 - Source: minigrid
+Discrete(3)
+Name: MiniGrid-Dynamic-Obstacles-6x6-v0 - Source: minigrid
+Discrete(3)
+Name: MiniGrid-Dynamic-Obstacles-Random-6x6-v0 - Source: minigrid
+Discrete(3)
+Name: MiniGrid-Dynamic-Obstacles-8x8-v0 - Source: minigrid
+Discrete(3)
+Name: MiniGrid-Dynamic-Obstacles-16x16-v0 - Source: minigrid
+Discrete(3)
+Name: MiniGrid-DistShift1-v0 - Source: minigrid
+Discrete(7)
+Name: MiniGrid-DistShift2-v0 - Source: minigrid
+Discrete(7)
+Name: InvertedPendulumPyBulletEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (1,), float32)
+Name: InvertedDoublePendulumPyBulletEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (1,), float32)
+Name: InvertedPendulumSwingupPyBulletEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (1,), float32)
+Name: ReacherPyBulletEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (2,), float32)
+Name: PusherPyBulletEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (7,), float32)
+Name: ThrowerPyBulletEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (7,), float32)
+Name: StrikerPyBulletEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (7,), float32)
+Name: Walker2DPyBulletEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (6,), float32)
+Name: HalfCheetahPyBulletEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (6,), float32)
+Name: AntPyBulletEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (8,), float32)
+Name: HopperPyBulletEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (3,), float32)
+Name: HumanoidPyBulletEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (17,), float32)
+Name: HumanoidFlagrunPyBulletEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (17,), float32)
+Name: HumanoidFlagrunHarderPyBulletEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (17,), float32)
+Name: AtlasPyBulletEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (30,), float32)
+Name: InvertedPendulumMuJoCoEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (1,), float32)
+Name: InvertedDoublePendulumMuJoCoEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (1,), float32)
+Name: Walker2DMuJoCoEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (6,), float32)
+Name: HalfCheetahMuJoCoEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (6,), float32)
+Name: AntMuJoCoEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (8,), float32)
+Name: HopperMuJoCoEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (3,), float32)
+Name: HumanoidMuJoCoEnv-v0 - Source: pybulletgym
+Box(-1.0, 1.0, (17,), float32)
+Name: procgen-bigfish-v0 - Source: procgen
+Discrete(15)
+Name: procgen-bossfight-v0 - Source: procgen
+Discrete(15)
+Name: procgen-caveflyer-v0 - Source: procgen
+Discrete(15)
+Name: procgen-chaser-v0 - Source: procgen
+Discrete(15)
+Name: procgen-climber-v0 - Source: procgen
+Discrete(15)
+Name: procgen-coinrun-v0 - Source: procgen
+Discrete(15)
+Name: procgen-dodgeball-v0 - Source: procgen
+Discrete(15)
+Name: procgen-fruitbot-v0 - Source: procgen
+Discrete(15)
+Name: procgen-heist-v0 - Source: procgen
+Discrete(15)
+Name: procgen-jumper-v0 - Source: procgen
+Discrete(15)
+Name: procgen-leaper-v0 - Source: procgen
+Discrete(15)
+Name: procgen-maze-v0 - Source: procgen
+Discrete(15)
+Name: procgen-miner-v0 - Source: procgen
+Discrete(15)
+Name: procgen-ninja-v0 - Source: procgen
+Discrete(15)
+Name: procgen-plunder-v0 - Source: procgen
+Discrete(15)
+Name: procgen-starpilot-v0 - Source: procgen
+Discrete(15)
