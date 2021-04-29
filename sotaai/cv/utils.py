@@ -17,10 +17,11 @@ from random import randrange
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 SOURCES = [
-    'tensorflow', 'keras', 'torch', 'fastai', 'mxnet', 'pretrainedmodels', 'mmf'
+    'tensorflow', 'keras', 'torchvision', 'fastai', 'mxnet', 'pretrainedmodels',
+    'mmf'
 ]
 
-IMPLEMENTED_SOURCES = ['keras', 'torch', 'tensorflow']
+IMPLEMENTED_SOURCES = ['keras', 'torchvision', 'tensorflow']
 
 OBJECT_DETECTION_COMPATIBILITY = {
     'fasterrcnn_resnet50_fpn': {
@@ -74,6 +75,11 @@ PIXELS_CLASSES = {'lost_and_found': 44, 'cityscapes': 35, 'scene_parse150': 150}
 # In keypoint detection there are models that require a box param for training
 KEYPOINT_REQUIRE_BOX = ['keypointrcnn_resnet50_fpn']
 KEYPOINT_REQUIRE_VISIBILTY = ['keypointrcnn_resnet50_fpn']
+
+
+def get_implemented_sources(sources):
+  implemented = filter(lambda s: s in IMPLEMENTED_SOURCES, sources)
+  return list(implemented)
 
 
 def split_sources(sources):
@@ -627,7 +633,7 @@ def get_source_from_dataset(dataset) -> str:
     if len(dataset) == 2 and isinstance(dataset[0], np.ndarray):
       # Keras dataset objects are numpy.ndarray tuples.
       source = 'keras'
-  elif 'torch' in obj_type:
+  elif 'torchvision' in obj_type:
     source = 'torchvision'
   else:
     # Dataset source's name is read from the dataset type.

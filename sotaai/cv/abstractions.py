@@ -140,9 +140,10 @@ class CvModel(object):
     self.name = name
     self.tasks = models_tasks_map[name]
     self.source = utils.get_source_from_model(self.raw)
-    self.is_implemented = not (isinstance(self.raw, dict) and
-                               'source' in self.raw)
-
+    self.is_implemented = (not (isinstance(self.raw, dict) and
+                                'source' in self.raw)) or (self.source in [
+                                    'keras', 'torchvision', 'tensorflow'
+                                ])
     if not self.is_implemented:
       self.original_input_type = None
       self.original_input_shape = None

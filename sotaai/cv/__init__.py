@@ -6,7 +6,7 @@
 from sotaai.cv import utils
 from sotaai.cv import abstractions
 from sotaai.cv import keras_wrapper
-from sotaai.cv import torch_wrapper
+from sotaai.cv import torchvision_wrapper
 from sotaai.cv import metadata
 import importlib
 
@@ -55,7 +55,7 @@ def load_model(name: str,
   # across different libraries (configs)
   # As of now, we only have one input: pretrained or not
 
-  # if source in ['torch', 'keras']:
+  # if source in ['torchvision', 'keras']:
   if source == 'keras':
     raw_object = wrapper.load_model(
         name,
@@ -69,7 +69,7 @@ def load_model(name: str,
         pooling=keras_pooling,
         classes=keras_classes,
         classifier_activation=keras_classifier_activation)
-  elif source == 'torch':
+  elif source == 'torchvision':
     raw_object = wrapper.load_model(name, pretrained=pretrained)
   # Non fully implemented sources fall in this case
   else:
@@ -166,7 +166,7 @@ def load_dataset(name: str,
     # statement.
     # The IF was added temporary to make sure only fully implemented sources
     # have the raw object and can actually be used in code
-    if source == 'torch':
+    if source == 'torchvision':
       raw_object = wrapper.load_dataset(name,
                                         transform=torch_transform,
                                         ann_file=torch_ann_file,
@@ -180,7 +180,7 @@ def load_dataset(name: str,
   # The next two cases, will return the dataset instance (raw_object) but skip
   # the download. This allows the JSON creation for all datasets no matter if
   # they are downloaded or not
-  elif source in ['keras', 'tensorflow', 'torch']:
+  elif source in ['keras', 'tensorflow', 'torchvision']:
     raw_object = wrapper.load_dataset(name, download=download)
   else:
     raw_object = wrapper.load_dataset(name)
@@ -235,9 +235,9 @@ def model_to_dataset(cv_model, cv_dataset, cv_task=None):
   elif cv_model.source == 'torchvision':
     task = cv_task if cv_task in cv_dataset.tasks else cv_dataset.tasks[0]
     if task == 'classification':
-      torch_wrapper.model_to_dataset_classification(cv_model, cv_dataset)
+      torchvision_wrapper.model_to_dataset_classification(cv_model, cv_dataset)
     elif task == 'segmentation':
-      torch_wrapper.model_to_dataset_segmentation(cv_model, cv_dataset)
+      torchvision_wrapper.model_to_dataset_segmentation(cv_model, cv_dataset)
     elif task in ('object_detection', 'pose estimation'):
 
       if not cv_dataset.name in utils.OBJECT_DETECTION_COMPATIBILITY[
@@ -245,9 +245,11 @@ def model_to_dataset(cv_model, cv_dataset, cv_task=None):
         raise Exception(
             f'{cv_dataset.name} is not compatible with {cv_model.name}')
 
-      torch_wrapper.model_to_dataset_object_detection(cv_model, cv_dataset)
+      torchvision_wrapper.model_to_dataset_object_detection(
+          cv_model, cv_dataset)
     elif task == 'keypoint_detection':
-      torch_wrapper.model_to_dataset_keypoint_detection(cv_model, cv_dataset)
+      torchvision_wrapper.model_to_dataset_keypoint_detection(
+          cv_model, cv_dataset)
 
   return cv_model, cv_dataset
 
@@ -279,6 +281,9 @@ def create_models_dict(model_names, models_sources_map):
 
     model_dict['sources'] = models_sources_map[model_dict['name']]
     del model_dict['source']
+
+    model_dict['implemented_sources'] = utils.get_implemented_sources(
+        model_dict['sources'])
 
     model_dict['unified_name'] = unified_name
 
@@ -351,7 +356,7 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
     # as an attribute, that's why we have to iterate over the splits to extract
     # the splits information and then extend the dataset dict with this split
     # data
-    dataset_splits = load_dataset(dataset_name)
+    dataset_splits = load_dataset(dataset_name, download=False)
 
     dataset_dict = None
     split_names = []
@@ -373,6 +378,9 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
       del dataset_dict['cv_num_items']
 
     dataset_dict['sources'] = dataset_sources_map[dataset_dict['name']]
+
+    dataset_dict['implemented_sources'] = utils.get_implemented_sources(
+        dataset_dict['sources'])
 
     dataset_dict['cv_split_names'] = split_names
     dataset_dict['cv_split_num_items'] = split_num_items
