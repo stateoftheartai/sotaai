@@ -42,11 +42,15 @@ class TestGymWrapper(unittest.TestCase):
     '''
       Make sure dicts are returned.
     '''
+    # with open('out.txt', 'w') as f:
 
     for name_env in gym_wrapper.ENVIRONMENTS:
       if name_env not in env_error:
         env = load_environment(name_env)
         print(f'Name: {name_env} - Source: {env.source}')
+        print(env.type)
+        # print(f'Name: {name_env} - Source: {env.source}', file=f)
+        # print(env.raw.action_space, file=f)
         self.assertEqual(isinstance(env.to_dict(), dict), True)
       else:
         print(f'{name_env} skipped...')
