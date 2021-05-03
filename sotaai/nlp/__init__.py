@@ -63,6 +63,8 @@ def create_models_dict(model_names, models_sources_map):
     model_dict['sources'] = models_sources_map[model_dict['name']]
     del model_dict['source']
 
+    model_dict['implemented_sources'] = []
+
     model_dict['unified_name'] = model_name  # TODO(tonio) unify...
 
     models.append(model_dict)
@@ -96,6 +98,8 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
 
     dataset_dict['sources'] = dataset_sources_map[dataset_dict['name']]
     del dataset_dict['source']
+
+    dataset_dict['implemented_sources'] = []
 
     dataset_dict['unified_name'] = dataset_name  # TODO(tonio) unify...
 
