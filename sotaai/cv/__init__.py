@@ -307,6 +307,7 @@ def create_models_dict(model_names, models_sources_map):
           'name_alt': [model['name']],
           'tasks': model['tasks'],
           'sources': model['sources'],
+          'implemented_sources': model['implemented_sources']
       }
     else:
       unified_models[model['unified_name']]['name_alt'].append(model['name'])
@@ -314,6 +315,9 @@ def create_models_dict(model_names, models_sources_map):
           model['unified_name']]['tasks'] + model['tasks']
       unified_models[model['unified_name']]['sources'] = unified_models[
           model['unified_name']]['sources'] + model['sources']
+      unified_models[model['unified_name']][
+          'implemented_sources'] = unified_models[model['unified_name']][
+              'implemented_sources'] + model['implemented_sources']
 
   unified_models_list = list(unified_models.values())
 
@@ -321,6 +325,7 @@ def create_models_dict(model_names, models_sources_map):
     model['name_alt'] = list(set(model['name_alt']))
     model['tasks'] = list(set(model['tasks']))
     model['sources'] = list(set(model['sources']))
+    model['implemented_sources'] = list(set(model['implemented_sources']))
 
   print('\nNOT UNIFIED MODELS: {}'.format(len(models)))
   print('UNIFIED MODELS: {}'.format(len(unified_models_list)))
