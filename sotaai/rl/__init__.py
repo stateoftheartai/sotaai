@@ -7,39 +7,47 @@ from sotaai.rl import abstractions
 import importlib
 
 
-def load_environment(name: str) -> abstractions.RlEnvironment:
+def load_environment(name: str,
+                     import_library=True) -> abstractions.RlEnvironment:
   '''Dummy load dataset function. Placeholder for real wrapper.'''
   # dataset_source_map = utils.map_name_sources('datasets')
-  source = 'gym'
-  wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
-  raw_object = wrapper.load_environment(name)
-  return abstractions.RlEnvironment(raw_object, name)
+  if not import_library:
+    return abstractions.RlEnvironment(name)
+  else:
+    source = 'gym'
+    wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
+    raw_object = wrapper.load_environment(name)
+    return abstractions.RlEnvironment(name, raw_object)
 
 
 def load_model(name: str,
-               name_env: str = 'CartPole-v1') -> abstractions.RlModel:
+               name_env: str = 'CartPole-v1',
+               import_library=True) -> abstractions.RlModel:
   '''Dummy load model function. Placeholder for real wrapper.'''
   # model_source_map = utils.map_name_sources('models')
   source = 'garage'
-  wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
-  raw_object = wrapper.load_model(name, name_env=name_env)
-  env = load_environment(name=name_env)
-  return abstractions.RlModel(name=name,
-                              raw_algo=raw_object,
-                              source=source,
-                              environment=env)
+  if not import_library:
+    return abstractions.RlModel(name=name)
+  else:
+    wrapper = importlib.import_module('sotaai.rl.' + source + '_wrapper')
+    raw_object = wrapper.load_model(name, name_env=name_env)
+    env = load_environment(name=name_env)
+    return abstractions.RlModel(name=name,
+                                raw_algo=raw_object,
+                                source=source,
+                                environment=env)
 
 
-def create_models_dict(model_names, models_sources_map):
+def create_models_dict(model_names, models_sources_map, import_library=False):
   '''Given a list of model names, return a list with the JSON representation
-  of each model as an standardized dict
-  Args:
-    model_names (list): list of model names to return the standardized dict
-    models_sources_map: a dict map between model names and sources as returned
-      by the utils function map_name_sources('models')
-  Returns:
-    A list of dictionaries with the JSON representation of each CV model
-  '''
+    of each model as an standardized dict
+    Args:
+      model_names (list): list of model names to return the standardized dict
+      models_sources_map: a dict map between model names and sources as returned
+        by the utils function map_name_sources('models')
+    Returns:
+      A list of dictionaries with the JSON representation of each CV model
+    '''
 
   print('\nCreating model JSONs...')
 
@@ -48,7 +56,7 @@ def create_models_dict(model_names, models_sources_map):
   for i, model_name in enumerate(model_names):
     print(' - ({}/{}) {}'.format(i + 1, len(model_names),
                                  'models.' + model_name))
-    model = load_model(name=model_name)
+    model = load_model(name=model_name, import_library=import_library)
     model_dict = model.to_dict()
 
     model_dict['sources'] = models_sources_map[model_dict['name']]
@@ -61,19 +69,22 @@ def create_models_dict(model_names, models_sources_map):
   return models
 
 
-def create_datasets_dict(dataset_names, dataset_sources_map):
+def create_datasets_dict(dataset_names,
+                         dataset_sources_map,
+                         import_library=False):
   '''Given a list of dataset names, return a list with the JSON representation
-  of each dataset as an standardized dict
+    of each dataset as an standardized dict
 
-  Args:
-    dataset_names (list): list of dataset names to return the standardized dict
-      dataset
-    dataset_sources_map: a dict map between dataset names and sources as
-      returned by the utils function map_name_sources('datasets')
+    Args:
+      dataset_names (list): list of dataset names to
+                            return the standardized dict
+        dataset
+      dataset_sources_map: a dict map between dataset names and sources as
+        returned by the utils function map_name_sources('datasets')
 
-  Returns:
-    A list of dictionaries with the JSON representation of each CV model
-  '''
+    Returns:
+      A list of dictionaries with the JSON representation of each CV model
+    '''
 
   print('\nCreating dataset JSONs...')
 
@@ -82,7 +93,7 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
   for i, dataset_name in enumerate(dataset_names):
     print(' - ({}/{}) {}'.format(i + 1, len(dataset_names),
                                  'datasets.' + dataset_name))
-    dataset = load_environment(dataset_name)
+    dataset = load_environment(name=dataset_name, import_library=import_library)
     dataset_dict = dataset.to_dict()
 
     dataset_dict['sources'] = dataset_sources_map[dataset_dict['name']]
