@@ -70,6 +70,7 @@ class RlEnvironment(object):
         'name': self.name,
         'type': 'Environment',
         'source': self.source,
+        'is_implemented': True,
         'action_space': {
             'size': self.action_space_size,
             'dtype': self.action_space_dtype,
@@ -120,6 +121,7 @@ class RlModel(object):
     return {
         'name': self.name,
         'type': 'model',
+        'is_implemented': True,
         'source': self.source,
         'tasks': self.tasks
     }

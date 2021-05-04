@@ -79,7 +79,7 @@ def get_data(area: str):
 
     model_names = models_sources_map.keys()
     dataset_names = datasets_sources_map.keys()
-
+    print(models_sources_map)
     models = sotaai_module.create_models_dict(model_names, models_sources_map)
     datasets = sotaai_module.create_datasets_dict(dataset_names,
                                                   datasets_sources_map)

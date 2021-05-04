@@ -5,7 +5,7 @@
 '''fastai https://pytorch.org/ wrapper module'''
 
 import unittest
-from sotaai.cv import torch_wrapper, load_dataset, load_model, model_to_dataset, utils, keras_wrapper, tensorflow_wrapper
+from sotaai.cv import torchvision_wrapper, load_dataset, load_model, model_to_dataset, utils, keras_wrapper, tensorflow_wrapper
 from sotaai.cv.abstractions import CvDataset, CvModel
 import inspect
 import torch
@@ -66,10 +66,10 @@ class TestTorchWrapper(unittest.TestCase):
   def test_load_model(self):
     '''Make sure that we can load every model from the Torch module.'''
 
-    for task in torch_wrapper.MODELS:
-      for model_name in torch_wrapper.MODELS[task]:
+    for task in torchvision_wrapper.MODELS:
+      for model_name in torchvision_wrapper.MODELS[task]:
 
-        model = torch_wrapper.load_model(model_name)
+        model = torchvision_wrapper.load_model(model_name)
         #
         # @author HO
         # Test the returned model against the final parent nn.Module class
@@ -93,7 +93,7 @@ class TestTorchWrapper(unittest.TestCase):
 
     for dataset_name in self.test_datasets:
       print(dataset_name)
-      dataset = torch_wrapper.load_dataset(
+      dataset = torchvision_wrapper.load_dataset(
           dataset_name, ann_file='~/.torch/annotation_file.json')
 
       self.assertEqual(type(dataset), dict)
@@ -104,10 +104,10 @@ class TestTorchWrapper(unittest.TestCase):
       Make sure we can create an abstract model using torch models.
     '''
 
-    for task in torch_wrapper.MODELS:
-      for model_name in torch_wrapper.MODELS[task]:
+    for task in torchvision_wrapper.MODELS:
+      for model_name in torchvision_wrapper.MODELS[task]:
 
-        cv_model = load_model(model_name, 'torch')
+        cv_model = load_model(model_name, 'torchvision')
 
         self.assertEqual(CvModel, type(cv_model))
         self.assertEqual(cv_model.source, 'torchvision')
@@ -141,7 +141,7 @@ class TestTorchWrapper(unittest.TestCase):
 
       print('\n---')
 
-      cv_model = load_model(model_name, source='torch')
+      cv_model = load_model(model_name, source='torchvision')
 
       dataset_splits = load_dataset(dataset_name)
       split_name = next(iter(dataset_splits.keys()))
@@ -185,7 +185,7 @@ class TestTorchWrapper(unittest.TestCase):
   @unittest.SkipTest
   def test_model_to_dataset_segmentation(self):
 
-    # cv_model = load_model('deeplabv3_resnet101', source='torch')
+    # cv_model = load_model('deeplabv3_resnet101', source='torchvision')
     # cv_dataset = load_dataset('VOCSegmentation/2007')
 
     def single_test(model_name, dataset_name):
@@ -195,7 +195,7 @@ class TestTorchWrapper(unittest.TestCase):
 
       print('\n---')
 
-      cv_model = load_model(model_name, source='torch')
+      cv_model = load_model(model_name, source='torchvision')
 
       dataset_splits = load_dataset(dataset_name)
       split_name = next(iter(dataset_splits.keys()))
@@ -228,11 +228,11 @@ class TestTorchWrapper(unittest.TestCase):
                          (len(cv_dataset.pixel_classes), 224, 224))
         self.assertEqual(mask.shape, (224, 224))
 
-    for model in torch_wrapper.MODELS['segmentation']:
-      for dataset in torch_wrapper.DATASETS['segmentation']:
+    for model in torchvision_wrapper.MODELS['segmentation']:
+      for dataset in torchvision_wrapper.DATASETS['segmentation']:
         single_test(model, dataset)
 
-    for model in torch_wrapper.MODELS['segmentation']:
+    for model in torchvision_wrapper.MODELS['segmentation']:
       for dataset in tensorflow_wrapper.DATASETS['segmentation']:
         single_test(model, dataset)
 
@@ -246,7 +246,7 @@ class TestTorchWrapper(unittest.TestCase):
 
       print('\n---')
 
-      cv_model = load_model(model_name, source='torch')
+      cv_model = load_model(model_name, source='torchvision')
 
       dataset_splits = load_dataset(dataset_name)
       split_name = next(iter(dataset_splits.keys()))
@@ -310,7 +310,7 @@ class TestTorchWrapper(unittest.TestCase):
         # print(prediction['labels'].shape)
         # print(prediction['scores'].shape)
 
-    for model in torch_wrapper.MODELS['keypoint_detection']:
+    for model in torchvision_wrapper.MODELS['keypoint_detection']:
       for dataset in tensorflow_wrapper.DATASETS['keypoint_detection']:
         single_test(model, dataset)
 

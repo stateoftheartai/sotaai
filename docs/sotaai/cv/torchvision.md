@@ -1,6 +1,6 @@
 # TensorFlow Datasets
 
-Wrapper: [`torch_wrapper.py`](../../../sotaai/cv/torch_wrapper.py)
+Wrapper: [`torchvision_wrapper.py`](../../../sotaai/cv/torchvision_wrapper.py)
 
 General Notes:
 

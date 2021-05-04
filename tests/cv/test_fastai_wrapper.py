@@ -54,7 +54,7 @@ class TestFastaiWrapper(unittest.TestCase):
         # https://pytorch.org/docs/stable/generated/torch.nn.Module.html?highlight=nn%20module#torch.nn.Module
         #
         # Since most data comes from Torch, this is very similar to
-        # torch_wrapper.py
+        # torchvision_wrapper.py
         #
         self.assertIsInstance(model, nn.Module)
 

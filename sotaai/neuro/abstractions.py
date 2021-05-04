@@ -20,6 +20,7 @@ class NeuroDataset(object):
   def to_dict(self) -> dict:
     return {
         'name': self.name,
+        'is_implemented': False,
         'type': 'dataset',
         'source': self.source,
         'tasks': self.tasks
@@ -39,6 +40,7 @@ class NeuroModel(object):
     return {
         'name': self.name,
         'type': 'model',
+        'is_implemented': False,
         'source': self.source,
         'tasks': self.tasks
     }

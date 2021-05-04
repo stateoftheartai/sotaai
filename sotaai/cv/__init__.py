@@ -6,7 +6,7 @@
 from sotaai.cv import utils
 from sotaai.cv import abstractions
 from sotaai.cv import keras_wrapper
-from sotaai.cv import torch_wrapper
+from sotaai.cv import torchvision_wrapper
 from sotaai.cv import metadata
 import importlib
 
@@ -72,7 +72,7 @@ def load_model(name: str,
         pooling=keras_pooling,
         classes=keras_classes,
         classifier_activation=keras_classifier_activation)
-  elif source == 'torch':
+  elif source == 'torchvision':
     raw_object = wrapper.load_model(name, pretrained=pretrained)
   # Non fully implemented sources fall in this case
   else:
@@ -171,7 +171,7 @@ def load_dataset(name: str,
     # statement.
     # The IF was added temporary to make sure only fully implemented sources
     # have the raw object and can actually be used in code
-    if source == 'torch':
+    if source == 'torchvision':
       raw_object = wrapper.load_dataset(name,
                                         transform=torch_transform,
                                         ann_file=torch_ann_file,
@@ -185,7 +185,7 @@ def load_dataset(name: str,
   # The next two cases, will return the dataset instance (raw_object) but skip
   # the download. This allows the JSON creation for all datasets no matter if
   # they are downloaded or not
-  elif source in ['keras', 'tensorflow', 'torch']:
+  elif source in ['keras', 'tensorflow', 'torchvision']:
     raw_object = wrapper.load_dataset(name, download=download)
   else:
     raw_object = wrapper.load_dataset(name)
@@ -241,9 +241,9 @@ def model_to_dataset(cv_model, cv_dataset, cv_task=None):
   elif cv_model.source == 'torchvision':
     task = cv_task if cv_task in cv_dataset.tasks else cv_dataset.tasks[0]
     if task == 'classification':
-      torch_wrapper.model_to_dataset_classification(cv_model, cv_dataset)
+      torchvision_wrapper.model_to_dataset_classification(cv_model, cv_dataset)
     elif task == 'segmentation':
-      torch_wrapper.model_to_dataset_segmentation(cv_model, cv_dataset)
+      torchvision_wrapper.model_to_dataset_segmentation(cv_model, cv_dataset)
     elif task in ('object_detection', 'pose estimation'):
 
       if not cv_dataset.name in utils.OBJECT_DETECTION_COMPATIBILITY[
@@ -251,9 +251,11 @@ def model_to_dataset(cv_model, cv_dataset, cv_task=None):
         raise Exception(
             f'{cv_dataset.name} is not compatible with {cv_model.name}')
 
-      torch_wrapper.model_to_dataset_object_detection(cv_model, cv_dataset)
+      torchvision_wrapper.model_to_dataset_object_detection(
+          cv_model, cv_dataset)
     elif task == 'keypoint_detection':
-      torch_wrapper.model_to_dataset_keypoint_detection(cv_model, cv_dataset)
+      torchvision_wrapper.model_to_dataset_keypoint_detection(
+          cv_model, cv_dataset)
 
   return cv_model, cv_dataset
 
@@ -286,6 +288,9 @@ def create_models_dict(model_names, models_sources_map, import_library=False):
     model_dict['sources'] = models_sources_map[model_dict['name']]
     del model_dict['source']
 
+    model_dict['implemented_sources'] = utils.get_implemented_sources(
+        model_dict['sources'])
+
     model_dict['unified_name'] = unified_name
 
     models.append(model_dict)
@@ -308,6 +313,7 @@ def create_models_dict(model_names, models_sources_map, import_library=False):
           'name_alt': [model['name']],
           'tasks': model['tasks'],
           'sources': model['sources'],
+          'implemented_sources': model['implemented_sources']
       }
     else:
       unified_models[model['unified_name']]['name_alt'].append(model['name'])
@@ -315,6 +321,9 @@ def create_models_dict(model_names, models_sources_map, import_library=False):
           model['unified_name']]['tasks'] + model['tasks']
       unified_models[model['unified_name']]['sources'] = unified_models[
           model['unified_name']]['sources'] + model['sources']
+      unified_models[model['unified_name']][
+          'implemented_sources'] = unified_models[model['unified_name']][
+              'implemented_sources'] + model['implemented_sources']
 
   unified_models_list = list(unified_models.values())
 
@@ -322,6 +331,7 @@ def create_models_dict(model_names, models_sources_map, import_library=False):
     model['name_alt'] = list(set(model['name_alt']))
     model['tasks'] = list(set(model['tasks']))
     model['sources'] = list(set(model['sources']))
+    model['implemented_sources'] = list(set(model['implemented_sources']))
 
   print('\nNOT UNIFIED MODELS: {}'.format(len(models)))
   print('UNIFIED MODELS: {}'.format(len(unified_models_list)))
@@ -384,6 +394,9 @@ def create_datasets_dict(dataset_names,
         del dataset_dict['cv_num_items']
 
     dataset_dict['sources'] = dataset_sources_map[dataset_dict['name']]
+
+    dataset_dict['implemented_sources'] = utils.get_implemented_sources(
+        dataset_dict['sources'])
 
     dataset_dict['cv_split_names'] = split_names
     dataset_dict['cv_split_num_items'] = split_num_items

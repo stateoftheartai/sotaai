@@ -95,6 +95,8 @@ class CvDataset(object):
             'dataset',
         'source':
             self.source,
+        'is_implemented':
+            self.is_implemented,
         'tasks':
             self.tasks,
         'cv_num_items':
@@ -198,6 +200,8 @@ class CvModel(object):
             self.tasks,
         'paper':
             self.paper,
+        'is_implemented':
+            self.is_implemented,
         'cv_input_type':
             self.original_input_type,
         'cv_input_shape_height':

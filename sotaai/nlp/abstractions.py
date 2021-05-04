@@ -21,6 +21,7 @@ class NlpDataset(object):
     return {
         'name': self.name,
         'type': 'dataset',
+        'is_implemented': False,
         'source': self.source,
         'tasks': self.tasks
     }
@@ -39,6 +40,7 @@ class NlpModel(object):
     return {
         'name': self.name,
         'type': 'model',
+        'is_implemented': False,
         'source': self.source,
         'tasks': self.tasks
     }
