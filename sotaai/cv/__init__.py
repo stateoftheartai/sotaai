@@ -24,18 +24,19 @@ def load_model(name: str,
                keras_include_top=False,
                keras_pooling=None,
                keras_classes=1000,
-               keras_classifier_activation='softmax') -> abstractions.CvModel:
+               keras_classifier_activation='softmax',
+               import_library=True) -> abstractions.CvModel:
   '''Fetch a model from a specific source, and return standardized object.
 
-  Args:
-    name (str):
-      Name of the model.
-    source (str):
-      Optional parameter to indicate a specific source library.
+      Args:
+        name (str):
+          Name of the model.
+        source (str):
+          Optional parameter to indicate a specific source library.
 
-  Returns (abstractions.CvModel):
-    The standardized model.
-  '''
+      Returns (abstractions.CvModel):
+        The standardized model.
+      '''
   model_source_map = utils.map_name_sources('models',
                                             return_original_names=False)
   lower_name = name.lower()
@@ -55,8 +56,10 @@ def load_model(name: str,
   # across different libraries (configs)
   # As of now, we only have one input: pretrained or not
 
-  # if source in ['torchvision', 'keras']:
-  if source == 'keras':
+  # if source in ['torch', 'keras']:
+  if not import_library:
+    return abstractions.CvModel(name=name)
+  elif source == 'keras':
     raw_object = wrapper.load_model(
         name,
         pretrained=pretrained,
@@ -75,7 +78,7 @@ def load_model(name: str,
   else:
     raw_object = wrapper.load_model(name)
 
-  return abstractions.CvModel(raw_object, name)
+  return abstractions.CvModel(name, raw_object)
 
 
 def load_dataset(name: str,
@@ -86,23 +89,25 @@ def load_dataset(name: str,
                  torch_target_transform=None,
                  torch_ann_file=None,
                  torch_extensions=None,
-                 torch_frames_per_clip=None) -> abstractions.CvDataset:
+                 torch_frames_per_clip=None,
+                 import_library=True) -> abstractions.CvDataset:
   '''Fetch a dataset from a specific source, and return standardized object.
 
-  Args:
-    name (str):
-      Name of the dataset.
-    source (str):
-      Optional parameter to indicate a specific source library.
+      Args:
+        name (str):
+          Name of the dataset.
+        source (str):
+          Optional parameter to indicate a specific source library.
 
-  Returns (abstractions.CvDataset):
-    The standardized dataset.
+      Returns (abstractions.CvDataset):
+        The standardized dataset.
 
-  # TODO(tonioteran) Add input sanitizer checks to make sure we're loading only
-  # available models.
-  '''
+      # TODO(tonioteran) Add input sanitizer checks to make sure
+      # we're loading only available models.
+      '''
   valid_sources = datasets_source_map[name]
-
+  if not import_library:
+    return abstractions.CvDataset(name=name)
   if source and source not in valid_sources:
     raise NameError(
         'Source {} not available for dataset {}.'.format(source, name) +
@@ -198,27 +203,30 @@ def load_dataset(name: str,
     if raw and hasattr(wrapper, 'DatasetIterator'):
       iterator = wrapper.DatasetIterator(raw)
 
-    std_dataset[split_name] = abstractions.CvDataset(raw, iterator, name,
-                                                     split_name)
+    std_dataset[split_name] = abstractions.CvDataset(name=name,
+                                                     raw_dataset=raw,
+                                                     iterator=iterator,
+                                                     split_name=split_name)
 
   return std_dataset
 
 
 def model_to_dataset(cv_model, cv_dataset, cv_task=None):
   '''If compatible, adjust model and dataset so that they can be executed
-  against each other
+      against each other
 
-  Args:
-    cv_model: an abstracted cv model
-    cv_dataset: an abstracted cv dataset
-    cv_task: a cv task. In case an abstracted cv dataset is found in multiple tasks
+      Args:
+        cv_model: an abstracted cv model
+        cv_dataset: an abstracted cv dataset
+        cv_task: a cv task. In case an abstracted cv
+                 dataset is found in multiple tasks
 
-  Returns:
-    cv_model: the abstracted cv model adjusted to be executed against
-      cv_dataset
-    cv_dataset: the abstracted cv dataset adjust to be executed against
-      cv_model
-  '''
+      Returns:
+        cv_model: the abstracted cv model adjusted to be executed against
+          cv_dataset
+        cv_dataset: the abstracted cv dataset adjust to be executed against
+          cv_model
+      '''
 
   # Uncomment following prints to test model_to_dataset input and outputs...
   # print('\nModel ', cv_model.name)
@@ -254,18 +262,18 @@ def model_to_dataset(cv_model, cv_dataset, cv_task=None):
   return cv_model, cv_dataset
 
 
-def create_models_dict(model_names, models_sources_map):
+def create_models_dict(model_names, models_sources_map, import_library=False):
   '''Given a list of model names, return a list with the JSON representation
-  of each model as an standardized dict
+      of each model as an standardized dict
 
-  Args:
-    model_names (list): list of model names to return the standardized dict
-    models_sources_map: a dict map between model names and sources as returned
-      by the utils function map_name_sources('models')
+      Args:
+        model_names (list): list of model names to return the standardized dict
+        models_sources_map: a dict map between model names and sources
+        as returned by the utils function map_name_sources('models')
 
-  Returns:
-    A list of dictionaries with the JSON representation of each CV model
-  '''
+      Returns:
+        A list of dictionaries with the JSON representation of each CV model
+      '''
 
   print('\nCreating model JSONs...')
 
@@ -276,7 +284,7 @@ def create_models_dict(model_names, models_sources_map):
     print(' - ({}/{}) {}, unified: {}'.format(i + 1, len(model_names),
                                               'models.' + model_name,
                                               unified_name))
-    model = load_model(model_name)
+    model = load_model(name=model_name, import_library=import_library)
     model_dict = model.to_dict()
 
     model_dict['sources'] = models_sources_map[model_dict['name']]
@@ -333,19 +341,21 @@ def create_models_dict(model_names, models_sources_map):
   return unified_models_list
 
 
-def create_datasets_dict(dataset_names, dataset_sources_map):
+def create_datasets_dict(dataset_names,
+                         dataset_sources_map,
+                         import_library=False):
   '''Given a list of dataset names, return a list with the JSON representation
-  of each dataset as an standardized dict
+      of each dataset as an standardized dict
 
-  Args:
-    dataset_names (list): list of dataset names to return the standardized dict
-      dataset
-    dataset_sources_map: a dict map between dataset names and sources as
-      returned by the utils function map_name_sources('datasets')
+      Args:
+        dataset_names (list): list of dataset names to return
+        the standardized dict dataset
+        dataset_sources_map: a dict map between dataset names and sources as
+          returned by the utils function map_name_sources('datasets')
 
-  Returns:
-    A list of dictionaries with the JSON representation of each CV model
-  '''
+      Returns:
+        A list of dictionaries with the JSON representation of each CV model
+      '''
 
   print('\nCreating dataset JSONs...')
 
@@ -361,26 +371,30 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
     # as an attribute, that's why we have to iterate over the splits to extract
     # the splits information and then extend the dataset dict with this split
     # data
-    dataset_splits = load_dataset(dataset_name, download=False)
+    dataset_splits = load_dataset(name=dataset_name,
+                                  import_library=import_library)
 
     dataset_dict = None
     split_names = []
     split_num_items = []
     total_items = 0
 
-    for split_name in dataset_splits:
-      dataset = dataset_splits[split_name]
-      dataset_dict = dataset.to_dict()
-      split_names.append(split_name)
+    if not import_library:
+      dataset_dict = dataset_splits.to_dict()
+    else:
+      for split_name in dataset_splits:
+        dataset = dataset_splits[split_name]
+        dataset_dict = dataset.to_dict()
+        split_names.append(split_name)
 
-      if dataset_dict['cv_num_items']:
-        split_num_items.append(dataset_dict['cv_num_items'])
+        if dataset_dict['cv_num_items']:
+          split_num_items.append(dataset_dict['cv_num_items'])
 
-      if dataset_dict['cv_num_items'] is not None:
-        total_items += dataset_dict['cv_num_items']
+        if dataset_dict['cv_num_items'] is not None:
+          total_items += dataset_dict['cv_num_items']
 
-      del dataset_dict['source']
-      del dataset_dict['cv_num_items']
+        del dataset_dict['source']
+        del dataset_dict['cv_num_items']
 
     dataset_dict['sources'] = dataset_sources_map[dataset_dict['name']]
 

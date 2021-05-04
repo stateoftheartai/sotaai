@@ -11,16 +11,16 @@ import sys
 
 def main(areas: list, output_file_path='./data/output/items.json'):
   '''Create the JSON items for the given areas. The JSON will contain:
-    - models: the list of models of the given areas
-    - datasets: the list of datasets of the given areas
-    - sources: the list of sources of the given areas
-    - tasks: the list of tasks of the given areas
-    - areas: the list of areas
+        - models: the list of models of the given areas
+        - datasets: the list of datasets of the given areas
+        - sources: the list of sources of the given areas
+        - tasks: the list of tasks of the given areas
+        - areas: the list of areas
 
-    Args:
-      areas (list): list of areas IDs to get JSONS e.g. ['cv', 'nlp']
-      output_file_path (str): the file path where JSON data will be stored
-  '''
+        Args:
+          areas (list): list of areas IDs to get JSONS e.g. ['cv', 'nlp']
+          output_file_path (str): the file path where JSON data will be stored
+      '''
 
   area_original_names = {
       'cv': 'Computer Vision',
@@ -56,11 +56,11 @@ def main(areas: list, output_file_path='./data/output/items.json'):
 
 def get_data(area: str):
   '''Get models, datasets, tasks and sources of a given area in an standardized
-  JSON format
+      JSON format
 
-  Args:
-    area: one of cv, nlp, rl, neuro
-  '''
+      Args:
+        area: one of cv, nlp, rl, neuro
+      '''
 
   print('\nGetting data...')
 
@@ -121,17 +121,19 @@ def get_data(area: str):
 def add_items(items: dict, new_items: list, unified_field: str,
               append_field: str):
   '''Add items to the global items dictionary, keep them unified by the given
-    unified_field, and per each unified item it appends the different values of
-    the append_field of each item e.g. unify items by name, and for each unified
-    item concats the 'area' value, so that we can know each unified item to
-    which areas belongs
+        unified_field, and per each unified item it appends the
+        different values of the append_field of each item
+        e.g. unify items by name, and for each unified item concats
+        the 'area' value, so that we can know each unified item to
+        which areas belongs
 
-    Args:
-      items (dict): global items dictionary where unified items will be stored
-      new_items (list): new items to add to the dictionary
-      unified_field (str): the field used for unification
-      append_field (str): the field to append
-  '''
+        Args:
+          items (dict): global items dictionary where unified
+          items will be stored new_items (list): new items to
+          add to the dictionary unified_field (str): the field
+          used for unification append_field (str): the field to
+          append
+      '''
 
   for item in new_items:
     item_unified_name = item[unified_field]
@@ -147,16 +149,16 @@ def add_items(items: dict, new_items: list, unified_field: str,
 def items_by_source(items_sources_map: dict) -> dict:
   '''Gets a count of the number of items by source
 
-  It is used mainly for logging and debugging purposes
+      It is used mainly for logging and debugging purposes
 
-  Args:
-    items_sources_map: a valid model or datasets map as returned by
-    utils.map_name_sources
+      Args:
+        items_sources_map: a valid model or datasets map as returned by
+        utils.map_name_sources
 
-  Returns:
-    A dict of the form:
-      <source-name>: number of items e.g. models or datasets in that source
-  '''
+      Returns:
+        A dict of the form:
+          <source-name>: number of items e.g. models or datasets in that source
+      '''
   by_source = {}
   for item_name in items_sources_map:
     sources = items_sources_map[item_name]
@@ -170,25 +172,25 @@ def items_by_source(items_sources_map: dict) -> dict:
 def add_area(area: str, items):
   '''Update the given items to add the area field as a string
 
-  Args:
-    area (str): the area value to add to each of the items e.g. 'cv'
-    items (list): the list of items to add the area field
-  '''
+      Args:
+        area (str): the area value to add to each of the items e.g. 'cv'
+        items (list): the list of items to add the area field
+      '''
   for item in items:
     item['area'] = area
 
 
 def get_catalogue(field: str, items: list) -> list:
   '''Given a list of items with a certain field, returns the unique values of
-  the given fields i.e. the catalogue of values of the field
+      the given fields i.e. the catalogue of values of the field
 
-  Args:
-    field: field to get catalogue from e.g. 'tasks'
-    items: list to of items that have the field
+      Args:
+        field: field to get catalogue from e.g. 'tasks'
+        items: list to of items that have the field
 
-  Returns:
-    The catalogue as a list of objects with name and original_name.
-  '''
+      Returns:
+        The catalogue as a list of objects with name and original_name.
+      '''
   catalogue = {}
   for item in items:
     print(item)
@@ -211,14 +213,14 @@ def create_name(name):
 
 def create_original_name(name) -> str:
   '''Create an original_name given a name. It capitalizes words
-  and replace _ with spaces
+      and replace _ with spaces
 
-  Args:
-    name (str): name from which original_name will be created
+      Args:
+        name (str): name from which original_name will be created
 
-  Returns:
-    The original name as string
-  '''
+      Returns:
+        The original name as string
+      '''
 
   original_name = None
   for item in name.split('_'):
@@ -233,10 +235,10 @@ def create_original_name(name) -> str:
 def save_json(data, file_path):
   '''Store the given data in a JSON file
 
-  Args:
-    data (dict): a valid JSON value (dict or list of dicts)
-    file_path (str): the file path where to store the JSON file e.g. cv.json
-  '''
+      Args:
+        data (dict): a valid JSON value (dict or list of dicts)
+        file_path (str): the file path where to store the JSON file e.g. cv.json
+      '''
   data_file = open(file_path, 'w')
   json.dump(data, data_file, indent=2)
   data_file.close()

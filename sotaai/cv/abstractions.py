@@ -11,34 +11,38 @@ models_tasks_map = utils.map_name_tasks('models')
 class CvDataset(object):
   '''Our attempt at a standardized, task-agnostic dataset wrapper.
 
-  Each `CvDataset` represents a specific split of a full dataset.
-  '''
+        Each `CvDataset` represents a specific split of a full dataset.
+        '''
 
-  def __init__(self, raw_dataset, iterator, name: str, split_name: str):
+  def __init__(self,
+               name: str,
+               split_name: str = None,
+               iterator=None,
+               raw_dataset=None):
     '''Constructor using `raw_dataset` from a source library.
 
-    Args:
-      raw_dataset:
-        Dataset object directly instantiated from a source library. Type
-        is dependent on the source library.
-      name (str):
-        Name of the dataset.
-      split_name (str):
-        Name of the dataset's split.
-      source (str):
-        Source name used when no raw_model is given
-    '''
+                Args:
+                  raw_dataset:
+                    Dataset object directly instantiated
+                    from a source library. Type
+                    is dependent on the source library.
+                  name (str):
+                    Name of the dataset.
+                  split_name (str):
+                    Name of the dataset's split.
+                  source (str):
+                    Source name used when no raw_model is given
+                '''
 
     self.raw = raw_dataset
     self.name = name
     self.tasks = datasets_tasks_map[name]
     self.iterator = iterator
-    self.source = utils.get_source_from_dataset(self.raw)
 
     self.is_implemented = not (isinstance(self.raw, dict) and
                                'source' in self.raw)
 
-    if not self.is_implemented:
+    if not self.is_implemented or raw_dataset is None:
 
       self.split_name = None
       self.size = None
@@ -52,6 +56,7 @@ class CvDataset(object):
 
     else:
 
+      self.source = utils.get_source_from_dataset(self.raw)
       self.split_name = split_name
       self.size = utils.get_size_from_dataset(raw_dataset, self.split_name)
       self.shape = utils.get_shape_from_dataset(raw_dataset, name, split_name)
@@ -121,30 +126,30 @@ class CvDataset(object):
 class CvModel(object):
   '''Our attempt at a standardized, model wrapper.
 
-  Each abstract `CvModel` represents a model from one of the sources.
-  '''
+        Each abstract `CvModel` represents a model from one of the sources.
+        '''
 
-  def __init__(self, raw_model, name: str):
+  def __init__(self, name: str, raw_model=None):
     '''Constructor using `raw_model` from a source library.
 
-    Args:
-      raw_model:
-        Model object directly instantiated from a source library. Type
-        is dependent on the source library.
-      name (str):
-        Name of the model.
-      source (str):
-        Source name used when no raw_model is given
-    '''
+                Args:
+                  raw_model:
+                    Model object directly
+                    instantiated from a source library. Type
+                    is dependent on the source library.
+                  name (str):
+                    Name of the model.
+                  source (str):
+                    Source name used when no raw_model is given
+                '''
     self.raw = raw_model
     self.name = name
     self.tasks = models_tasks_map[name]
-    self.source = utils.get_source_from_model(self.raw)
-    self.is_implemented = (not (isinstance(self.raw, dict) and
-                                'source' in self.raw)) or (self.source in [
-                                    'keras', 'torchvision', 'tensorflow'
-                                ])
-    if not self.is_implemented:
+
+    self.is_implemented = not (isinstance(self.raw, dict) and
+                               'source' in self.raw)
+
+    if not self.is_implemented or raw_model is None:
       self.original_input_type = None
       self.original_input_shape = None
       self.original_output_shape = None
@@ -155,7 +160,11 @@ class CvModel(object):
       self.paper = None
       self.require_box = None
       self.keypoint_visibility = None
+      self.source = None
+
     else:
+
+      self.source = utils.get_source_from_model(self.raw)
       self._populate_attributes()
 
   def _populate_attributes(self):
@@ -214,23 +223,24 @@ class CvModel(object):
   def update_raw_model(self, model) -> None:
     '''Update raw model with a new one modified using Keras API directly.
 
-    Args:
-      model: the new Keras model that will replace the original raw model
-    '''
+                Args:
+                  model: the new Keras model that
+                  will replace the original raw model
+                '''
     self.raw = model
     self._populate_attributes()
 
   def __call__(self, input_data):
     '''Return model predictions for the input_data
 
-    Args:
-      input_data: valid input data as required by the model
-    Returns:
-      As of now, the predicted data as returned by model.raw
-    Raises:
-      NotImplementedError: an error in case the method is not implemented for
-      the current model
-    '''
+                Args:
+                  input_data: valid input data as required by the model
+                Returns:
+                  As of now, the predicted data as returned by model.raw
+                Raises:
+                  NotImplementedError: an error in case the method
+                  is not implemented for the current model
+                '''
     if self.source == 'keras':
       return self.raw.predict(input_data)
     if self.source == 'torchvision':
