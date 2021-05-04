@@ -78,7 +78,7 @@ def load_model(name: str,
   else:
     raw_object = wrapper.load_model(name)
 
-  return abstractions.CvModel(raw_object, name)
+  return abstractions.CvModel(name, raw_object)
 
 
 def load_dataset(name: str,
@@ -203,8 +203,10 @@ def load_dataset(name: str,
     if raw and hasattr(wrapper, 'DatasetIterator'):
       iterator = wrapper.DatasetIterator(raw)
 
-    std_dataset[split_name] = abstractions.CvDataset(raw, iterator, name,
-                                                     split_name)
+    std_dataset[split_name] = abstractions.CvDataset(name=name,
+                                                     raw_dataset=raw,
+                                                     iterator=iterator,
+                                                     split_name=split_name)
 
   return std_dataset
 
@@ -282,7 +284,7 @@ def create_models_dict(model_names, models_sources_map, import_library=False):
     print(' - ({}/{}) {}, unified: {}'.format(i + 1, len(model_names),
                                               'models.' + model_name,
                                               unified_name))
-    model = load_model(model_name, import_library=import_library)
+    model = load_model(name=model_name, import_library=import_library)
     model_dict = model.to_dict()
 
     model_dict['sources'] = models_sources_map[model_dict['name']]
@@ -369,7 +371,8 @@ def create_datasets_dict(dataset_names,
     # as an attribute, that's why we have to iterate over the splits to extract
     # the splits information and then extend the dataset dict with this split
     # data
-    dataset_splits = load_dataset(dataset_name, import_library=import_library)
+    dataset_splits = load_dataset(name=dataset_name,
+                                  import_library=import_library)
 
     dataset_dict = None
     split_names = []

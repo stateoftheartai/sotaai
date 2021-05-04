@@ -34,7 +34,7 @@ class CvDataset(object):
                     Source name used when no raw_model is given
                 '''
 
-    self.raw = None
+    self.raw = raw_dataset
     self.name = name
     self.tasks = datasets_tasks_map[name]
     self.iterator = iterator
@@ -57,7 +57,6 @@ class CvDataset(object):
     else:
 
       self.source = utils.get_source_from_dataset(self.raw)
-      self.raw = raw_dataset
       self.split_name = split_name
       self.size = utils.get_size_from_dataset(raw_dataset, self.split_name)
       self.shape = utils.get_shape_from_dataset(raw_dataset, name, split_name)
@@ -143,7 +142,7 @@ class CvModel(object):
                   source (str):
                     Source name used when no raw_model is given
                 '''
-    self.raw = None
+    self.raw = raw_model
     self.name = name
     self.tasks = models_tasks_map[name]
 
@@ -165,7 +164,6 @@ class CvModel(object):
 
     else:
 
-      self.raw = raw_model
       self.source = utils.get_source_from_model(self.raw)
       self._populate_attributes()
 

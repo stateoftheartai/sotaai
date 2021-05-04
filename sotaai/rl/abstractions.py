@@ -24,7 +24,7 @@ class RlEnvironment(object):
         '''
     self.name = name
     self.source = utils.get_source(name)
-    self.raw = None
+    self.raw = raw_object
     self.tasks = utils.map_name_tasks('environments')[name]
     self.action_space_size = None
     self.action_space_dtype = None
@@ -36,8 +36,6 @@ class RlEnvironment(object):
     self.reward_range = None
 
     if raw_object is not None:
-      self.raw = raw_object
-
       if hasattr(raw_object.action_space, 'n'):
         self.action_space_size = raw_object.action_space.n
       else:
