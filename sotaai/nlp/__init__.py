@@ -39,7 +39,7 @@ def model_to_dataset(
   raise NotImplementedError('TODO(lalito) implement me')
 
 
-def create_models_dict(model_names, models_sources_map):
+def create_models_dict(model_names, models_sources_map, log=False):
   '''Given a list of model names, return a list with the JSON representation
   of each model as an standardized dict
   Args:
@@ -50,18 +50,28 @@ def create_models_dict(model_names, models_sources_map):
     A list of dictionaries with the JSON representation of each CV model
   '''
 
-  print('\nCreating model JSONs...')
-
   models = []
 
   for i, model_name in enumerate(model_names):
-    print(' - ({}/{}) {}'.format(i + 1, len(model_names),
-                                 'models.' + model_name))
+
+    if log:
+      print(' - ({}/{}) {}'.format(i + 1, len(model_names),
+                                   'models.' + model_name))
     model = load_model(model_name)
     model_dict = model.to_dict()
 
     model_dict['sources'] = models_sources_map[model_dict['name']]
     del model_dict['source']
+
+    # TODO(team)
+    # Fix this overwrite from huggfacemanual to huggingface when hugginface
+    # wrapper is fully finished. The name was changed so that UI filters work
+    # properly
+    model_dict['sources'] = list(
+        map(
+            lambda source: source
+            if source != 'huggfacemanual' else 'huggingface',
+            model_dict['sources']))
 
     model_dict['implemented_sources'] = []
 
@@ -72,7 +82,7 @@ def create_models_dict(model_names, models_sources_map):
   return models
 
 
-def create_datasets_dict(dataset_names, dataset_sources_map):
+def create_datasets_dict(dataset_names, dataset_sources_map, log=False):
   '''Given a list of dataset names, return a list with the JSON representation
   of each dataset as an standardized dict
 
@@ -86,18 +96,28 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
     A list of dictionaries with the JSON representation of each CV model
   '''
 
-  print('\nCreating dataset JSONs...')
-
   datasets = []
 
   for i, dataset_name in enumerate(dataset_names):
-    print(' - ({}/{}) {}'.format(i + 1, len(dataset_names),
-                                 'datasets.' + dataset_name))
+
+    if log:
+      print(' - ({}/{}) {}'.format(i + 1, len(dataset_names),
+                                   'datasets.' + dataset_name))
     dataset = load_dataset(dataset_name)
     dataset_dict = dataset.to_dict()
 
     dataset_dict['sources'] = dataset_sources_map[dataset_dict['name']]
     del dataset_dict['source']
+
+    # TODO(team)
+    # Fix this overwrite from huggfacemanual to huggingface when hugginface
+    # wrapper is fully finished. The name was changed so that UI filters work
+    # properly
+    dataset_dict['sources'] = list(
+        map(
+            lambda source: source
+            if source != 'huggfacemanual' else 'huggingface',
+            dataset_dict['sources']))
 
     dataset_dict['implemented_sources'] = []
 

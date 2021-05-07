@@ -25,7 +25,7 @@ def load_dataset(name: str) -> abstractions.NeuroDataset:
   return abstractions.NeuroDataset(raw_object['name'], raw_object['source'])
 
 
-def create_models_dict(model_names, models_sources_map):
+def create_models_dict(model_names, models_sources_map, log=False):
   '''Given a list of model names, return a list with the JSON representation
   of each model as an standardized dict
   Args:
@@ -36,13 +36,13 @@ def create_models_dict(model_names, models_sources_map):
     A list of dictionaries with the JSON representation of each CV model
   '''
 
-  print('\nCreating model JSONs...')
-
   models = []
 
   for i, model_name in enumerate(model_names):
-    print(' - ({}/{}) {}'.format(i + 1, len(model_names),
-                                 'models.' + model_name))
+
+    if log:
+      print(' - ({}/{}) {}'.format(i + 1, len(model_names),
+                                   'models.' + model_name))
     model = load_model(model_name)
     model_dict = model.to_dict()
 
@@ -58,7 +58,7 @@ def create_models_dict(model_names, models_sources_map):
   return models
 
 
-def create_datasets_dict(dataset_names, dataset_sources_map):
+def create_datasets_dict(dataset_names, dataset_sources_map, log=False):
   '''Given a list of dataset names, return a list with the JSON representation
   of each dataset as an standardized dict
 
@@ -72,13 +72,13 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
     A list of dictionaries with the JSON representation of each CV model
   '''
 
-  print('\nCreating dataset JSONs...')
-
   datasets = []
 
   for i, dataset_name in enumerate(dataset_names):
-    print(' - ({}/{}) {}'.format(i + 1, len(dataset_names),
-                                 'datasets.' + dataset_name))
+
+    if log:
+      print(' - ({}/{}) {}'.format(i + 1, len(dataset_names),
+                                   'datasets.' + dataset_name))
     dataset = load_dataset(dataset_name)
     dataset_dict = dataset.to_dict()
 

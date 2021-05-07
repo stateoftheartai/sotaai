@@ -66,7 +66,7 @@ class RlEnvironment(object):
   def to_dict(self) -> dict:
     return {
         'name': self.name,
-        'type': 'Environment',
+        'type': 'environment',
         'source': self.source,
         'is_implemented': True,
         'action_space': {

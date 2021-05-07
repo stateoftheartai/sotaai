@@ -262,7 +262,10 @@ def model_to_dataset(cv_model, cv_dataset, cv_task=None):
   return cv_model, cv_dataset
 
 
-def create_models_dict(model_names, models_sources_map, import_library=False):
+def create_models_dict(model_names,
+                       models_sources_map,
+                       import_library=False,
+                       log=False):
   '''Given a list of model names, return a list with the JSON representation
       of each model as an standardized dict
 
@@ -275,15 +278,15 @@ def create_models_dict(model_names, models_sources_map, import_library=False):
         A list of dictionaries with the JSON representation of each CV model
       '''
 
-  print('\nCreating model JSONs...')
-
   models = []
 
   for i, model_name in enumerate(model_names):
     unified_name = metadata.get_unified_name('models', model_name)
-    print(' - ({}/{}) {}, unified: {}'.format(i + 1, len(model_names),
-                                              'models.' + model_name,
-                                              unified_name))
+
+    if log:
+      print(' - ({}/{}) {}, unified: {}'.format(i + 1, len(model_names),
+                                                'models.' + model_name,
+                                                unified_name))
     model = load_model(name=model_name, import_library=import_library)
     model_dict = model.to_dict()
 
@@ -343,7 +346,8 @@ def create_models_dict(model_names, models_sources_map, import_library=False):
 
 def create_datasets_dict(dataset_names,
                          dataset_sources_map,
-                         import_library=False):
+                         import_library=False,
+                         log=False):
   '''Given a list of dataset names, return a list with the JSON representation
       of each dataset as an standardized dict
 
@@ -357,14 +361,13 @@ def create_datasets_dict(dataset_names,
         A list of dictionaries with the JSON representation of each CV model
       '''
 
-  print('\nCreating dataset JSONs...')
-
   datasets = []
 
   for i, dataset_name in enumerate(dataset_names):
 
-    print(' - ({}/{}) {}'.format(i + 1, len(dataset_names),
-                                 'datasets.' + dataset_name))
+    if log:
+      print(' - ({}/{}) {}'.format(i + 1, len(dataset_names),
+                                   'datasets.' + dataset_name))
 
     # Abstract datasets are created per split, but for the JSON representation
     # we only want one global representation which contains the split metadata
