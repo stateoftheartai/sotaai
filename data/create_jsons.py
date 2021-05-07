@@ -79,22 +79,38 @@ def get_data(area: str):
 
     model_names = models_sources_map.keys()
     dataset_names = datasets_sources_map.keys()
-    print(models_sources_map)
     models = sotaai_module.create_models_dict(model_names, models_sources_map)
     datasets = sotaai_module.create_datasets_dict(dataset_names,
                                                   datasets_sources_map)
     sources = list(sources_metadata_map.values())
 
     # TODO(Team)
-    # Fix all task names in wrappers to be in lower snake case
-    # This is a temporal fix to overwrite task names in all places
+    # Fix tasks names and values
+    # - For all areas, make sure all task names are in lower snake case. This is
+    #  a temporal overwrite, we have to refactor all wrappers to have the
+    #  correct tasks names (in lower snake case)
+    # - If RL, fix the tasks values to not include libraries e.g. gym, torch,
+    #  etc
+    rl_non_tasks = ['torch', 'gym', 'procgen', 'pybulletgym']
     for item in models + datasets + sources:
       fixed_tasks = []
       for task in item['tasks']:
-        fixed_tasks.append(create_name(task))
+        if (area == 'rl' and task not in rl_non_tasks) or area != 'rl':
+          fixed_tasks.append(create_name(task))
       item['tasks'] = fixed_tasks
 
     tasks = get_catalogue('tasks', models + datasets)
+
+    # TODO(Team)
+    # We have to refactor gym wrappers to properly classify models and
+    # datasets (environments). As of now we have a partial fix:
+    # - If RL, overwrite tasks values so that all models, datasets and sources
+    #  belong to all tasks since all models and datasets are compatible against
+    #  each other
+    if area == 'rl':
+      task_names = list(map(lambda task: task['name'], tasks))
+      for item in models + datasets + sources:
+        item['tasks'] = task_names
 
     print('\nArea: {}'.format(area.upper()))
     print('Unique Models: {}'.format(len(models)))
@@ -193,7 +209,6 @@ def get_catalogue(field: str, items: list) -> list:
       '''
   catalogue = {}
   for item in items:
-    print(item)
     value = item[field]
     if isinstance(value, str):
       value = [value]

@@ -63,6 +63,16 @@ def create_models_dict(model_names, models_sources_map):
     model_dict['sources'] = models_sources_map[model_dict['name']]
     del model_dict['source']
 
+    # TODO(team)
+    # Fix this overwrite from huggfacemanual to huggingface when hugginface
+    # wrapper is fully finished. The name was changed so that UI filters work
+    # properly
+    model_dict['sources'] = list(
+        map(
+            lambda source: source
+            if source != 'huggfacemanual' else 'huggingface',
+            model_dict['sources']))
+
     model_dict['implemented_sources'] = []
 
     model_dict['unified_name'] = model_name  # TODO(tonio) unify...
@@ -98,6 +108,16 @@ def create_datasets_dict(dataset_names, dataset_sources_map):
 
     dataset_dict['sources'] = dataset_sources_map[dataset_dict['name']]
     del dataset_dict['source']
+
+    # TODO(team)
+    # Fix this overwrite from huggfacemanual to huggingface when hugginface
+    # wrapper is fully finished. The name was changed so that UI filters work
+    # properly
+    dataset_dict['sources'] = list(
+        map(
+            lambda source: source
+            if source != 'huggfacemanual' else 'huggingface',
+            dataset_dict['sources']))
 
     dataset_dict['implemented_sources'] = []
 
