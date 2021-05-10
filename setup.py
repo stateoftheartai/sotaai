@@ -10,7 +10,7 @@ setup(name='sotaai',
       author_email='admin@stateoftheart.ai',
       description='Stateoftheart AI Official Library',
       url='https://github.com/stateoftheartai/sotaai',
-      packages=['sotaai', 'sotaai.cv'],
+      packages=['sotaai', 'sotaai.cv', 'sotaai.rl'],
       install_requires=['scikit-image'],
       python_requires='>=3,<=3.8.0',
       extras_require={
