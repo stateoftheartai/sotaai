@@ -70,7 +70,9 @@ def create_models_dict(model_names,
     # thus this is the only implemented source to display in the UI
 
     # model_dict['implemented_sources'] = model_dict['sources']
-    model_dict['implemented_sources'] = ['garage']
+    model_dict['implemented_sources'] = []
+    if 'garage' in model_dict['sources']:
+      model_dict['implemented_sources'] = ['garage']
 
     model_dict['unified_name'] = model_name  # TODO(tonio) unify...
 
