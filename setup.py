@@ -5,7 +5,7 @@ Core sotaai library setup file
 from setuptools import setup
 
 setup(name='sotaai',
-      version='0.0.7',
+      version='0.0.8',
       author='Stateoftheart AI PBC',
       author_email='admin@stateoftheart.ai',
       description='Stateoftheart AI Official Library',
