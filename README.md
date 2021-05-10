@@ -103,6 +103,14 @@ For Reinforcement Learning:
 
 ```
 pip install sotaai[rl]
+
+```
+
+For Reinforcement Learning it is also necessary to install some dependencies
+independently:
+
+```
+pip install pybullet-gym@git+https://github.com/benelot/pybullet-gym
 ```
 
 **Important:** if you make use of `zsh` you have to add a `\` before each bracket (\[\])
