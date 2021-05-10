@@ -63,7 +63,16 @@ def create_models_dict(model_names,
 
     model_dict['sources'] = models_sources_map[model_dict['name']]
     del model_dict['source']
-    model_dict['implemented_sources'] = model_dict['sources']
+
+    # TODO(team)
+    # As of now, the only implemented source for models (implemented and
+    # and tested) is Garage, we only have a code snippet for this library and
+    # thus this is the only implemented source to display in the UI
+
+    # model_dict['implemented_sources'] = model_dict['sources']
+    model_dict['implemented_sources'] = []
+    if 'garage' in model_dict['sources']:
+      model_dict['implemented_sources'] = ['garage']
 
     model_dict['unified_name'] = model_name  # TODO(tonio) unify...
 
