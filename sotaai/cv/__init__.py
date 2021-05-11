@@ -315,13 +315,22 @@ def create_models_dict(model_names,
           'name': model['unified_name'],
           'type': model['type'],
           'paper': model['paper'],
-          'name_alt': [model['name']],
+          'name_alt': [
+              model['name'] for source in model['implemented_sources']
+          ],
+          'name_alt_sources': model['implemented_sources'],
           'tasks': model['tasks'],
           'sources': model['sources'],
           'implemented_sources': model['implemented_sources']
       }
     else:
-      unified_models[model['unified_name']]['name_alt'].append(model['name'])
+      unified_models[model['unified_name']]['name_alt'] = unified_models[
+          model['unified_name']]['name_alt'] + [
+              model['name'] for source in model['implemented_sources']
+          ]
+      unified_models[model['unified_name']][
+          'name_alt_sources'] = unified_models[model['unified_name']][
+              'name_alt_sources'] + model['implemented_sources']
       unified_models[model['unified_name']]['tasks'] = unified_models[
           model['unified_name']]['tasks'] + model['tasks']
       unified_models[model['unified_name']]['sources'] = unified_models[
@@ -329,11 +338,9 @@ def create_models_dict(model_names,
       unified_models[model['unified_name']][
           'implemented_sources'] = unified_models[model['unified_name']][
               'implemented_sources'] + model['implemented_sources']
-
   unified_models_list = list(unified_models.values())
 
   for model in unified_models_list:
-    model['name_alt'] = list(set(model['name_alt']))
     model['tasks'] = list(set(model['tasks']))
     model['sources'] = list(set(model['sources']))
     model['implemented_sources'] = list(set(model['implemented_sources']))
